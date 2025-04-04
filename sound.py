@@ -1,5 +1,18 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, scrolledtext
+import random
+from playsound import playsound
+
+# Load Mapping.txt into a dictionary
+Mapping = {}
+with open("Mapping.txt", "r") as file:
+    for line in file:
+        key1, key2, key3, value = line.strip().split("\t")
+        if key1 not in Mapping:
+            Mapping[key1] = {}
+        if key2 not in Mapping[key1]:
+            Mapping[key1][key2] = {}
+        Mapping[key1][key2][key3] = value
 
 # Create the main window
 root = tk.Tk()
@@ -17,51 +30,83 @@ notes_label = tk.Label(root, text="Number of notes:")
 notes_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
 notes_dropdown = ttk.Combobox(root, values=[2, 3, 4, 5, 6])
 notes_dropdown.grid(row=1, column=1, padx=10, pady=5)
-notes_dropdown.current(0)
+notes_dropdown.current(2)
+
+# Dropdown for "Maximum distance between notes"
+distance_label = tk.Label(root, text="Maximum distance between notes:")
+distance_label.grid(row=2, column=0, padx=10, pady=5, sticky="w")
+distance_dropdown = ttk.Combobox(root, values=[2, 3, 4, 5, 6])
+distance_dropdown.grid(row=2, column=1, padx=10, pady=5)
+distance_dropdown.current(2)
 
 # Checkboxes for "Notes"
 notes_frame = tk.LabelFrame(root, text="Notes")
-notes_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=5, sticky="w")
+notes_frame.grid(row=3, column=0, columnspan=2, padx=10, pady=5, sticky="w")
 note_vars = {}
-for i, note in enumerate(["do", "re", "mi", "fa", "so", "la", "ti"]):
-    note_vars[note] = tk.BooleanVar()
+notes = [
+    "do0", "re0", "mi0", "fa0", "so0", "la0", "ti0",
+    "do", "re", "mi", "fa", "so", "la", "ti",
+    "do1", "re1", "mi1", "fa1", "so1", "la1", "ti1",
+    "do2"
+]
+for i, note in enumerate(notes):
+    note_vars[note] = tk.BooleanVar(value=True)
     checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note])
-    checkbox.grid(row=0, column=i, padx=5, pady=5)
+    checkbox.grid(row=i // 7, column=i % 7, padx=5, pady=5)
 
-# Dropdown for "Solfege/Sound"
-mode_label = tk.Label(root, text="Mode:")
-mode_label.grid(row=3, column=0, padx=10, pady=5, sticky="w")
-mode_dropdown = ttk.Combobox(root, values=["Solfege only", "Sound only", "Sound and Solfege"])
-mode_dropdown.grid(row=3, column=1, padx=10, pady=5)
-mode_dropdown.current(0)
+# Text area for "Solfege"
+solfege_label = tk.Label(root, text="Solfege:")
+solfege_label.grid(row=4, column=0, padx=10, pady=5, sticky="w")
+solfege_text = scrolledtext.ScrolledText(root, height=5, width=40)
+solfege_text.grid(row=4, column=1, padx=10, pady=5)
 
-# Checkbox for "Start with do"
-start_with_do_var = tk.BooleanVar()
-start_with_do_checkbox = tk.Checkbutton(root, text="Start with do", variable=start_with_do_var)
-start_with_do_checkbox.grid(row=4, column=0, padx=10, pady=5, sticky="w")
+# Functionality
+Melody = []
 
-# Checkbox for "End with do"
-end_with_do_var = tk.BooleanVar()
-end_with_do_checkbox = tk.Checkbutton(root, text="End with do", variable=end_with_do_var)
-end_with_do_checkbox.grid(row=4, column=1, padx=10, pady=5, sticky="w")
+def play_tonic(instrument):
+    key = key_dropdown.get()
+    file_to_play = Mapping[key][instrument]["do"]
+    playsound(file_to_play)
 
-# Buttons at the bottom
+def generate_melody():
+    global Melody
+    num_notes = int(notes_dropdown.get())
+    max_distance = int(distance_dropdown.get())
+    available_notes = [note for note, var in note_vars.items() if var.get()]
+    Melody = [random.choice(available_notes)]
+    for _ in range(1, num_notes):
+        current_index = available_notes.index(Melody[-1])
+        start = max(0, current_index - max_distance)
+        end = min(len(available_notes), current_index + max_distance + 1)
+        Melody.append(random.choice(available_notes[start:end]))
+
+def show_solfege():
+    solfege_text.delete("1.0", tk.END)
+    solfege_text.insert(tk.END, " ".join(Melody))
+
+def play_melody(instrument):
+    key = key_dropdown.get()
+    for note in Melody:
+        file_to_play = Mapping[key][instrument][note]
+        playsound(file_to_play)
+
+# Buttons
 button_frame = tk.Frame(root)
 button_frame.grid(row=5, column=0, columnspan=2, pady=10)
 
 buttons = [
-    "Show Solfege",
-    "Play Guitar Tonic",
-    "Play Piano Tonic",
-    "Play Solfege Tonic",
-    "Play Guitar Melody",
-    "Play Piano Melody",
-    "Play Solfege Melody",
-    "Next"
+    ("Show Solfege", show_solfege),
+    ("Play Guitar Tonic", lambda: play_tonic("Guitar")),
+    ("Play Piano Tonic", lambda: play_tonic("Piano")),
+    ("Play Solfege Tonic", lambda: play_tonic("Solfege")),
+    ("Play Guitar Melody", lambda: play_melody("Guitar")),
+    ("Play Piano Melody", lambda: play_melody("Piano")),
+    ("Play Solfege Melody", lambda: play_melody("Solfege")),
+    ("Generate melody", generate_melody)
 ]
 
-for i, button_text in enumerate(buttons):
-    button = tk.Button(button_frame, text=button_text)
+for i, (text, command) in enumerate(buttons):
+    button = tk.Button(button_frame, text=text, command=command)
     button.grid(row=i // 4, column=i % 4, padx=5, pady=5)
 
 # Run the application
