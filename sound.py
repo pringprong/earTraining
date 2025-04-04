@@ -84,24 +84,26 @@ def generate_melody():
             next_note = random.choice(available_notes[start:end])
         Melody.append(next_note)
 
+    # Combine MP3s for all instruments
+    instruments = ["Guitar", "Piano", "Solfege"]
+    for instrument in instruments:
+        combined = AudioSegment.empty()  # Start with an empty audio segment
+        key = key_dropdown.get()
+        for note in Melody:
+            file_to_play = Mapping[key][instrument][note]
+            audio = AudioSegment.from_file(file_to_play, format="mp3")  # Load the MP3 file
+            combined += audio  # Concatenate the audio
+        # Save the combined audio for the instrument
+        combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_"+instrument+".mp3"
+        combined.export(combined_file, format="mp3")
+
 def show_solfege():
     solfege_text.delete("1.0", tk.END)
     solfege_text.insert(tk.END, " ".join(Melody))
 
 def play_melody(instrument):
-    key = key_dropdown.get()
-    combined = AudioSegment.empty()  # Start with an empty audio segment
-
-    for note in Melody:
-        file_to_play = Mapping[key][instrument][note]
-        audio = AudioSegment.from_file(file_to_play, format="mp3")  # Load the MP3 file
-        combined += audio  # Concatenate the audio
-
-    # Save the combined audio to a temporary file
-    combined_file = "combined_melody.mp3"
-    combined.export(combined_file, format="mp3")
-
-    # Play the combined audio
+    # Play the pre-generated combined MP3 for the selected instrument
+    combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_"+instrument+".mp3"
     playsound(combined_file)
 
 # Buttons
