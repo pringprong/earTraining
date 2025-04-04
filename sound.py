@@ -78,7 +78,10 @@ def generate_melody():
         current_index = available_notes.index(Melody[-1])
         start = max(0, current_index - max_distance)
         end = min(len(available_notes), current_index + max_distance + 1)
-        Melody.append(random.choice(available_notes[start:end]))
+        next_note = random.choice(available_notes[start:end])
+        while next_note == Melody[-1]:  # Ensure the next note is not the same as the last one
+            next_note = random.choice(available_notes[start:end])
+        Melody.append(next_note)
 
 def show_solfege():
     solfege_text.delete("1.0", tk.END)
