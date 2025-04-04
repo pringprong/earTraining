@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext
 import random
 from playsound import playsound
+from pydub import AudioSegment
 
 # Load Mapping.txt into a dictionary
 Mapping = {}
@@ -89,9 +90,19 @@ def show_solfege():
 
 def play_melody(instrument):
     key = key_dropdown.get()
+    combined = AudioSegment.empty()  # Start with an empty audio segment
+
     for note in Melody:
         file_to_play = Mapping[key][instrument][note]
-        playsound(file_to_play)
+        audio = AudioSegment.from_file(file_to_play, format="mp3")  # Load the MP3 file
+        combined += audio  # Concatenate the audio
+
+    # Save the combined audio to a temporary file
+    combined_file = "combined_melody.mp3"
+    combined.export(combined_file, format="mp3")
+
+    # Play the combined audio
+    playsound(combined_file)
 
 # Buttons
 button_frame = tk.Frame(root)
