@@ -29,14 +29,14 @@ key_dropdown.current(0)
 # Dropdown for "Number of notes"
 notes_label = tk.Label(root, text="Number of notes:")
 notes_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
-notes_dropdown = ttk.Combobox(root, values=[2, 3, 4, 5, 6])
+notes_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6])
 notes_dropdown.grid(row=1, column=1, padx=10, pady=5)
 notes_dropdown.current(2)
 
 # Dropdown for "Maximum distance between notes"
 distance_label = tk.Label(root, text="Maximum distance between notes:")
 distance_label.grid(row=2, column=0, padx=10, pady=5, sticky="w")
-distance_dropdown = ttk.Combobox(root, values=[2, 3, 4, 5, 6])
+distance_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6])
 distance_dropdown.grid(row=2, column=1, padx=10, pady=5)
 distance_dropdown.current(2)
 
