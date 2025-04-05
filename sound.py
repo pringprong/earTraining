@@ -30,9 +30,9 @@ key_dropdown.current(0)
 # Dropdown for "Number of notes"
 notes_label = tk.Label(root, text="Number of notes:")
 notes_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
-notes_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6])
+notes_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6, 7])
 notes_dropdown.grid(row=1, column=1, padx=10, pady=5)
-notes_dropdown.current(5)
+notes_dropdown.current(6)
 
 # Dropdown for "Maximum distance between notes"
 distance_label = tk.Label(root, text="Maximum distance between notes:")
@@ -76,13 +76,11 @@ def play_tonic(instrument):
     playsound(file_to_play)
 
 def generate_melody():
-
     # Clear previous melody and files
     instruments = ["Guitar", "Piano", "Solfege"]
     for instrument in instruments:
-        combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_"+instrument+".mp3"
+        combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_" + instrument + ".mp3"
         os.remove(combined_file) if os.path.exists(combined_file) else None
-
 
     global Melody
     num_notes = int(notes_dropdown.get())
@@ -98,6 +96,14 @@ def generate_melody():
             next_note = random.choice(available_notes[start:end])
         Melody.append(next_note)
 
+    # Replace the first note with "do" if "Start with do" is checked
+    if start_with_do_var.get():
+        Melody[0] = "do"
+
+    # Replace the last note with "do" if "End with do" is checked
+    if end_with_do_var.get():
+        Melody[-1] = "do"
+
     # Combine MP3s for all instruments
     for instrument in instruments:
         combined = AudioSegment.empty()  # Start with an empty audio segment
@@ -107,7 +113,7 @@ def generate_melody():
             audio = AudioSegment.from_file(file_to_play, format="mp3")  # Load the MP3 file
             combined += audio  # Concatenate the audio
         # Save the combined audio for the instrument
-        combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_"+instrument+".mp3"
+        combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_" + instrument + ".mp3"
         combined.export(combined_file, format="mp3")
 
 def show_solfege():
