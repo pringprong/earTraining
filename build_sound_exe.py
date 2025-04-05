@@ -1,6 +1,6 @@
 import os
 import subprocess
-import shutil
+import zipfile
 
 # Define paths
 script_name = "sound.py"
@@ -29,7 +29,7 @@ executable_path = os.path.join(dist_folder, "sound.exe")
 # Check if the executable exists
 if os.path.exists(executable_path):
     # Create a zip file containing the executable
-    with shutil.ZipFile(output_zip, "w") as zipf:
+    with zipfile.ZipFile(output_zip, "w") as zipf:
         zipf.write(executable_path, arcname="sound.exe")
     print(f"Executable zipped as {output_zip}")
 else:
