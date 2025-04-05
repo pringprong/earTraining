@@ -9,3 +9,5 @@ Then click the 3 "Play ___ Melody" buttons to listen and check whether you sang 
 
 Up to 3 octaves can be used to generate the melody.
 Currently the program supports the keys of C major and G major, but more keys can be added if you put the mp3s in the mp3 folder and then add their names and locations to the Mapping.txt file.
+
+![Screenshot of user interface](Music_trainer.png "Screenshot of user interface")
