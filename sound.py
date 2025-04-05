@@ -77,6 +77,7 @@ def play_tonic(instrument):
 
 def generate_melody():
     # Clear previous melody and files
+    solfege_text.delete("1.0", tk.END)
     instruments = ["Guitar", "Piano", "Solfege"]
     for instrument in instruments:
         combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_" + instrument + ".mp3"
@@ -116,6 +117,8 @@ def generate_melody():
         combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_" + instrument + ".mp3"
         combined.export(combined_file, format="mp3")
 
+        
+
 def show_solfege():
     solfege_text.delete("1.0", tk.END)
     solfege_text.insert(tk.END, " ".join(Melody))
@@ -126,18 +129,19 @@ def play_melody(instrument):
     playsound(combined_file)
 
 # Text area for "Solfege"
-solfege_label = tk.Label(root, text="Solfege:")
-solfege_label.grid(row=6, column=0, padx=10, pady=5, sticky="w")
-solfege_text = scrolledtext.ScrolledText(root, height=3, width=30)  # Make the text box smaller
-solfege_text.grid(row=6, column=1, padx=10, pady=5, sticky="w")  # Position it below "Generate melody"
+#solfege_label = tk.Label(root, text="Solfege:")
+#solfege_label.grid(row=6, column=0, padx=5, pady=5, sticky="w")
+# Buttons for "Show Solfege" and tonic/melody playback
+show_solfege_button = tk.Button(root, text="Show Solfege", command=show_solfege)
+show_solfege_button.grid(row=6, column=0, padx=10, pady=5)
+solfege_text = scrolledtext.ScrolledText(root, height=1, width=30)  # Make the text box smaller
+solfege_text.grid(row=6, column=1, padx=5, pady=5, sticky="w")  # Position it below "Generate melody"
 
 # Create the "Generate melody" button and place it above "Solfege"
 generate_button = tk.Button(root, text="Generate melody", command=generate_melody, font=("Arial", 12, "bold"))
 generate_button.grid(row=5, column=0, columnspan=2, pady=10)
 
-# Buttons for "Show Solfege" and tonic/melody playback
-show_solfege_button = tk.Button(root, text="Show Solfege", command=show_solfege)
-show_solfege_button.grid(row=6, column=2, padx=10, pady=5)
+
 
 # Row for "Play Tonic" buttons
 play_guitar_tonic_button = tk.Button(root, text="Play Guitar Tonic", command=lambda: play_tonic("Guitar"))
