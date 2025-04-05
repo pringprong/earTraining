@@ -115,27 +115,33 @@ solfege_label.grid(row=5, column=0, padx=10, pady=5, sticky="w")
 solfege_text = scrolledtext.ScrolledText(root, height=3, width=30)  # Make the text box smaller
 solfege_text.grid(row=6, column=0, padx=10, pady=5, sticky="w")  # Position it below "Generate melody"
 
-# Buttons
-button_frame = tk.Frame(root)
-button_frame.grid(row=6, column=1, columnspan=2, pady=10, sticky="w")  # Align "Show Solfege" button to the right
-
 # Create the "Generate melody" button and place it above "Solfege"
 generate_button = tk.Button(root, text="Generate melody", command=generate_melody, font=("Arial", 12, "bold"))
 generate_button.grid(row=4, column=0, columnspan=2, pady=10)
 
-buttons = [
-    ("Show Solfege", show_solfege),
-    ("Play Guitar Tonic", lambda: play_tonic("Guitar")),
-    ("Play Piano Tonic", lambda: play_tonic("Piano")),
-    ("Play Solfege Tonic", lambda: play_tonic("Solfege")),
-    ("Play Guitar Melody", lambda: play_melody("Guitar")),
-    ("Play Piano Melody", lambda: play_melody("Piano")),
-    ("Play Solfege Melody", lambda: play_melody("Solfege")),
-]
+# Buttons for "Show Solfege" and tonic/melody playback
+show_solfege_button = tk.Button(root, text="Show Solfege", command=show_solfege)
+show_solfege_button.grid(row=6, column=1, padx=10, pady=5)
 
-for i, (text, command) in enumerate(buttons):
-    button = tk.Button(button_frame, text=text, command=command)
-    button.grid(row=i // 4, column=i % 4, padx=5, pady=5)
+# Row for "Play Tonic" buttons
+play_guitar_tonic_button = tk.Button(root, text="Play Guitar Tonic", command=lambda: play_tonic("Guitar"))
+play_guitar_tonic_button.grid(row=7, column=0, padx=5, pady=5)
+
+play_piano_tonic_button = tk.Button(root, text="Play Piano Tonic", command=lambda: play_tonic("Piano"))
+play_piano_tonic_button.grid(row=7, column=1, padx=5, pady=5)
+
+play_solfege_tonic_button = tk.Button(root, text="Play Solfege Tonic", command=lambda: play_tonic("Solfege"))
+play_solfege_tonic_button.grid(row=7, column=2, padx=5, pady=5)
+
+# Row for "Play Melody" buttons
+play_guitar_melody_button = tk.Button(root, text="Play Guitar Melody", command=lambda: play_melody("Guitar"))
+play_guitar_melody_button.grid(row=8, column=0, padx=5, pady=5)
+
+play_piano_melody_button = tk.Button(root, text="Play Piano Melody", command=lambda: play_melody("Piano"))
+play_piano_melody_button.grid(row=8, column=1, padx=5, pady=5)
+
+play_solfege_melody_button = tk.Button(root, text="Play Solfege Melody", command=lambda: play_melody("Solfege"))
+play_solfege_melody_button.grid(row=8, column=2, padx=5, pady=5)
 
 # Run the application
 root.mainloop()
