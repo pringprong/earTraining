@@ -3,7 +3,8 @@ import os
 
 # Folder containing the .wav files
 #folder_path = r"C:\Users\pring\Documents\Ukulele\solfege\SpanishClassicalGuitar-SFZ-20190618\samples"
-folder_path = r"C:\Users\pring\Documents\Ukulele\solfege\wav_for_note_trainer"
+#folder_path = r"C:\Users\pring\Documents\Ukulele\solfege\wav_for_note_trainer"
+folder_path = r"C:\Users\pring\Documents\Ukulele\solfege\solfege_wav_for_note_trainer"
 
 # Iterate through all files in the folder
 for filename in os.listdir(folder_path):
