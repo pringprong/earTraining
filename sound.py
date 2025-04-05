@@ -57,12 +57,6 @@ for i, note in enumerate(notes):
     checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note])
     checkbox.grid(row=i // 7, column=i % 7, padx=5, pady=5)
 
-# Text area for "Solfege"
-solfege_label = tk.Label(root, text="Solfege:")
-solfege_label.grid(row=4, column=0, padx=10, pady=5, sticky="w")
-solfege_text = scrolledtext.ScrolledText(root, height=5, width=40)
-solfege_text.grid(row=4, column=1, padx=10, pady=5)
-
 # Functionality
 Melody = []
 
@@ -115,9 +109,19 @@ def play_melody(instrument):
     combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_"+instrument+".mp3"
     playsound(combined_file)
 
+# Text area for "Solfege"
+solfege_label = tk.Label(root, text="Solfege:")
+solfege_label.grid(row=5, column=0, padx=10, pady=5, sticky="w")
+solfege_text = scrolledtext.ScrolledText(root, height=3, width=30)  # Make the text box smaller
+solfege_text.grid(row=6, column=0, padx=10, pady=5, sticky="w")  # Position it below "Generate melody"
+
 # Buttons
 button_frame = tk.Frame(root)
-button_frame.grid(row=5, column=0, columnspan=2, pady=10)
+button_frame.grid(row=6, column=1, columnspan=2, pady=10, sticky="w")  # Align "Show Solfege" button to the right
+
+# Create the "Generate melody" button and place it above "Solfege"
+generate_button = tk.Button(root, text="Generate melody", command=generate_melody, font=("Arial", 12, "bold"))
+generate_button.grid(row=4, column=0, columnspan=2, pady=10)
 
 buttons = [
     ("Show Solfege", show_solfege),
@@ -127,7 +131,6 @@ buttons = [
     ("Play Guitar Melody", lambda: play_melody("Guitar")),
     ("Play Piano Melody", lambda: play_melody("Piano")),
     ("Play Solfege Melody", lambda: play_melody("Solfege")),
-    ("Generate melody", generate_melody)
 ]
 
 for i, (text, command) in enumerate(buttons):
