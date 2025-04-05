@@ -3,6 +3,7 @@ from tkinter import ttk, scrolledtext
 import random
 from playsound import playsound
 from pydub import AudioSegment
+import os
 
 # Load Mapping.txt into a dictionary
 Mapping = {}
@@ -50,6 +51,7 @@ notes = [
     "do1", "re1", "mi1", "fa1", "so1", "la1", "ti1",
     "do2"
 ]
+
 for i, note in enumerate(notes):
     note_vars[note] = tk.BooleanVar(value=True)
     checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note])
@@ -70,6 +72,14 @@ def play_tonic(instrument):
     playsound(file_to_play)
 
 def generate_melody():
+
+    # Clear previous melody and files
+    instruments = ["Guitar", "Piano", "Solfege"]
+    for instrument in instruments:
+        combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_"+instrument+".mp3"
+        os.remove(combined_file) if os.path.exists(combined_file) else None
+
+
     global Melody
     num_notes = int(notes_dropdown.get())
     max_distance = int(distance_dropdown.get())
@@ -85,7 +95,6 @@ def generate_melody():
         Melody.append(next_note)
 
     # Combine MP3s for all instruments
-    instruments = ["Guitar", "Piano", "Solfege"]
     for instrument in instruments:
         combined = AudioSegment.empty()  # Start with an empty audio segment
         key = key_dropdown.get()
