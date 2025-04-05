@@ -4,6 +4,7 @@ import random
 from playsound import playsound
 from pydub import AudioSegment
 import os
+import threading
 
 # Load Mapping.txt into a dictionary
 Mapping = {}
@@ -73,7 +74,9 @@ Melody = []
 def play_tonic(instrument):
     key = key_dropdown.get()
     file_to_play = Mapping[key][instrument]["do"]
-    playsound(file_to_play)
+    #playsound(file_to_play)
+    play = threading.Thread(target=playsound, args=(file_to_play,))
+    play.start()
 
 def generate_melody():
     # Clear previous melody and files
@@ -126,7 +129,9 @@ def show_solfege():
 def play_melody(instrument):
     # Play the pre-generated combined MP3 for the selected instrument
     combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_"+instrument+".mp3"
-    playsound(combined_file)
+    #playsound(combined_file)
+    play = threading.Thread(target=playsound, args=(combined_file,))
+    play.start()
 
 # Buttons for "Show Solfege" and tonic/melody playback
 show_solfege_button = tk.Button(root, text="Show Solfege", command=show_solfege)
