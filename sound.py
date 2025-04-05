@@ -6,6 +6,8 @@ from pydub import AudioSegment
 import os
 import threading
 import sys
+import tempfile  # Import the tempfile module
+
 
 # Determine the base path (for both development and PyInstaller executable)
 if getattr(sys, 'frozen', False):  # Check if running as a PyInstaller executable
@@ -82,16 +84,26 @@ Melody = []
 def play_tonic(instrument):
     key = key_dropdown.get()
     file_to_play = Mapping[key][instrument]["do"]
-    #playsound(file_to_play)
-    play = threading.Thread(target=playsound, args=(file_to_play,))
+    
+    # Split file_to_play into folder and filename
+    folder, filename = os.path.split(file_to_play)
+    
+    # Reassemble the path using base_path
+    full_path = os.path.join(base_path, folder, filename)
+    
+    # Play the file
+    play = threading.Thread(target=playsound, args=(full_path,))
     play.start()
 
 def generate_melody():
     # Clear previous melody and files
     solfege_text.delete("1.0", tk.END)
     instruments = ["Guitar", "Piano", "Solfege"]
+    
+    # Create a temporary directory for combined files
+    temp_dir = tempfile.gettempdir()  # Get the system's temporary directory
     for instrument in instruments:
-        combined_file = f"./tmp_mp3/combined_melody_{instrument}.mp3"
+        combined_file = os.path.join(temp_dir, f"combined_melody_{instrument}.mp3")
         os.remove(combined_file) if os.path.exists(combined_file) else None
 
     global Melody
@@ -125,19 +137,21 @@ def generate_melody():
             audio = AudioSegment.from_file(file_to_play, format="mp3")  # Load the MP3 file
             combined += audio  # Concatenate the audio
         # Save the combined audio for the instrument
-        combined_file = f"./tmp_mp3/combined_melody_{instrument}.mp3"
-        combined.export(combined_file, format="mp3")
-
-        
+        combined_file = os.path.join(temp_dir, f"combined_melody_{instrument}.mp3")
+        combined.export(combined_file, format="mp3")     
 
 def show_solfege():
     solfege_text.delete("1.0", tk.END)
     solfege_text.insert(tk.END, " ".join(Melody))
 
 def play_melody(instrument):
-    # Play the pre-generated combined MP3 for the selected instrument
-    combined_file = f"./tmp_mp3/combined_melody_{instrument}.mp3"
-    #playsound(combined_file)
+    # Get the system's temporary directory
+    temp_dir = tempfile.gettempdir()
+    
+    # Path to the pre-generated combined MP3 for the selected instrument
+    combined_file = os.path.join(temp_dir, f"combined_melody_{instrument}.mp3")
+    
+    # Play the file
     play = threading.Thread(target=playsound, args=(combined_file,))
     play.start()
 
