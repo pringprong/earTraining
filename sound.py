@@ -24,7 +24,7 @@ root.title("Music Trainer")
 # Dropdown for "Key"
 key_label = tk.Label(root, text="Key:")
 key_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
-key_dropdown = ttk.Combobox(root, values=["C Major", "G Major"])
+key_dropdown = ttk.Combobox(root, values=list(Mapping.keys()))  # Use the keys of Mapping as values
 key_dropdown.grid(row=0, column=1, padx=10, pady=5)
 key_dropdown.current(0)
 
@@ -83,7 +83,7 @@ def generate_melody():
     solfege_text.delete("1.0", tk.END)
     instruments = ["Guitar", "Piano", "Solfege"]
     for instrument in instruments:
-        combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_" + instrument + ".mp3"
+        combined_file = f"./tmp_mp3/combined_melody_{instrument}.mp3"
         os.remove(combined_file) if os.path.exists(combined_file) else None
 
     global Melody
@@ -117,7 +117,7 @@ def generate_melody():
             audio = AudioSegment.from_file(file_to_play, format="mp3")  # Load the MP3 file
             combined += audio  # Concatenate the audio
         # Save the combined audio for the instrument
-        combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_" + instrument + ".mp3"
+        combined_file = f"./tmp_mp3/combined_melody_{instrument}.mp3"
         combined.export(combined_file, format="mp3")
 
         
@@ -128,7 +128,7 @@ def show_solfege():
 
 def play_melody(instrument):
     # Play the pre-generated combined MP3 for the selected instrument
-    combined_file = "C:\\Users\\pring\\Documents\\Ukulele\\solfege\\mp3_for_note_trainer\\combined_melody_"+instrument+".mp3"
+    combined_file = f"./tmp_mp3/combined_melody_{instrument}.mp3"
     #playsound(combined_file)
     play = threading.Thread(target=playsound, args=(combined_file,))
     play.start()
