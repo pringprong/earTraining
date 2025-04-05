@@ -8,7 +8,7 @@ import threading
 
 # Load Mapping.txt into a dictionary
 Mapping = {}
-with open("Mapping.txt", "r") as file:
+with open("./mapping/Mapping.txt", "r") as file:
     for line in file:
         key1, key2, key3, value = line.strip().split("\t")
         if key1 not in Mapping:

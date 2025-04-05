@@ -13,7 +13,7 @@ output_zip = "sound.zip"
 command = [
     "pyinstaller",
     "--onefile",
-    f"--add-data={mapping_file};.",
+    f"--add-data={mapping_file};mapping",
     f"--add-data={mp3_folder};mp3",
     f"--add-data={tmp_mp3_folder};tmp_mp3",
     script_name
