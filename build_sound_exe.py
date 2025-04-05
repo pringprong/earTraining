@@ -1,13 +1,15 @@
 import os
 import subprocess
+import shutil
 
 # Define paths
 script_name = "sound.py"
 mapping_file = "Mapping.txt"
 mp3_folder = "mp3"
 tmp_mp3_folder = "tmp_mp3"
+output_zip = "sound.zip"
 
-# PyInstaller command
+# PyInstaller command to create the executable
 command = [
     "pyinstaller",
     "--onefile",
@@ -17,7 +19,18 @@ command = [
     script_name
 ]
 
-# Run the command
+# Run the PyInstaller command
 subprocess.run(command)
 
-print("Packaging complete. Check the 'dist' folder for the executable.")
+# Path to the generated executable
+dist_folder = "dist"
+executable_path = os.path.join(dist_folder, "sound.exe")
+
+# Check if the executable exists
+if os.path.exists(executable_path):
+    # Create a zip file containing the executable
+    with shutil.ZipFile(output_zip, "w") as zipf:
+        zipf.write(executable_path, arcname="sound.exe")
+    print(f"Executable zipped as {output_zip}")
+else:
+    print("Executable not found. Ensure PyInstaller ran successfully.")
