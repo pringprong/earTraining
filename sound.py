@@ -32,7 +32,7 @@ notes_label = tk.Label(root, text="Number of notes:")
 notes_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
 notes_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6])
 notes_dropdown.grid(row=1, column=1, padx=10, pady=5)
-notes_dropdown.current(2)
+notes_dropdown.current(5)
 
 # Dropdown for "Maximum distance between notes"
 distance_label = tk.Label(root, text="Maximum distance between notes:")
@@ -53,7 +53,7 @@ notes = [
 ]
 
 for i, note in enumerate(notes):
-    note_vars[note] = tk.BooleanVar(value=True)
+    note_vars[note] = tk.BooleanVar(value=note in ["do", "re", "mi", "fa", "so"])
     checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note])
     checkbox.grid(row=i // 7, column=i % 7, padx=5, pady=5)
 
