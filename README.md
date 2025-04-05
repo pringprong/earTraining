@@ -10,6 +10,6 @@ Then click the 3 "Play ___ Melody" buttons to listen and check whether you sang 
 Up to 3 octaves can be used to generate the melody.
 Currently the program supports the keys of C major and G major, but more keys can be added if you put the mp3s in the mp3 folder and then add their names and locations to the Mapping.txt file.
 
-To download and install the program on Windows, go to the "dist" folder above, then download and run "sound.exe". This program is free and open source.
+To download and install the program on Windows, go to the "dist" folder above, then download "sound.zip", unzip, and run. This program is free and open source.
 
 ![Screenshot of user interface](Music_trainer.png "Screenshot of user interface")
