@@ -4,18 +4,18 @@ import zipfile
 
 # Define paths
 script_name = "sound.py"
-mapping_file = "Mapping.txt"
+mapping_file = "./mapping/Mapping.txt"
 mp3_folder = "mp3"
 tmp_mp3_folder = "tmp_mp3"
-output_zip = "sound.zip"
+output_zip = "dist/sound.zip"
 
 # PyInstaller command to create the executable
 command = [
     "pyinstaller",
     "--onefile",
-    f"--add-data={mapping_file};mapping",
-    f"--add-data={mp3_folder};mp3",
-    f"--add-data={tmp_mp3_folder};tmp_mp3",
+    f"--add-data={mapping_file};mapping",  # Include Mapping.txt in the "mapping" folder
+    f"--add-data={mp3_folder};mp3",       # Include mp3 folder
+    f"--add-data={tmp_mp3_folder};tmp_mp3",  # Include tmp_mp3 folder
     script_name
 ]
 

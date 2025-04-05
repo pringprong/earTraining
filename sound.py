@@ -5,10 +5,18 @@ from playsound import playsound
 from pydub import AudioSegment
 import os
 import threading
+import sys
+
+# Determine the base path (for both development and PyInstaller executable)
+if getattr(sys, 'frozen', False):  # Check if running as a PyInstaller executable
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.dirname(os.path.abspath(__file__))
 
 # Load Mapping.txt into a dictionary
+mapping_file_path = os.path.join(base_path, "mapping", "Mapping.txt")
 Mapping = {}
-with open("./mapping/Mapping.txt", "r") as file:
+with open(mapping_file_path, "r") as file:
     for line in file:
         key1, key2, key3, value = line.strip().split("\t")
         if key1 not in Mapping:
