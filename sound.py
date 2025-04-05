@@ -134,7 +134,11 @@ def generate_melody():
         key = key_dropdown.get()
         for note in Melody:
             file_to_play = Mapping[key][instrument][note]
-            audio = AudioSegment.from_file(file_to_play, format="mp3")  # Load the MP3 file
+            # Split file_to_play into folder and filename
+            folder, filename = os.path.split(file_to_play)  
+            # Reassemble the path using base_path
+            full_path = os.path.join(base_path, folder, filename)
+            audio = AudioSegment.from_file(full_path, format="mp3")  # Load the MP3 file
             combined += audio  # Concatenate the audio
         # Save the combined audio for the instrument
         combined_file = os.path.join(temp_dir, f"combined_melody_{instrument}.mp3")
