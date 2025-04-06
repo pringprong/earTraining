@@ -42,23 +42,23 @@ root.configure(background=BG_COLOR)
 
 # Dropdown for "Key"
 key_label = tk.Label(root, text="Key of melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-key_label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="w")
 key_dropdown = ttk.Combobox(root, values=list(Mapping.keys()), font=FONT, state="readonly", takefocus=True)
-key_dropdown.grid(row=0, column=1, padx=10, pady=10)
+key_dropdown.grid(row=0, column=2, padx=10, pady=10, sticky="w")
 key_dropdown.current(0)
 
 # Dropdown for "Number of notes"
-notes_label = tk.Label(root, text="Number of notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-notes_label.grid(row=1, column=0, padx=10, pady=10, sticky="w")
+notes_label = tk.Label(root, text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+notes_label.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="w")
 notes_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], font=FONT, state="readonly", takefocus=True)
-notes_dropdown.grid(row=1, column=1, padx=10, pady=10)
+notes_dropdown.grid(row=1, column=2, padx=10, pady=10, sticky="w")
 notes_dropdown.current(4)
 
 # Dropdown for "Maximum distance between notes"
-distance_label = tk.Label(root, text="Max distance between neighbouring notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-distance_label.grid(row=2, column=0, padx=10, pady=10, sticky="w")
+distance_label = tk.Label(root, text="Max distance between adjacent notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+distance_label.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="w")
 distance_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6, 7], font=FONT, state="readonly", takefocus=True)
-distance_dropdown.grid(row=2, column=1, padx=10, pady=10)
+distance_dropdown.grid(row=2, column=2, padx=10, pady=10, sticky="w")
 distance_dropdown.current(2)
 
 # Set initial focus
@@ -69,11 +69,13 @@ start_with_do_var = tk.BooleanVar(value=True)  # Checked by default
 end_with_do_var = tk.BooleanVar(value=True)  # Checked by default
 
 # Checkboxes for "Start with do" and "End with do"
+start_with_do_label = tk.Label(root, text="Start and end with do:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+start_with_do_label.grid(row=3, column=0, columnspan=1, padx=10, pady=10, sticky="w")
 start_with_do_checkbox = tk.Checkbutton(root, text="Start with do", variable=start_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-start_with_do_checkbox.grid(row=3, column=0, padx=10, pady=10, sticky="w")
+start_with_do_checkbox.grid(row=3, column=1, padx=10, pady=10, sticky="w")
 
 end_with_do_checkbox = tk.Checkbutton(root, text="End with do", variable=end_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-end_with_do_checkbox.grid(row=3, column=1, padx=10, pady=10, sticky="w")
+end_with_do_checkbox.grid(row=3, column=2, padx=10, pady=10, sticky="w")
 
 # Checkboxes for "Notes"
 note_vars = {}
@@ -88,15 +90,15 @@ for i, note in enumerate(notes):
     note_vars[note] = tk.BooleanVar(value=note in ["do", "re", "mi", "fa", "so"])
 
 # Checkboxes for "Notes"
-notes_frame = tk.LabelFrame(root, text="Notes", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-notes_frame.grid(row=4, column=0, columnspan=2, padx=10, pady=10, sticky="w")
+notes_frame = tk.LabelFrame(root, text="Include which notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+notes_frame.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="w")
 for i, note in enumerate(notes):
     checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note], font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
     checkbox.grid(row=i // 7, column=i % 7, padx=10, pady=10)
 
 # Text area for "Solfege"
 solfege_text = tk.Text(root, height=1, width=40, font=FONT, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
-solfege_text.grid(row=6, column=1, padx=10, pady=10, sticky="w")
+solfege_text.grid(row=6, column=1, columnspan=2, padx=10, pady=10, sticky="w")
 
 # Functionality
 Melody = []
@@ -212,6 +214,10 @@ root.bind("a", lambda event: play_melody("Piano"))
 play_solfege_melody_button = tk.Button(root, text="Play Solfege Melody", command=lambda: play_melody("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=8)
 play_solfege_melody_button.grid(row=8, column=2, padx=10, pady=10, sticky="w")
 root.bind("f", lambda event: play_melody("Solfege"))
+
+# configure columns to have the same width
+for i in range(3):
+    root.columnconfigure(i, weight=1, uniform="equal_width")
 
 # Run the application
 root.mainloop()
