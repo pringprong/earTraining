@@ -140,11 +140,10 @@ def generate_melody():
     ending_index = num_notes
 
     # Show a warning if not enough notes are selected
-    min_number_of_notes = num_notes + 1
-    if end_with_do_var.get():
-        min_number_of_notes -= 1
-    if start_with_do_var.get():
-        min_number_of_notes -= 1
+    # the minimum number of notes is the minimum of 2 and the effective length of the melody
+    # where the effective length is the original length reduced by 1 for each of the "Start with do" and "End with do" checkboxes
+    effective_length = num_notes - (start_with_do_var.get() + end_with_do_var.get())
+    min_number_of_notes = min(2, effective_length)  # Ensure at least 2 notes are selected
 
     if len(available_notes) < min_number_of_notes:
         tk.messagebox.showwarning("Warning", "Not enough notes selected because repeated notes (other than do) are not allowed! Please select at least " + str(min_number_of_notes) + " note(s).")
