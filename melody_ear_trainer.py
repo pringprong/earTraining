@@ -7,6 +7,7 @@ import os
 import threading
 import sys
 import tempfile  # Import the tempfile module
+import tkinter.messagebox  # Import the messagebox module
 
 # Determine the base path (for both development and PyInstaller executable)
 if getattr(sys, 'frozen', False):  # Check if running as a PyInstaller executable
@@ -130,12 +131,27 @@ def generate_melody():
         combined_file = os.path.join(temp_dir, f"combined_melody_{instrument}.mp3")
         os.remove(combined_file) if os.path.exists(combined_file) else None
 
+    # initialize Melody and get user inputs
     global Melody
+    starting_index = 1
+    available_notes = [note for note, var in note_vars.items() if var.get()]
     num_notes = int(notes_dropdown.get())
     max_distance = int(distance_dropdown.get())
-    available_notes = [note for note, var in note_vars.items() if var.get()]
-    Melody = [random.choice(available_notes)]
-    for _ in range(1, num_notes):
+
+    # Show a warning if no notes are selected
+    if not available_notes:
+        tk.messagebox.showwarning("Warning", "No notes are selected! Please select at least one note.")
+        return  # Exit the function if no notes are available
+    
+    # set the first note to"do" if "Start with do" is checked
+    if start_with_do_var.get():
+        Melody = ["do"]
+        if num_notes > 1:
+            Melody.append(random.choice(available_notes))
+        starting_index = 2
+    else:  
+        Melody = [random.choice(available_notes)]    
+    for _ in range(starting_index, num_notes):
         current_index = available_notes.index(Melody[-1])
         start = max(0, current_index - max_distance)
         end = min(len(available_notes), current_index + max_distance + 1)
@@ -143,10 +159,6 @@ def generate_melody():
         while next_note == Melody[-1]:  # Ensure the next note is not the same as the last one
             next_note = random.choice(available_notes[start:end])
         Melody.append(next_note)
-
-    # Replace the first note with "do" if "Start with do" is checked
-    if start_with_do_var.get():
-        Melody[0] = "do"
 
     # Replace the last note with "do" if "End with do" is checked
     if end_with_do_var.get():
