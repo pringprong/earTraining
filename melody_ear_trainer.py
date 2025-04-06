@@ -33,12 +33,13 @@ root.title("Melody Ear Trainer")
 # Define a global font and colors
 FONT = ("Arial", 14, "bold")
 BIGFONT = ("Arial", 18, "bold")
-BG_COLOR = "#f0f8ff"  # Light blue background
-BUTTON_COLOR = "#87ceeb"  # Sky blue for buttons
-TEXT_COLOR = "#000080"  # Navy text color
+BG_COLOR = "#e1eaf7"  # Light blue background
+BUTTON_COLOR = "#82aaf4"  # Sky blue for buttons
+TEXT_COLOR = "#0c1d43"  # Navy text color
 
 # Apply background color to the root window
-root.configure(bg=BG_COLOR)
+root.configure(background=BG_COLOR)
+
 
 # Checkboxes for "Notes"
 notes_frame = tk.LabelFrame(root, text="Notes")
