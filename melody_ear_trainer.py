@@ -133,25 +133,36 @@ def generate_melody():
 
     # initialize Melody and get user inputs
     global Melody
-    starting_index = 1
     available_notes = [note for note, var in note_vars.items() if var.get()]
     num_notes = int(notes_dropdown.get())
     max_distance = int(distance_dropdown.get())
+    starting_index = 1
+    ending_index = num_notes
 
-    # Show a warning if no notes are selected
-    if not available_notes:
-        tk.messagebox.showwarning("Warning", "No notes are selected! Please select at least one note.")
+    # Show a warning if not enough notes are selected
+    min_number_of_notes = num_notes + 1
+    if end_with_do_var.get():
+        min_number_of_notes -= 1
+    if start_with_do_var.get():
+        min_number_of_notes -= 1
+
+    if len(available_notes) < min_number_of_notes:
+        tk.messagebox.showwarning("Warning", "Not enough notes selected because repeated notes (other than do) are not allowed! Please select at least " + str(min_number_of_notes) + " note(s).")
         return  # Exit the function if no notes are available
     
     # set the first note to"do" if "Start with do" is checked
     if start_with_do_var.get():
         Melody = ["do"]
-        if num_notes > 1:
+        if (not end_with_do_var.get() and num_notes > 1) or (end_with_do_var.get() and num_notes > 2):
             Melody.append(random.choice(available_notes))
         starting_index = 2
-    else:  
-        Melody = [random.choice(available_notes)]    
-    for _ in range(starting_index, num_notes):
+    elif (not end_with_do_var.get()) or (end_with_do_var.get() and num_notes > 1):  
+        Melody = [random.choice(available_notes)]
+
+    # stop before the last note if "End with do" is checked
+    if end_with_do_var.get():
+        ending_index = num_notes - 1  
+    for _ in range(starting_index, ending_index):
         current_index = available_notes.index(Melody[-1])
         start = max(0, current_index - max_distance)
         end = min(len(available_notes), current_index + max_distance + 1)
@@ -161,8 +172,8 @@ def generate_melody():
         Melody.append(next_note)
 
     # Replace the last note with "do" if "End with do" is checked
-    if end_with_do_var.get():
-        Melody[-1] = "do"
+    if end_with_do_var.get() and (len(Melody) < num_notes):
+        Melody.append("do")
 
     # Combine MP3s for all instruments
     for instrument in instruments:
