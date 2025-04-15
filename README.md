@@ -7,8 +7,7 @@ Click "Show Solfege" and "Play Solfege Melody" to see whether you interpreted th
 3. Singing test: Click "Show Solfege" and then the 3 "Play ___ Tonic" buttons. Based on the sound of the tonic note "do", hum the solfege melody out loud.
 Then click the 3 "Play ___ Melody" buttons to listen and check whether you sang them correctly. Optionally, play the melody on your instrument.
 
-Up to 3 octaves can be used to generate the melody.
-Currently the program supports the keys of C major and G major, but more keys can be added if you put the mp3s in the mp3 folder and then add their names and locations to the Mapping.txt file.
+The program supports all 12 keys with 3 octaves of each key.
 
 To download and install the program on Windows, go to the "dist" folder above, then download "melody_ear_trainer.zip", unzip, and run. This program is free and open source.
 

@@ -45,9 +45,11 @@ root.configure(background=BG_COLOR)
 # Dropdown for "Key"
 key_label = tk.Label(root, text="Key of melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="w")
-key_dropdown = ttk.Combobox(root, values=list(Mapping.keys()), font=FONT, state="readonly", takefocus=True)
+mapping_keys = list(Mapping.keys())
+mapping_keys.sort()  # Sort the keys for better readability
+key_dropdown = ttk.Combobox(root, values=mapping_keys, font=FONT, state="readonly", takefocus=True)
 key_dropdown.grid(row=0, column=2, padx=10, pady=10, sticky="w")
-key_dropdown.current(0)
+key_dropdown.current(3)
 
 # Dropdown for "Number of notes"
 notes_label = tk.Label(root, text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
