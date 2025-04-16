@@ -106,12 +106,15 @@ notes = [
     "do2"
 ]
 
-for i, note in enumerate(notes):
-    note_vars[note] = tk.BooleanVar(value=note in ["so0", "la0", "ti0", "do", "re", "mi", "fa", "so", "la"])
+# Initialize note_vars with BooleanVar for each note
+note_vars = {note: tk.BooleanVar(value=False) for note in notes}
+
+#for i, note in enumerate(notes):
+#    note_vars[note] = tk.BooleanVar(value=note in ["so0", "la0", "ti0", "do", "re", "mi", "fa", "so", "la"])
 
 # Checkboxes for "Notes"
 notes_frame = tk.LabelFrame(root, text="Include which notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-notes_frame.grid(row=6, column=0, columnspan=3, padx=10, pady=10, sticky="w")
+notes_frame.grid(row=7, column=0, columnspan=3, padx=10, pady=10, sticky="w")
 for i, note in enumerate(notes):
 #    checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note], font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 #    checkbox.grid(row=i // 7, column=i % 7, padx=10, pady=10)
@@ -121,9 +124,38 @@ for i, note in enumerate(notes):
         checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note], font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
     checkbox.grid(row=i // 12, column=i % 12, padx=4, pady=10)
 
+# Add "Note set" label and dropdown
+note_set_label = tk.Label(root, text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+note_set_label.grid(row=6, column=0, columnspan=1, padx=10, pady=10, sticky="w")
+
+note_set_dropdown = ttk.Combobox(root, values=["Default",
+                                                "Diatonic major",
+                                                "Diatonic major lower octave",
+                                                "Diatonic major higher octave",
+                                                "Natural minor",
+                                                "Natural minor lower octave",
+                                                "Natural minor higher octave",
+                                                "Pentatonic major",
+                                                "Pentatonic major lower octave",
+                                                "Pentatonic major higher octave",
+                                                "Pentatonic minor",
+                                                "Pentatonic minor lower octave",
+                                                "Pentatonic minor higher octave",                                                
+                                                "Blues major",
+                                                "Blues major lower octave",
+                                                "Blues major higher octave",
+                                                "Blues minor",
+                                                "Blues minor lower octave",
+                                                "Blues minor higher octave",                                                
+                                                "Select all",
+                                                "Select none",
+                                                ], font=FONT, state="readonly", takefocus=True)
+note_set_dropdown.grid(row=6, column=2, padx=10, pady=10, sticky="w")
+note_set_dropdown.current(0)  # Set "Default" as the initial value
+
 # Text area for "Solfege"
 solfege_text = tk.Text(root, height=1, width=40, font=FONT, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
-solfege_text.grid(row=8, column=1, columnspan=2, padx=10, pady=10, sticky="w")
+solfege_text.grid(row=9, column=1, columnspan=2, padx=10, pady=10, sticky="w")
 
 # Functionality
 Melody = []
@@ -234,34 +266,93 @@ def play_melody(instrument):
     play = threading.Thread(target=playsound, args=(combined_file,))
     play.start()
 
+
+# Function to update note_vars based on the selected note set
+def update_note_set(event=None):
+    selected_set = note_set_dropdown.get()
+    if selected_set == "Default":
+        checked_notes = ["so0", "la0", "ti0", "do", "re", "mi", "fa", "so", "la", "ti", "do1"]
+    elif selected_set == "Diatonic major":
+        checked_notes = ["do", "re", "mi", "fa", "so", "la", "ti", "do1"]
+    elif selected_set == "Diatonic major lower octave":
+        checked_notes = ["do0", "re0", "mi0", "fa0", "so0", "la0", "ti0", "do"]
+    elif selected_set == "Diatonic major higher octave":
+        checked_notes = ["do1", "re1", "mi1", "fa1", "so1", "la1", "ti1", "do2"]
+    elif selected_set == "Natural minor":
+        checked_notes = ["do", "re", "nu", "fa", "so", "ki", "pe", "do1"]
+    elif selected_set == "Natural minor lower octave":
+        checked_notes = ["do0", "re0", "nu0", "fa0", "so0", "ki0", "pe0", "do"]
+    elif selected_set == "Natural minor higher octave":
+        checked_notes = ["do1", "re1", "nu1", "fa1", "so1", "ki1", "pe1", "do2"]
+    elif selected_set == "Select all":
+        checked_notes = list(note_vars.keys())
+    elif selected_set == "Select none": 
+        checked_notes = []
+    elif selected_set == "Pentatonic major":
+        checked_notes = ["do", "re", "mi", "so", "la", "do1"]
+    elif selected_set == "Pentatonic major lower octave":
+        checked_notes = ["do0", "re0", "mi0", "so0", "la0", "do"]
+    elif selected_set == "Pentatonic major higher octave":
+        checked_notes = ["do1", "re1", "mi1", "so1", "la1", "do2"]
+    elif selected_set == "Pentatonic minor":
+        checked_notes = ["do", "nu", "fa", "so", "pe", "do1"]
+    elif selected_set == "Pentatonic minor lower octave":
+        checked_notes = ["do0", "nu0", "fa0", "so0", "pe0", "do"]
+    elif selected_set == "Pentatonic minor higher octave":
+        checked_notes = ["do1", "nu1", "fa1", "so1", "pe1", "do2"]
+    elif selected_set == "Blues major":
+        checked_notes = ["do", "re", "nu", "mi", "so", "la", "do1"]
+    elif selected_set == "Blues major lower octave":
+        checked_notes = ["do0", "re0", "nu0", "mi0", "so0", "la0", "do"]
+    elif selected_set == "Blues major higher octave":
+        checked_notes = ["do1", "re1", "nu1", "mi1", "so1", "la1", "do2"]
+    elif selected_set == "Blues minor":
+        checked_notes = ["do", "nu", "fa", "jur", "so", "pe", "do1"]
+    elif selected_set == "Blues minor lower octave":
+        checked_notes = ["do0", "nu0", "fa0", "jur0", "so0", "pe0", "do"]
+    elif selected_set == "Blues minor higher octave":
+        checked_notes = ["do1", "nu1", "fa1", "jur1", "so1", "pe1", "do2"]
+    else:
+        checked_notes = []
+
+    # Update note_vars based on the selected note set
+    for note, var in note_vars.items():
+        var.set(note in checked_notes)
+
+# Bind the dropdown to the update_note_set function
+note_set_dropdown.bind("<<ComboboxSelected>>", update_note_set)
+
+# Initialize the note set to "Default"
+update_note_set()
+
 # Buttons
 generate_button = tk.Button(root, text="Generate melody", command=generate_melody, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
-generate_button.grid(row=7, column=1, columnspan=2, padx=10, pady=10, sticky="w")
+generate_button.grid(row=8, column=1, columnspan=2, padx=10, pady=10, sticky="w")
 root.bind("g", lambda event: generate_melody())
 
 show_solfege_button = tk.Button(root, text="Show Solfege", command=show_solfege, font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
-show_solfege_button.grid(row=8, column=0, padx=10, pady=10, sticky="w")
+show_solfege_button.grid(row=9, column=0, padx=10, pady=10, sticky="w")
 root.bind("s", lambda event: show_solfege())
 
 play_guitar_tonic_button = tk.Button(root, text="Play Guitar Tonic", command=lambda: play_tonic("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_guitar_tonic_button.grid(row=9, column=0, padx=10, pady=10, sticky="w")
+play_guitar_tonic_button.grid(row=10, column=0, padx=10, pady=10, sticky="w")
 
 play_piano_tonic_button = tk.Button(root, text="Play Piano Tonic", command=lambda: play_tonic("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_piano_tonic_button.grid(row=9, column=1, padx=10, pady=10, sticky="w")
+play_piano_tonic_button.grid(row=10, column=1, padx=10, pady=10, sticky="w")
 
 play_solfege_tonic_button = tk.Button(root, text="Play Solfege Tonic", command=lambda: play_tonic("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_solfege_tonic_button.grid(row=9, column=2, padx=10, pady=10, sticky="w")
+play_solfege_tonic_button.grid(row=10, column=2, padx=10, pady=10, sticky="w")
 
 play_guitar_melody_button = tk.Button(root, text="Play Guitar Melody", command=lambda: play_melody("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=16)
-play_guitar_melody_button.grid(row=10, column=0, padx=10, pady=10, sticky="w")
+play_guitar_melody_button.grid(row=11, column=0, padx=10, pady=10, sticky="w")
 root.bind("d", lambda event: play_melody("Guitar"))
 
 play_piano_melody_button = tk.Button(root, text="Play Piano Melody", command=lambda: play_melody("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=2)
-play_piano_melody_button.grid(row=10, column=1, padx=10, pady=10, sticky="w")
+play_piano_melody_button.grid(row=11, column=1, padx=10, pady=10, sticky="w")
 root.bind("a", lambda event: play_melody("Piano"))
 
 play_solfege_melody_button = tk.Button(root, text="Play Solfege Melody", command=lambda: play_melody("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=8)
-play_solfege_melody_button.grid(row=10, column=2, padx=10, pady=10, sticky="w")
+play_solfege_melody_button.grid(row=11, column=2, padx=10, pady=10, sticky="w")
 root.bind("f", lambda event: play_melody("Solfege"))
 
 # configure columns to have the same width
