@@ -30,10 +30,10 @@ with open(mapping_file_path, "r") as file:
         Mapping[key1][key2][key3] = value
 
 # Define a global font and colors
-FONT = ("Arial", 16, "bold")
+FONT = ("Arial", 14, "bold")
 FONTLIGHT = ("Arial", 14, "italic")
 DEACTIVATEDFONT = ("Arial", 8)
-BIGFONT = ("Arial", 18, "bold")
+BIGFONT = ("Arial", 16, "bold")
 BG_COLOR = "#e1eaf7"  # Light blue background
 DEACTIVATED_BG_COLOR = "grey"  # Grey background for deactivated buttons
 BUTTON_COLOR = "#82aaf4"  # Sky blue for buttons
@@ -49,7 +49,7 @@ root.configure(background=BG_COLOR)
 
 #region ############## FRAMES #####################
 
-labelFrameList = ["Settings", "Scales", "Notes", "Melody"]
+labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Melody"]
 labelFrames = {}
 toggle_buttons = {}
 toggle_button_frame = tk.Frame(root, bg=BG_COLOR)
@@ -112,29 +112,56 @@ start_with_do_var = tk.BooleanVar(value=True)  # Checked by default
 end_with_do_var = tk.BooleanVar(value=True)  # Checked by default
 allow_repeated_notes_var = tk.BooleanVar(value=False)  # Unchecked by default
 
-# Checkboxes for "Start with do" and "End with do"
-start_with_do_label = tk.Label(labelFrames["Settings"], text="Starting note (tonic):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-start_with_do_label.grid(row=3, column=0, columnspan=1, padx=10, pady=5, sticky="w")
-start_with_do_checkbox = tk.Checkbutton(labelFrames["Settings"], text="Always start with", variable=start_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-start_with_do_checkbox.grid(row=3, column=1, padx=10, pady=5, sticky="w")
-start_with_do_dropdown = ttk.Combobox(labelFrames["Settings"], values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
-start_with_do_dropdown.grid(row=3, column=2, padx=10, pady=5, sticky="w")
-start_with_do_dropdown.current(2)
-
-end_with_do_label = tk.Label(labelFrames["Settings"], text="Ending note:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-end_with_do_label.grid(row=4, column=0, columnspan=1, padx=10, pady=5, sticky="w")
-end_with_do_checkbox = tk.Checkbutton(labelFrames["Settings"], text="Always end with", variable=end_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-end_with_do_checkbox.grid(row=4, column=1, padx=10, pady=5, sticky="w")
-end_with_do_dropdown = ttk.Combobox(labelFrames["Settings"], values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
-end_with_do_dropdown.grid(row=4, column=2, padx=10, pady=5, sticky="w")
-end_with_do_dropdown.current(2)
-
 allow_repeated_notes = tk.Label(labelFrames["Settings"], text="Allow repeated notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 allow_repeated_notes.grid(row=5, column=0, columnspan=1, padx=10, pady=5, sticky="w")
 allow_repeated_notes_checkbox = tk.Checkbutton(labelFrames["Settings"], text="Allow repeated notes", variable=allow_repeated_notes_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 allow_repeated_notes_checkbox.grid(row=5, column=2, padx=10, pady=5, sticky="w")
 
 #endregion #################### SETTINGS ##############################
+
+#region ############## TONIC #################################
+
+# Checkboxes for "Start with do" and "End with do"
+start_with_do_label = tk.Label(labelFrames["Tonic"], text="Starting note (tonic):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+start_with_do_label.grid(row=3, column=0, columnspan=1, padx=10, pady=5, sticky="w")
+start_with_do_checkbox = tk.Checkbutton(labelFrames["Tonic"], text="Always start with", variable=start_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+start_with_do_checkbox.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+start_with_do_dropdown = ttk.Combobox(labelFrames["Tonic"], values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
+start_with_do_dropdown.grid(row=3, column=2, padx=10, pady=5, sticky="w")
+start_with_do_dropdown.current(2)
+
+end_with_do_label = tk.Label(labelFrames["Tonic"], text="Ending note:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+end_with_do_label.grid(row=4, column=0, columnspan=1, padx=10, pady=5, sticky="w")
+end_with_do_checkbox = tk.Checkbutton(labelFrames["Tonic"], text="Always end with", variable=end_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+end_with_do_checkbox.grid(row=4, column=1, padx=10, pady=5, sticky="w")
+end_with_do_dropdown = ttk.Combobox(labelFrames["Tonic"], values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
+end_with_do_dropdown.grid(row=4, column=2, padx=10, pady=5, sticky="w")
+end_with_do_dropdown.current(2)
+
+play_guitar_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Guitar Tonic", command=lambda: play_tonic("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_guitar_tonic_button.grid(row=10, column=0, padx=10, pady=5, sticky="w")
+
+play_piano_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Piano Tonic", command=lambda: play_tonic("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_piano_tonic_button.grid(row=10, column=1, padx=10, pady=5, sticky="w")
+
+play_solfege_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Solfege Tonic", command=lambda: play_tonic("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_solfege_tonic_button.grid(row=10, column=2, padx=10, pady=5, sticky="w")
+
+def play_tonic(instrument):
+    key = key_dropdown.get()
+    file_to_play = Mapping[key][instrument][start_with_do_dropdown.get()]
+    
+    # Split file_to_play into folder and filename
+    folder, filename = os.path.split(file_to_play)
+    
+    # Reassemble the path using base_path
+    full_path = os.path.join(base_path, folder, filename)
+    
+    # Play the file
+    play = threading.Thread(target=playsound, args=(full_path,))
+    play.start()
+
+#endregion ############## TONIC ##########################33
 
 #region ############## NOTES ######################
 
@@ -299,20 +326,6 @@ solfege_text.grid(row=9, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 # Functionality
 Melody = []
 
-def play_tonic(instrument):
-    key = key_dropdown.get()
-    file_to_play = Mapping[key][instrument][start_with_do_dropdown.get()]
-    
-    # Split file_to_play into folder and filename
-    folder, filename = os.path.split(file_to_play)
-    
-    # Reassemble the path using base_path
-    full_path = os.path.join(base_path, folder, filename)
-    
-    # Play the file
-    play = threading.Thread(target=playsound, args=(full_path,))
-    play.start()
-
 def generate_melody():
     # Clear previous melody and files
     solfege_text.config(state="normal")  # Enable editing temporarily
@@ -411,15 +424,6 @@ root.bind("g", lambda event: generate_melody())
 show_solfege_button = tk.Button(labelFrames["Melody"], text="Show Solfege", command=show_solfege, font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
 show_solfege_button.grid(row=9, column=0, padx=10, pady=5, sticky="w")
 root.bind("s", lambda event: show_solfege())
-
-play_guitar_tonic_button = tk.Button(labelFrames["Melody"], text="Play Guitar Tonic", command=lambda: play_tonic("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_guitar_tonic_button.grid(row=10, column=0, padx=10, pady=5, sticky="w")
-
-play_piano_tonic_button = tk.Button(labelFrames["Melody"], text="Play Piano Tonic", command=lambda: play_tonic("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_piano_tonic_button.grid(row=10, column=1, padx=10, pady=5, sticky="w")
-
-play_solfege_tonic_button = tk.Button(labelFrames["Melody"], text="Play Solfege Tonic", command=lambda: play_tonic("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_solfege_tonic_button.grid(row=10, column=2, padx=10, pady=5, sticky="w")
 
 play_guitar_melody_button = tk.Button(labelFrames["Melody"], text="Play Guitar Melody", command=lambda: play_melody("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=16)
 play_guitar_melody_button.grid(row=11, column=0, padx=10, pady=5, sticky="w")
