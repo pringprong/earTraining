@@ -1,3 +1,5 @@
+#region ############## SETUP ######################
+
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 import random
@@ -43,6 +45,10 @@ root.title("Melody Ear Trainer")
 # Apply background color to the root window
 root.configure(background=BG_COLOR)
 
+#endregion #######################SETUP##############################
+
+#region ############## FRAMES #####################
+
 labelFrameList = ["Settings", "Scales", "Notes", "Melody"]
 labelFrames = {}
 toggle_buttons = {}
@@ -71,6 +77,10 @@ def toggle_settings(pane, button=None):
         pane.grid_remove()  # Hide the pane
     else:
         pane.grid()  # Show the pane
+
+#endregion #######################FRAMES##############################
+
+#region ############## SETTINGS ###################
 
 # Dropdown for "Key"
 key_label = tk.Label(labelFrames["Settings"], text="Key of melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -123,6 +133,10 @@ allow_repeated_notes = tk.Label(labelFrames["Settings"], text="Allow repeated no
 allow_repeated_notes.grid(row=5, column=0, columnspan=1, padx=10, pady=5, sticky="w")
 allow_repeated_notes_checkbox = tk.Checkbutton(labelFrames["Settings"], text="Allow repeated notes", variable=allow_repeated_notes_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 allow_repeated_notes_checkbox.grid(row=5, column=2, padx=10, pady=5, sticky="w")
+
+#endregion #################### SETTINGS ##############################
+
+#region ############## NOTES ######################
 
 # initialize set of notes
 note_vars = {}
@@ -178,6 +192,10 @@ for i, note in enumerate(notes):
     # Store the button reference in the dictionary
     note_buttons[note] = button
 
+#endregion #################### NOTES ##############################
+
+#region ############## SCALES ######################
+
 # Add "Note set" label and dropdown
 note_set_label = tk.Label(labelFrames["Scales"], text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 note_set_label.grid(row=6, column=0, columnspan=1, padx=10, pady=5, sticky="w")
@@ -205,6 +223,74 @@ note_set_dropdown = ttk.Combobox(labelFrames["Scales"], values=["Default",
                                                 ], font=FONT, state="readonly", takefocus=True)
 note_set_dropdown.grid(row=6, column=2, padx=10, pady=5, sticky="w")
 note_set_dropdown.current(0)  # Set "Default" as the initial value
+
+# Function to update note_vars based on the selected note set
+def update_note_set(event=None):
+    selected_set = note_set_dropdown.get()
+    if selected_set == "Default":
+        checked_notes = ["so0", "la0", "ti0", "do", "re", "mi", "fa", "so", "la", "ti", "do1"]
+    elif selected_set == "Diatonic major":
+        checked_notes = ["do", "re", "mi", "fa", "so", "la", "ti", "do1"]
+    elif selected_set == "Diatonic major lower octave":
+        checked_notes = ["do0", "re0", "mi0", "fa0", "so0", "la0", "ti0", "do"]
+    elif selected_set == "Diatonic major higher octave":
+        checked_notes = ["do1", "re1", "mi1", "fa1", "so1", "la1", "ti1", "do2"]
+    elif selected_set == "Natural minor":
+        checked_notes = ["do", "re", "nu", "fa", "so", "ki", "pe", "do1"]
+    elif selected_set == "Natural minor lower octave":
+        checked_notes = ["do0", "re0", "nu0", "fa0", "so0", "ki0", "pe0", "do"]
+    elif selected_set == "Natural minor higher octave":
+        checked_notes = ["do1", "re1", "nu1", "fa1", "so1", "ki1", "pe1", "do2"]
+    elif selected_set == "Select all":
+        checked_notes = list(note_vars.keys())
+    elif selected_set == "Select none": 
+        checked_notes = []
+    elif selected_set == "Pentatonic major":
+        checked_notes = ["do", "re", "mi", "so", "la", "do1"]
+    elif selected_set == "Pentatonic major lower octave":
+        checked_notes = ["do0", "re0", "mi0", "so0", "la0", "do"]
+    elif selected_set == "Pentatonic major higher octave":
+        checked_notes = ["do1", "re1", "mi1", "so1", "la1", "do2"]
+    elif selected_set == "Pentatonic minor":
+        checked_notes = ["do", "nu", "fa", "so", "pe", "do1"]
+    elif selected_set == "Pentatonic minor lower octave":
+        checked_notes = ["do0", "nu0", "fa0", "so0", "pe0", "do"]
+    elif selected_set == "Pentatonic minor higher octave":
+        checked_notes = ["do1", "nu1", "fa1", "so1", "pe1", "do2"]
+    elif selected_set == "Blues major":
+        checked_notes = ["do", "re", "nu", "mi", "so", "la", "do1"]
+    elif selected_set == "Blues major lower octave":
+        checked_notes = ["do0", "re0", "nu0", "mi0", "so0", "la0", "do"]
+    elif selected_set == "Blues major higher octave":
+        checked_notes = ["do1", "re1", "nu1", "mi1", "so1", "la1", "do2"]
+    elif selected_set == "Blues minor":
+        checked_notes = ["do", "nu", "fa", "jur", "so", "pe", "do1"]
+    elif selected_set == "Blues minor lower octave":
+        checked_notes = ["do0", "nu0", "fa0", "jur0", "so0", "pe0", "do"]
+    elif selected_set == "Blues minor higher octave":
+        checked_notes = ["do1", "nu1", "fa1", "jur1", "so1", "pe1", "do2"]
+    else:
+        checked_notes = []
+
+    # Update note_vars based on the selected note set
+    for note, var in note_vars.items():
+        var.set(note in checked_notes)
+
+        # Update the button states based on note_vars
+    for note, button in note_buttons.items():
+        if note_vars[note].get():
+            button.config(bg=BUTTON_COLOR, font=FONT)  # Active state
+        else:
+            button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Inactive state
+
+# Bind the dropdown to the update_note_set function
+note_set_dropdown.bind("<<ComboboxSelected>>", update_note_set)
+# Initialize the note set to "Default"
+update_note_set()
+
+#endregion ############################ SCALES ##############################
+
+#region ############## MELODY ######################
 
 # Text area for "Solfege"
 solfege_text = tk.Text(labelFrames["Melody"], height=1, width=40, font=FONT, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
@@ -317,70 +403,6 @@ def play_melody(instrument):
     play = threading.Thread(target=playsound, args=(combined_file,))
     play.start()
 
-# Function to update note_vars based on the selected note set
-def update_note_set(event=None):
-    selected_set = note_set_dropdown.get()
-    if selected_set == "Default":
-        checked_notes = ["so0", "la0", "ti0", "do", "re", "mi", "fa", "so", "la", "ti", "do1"]
-    elif selected_set == "Diatonic major":
-        checked_notes = ["do", "re", "mi", "fa", "so", "la", "ti", "do1"]
-    elif selected_set == "Diatonic major lower octave":
-        checked_notes = ["do0", "re0", "mi0", "fa0", "so0", "la0", "ti0", "do"]
-    elif selected_set == "Diatonic major higher octave":
-        checked_notes = ["do1", "re1", "mi1", "fa1", "so1", "la1", "ti1", "do2"]
-    elif selected_set == "Natural minor":
-        checked_notes = ["do", "re", "nu", "fa", "so", "ki", "pe", "do1"]
-    elif selected_set == "Natural minor lower octave":
-        checked_notes = ["do0", "re0", "nu0", "fa0", "so0", "ki0", "pe0", "do"]
-    elif selected_set == "Natural minor higher octave":
-        checked_notes = ["do1", "re1", "nu1", "fa1", "so1", "ki1", "pe1", "do2"]
-    elif selected_set == "Select all":
-        checked_notes = list(note_vars.keys())
-    elif selected_set == "Select none": 
-        checked_notes = []
-    elif selected_set == "Pentatonic major":
-        checked_notes = ["do", "re", "mi", "so", "la", "do1"]
-    elif selected_set == "Pentatonic major lower octave":
-        checked_notes = ["do0", "re0", "mi0", "so0", "la0", "do"]
-    elif selected_set == "Pentatonic major higher octave":
-        checked_notes = ["do1", "re1", "mi1", "so1", "la1", "do2"]
-    elif selected_set == "Pentatonic minor":
-        checked_notes = ["do", "nu", "fa", "so", "pe", "do1"]
-    elif selected_set == "Pentatonic minor lower octave":
-        checked_notes = ["do0", "nu0", "fa0", "so0", "pe0", "do"]
-    elif selected_set == "Pentatonic minor higher octave":
-        checked_notes = ["do1", "nu1", "fa1", "so1", "pe1", "do2"]
-    elif selected_set == "Blues major":
-        checked_notes = ["do", "re", "nu", "mi", "so", "la", "do1"]
-    elif selected_set == "Blues major lower octave":
-        checked_notes = ["do0", "re0", "nu0", "mi0", "so0", "la0", "do"]
-    elif selected_set == "Blues major higher octave":
-        checked_notes = ["do1", "re1", "nu1", "mi1", "so1", "la1", "do2"]
-    elif selected_set == "Blues minor":
-        checked_notes = ["do", "nu", "fa", "jur", "so", "pe", "do1"]
-    elif selected_set == "Blues minor lower octave":
-        checked_notes = ["do0", "nu0", "fa0", "jur0", "so0", "pe0", "do"]
-    elif selected_set == "Blues minor higher octave":
-        checked_notes = ["do1", "nu1", "fa1", "jur1", "so1", "pe1", "do2"]
-    else:
-        checked_notes = []
-
-    # Update note_vars based on the selected note set
-    for note, var in note_vars.items():
-        var.set(note in checked_notes)
-
-        # Update the button states based on note_vars
-    for note, button in note_buttons.items():
-        if note_vars[note].get():
-            button.config(bg=BUTTON_COLOR, font=FONT)  # Active state
-        else:
-            button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Inactive state
-
-# Bind the dropdown to the update_note_set function
-note_set_dropdown.bind("<<ComboboxSelected>>", update_note_set)
-# Initialize the note set to "Default"
-update_note_set()
-
 # Buttons for the Melody frame
 generate_button = tk.Button(labelFrames["Melody"], text="Generate melody", command=generate_melody, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
 generate_button.grid(row=8, column=1, columnspan=2, padx=10, pady=5, sticky="w")
@@ -414,6 +436,8 @@ root.bind("f", lambda event: play_melody("Solfege"))
 # configure columns to have the same width
 for i in range(3):
     labelFrames["Melody"].columnconfigure(i, weight=1, uniform="equal_width")
+
+#endregion ################ MELODY ##############################
 
 # Run the application
 root.mainloop()
