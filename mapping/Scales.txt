@@ -1,0 +1,60 @@
+Lower octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
+Lower and middle octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
+Middle octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
+Middle and higher octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
+Higher octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
+All octaves	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
+Lower octave	Diatonic major	do0,re0,mi0,fa0,so0,la0,ti0,do
+Lower and middle octave	Diatonic major	do0,re0,mi0,fa0,so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
+Middle octave	Diatonic major	do,re,mi,fa,so,la,ti,do1
+Middle and higher octave	Diatonic major	do,re,mi,fa,so,la,ti,do1,re1,mi1,fa1,so1,la1,ti1,do2
+Higher octave	Diatonic major	do1,re1,mi1,fa1,so1,la1,ti1,do2
+All octaves	Diatonic major	do0,re0,mi0,fa0,so0,la0,ti0,do,re,mi,fa,so,la,ti,do1,re1,mi1,fa1,so1,la1,ti1,do2
+Lower octave	Natural minor	do0,re0,nu0,fa0,so0,ki0,pe0,do
+Lower and middle octave	Natural minor	do0,re0,nu0,fa0,so0,ki0,pe0,do,re,nu,fa,so,ki,pe,do1
+Middle octave	Natural minor	do,re,nu,fa,so,ki,pe,do1
+Middle and higher octave	Natural minor	do,re,nu,fa,so,ki,pe,do1,re1,nu1,fa1,so1,ki1,pe1,do2
+Higher octave	Natural minor	do1,re1,nu1,fa1,so1,ki1,pe1,do2
+All octaves	Natural minor	do0,re0,nu0,fa0,so0,ki0,pe0,do,re0,nu0,fa0,so0,ki0,pe0,do1,re1,nu1,fa1,so1,ki1,pe1,do2
+Lower octave	Pentatonic major	do0,re0,mi0,so0,la0,do
+Lower and middle octave	Pentatonic major	do0,re0,mi0,so0,la0,do,re,mi,so,la,do1
+Middle octave	Pentatonic major	do,re,mi,so,la,do1
+Middle and higher octave	Pentatonic major	do,re,mi,so,la,do1,re1,mi1,so1,la1,do2
+Higher octave	Pentatonic major	do1,re1,mi1,so1,la1,do2
+All octaves	Pentatonic major	do0,re0,mi0,so0,la0,do,re,mi,so,la,do1,re1,mi1,so1,la1,do2
+Lower octave	Pentatonic minor	do0,nu0,fa0,so0,pe0,do,nu0,fa0,so0,pe0,do
+Lower and middle octave	Pentatonic minor	do0,nu0,fa0,so0,pe0,do
+Middle octave	Pentatonic minor	do,nu,fa,so,pe,do1
+Middle and higher octave	Pentatonic minor	do,nu,fa,so,pe,do1,nu1,fa1,so1,pe1,do2
+Higher octave	Pentatonic minor	do1,nu1,fa1,so1,pe1,do2
+All octaves	Pentatonic minor	o0,re0,mi0,so0,la0,do,re,mi,so,la,do1,nu1,fa1,so1,pe1,do2
+Lower octave	Blues major	do0,re0,nu0,mi0,so0,la0,do
+Lower and middle octave	Blues major	do0,re0,nu0,mi0,so0,la0,do,re,nu,mi,so,la,do1
+Middle octave	Blues major	do,re,nu,mi,so,la,do1
+Middle and higher octave	Blues major	do,re,nu,mi,so,la,do1,re1,nu1,mi1,so1,la1,do2
+Higher octave	Blues major	do1,re1,nu1,mi1,so1,la1,do2
+All octaves	Blues major	do0,re0,nu0,mi0,so0,la0,do,re,nu,mi,so,la,do1,re1,nu1,mi1,so1,la1,do2
+Lower octave	Blues minor	do0,nu0,fa0,jur0,so0,pe0,do
+Lower and middle octave	Blues minor	do0,nu0,fa0,jur0,so0,pe0,do,nu,fa,jur,so,pe,do1
+Middle octave	Blues minor	do,nu,fa,jur,so,pe,do1
+Middle and higher octave	Blues minor	do,nu,fa,jur,so,pe,do1,nu1,fa1,jur1,so1,pe1,do2
+Higher octave	Blues minor	do1,nu1,fa1,jur1,so1,pe1,do2
+All octaves	Blues minor	do0,nu0,fa0,jur0,so0,pe0,do,nu,fa,jur,so,pe,do1,nu1,fa1,jur1,so1,pe1,do2
+Lower octave	Chromatic	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do
+Lower and middle octave	Chromatic	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1
+Middle octave	Chromatic	do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1
+Middle and higher octave	Chromatic	do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+Higher octave	Chromatic	do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+All octaves	Chromatic	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+Lower octave	Select all	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+Lower and middle octave	Select all	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+Middle octave	Select all	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+Middle and higher octave	Select all	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+Higher octave	Select all	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+All octaves	Select all	do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2
+Lower octave	Select none	d
+Lower and middle octave	Select none	d
+Middle octave	Select none	d
+Middle and higher octave	Select none	d
+Higher octave	Select none	d
+All octaves	Select none	d

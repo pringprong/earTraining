@@ -29,6 +29,23 @@ with open(mapping_file_path, "r") as file:
             Mapping[key1][key2] = {}
         Mapping[key1][key2][key3] = value
 
+# Load Scales.txt into a dictionary named "Note_sets"
+scales_file_path = os.path.join(base_path, "mapping", "Scales.txt")
+Note_sets = {}
+with open(scales_file_path, "r") as file:
+    for line in file:
+        octave, scale_name, notes = line.strip().split("\t")
+        if octave not in Note_sets:
+            Note_sets[octave] = {}
+        Note_sets[octave][scale_name] = notes.split(",")  # Split notes into a list
+
+# Extract octaves and scales for the dropdowns
+octaves = list(Note_sets.keys())
+scales = set()
+for octave_scales in Note_sets.values():
+    scales.update(octave_scales.keys())
+scales = sorted(scales)
+
 # Define a global font and colors
 FONT = ("Arial", 14, "bold")
 FONTLIGHT = ("Arial", 14, "italic")
@@ -223,96 +240,47 @@ for i, note in enumerate(notes):
 
 #region ############## SCALES ######################
 
-# Add "Note set" label and dropdown
+# Add "Octave" dropdown to the Scales frame
+octave_label = tk.Label(labelFrames["Scales"], text="Octave:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+octave_label.grid(row=5, column=0, columnspan=1, padx=10, pady=5, sticky="w")
+octave_dropdown = ttk.Combobox(labelFrames["Scales"], values=octaves, font=FONT, state="readonly", takefocus=True)
+octave_dropdown.grid(row=5, column=2, padx=10, pady=5, sticky="w")
+octave_dropdown.current(0)  # Set the first octave as the default
+
+# Update the "Note set" dropdown to use scales from Scales.txt
 note_set_label = tk.Label(labelFrames["Scales"], text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 note_set_label.grid(row=6, column=0, columnspan=1, padx=10, pady=5, sticky="w")
-note_set_dropdown = ttk.Combobox(labelFrames["Scales"], values=["Default",
-                                                "Diatonic major",
-                                                "Diatonic major lower octave",
-                                                "Diatonic major higher octave",
-                                                "Natural minor",
-                                                "Natural minor lower octave",
-                                                "Natural minor higher octave",
-                                                "Pentatonic major",
-                                                "Pentatonic major lower octave",
-                                                "Pentatonic major higher octave",
-                                                "Pentatonic minor",
-                                                "Pentatonic minor lower octave",
-                                                "Pentatonic minor higher octave",                                                
-                                                "Blues major",
-                                                "Blues major lower octave",
-                                                "Blues major higher octave",
-                                                "Blues minor",
-                                                "Blues minor lower octave",
-                                                "Blues minor higher octave",                                                
-                                                "Select all",
-                                                "Select none",
-                                                ], font=FONT, state="readonly", takefocus=True)
+note_set_dropdown = ttk.Combobox(labelFrames["Scales"], values=scales, font=FONT, state="readonly", takefocus=True)
 note_set_dropdown.grid(row=6, column=2, padx=10, pady=5, sticky="w")
-note_set_dropdown.current(0)  # Set "Default" as the initial value
+note_set_dropdown.current(0)  # Set the first scale as the default
 
-# Function to update note_vars based on the selected note set
+# Update the "update_note_set" function to use the selected octave and scale
 def update_note_set(event=None):
-    selected_set = note_set_dropdown.get()
-    if selected_set == "Default":
-        checked_notes = ["so0", "la0", "ti0", "do", "re", "mi", "fa", "so", "la", "ti", "do1"]
-    elif selected_set == "Diatonic major":
-        checked_notes = ["do", "re", "mi", "fa", "so", "la", "ti", "do1"]
-    elif selected_set == "Diatonic major lower octave":
-        checked_notes = ["do0", "re0", "mi0", "fa0", "so0", "la0", "ti0", "do"]
-    elif selected_set == "Diatonic major higher octave":
-        checked_notes = ["do1", "re1", "mi1", "fa1", "so1", "la1", "ti1", "do2"]
-    elif selected_set == "Natural minor":
-        checked_notes = ["do", "re", "nu", "fa", "so", "ki", "pe", "do1"]
-    elif selected_set == "Natural minor lower octave":
-        checked_notes = ["do0", "re0", "nu0", "fa0", "so0", "ki0", "pe0", "do"]
-    elif selected_set == "Natural minor higher octave":
-        checked_notes = ["do1", "re1", "nu1", "fa1", "so1", "ki1", "pe1", "do2"]
-    elif selected_set == "Select all":
-        checked_notes = list(note_vars.keys())
-    elif selected_set == "Select none": 
-        checked_notes = []
-    elif selected_set == "Pentatonic major":
-        checked_notes = ["do", "re", "mi", "so", "la", "do1"]
-    elif selected_set == "Pentatonic major lower octave":
-        checked_notes = ["do0", "re0", "mi0", "so0", "la0", "do"]
-    elif selected_set == "Pentatonic major higher octave":
-        checked_notes = ["do1", "re1", "mi1", "so1", "la1", "do2"]
-    elif selected_set == "Pentatonic minor":
-        checked_notes = ["do", "nu", "fa", "so", "pe", "do1"]
-    elif selected_set == "Pentatonic minor lower octave":
-        checked_notes = ["do0", "nu0", "fa0", "so0", "pe0", "do"]
-    elif selected_set == "Pentatonic minor higher octave":
-        checked_notes = ["do1", "nu1", "fa1", "so1", "pe1", "do2"]
-    elif selected_set == "Blues major":
-        checked_notes = ["do", "re", "nu", "mi", "so", "la", "do1"]
-    elif selected_set == "Blues major lower octave":
-        checked_notes = ["do0", "re0", "nu0", "mi0", "so0", "la0", "do"]
-    elif selected_set == "Blues major higher octave":
-        checked_notes = ["do1", "re1", "nu1", "mi1", "so1", "la1", "do2"]
-    elif selected_set == "Blues minor":
-        checked_notes = ["do", "nu", "fa", "jur", "so", "pe", "do1"]
-    elif selected_set == "Blues minor lower octave":
-        checked_notes = ["do0", "nu0", "fa0", "jur0", "so0", "pe0", "do"]
-    elif selected_set == "Blues minor higher octave":
-        checked_notes = ["do1", "nu1", "fa1", "jur1", "so1", "pe1", "do2"]
+    selected_octave = octave_dropdown.get()
+    selected_scale = note_set_dropdown.get()
+
+    # Get the notes for the selected octave and scale
+    if selected_octave in Note_sets and selected_scale in Note_sets[selected_octave]:
+        checked_notes = Note_sets[selected_octave][selected_scale]
     else:
         checked_notes = []
 
-    # Update note_vars based on the selected note set
+    # Update note_vars based on the selected notes
     for note, var in note_vars.items():
         var.set(note in checked_notes)
-
-        # Update the button states based on note_vars
+    
+    # Update the button states based on note_vars
     for note, button in note_buttons.items():
         if note_vars[note].get():
             button.config(bg=BUTTON_COLOR, font=FONT)  # Active state
         else:
             button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Inactive state
 
-# Bind the dropdown to the update_note_set function
+# Bind the dropdowns to the update_note_set function
+octave_dropdown.bind("<<ComboboxSelected>>", update_note_set)
 note_set_dropdown.bind("<<ComboboxSelected>>", update_note_set)
-# Initialize the note set to "Default"
+
+# Initialize the note set to the default values
 update_note_set()
 
 #endregion ############################ SCALES ##############################
