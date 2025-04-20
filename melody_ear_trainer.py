@@ -32,11 +32,14 @@ root = tk.Tk()
 root.title("Melody Ear Trainer")
 
 # Define a global font and colors
-FONT = ("Arial", 14, "bold")
-FONTLIGHT = ("Arial", 12, "italic")
+FONT = ("Arial", 16, "bold")
+FONTLIGHT = ("Arial", 14, "italic")
+DEACTIVATEDFONT = ("Arial", 8)
 BIGFONT = ("Arial", 18, "bold")
 BG_COLOR = "#e1eaf7"  # Light blue background
+DEACTIVATED_BG_COLOR = "grey"  # Grey background for deactivated buttons
 BUTTON_COLOR = "#82aaf4"  # Sky blue for buttons
+
 TEXT_COLOR = "#0c1d43"  # Navy text color
 
 # Apply background color to the root window
@@ -47,17 +50,17 @@ settings_pane = tk.LabelFrame(root, text="Settings", font=FONT, bg=BG_COLOR, fg=
 settings_pane.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
 # Function to toggle the visibility of the settings pane
-def toggle_settings():
-    if settings_pane.winfo_ismapped():
-        settings_pane.grid_remove()  # Hide the pane
-        toggle_button.config(text="Settings")
+def toggle_settings(pane):
+    if pane.winfo_ismapped():
+        pane.grid_remove()  # Hide the pane
     else:
-        settings_pane.grid()  # Show the pane
-        toggle_button.config(text="Hide Settings")
+        pane.grid()  # Show the pane
 
-# Add a toggle button
-toggle_button = tk.Button(root, text="Hide Settings", command=toggle_settings, font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-toggle_button.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+# Add a toggle button for the settings pane
+toggle_button = tk.Button(root, text="Settings", command=lambda p=settings_pane: toggle_settings(p), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+toggle_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+
+
 
 # Dropdown for "Key"
 key_label = tk.Label(settings_pane, text="Key of melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -113,33 +116,71 @@ allow_repeated_notes_checkbox = tk.Checkbutton(settings_pane, text="Allow repeat
 allow_repeated_notes_checkbox.grid(row=5, column=2, padx=10, pady=10, sticky="w")
 
 
-# Checkboxes for "Notes"
+# initialize set of notes
 note_vars = {}
 notes = [
-#    "do0", "re0", "mi0", "fa0", "so0", "la0", "ti0",
     "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
     "do", "ga", "re", "nu", "mi", "fa", "jur", "so", "ki", "la", "pe", "ti",
     "do1", "ga1", "re1", "nu1", "mi1", "fa1", "jur1", "so1", "ki1", "la1", "pe1", "ti1",
     "do2"
 ]
-
 # Initialize note_vars with BooleanVar for each note
 note_vars = {note: tk.BooleanVar(value=False) for note in notes}
 
-#for i, note in enumerate(notes):
-#    note_vars[note] = tk.BooleanVar(value=note in ["so0", "la0", "ti0", "do", "re", "mi", "fa", "so", "la"])
+# Function to toggle the state of a note button
+def toggle_note_state(note, button):
+    if note_vars[note].get():  # If the note is currently active
+        note_vars[note].set(False)  # Set it to inactive
+        button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Change the button color to grey
+    else:  # If the note is currently inactive
+        note_vars[note].set(True)  # Set it to active
+        button.config(bg=BUTTON_COLOR, font=FONT)  # Change the button color to active color
 
-# Checkboxes for "Notes"
-notes_frame = tk.LabelFrame(root, text="Include which notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+# Function to play a single note when an active button is left-clicked
+def play_single_note(note):
+    if note_vars[note].get():  # Only play if the note is active
+        key = key_dropdown.get()
+        file_to_play = Mapping[key]["Piano"][note]
+        # Split file_to_play into folder and filename
+        folder, filename = os.path.split(file_to_play)
+        # Reassemble the path using base_path
+        full_path = os.path.join(base_path, folder, filename)
+        # Play the file
+        play = threading.Thread(target=playsound, args=(full_path,))
+        play.start()
+
+
+# Dictionary to store references to the buttons
+note_buttons = {}
+
+# Replace checkboxes with buttons in the "notes_frame"
+notes_frame = tk.LabelFrame(root, text="Notes", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 notes_frame.grid(row=7, column=0, columnspan=3, padx=10, pady=10, sticky="w")
+
 for i, note in enumerate(notes):
-#    checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note], font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-#    checkbox.grid(row=i // 7, column=i % 7, padx=10, pady=10)
-    if (note in ["ga0", "nu0", "jur0", "ki0", "pe0", "ga", "nu", "jur", "ki", "pe", "ga1", "nu1", "jur1", "ki1", "pe1"]):
-        checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note], font=FONTLIGHT, bg=BG_COLOR, fg=TEXT_COLOR)
-    else:
-        checkbox = tk.Checkbutton(notes_frame, text=note, variable=note_vars[note], font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-    checkbox.grid(row=i // 12, column=i % 12, padx=4, pady=10)
+    # Create a button for each note
+    button = tk.Button(
+        notes_frame,
+        text=note,
+        #font=FONTLIGHT if note in ["ga0", "nu0", "jur0", "ki0", "pe0", "ga", "nu", "jur", "ki", "pe", "ga1", "nu1", "jur1", "ki1", "pe1"] else FONT,
+        font=DEACTIVATEDFONT,
+        bg=DEACTIVATED_BG_COLOR,  # Default to inactive color
+        fg=TEXT_COLOR,
+        height=1,
+        width=3,
+        command=lambda n=note: play_single_note(n)  # Left-click plays the note if active
+    )
+    button.grid(row=i // 12, column=i % 12, padx=4, pady=10)
+
+    # Bind right-click to toggle the state of the button
+    button.bind("<Button-3>", lambda event, n=note, b=button: toggle_note_state(n, b))
+
+    # Store the button reference in the dictionary
+    note_buttons[note] = button
+
+# Add a toggle button for the notes pane
+toggle_button = tk.Button(root, text="Notes", command=lambda p=notes_frame: toggle_settings(p), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+toggle_button.grid(row=0, column=1, padx=10, pady=10, sticky="w")
 
 # Add "Note set" label and dropdown
 note_set_label = tk.Label(settings_pane, text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -335,6 +376,13 @@ def update_note_set(event=None):
     # Update note_vars based on the selected note set
     for note, var in note_vars.items():
         var.set(note in checked_notes)
+
+        # Update the button states based on note_vars
+    for note, button in note_buttons.items():
+        if note_vars[note].get():
+            button.config(bg=BUTTON_COLOR, font=FONT)  # Active state
+        else:
+            button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Inactive state
 
 # Bind the dropdown to the update_note_set function
 note_set_dropdown.bind("<<ComboboxSelected>>", update_note_set)
