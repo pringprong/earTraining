@@ -21,7 +21,7 @@ The program can be used for ear training in 2 ways: "Listening test" and "Singin
 6. Then click the 3 "Play ___ Melody" buttons to listen and check whether you sang the melody correctly. 
 7. Play back the melody on your instrument (optional)
 
-The program supports all 12 keys with 3 octaves of each key. Scale selection presets include Diatonic Major, Natural Minor, Pentatonic (both major and minor), and Blues (both major and minor); you can also select any notes you want outside of the presets.
+The program supports all 12 keys with 3 octaves of each key. E is the lowest scale and goes from E2 (named do0) to E5 (do2), while D#/Eb is the highest scale and goes from D#3 (do0) to D#6 (do2). Scale selection presets include Diatonic Major, Natural Minor, Pentatonic (both major and minor), and Blues (both major and minor); you can also select any notes you want outside of the presets.
 
 To download and install the program on Windows, go to the "dist" folder above, then download "melody_ear_trainer.zip", unzip, and run. This program is free and open source.
 

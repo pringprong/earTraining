@@ -42,26 +42,43 @@ TEXT_COLOR = "#0c1d43"  # Navy text color
 # Apply background color to the root window
 root.configure(background=BG_COLOR)
 
+# Create a collapsible pane for settings
+settings_pane = tk.LabelFrame(root, text="Settings", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+settings_pane.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
+
+# Function to toggle the visibility of the settings pane
+def toggle_settings():
+    if settings_pane.winfo_ismapped():
+        settings_pane.grid_remove()  # Hide the pane
+        toggle_button.config(text="Settings")
+    else:
+        settings_pane.grid()  # Show the pane
+        toggle_button.config(text="Hide Settings")
+
+# Add a toggle button
+toggle_button = tk.Button(root, text="Hide Settings", command=toggle_settings, font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+toggle_button.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+
 # Dropdown for "Key"
-key_label = tk.Label(root, text="Key of melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+key_label = tk.Label(settings_pane, text="Key of melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="w")
 mapping_keys = list(Mapping.keys())
 mapping_keys.sort()  # Sort the keys for better readability
-key_dropdown = ttk.Combobox(root, values=mapping_keys, font=FONT, state="readonly", takefocus=True)
+key_dropdown = ttk.Combobox(settings_pane, values=mapping_keys, font=FONT, state="readonly", takefocus=True)
 key_dropdown.grid(row=0, column=2, padx=10, pady=10, sticky="w")
 key_dropdown.current(3)
 
 # Dropdown for "Number of notes"
-notes_label = tk.Label(root, text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+notes_label = tk.Label(settings_pane, text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 notes_label.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="w")
-notes_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], font=FONT, state="readonly", takefocus=True)
+notes_dropdown = ttk.Combobox(settings_pane, values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], font=FONT, state="readonly", takefocus=True)
 notes_dropdown.grid(row=1, column=2, padx=10, pady=10, sticky="w")
 notes_dropdown.current(5)
 
 # Dropdown for "Maximum distance between notes"
-distance_label = tk.Label(root, text="Max distance between adjacent notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+distance_label = tk.Label(settings_pane, text="Max distance between adjacent notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 distance_label.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="w")
-distance_dropdown = ttk.Combobox(root, values=[1, 2, 3, 4, 5, 6, 7], font=FONT, state="readonly", takefocus=True)
+distance_dropdown = ttk.Combobox(settings_pane, values=[1, 2, 3, 4, 5, 6, 7], font=FONT, state="readonly", takefocus=True)
 distance_dropdown.grid(row=2, column=2, padx=10, pady=10, sticky="w")
 distance_dropdown.current(2)
 
@@ -74,25 +91,25 @@ end_with_do_var = tk.BooleanVar(value=True)  # Checked by default
 allow_repeated_notes_var = tk.BooleanVar(value=False)  # Unchecked by default
 
 # Checkboxes for "Start with do" and "End with do"
-start_with_do_label = tk.Label(root, text="Starting note (tonic):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+start_with_do_label = tk.Label(settings_pane, text="Starting note (tonic):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 start_with_do_label.grid(row=3, column=0, columnspan=1, padx=10, pady=10, sticky="w")
-start_with_do_checkbox = tk.Checkbutton(root, text="Always start with", variable=start_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+start_with_do_checkbox = tk.Checkbutton(settings_pane, text="Always start with", variable=start_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 start_with_do_checkbox.grid(row=3, column=1, padx=10, pady=10, sticky="w")
-start_with_do_dropdown = ttk.Combobox(root, values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
+start_with_do_dropdown = ttk.Combobox(settings_pane, values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
 start_with_do_dropdown.grid(row=3, column=2, padx=10, pady=10, sticky="w")
 start_with_do_dropdown.current(2)
 
-end_with_do_label = tk.Label(root, text="Ending note:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+end_with_do_label = tk.Label(settings_pane, text="Ending note:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 end_with_do_label.grid(row=4, column=0, columnspan=1, padx=10, pady=10, sticky="w")
-end_with_do_checkbox = tk.Checkbutton(root, text="Always end with", variable=end_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+end_with_do_checkbox = tk.Checkbutton(settings_pane, text="Always end with", variable=end_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 end_with_do_checkbox.grid(row=4, column=1, padx=10, pady=10, sticky="w")
-end_with_do_dropdown = ttk.Combobox(root, values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
+end_with_do_dropdown = ttk.Combobox(settings_pane, values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
 end_with_do_dropdown.grid(row=4, column=2, padx=10, pady=10, sticky="w")
 end_with_do_dropdown.current(2)
 
-allow_repeated_notes = tk.Label(root, text="Allow repeated notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+allow_repeated_notes = tk.Label(settings_pane, text="Allow repeated notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 allow_repeated_notes.grid(row=5, column=0, columnspan=1, padx=10, pady=10, sticky="w")
-allow_repeated_notes_checkbox = tk.Checkbutton(root, text="Allow repeated notes", variable=allow_repeated_notes_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+allow_repeated_notes_checkbox = tk.Checkbutton(settings_pane, text="Allow repeated notes", variable=allow_repeated_notes_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 allow_repeated_notes_checkbox.grid(row=5, column=2, padx=10, pady=10, sticky="w")
 
 
@@ -125,10 +142,10 @@ for i, note in enumerate(notes):
     checkbox.grid(row=i // 12, column=i % 12, padx=4, pady=10)
 
 # Add "Note set" label and dropdown
-note_set_label = tk.Label(root, text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+note_set_label = tk.Label(settings_pane, text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 note_set_label.grid(row=6, column=0, columnspan=1, padx=10, pady=10, sticky="w")
 
-note_set_dropdown = ttk.Combobox(root, values=["Default",
+note_set_dropdown = ttk.Combobox(settings_pane, values=["Default",
                                                 "Diatonic major",
                                                 "Diatonic major lower octave",
                                                 "Diatonic major higher octave",
