@@ -27,10 +27,6 @@ with open(mapping_file_path, "r") as file:
             Mapping[key1][key2] = {}
         Mapping[key1][key2][key3] = value
 
-# Create the main window
-root = tk.Tk()
-root.title("Melody Ear Trainer")
-
 # Define a global font and colors
 FONT = ("Arial", 16, "bold")
 FONTLIGHT = ("Arial", 14, "italic")
@@ -39,54 +35,67 @@ BIGFONT = ("Arial", 18, "bold")
 BG_COLOR = "#e1eaf7"  # Light blue background
 DEACTIVATED_BG_COLOR = "grey"  # Grey background for deactivated buttons
 BUTTON_COLOR = "#82aaf4"  # Sky blue for buttons
-
 TEXT_COLOR = "#0c1d43"  # Navy text color
 
+# Create the main window
+root = tk.Tk()
+root.title("Melody Ear Trainer")
 # Apply background color to the root window
 root.configure(background=BG_COLOR)
 
-# Create a collapsible pane for settings
-settings_pane = tk.LabelFrame(root, text="Settings", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-settings_pane.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
+labelFrameList = ["Settings", "Scales", "Notes", "Melody"]
+labelFrames = {}
+toggle_buttons = {}
+toggle_button_frame = tk.Frame(root, bg=BG_COLOR)
+toggle_button_frame.grid(row=0, column=0, padx=10, pady=5, sticky="ew")
 
-# Function to toggle the visibility of the settings pane
-def toggle_settings(pane):
+for i, lf in enumerate(labelFrameList):
+    this_lf = tk.LabelFrame(root, text=lf, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+    this_lf.grid(row=i+1, column=0, padx=10, pady=5, sticky="ew")
+    labelFrames[lf] = this_lf
+
+    # Create a toggle button for the label frame
+    toggle_button = tk.Button(toggle_button_frame, text=lf, font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+    toggle_button.grid(row=0, column=i, padx=10, pady=5, sticky="w")
+    toggle_button.configure(command=lambda p=this_lf, b=toggle_button: toggle_settings(p, b))
+    toggle_buttons[lf] = toggle_button
+
+# Function to toggle the visibility of the panes
+def toggle_settings(pane, button=None):
+    if button is not None:
+        if button['bg'] == BUTTON_COLOR:
+            button.configure(bg=DEACTIVATED_BG_COLOR)
+        else:
+            button.configure(bg=BUTTON_COLOR)
     if pane.winfo_ismapped():
         pane.grid_remove()  # Hide the pane
     else:
         pane.grid()  # Show the pane
 
-# Add a toggle button for the settings pane
-toggle_button = tk.Button(root, text="Settings", command=lambda p=settings_pane: toggle_settings(p), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-toggle_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
-
-
-
 # Dropdown for "Key"
-key_label = tk.Label(settings_pane, text="Key of melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="w")
+key_label = tk.Label(labelFrames["Settings"], text="Key of melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky="w")
 mapping_keys = list(Mapping.keys())
 mapping_keys.sort()  # Sort the keys for better readability
-key_dropdown = ttk.Combobox(settings_pane, values=mapping_keys, font=FONT, state="readonly", takefocus=True)
-key_dropdown.grid(row=0, column=2, padx=10, pady=10, sticky="w")
+key_dropdown = ttk.Combobox(labelFrames["Settings"], values=mapping_keys, font=FONT, state="readonly", takefocus=True)
+key_dropdown.grid(row=0, column=2, padx=10, pady=5, sticky="w")
 key_dropdown.current(3)
+# Set initial focus
+key_dropdown.focus_set()
 
 # Dropdown for "Number of notes"
-notes_label = tk.Label(settings_pane, text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-notes_label.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="w")
-notes_dropdown = ttk.Combobox(settings_pane, values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], font=FONT, state="readonly", takefocus=True)
-notes_dropdown.grid(row=1, column=2, padx=10, pady=10, sticky="w")
+notes_label = tk.Label(labelFrames["Settings"], text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+notes_label.grid(row=1, column=0, columnspan=2, padx=10, pady=5, sticky="w")
+notes_dropdown = ttk.Combobox(labelFrames["Settings"], values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], font=FONT, state="readonly", takefocus=True)
+notes_dropdown.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 notes_dropdown.current(5)
 
 # Dropdown for "Maximum distance between notes"
-distance_label = tk.Label(settings_pane, text="Max distance between adjacent notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-distance_label.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="w")
-distance_dropdown = ttk.Combobox(settings_pane, values=[1, 2, 3, 4, 5, 6, 7], font=FONT, state="readonly", takefocus=True)
-distance_dropdown.grid(row=2, column=2, padx=10, pady=10, sticky="w")
+distance_label = tk.Label(labelFrames["Settings"], text="Max distance between adjacent notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+distance_label.grid(row=2, column=0, columnspan=2, padx=10, pady=5, sticky="w")
+distance_dropdown = ttk.Combobox(labelFrames["Settings"], values=[1, 2, 3, 4, 5, 6, 7], font=FONT, state="readonly", takefocus=True)
+distance_dropdown.grid(row=2, column=2, padx=10, pady=5, sticky="w")
 distance_dropdown.current(2)
-
-# Set initial focus
-key_dropdown.focus_set()
 
 # Define BooleanVars for checkboxes
 start_with_do_var = tk.BooleanVar(value=True)  # Checked by default
@@ -94,27 +103,26 @@ end_with_do_var = tk.BooleanVar(value=True)  # Checked by default
 allow_repeated_notes_var = tk.BooleanVar(value=False)  # Unchecked by default
 
 # Checkboxes for "Start with do" and "End with do"
-start_with_do_label = tk.Label(settings_pane, text="Starting note (tonic):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-start_with_do_label.grid(row=3, column=0, columnspan=1, padx=10, pady=10, sticky="w")
-start_with_do_checkbox = tk.Checkbutton(settings_pane, text="Always start with", variable=start_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-start_with_do_checkbox.grid(row=3, column=1, padx=10, pady=10, sticky="w")
-start_with_do_dropdown = ttk.Combobox(settings_pane, values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
-start_with_do_dropdown.grid(row=3, column=2, padx=10, pady=10, sticky="w")
+start_with_do_label = tk.Label(labelFrames["Settings"], text="Starting note (tonic):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+start_with_do_label.grid(row=3, column=0, columnspan=1, padx=10, pady=5, sticky="w")
+start_with_do_checkbox = tk.Checkbutton(labelFrames["Settings"], text="Always start with", variable=start_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+start_with_do_checkbox.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+start_with_do_dropdown = ttk.Combobox(labelFrames["Settings"], values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
+start_with_do_dropdown.grid(row=3, column=2, padx=10, pady=5, sticky="w")
 start_with_do_dropdown.current(2)
 
-end_with_do_label = tk.Label(settings_pane, text="Ending note:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-end_with_do_label.grid(row=4, column=0, columnspan=1, padx=10, pady=10, sticky="w")
-end_with_do_checkbox = tk.Checkbutton(settings_pane, text="Always end with", variable=end_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-end_with_do_checkbox.grid(row=4, column=1, padx=10, pady=10, sticky="w")
-end_with_do_dropdown = ttk.Combobox(settings_pane, values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
-end_with_do_dropdown.grid(row=4, column=2, padx=10, pady=10, sticky="w")
+end_with_do_label = tk.Label(labelFrames["Settings"], text="Ending note:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+end_with_do_label.grid(row=4, column=0, columnspan=1, padx=10, pady=5, sticky="w")
+end_with_do_checkbox = tk.Checkbutton(labelFrames["Settings"], text="Always end with", variable=end_with_do_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+end_with_do_checkbox.grid(row=4, column=1, padx=10, pady=5, sticky="w")
+end_with_do_dropdown = ttk.Combobox(labelFrames["Settings"], values=["do0", "la0", "do", "la", "do1", "la1", "do2"], font=FONT, state="readonly", takefocus=True)
+end_with_do_dropdown.grid(row=4, column=2, padx=10, pady=5, sticky="w")
 end_with_do_dropdown.current(2)
 
-allow_repeated_notes = tk.Label(settings_pane, text="Allow repeated notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-allow_repeated_notes.grid(row=5, column=0, columnspan=1, padx=10, pady=10, sticky="w")
-allow_repeated_notes_checkbox = tk.Checkbutton(settings_pane, text="Allow repeated notes", variable=allow_repeated_notes_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-allow_repeated_notes_checkbox.grid(row=5, column=2, padx=10, pady=10, sticky="w")
-
+allow_repeated_notes = tk.Label(labelFrames["Settings"], text="Allow repeated notes:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+allow_repeated_notes.grid(row=5, column=0, columnspan=1, padx=10, pady=5, sticky="w")
+allow_repeated_notes_checkbox = tk.Checkbutton(labelFrames["Settings"], text="Allow repeated notes", variable=allow_repeated_notes_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+allow_repeated_notes_checkbox.grid(row=5, column=2, padx=10, pady=5, sticky="w")
 
 # initialize set of notes
 note_vars = {}
@@ -149,18 +157,12 @@ def play_single_note(note):
         play = threading.Thread(target=playsound, args=(full_path,))
         play.start()
 
-
 # Dictionary to store references to the buttons
 note_buttons = {}
-
-# Replace checkboxes with buttons in the "notes_frame"
-notes_frame = tk.LabelFrame(root, text="Notes", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-notes_frame.grid(row=7, column=0, columnspan=3, padx=10, pady=10, sticky="w")
-
 for i, note in enumerate(notes):
     # Create a button for each note
     button = tk.Button(
-        notes_frame,
+        labelFrames["Notes"],
         text=note,
         #font=FONTLIGHT if note in ["ga0", "nu0", "jur0", "ki0", "pe0", "ga", "nu", "jur", "ki", "pe", "ga1", "nu1", "jur1", "ki1", "pe1"] else FONT,
         font=DEACTIVATEDFONT,
@@ -170,23 +172,16 @@ for i, note in enumerate(notes):
         width=3,
         command=lambda n=note: play_single_note(n)  # Left-click plays the note if active
     )
-    button.grid(row=i // 12, column=i % 12, padx=4, pady=10)
-
+    button.grid(row=i // 12, column=i % 12, padx=4, pady=5)
     # Bind right-click to toggle the state of the button
     button.bind("<Button-3>", lambda event, n=note, b=button: toggle_note_state(n, b))
-
     # Store the button reference in the dictionary
     note_buttons[note] = button
 
-# Add a toggle button for the notes pane
-toggle_button = tk.Button(root, text="Notes", command=lambda p=notes_frame: toggle_settings(p), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-toggle_button.grid(row=0, column=1, padx=10, pady=10, sticky="w")
-
 # Add "Note set" label and dropdown
-note_set_label = tk.Label(settings_pane, text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
-note_set_label.grid(row=6, column=0, columnspan=1, padx=10, pady=10, sticky="w")
-
-note_set_dropdown = ttk.Combobox(settings_pane, values=["Default",
+note_set_label = tk.Label(labelFrames["Scales"], text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+note_set_label.grid(row=6, column=0, columnspan=1, padx=10, pady=5, sticky="w")
+note_set_dropdown = ttk.Combobox(labelFrames["Scales"], values=["Default",
                                                 "Diatonic major",
                                                 "Diatonic major lower octave",
                                                 "Diatonic major higher octave",
@@ -208,12 +203,12 @@ note_set_dropdown = ttk.Combobox(settings_pane, values=["Default",
                                                 "Select all",
                                                 "Select none",
                                                 ], font=FONT, state="readonly", takefocus=True)
-note_set_dropdown.grid(row=6, column=2, padx=10, pady=10, sticky="w")
+note_set_dropdown.grid(row=6, column=2, padx=10, pady=5, sticky="w")
 note_set_dropdown.current(0)  # Set "Default" as the initial value
 
 # Text area for "Solfege"
-solfege_text = tk.Text(root, height=1, width=40, font=FONT, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
-solfege_text.grid(row=9, column=1, columnspan=2, padx=10, pady=10, sticky="w")
+solfege_text = tk.Text(labelFrames["Melody"], height=1, width=40, font=FONT, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
+solfege_text.grid(row=9, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 
 # Functionality
 Melody = []
@@ -315,15 +310,12 @@ def show_solfege():
 
 def play_melody(instrument):
     # Get the system's temporary directory
-    temp_dir = tempfile.gettempdir()
-    
+    temp_dir = tempfile.gettempdir()    
     # Path to the pre-generated combined MP3 for the selected instrument
-    combined_file = os.path.join(temp_dir, f"combined_melody_{instrument}.mp3")
-    
+    combined_file = os.path.join(temp_dir, f"combined_melody_{instrument}.mp3")    
     # Play the file
     play = threading.Thread(target=playsound, args=(combined_file,))
     play.start()
-
 
 # Function to update note_vars based on the selected note set
 def update_note_set(event=None):
@@ -386,43 +378,42 @@ def update_note_set(event=None):
 
 # Bind the dropdown to the update_note_set function
 note_set_dropdown.bind("<<ComboboxSelected>>", update_note_set)
-
 # Initialize the note set to "Default"
 update_note_set()
 
-# Buttons
-generate_button = tk.Button(root, text="Generate melody", command=generate_melody, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
-generate_button.grid(row=8, column=1, columnspan=2, padx=10, pady=10, sticky="w")
+# Buttons for the Melody frame
+generate_button = tk.Button(labelFrames["Melody"], text="Generate melody", command=generate_melody, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
+generate_button.grid(row=8, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 root.bind("g", lambda event: generate_melody())
 
-show_solfege_button = tk.Button(root, text="Show Solfege", command=show_solfege, font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
-show_solfege_button.grid(row=9, column=0, padx=10, pady=10, sticky="w")
+show_solfege_button = tk.Button(labelFrames["Melody"], text="Show Solfege", command=show_solfege, font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
+show_solfege_button.grid(row=9, column=0, padx=10, pady=5, sticky="w")
 root.bind("s", lambda event: show_solfege())
 
-play_guitar_tonic_button = tk.Button(root, text="Play Guitar Tonic", command=lambda: play_tonic("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_guitar_tonic_button.grid(row=10, column=0, padx=10, pady=10, sticky="w")
+play_guitar_tonic_button = tk.Button(labelFrames["Melody"], text="Play Guitar Tonic", command=lambda: play_tonic("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_guitar_tonic_button.grid(row=10, column=0, padx=10, pady=5, sticky="w")
 
-play_piano_tonic_button = tk.Button(root, text="Play Piano Tonic", command=lambda: play_tonic("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_piano_tonic_button.grid(row=10, column=1, padx=10, pady=10, sticky="w")
+play_piano_tonic_button = tk.Button(labelFrames["Melody"], text="Play Piano Tonic", command=lambda: play_tonic("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_piano_tonic_button.grid(row=10, column=1, padx=10, pady=5, sticky="w")
 
-play_solfege_tonic_button = tk.Button(root, text="Play Solfege Tonic", command=lambda: play_tonic("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-play_solfege_tonic_button.grid(row=10, column=2, padx=10, pady=10, sticky="w")
+play_solfege_tonic_button = tk.Button(labelFrames["Melody"], text="Play Solfege Tonic", command=lambda: play_tonic("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_solfege_tonic_button.grid(row=10, column=2, padx=10, pady=5, sticky="w")
 
-play_guitar_melody_button = tk.Button(root, text="Play Guitar Melody", command=lambda: play_melody("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=16)
-play_guitar_melody_button.grid(row=11, column=0, padx=10, pady=10, sticky="w")
+play_guitar_melody_button = tk.Button(labelFrames["Melody"], text="Play Guitar Melody", command=lambda: play_melody("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=16)
+play_guitar_melody_button.grid(row=11, column=0, padx=10, pady=5, sticky="w")
 root.bind("d", lambda event: play_melody("Guitar"))
 
-play_piano_melody_button = tk.Button(root, text="Play Piano Melody", command=lambda: play_melody("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=2)
-play_piano_melody_button.grid(row=11, column=1, padx=10, pady=10, sticky="w")
+play_piano_melody_button = tk.Button(labelFrames["Melody"], text="Play Piano Melody", command=lambda: play_melody("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=2)
+play_piano_melody_button.grid(row=11, column=1, padx=10, pady=5, sticky="w")
 root.bind("a", lambda event: play_melody("Piano"))
 
-play_solfege_melody_button = tk.Button(root, text="Play Solfege Melody", command=lambda: play_melody("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=8)
-play_solfege_melody_button.grid(row=11, column=2, padx=10, pady=10, sticky="w")
+play_solfege_melody_button = tk.Button(labelFrames["Melody"], text="Play Solfege Melody", command=lambda: play_melody("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=8)
+play_solfege_melody_button.grid(row=11, column=2, padx=10, pady=5, sticky="w")
 root.bind("f", lambda event: play_melody("Solfege"))
 
 # configure columns to have the same width
 for i in range(3):
-    root.columnconfigure(i, weight=1, uniform="equal_width")
+    labelFrames["Melody"].columnconfigure(i, weight=1, uniform="equal_width")
 
 # Run the application
 root.mainloop()
