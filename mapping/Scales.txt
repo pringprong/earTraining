@@ -15,19 +15,19 @@ Lower and middle octave	Natural minor	do0,re0,nu0,fa0,so0,ki0,pe0,do,re,nu,fa,so
 Middle octave	Natural minor	do,re,nu,fa,so,ki,pe,do1
 Middle and higher octave	Natural minor	do,re,nu,fa,so,ki,pe,do1,re1,nu1,fa1,so1,ki1,pe1,do2
 Higher octave	Natural minor	do1,re1,nu1,fa1,so1,ki1,pe1,do2
-All octaves	Natural minor	do0,re0,nu0,fa0,so0,ki0,pe0,do,re0,nu0,fa0,so0,ki0,pe0,do1,re1,nu1,fa1,so1,ki1,pe1,do2
+All octaves	Natural minor	do0,re0,nu0,fa0,so0,ki0,pe0,do,re,nu,fa,so,ki,pe,do1,re1,nu1,fa1,so1,ki1,pe1,do2
 Lower octave	Pentatonic major	do0,re0,mi0,so0,la0,do
 Lower and middle octave	Pentatonic major	do0,re0,mi0,so0,la0,do,re,mi,so,la,do1
 Middle octave	Pentatonic major	do,re,mi,so,la,do1
 Middle and higher octave	Pentatonic major	do,re,mi,so,la,do1,re1,mi1,so1,la1,do2
 Higher octave	Pentatonic major	do1,re1,mi1,so1,la1,do2
 All octaves	Pentatonic major	do0,re0,mi0,so0,la0,do,re,mi,so,la,do1,re1,mi1,so1,la1,do2
-Lower octave	Pentatonic minor	do0,nu0,fa0,so0,pe0,do,nu0,fa0,so0,pe0,do
-Lower and middle octave	Pentatonic minor	do0,nu0,fa0,so0,pe0,do
+Lower octave	Pentatonic minor	do0,nu0,fa0,so0,pe0,do
+Lower and middle octave	Pentatonic minor	do0,nu0,fa0,so0,pe0,do,nu,fa,so,pe,do1
 Middle octave	Pentatonic minor	do,nu,fa,so,pe,do1
 Middle and higher octave	Pentatonic minor	do,nu,fa,so,pe,do1,nu1,fa1,so1,pe1,do2
 Higher octave	Pentatonic minor	do1,nu1,fa1,so1,pe1,do2
-All octaves	Pentatonic minor	o0,re0,mi0,so0,la0,do,re,mi,so,la,do1,nu1,fa1,so1,pe1,do2
+All octaves	Pentatonic minor	do0,nu0,fa0,so0,pe0,do,nu,fa,so,pe,do1,nu1,fa1,so1,pe1,do2
 Lower octave	Blues major	do0,re0,nu0,mi0,so0,la0,do
 Lower and middle octave	Blues major	do0,re0,nu0,mi0,so0,la0,do,re,nu,mi,so,la,do1
 Middle octave	Blues major	do,re,nu,mi,so,la,do1

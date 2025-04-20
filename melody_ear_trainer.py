@@ -48,7 +48,7 @@ scales = sorted(scales)
 
 # Define a global font and colors
 FONT = ("Arial", 14, "bold")
-FONTLIGHT = ("Arial", 14, "italic")
+FONTLIGHT = ("Arial", 11)
 DEACTIVATEDFONT = ("Arial", 8)
 BIGFONT = ("Arial", 16, "bold")
 BG_COLOR = "#e1eaf7"  # Light blue background
@@ -113,7 +113,7 @@ key_dropdown.focus_set()
 # Dropdown for "Number of notes"
 notes_label = tk.Label(labelFrames["Settings"], text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 notes_label.grid(row=1, column=0, columnspan=2, padx=10, pady=5, sticky="w")
-notes_dropdown = ttk.Combobox(labelFrames["Settings"], values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], font=FONT, state="readonly", takefocus=True)
+notes_dropdown = ttk.Combobox(labelFrames["Settings"], values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], font=FONT, state="readonly", takefocus=True)
 notes_dropdown.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 notes_dropdown.current(5)
 
@@ -245,14 +245,14 @@ octave_label = tk.Label(labelFrames["Scales"], text="Octave:", font=FONT, bg=BG_
 octave_label.grid(row=5, column=0, columnspan=1, padx=10, pady=5, sticky="w")
 octave_dropdown = ttk.Combobox(labelFrames["Scales"], values=octaves, font=FONT, state="readonly", takefocus=True)
 octave_dropdown.grid(row=5, column=2, padx=10, pady=5, sticky="w")
-octave_dropdown.current(0)  # Set the first octave as the default
+octave_dropdown.current(2)  # Set the first octave as the default
 
 # Update the "Note set" dropdown to use scales from Scales.txt
 note_set_label = tk.Label(labelFrames["Scales"], text="Scale:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 note_set_label.grid(row=6, column=0, columnspan=1, padx=10, pady=5, sticky="w")
 note_set_dropdown = ttk.Combobox(labelFrames["Scales"], values=scales, font=FONT, state="readonly", takefocus=True)
 note_set_dropdown.grid(row=6, column=2, padx=10, pady=5, sticky="w")
-note_set_dropdown.current(0)  # Set the first scale as the default
+note_set_dropdown.current(3)  
 
 # Update the "update_note_set" function to use the selected octave and scale
 def update_note_set(event=None):
@@ -288,7 +288,7 @@ update_note_set()
 #region ############## MELODY ######################
 
 # Text area for "Solfege"
-solfege_text = tk.Text(labelFrames["Melody"], height=1, width=40, font=FONT, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
+solfege_text = tk.Text(labelFrames["Melody"], height=1, width=56, font=FONTLIGHT, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
 solfege_text.grid(row=9, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 
 # Functionality
