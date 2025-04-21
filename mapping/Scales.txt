@@ -16,6 +16,12 @@ Middle octave	Natural minor	do,re,nu,fa,so,ki,pe,do1
 Middle and higher octave	Natural minor	do,re,nu,fa,so,ki,pe,do1,re1,nu1,fa1,so1,ki1,pe1,do2
 Higher octave	Natural minor	do1,re1,nu1,fa1,so1,ki1,pe1,do2
 All octaves	Natural minor	do0,re0,nu0,fa0,so0,ki0,pe0,do,re,nu,fa,so,ki,pe,do1,re1,nu1,fa1,so1,ki1,pe1,do2
+Lower octave	La-based minor	do0,re0,mi0,fa0,so0,la0
+Lower and middle octave	La-based minor	la0,ti0,do,re,mi,fa,so,la
+Middle octave	La-based minor	la0,ti0,do,re,mi,fa,so,la,ti,do1
+Middle and higher octave	La-based minor	la,ti,do1,re1,mi1,fa1,so1,la1
+Higher octave	La-based minor	la,ti,do1,re1,mi1,fa1,so1,la1,ti1,do2
+All octaves	La-based minor	do0,re0,mi0,fa0,so0,la0,ti0,do,re,mi,fa,so,la,ti,do1,re1,mi1,fa1,so1,la1,ti1,do2
 Lower octave	Pentatonic major	do0,re0,mi0,so0,la0,do
 Lower and middle octave	Pentatonic major	do0,re0,mi0,so0,la0,do,re,mi,so,la,do1
 Middle octave	Pentatonic major	do,re,mi,so,la,do1
