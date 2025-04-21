@@ -1,5 +1,3 @@
-#region ############## SETUP ######################
-
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 import random
@@ -10,6 +8,36 @@ import threading
 import sys
 import tempfile  # Import the tempfile module
 import tkinter.messagebox  # Import the messagebox module
+#region ############## TOOLTIP ####################
+
+
+class Tooltip:
+    def __init__(self, widget, text):
+        self.widget = widget
+        self.text = text
+        self.tooltip_window = None
+        self.widget.bind("<Enter>", self.show_tooltip)
+        self.widget.bind("<Leave>", self.hide_tooltip)
+
+    def show_tooltip(self, event=None):
+        x, y, _, _ = self.widget.bbox("insert")
+        x += self.widget.winfo_rootx() + 25
+        y += self.widget.winfo_rooty() + 25
+
+        self.tooltip_window = tk.Toplevel(self.widget)
+        self.tooltip_window.wm_overrideredirect(True)  # Remove window decorations
+        self.tooltip_window.wm_geometry(f"+{x}+{y}")
+        label = tk.Label(self.tooltip_window, text=self.text, background="#FFFFE0", relief="solid", borderwidth=1)
+        label.pack()
+
+    def hide_tooltip(self, event=None):
+        if self.tooltip_window:
+            self.tooltip_window.destroy()
+            self.tooltip_window = None
+
+#endregion ########### TOOLTIP
+
+#region ############## SETUP ######################
 
 # Determine the base path (for both development and PyInstaller executable)
 if getattr(sys, 'frozen', False):  # Check if running as a PyInstaller executable
@@ -104,6 +132,7 @@ labelFrames = {}
 toggle_buttons = {}
 toggle_button_frame = tk.Frame(root, bg=BG_COLOR)
 toggle_button_frame.grid(row=0, column=0, padx=10, pady=4, sticky="ew")
+toggle_button_tooltips = {}
 
 for i, lf in enumerate(labelFrameList):
     this_lf = tk.LabelFrame(root, text=lf, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -115,6 +144,7 @@ for i, lf in enumerate(labelFrameList):
     toggle_button.grid(row=0, column=i, padx=10, pady=0, sticky="w")
     toggle_button.configure(command=lambda p=this_lf, b=toggle_button: toggle_settings(p, b))
     toggle_buttons[lf] = toggle_button
+    toggle_button_tooltips[lf] = Tooltip(toggle_button, f"Show or hide {lf} section")
 
 # Function to toggle the visibility of the panes
 def toggle_settings(pane, button=None):
@@ -140,6 +170,7 @@ key_dropdown.grid(row=0, column=2, padx=10, pady=4, sticky="w")
 key_dropdown.current(3)
 # Set initial focus
 key_dropdown.focus_set()
+key_dropdown_tooltip = Tooltip(key_dropdown, "The note \"do\" will be set to the key of the melody.")
 
 # Dropdown for "Number of notes"
 notes_label = tk.Label(labelFrames["Settings"], text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -419,6 +450,7 @@ def play_melody(instrument):
 generate_button = tk.Button(labelFrames["Melody"], text="Generate melody", command=generate_melody, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
 generate_button.grid(row=8, column=1, columnspan=1, padx=5, pady=4, sticky="w")
 root.bind("g", lambda event: generate_melody())
+generate_button_tooltip = Tooltip(generate_button, "Generate a new melody. The previous melody will be overwritten.")
 
 # Text area for "Solfege"
 # First create a frame so that we can put the button and the text area closer together
