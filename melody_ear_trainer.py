@@ -1,15 +1,17 @@
+#region ############## TOOLTIP ####################
+
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 import random
 from playsound import playsound
 from pydub import AudioSegment
+from pydub.playback import play
+
 import os
 import threading
 import sys
 import tempfile  # Import the tempfile module
 import tkinter.messagebox  # Import the messagebox module
-#region ############## TOOLTIP ####################
-
 
 class Tooltip:
     def __init__(self, widget, text):
@@ -127,7 +129,7 @@ def center_window(window):
 
 #region ############## FRAMES #####################
 
-labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Melody"]
+labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chords", "Melody"]
 labelFrames = {}
 toggle_buttons = {}
 toggle_button_frame = tk.Frame(root, bg=BG_COLOR)
@@ -307,6 +309,28 @@ for i, note in enumerate(notes):
 
 #endregion #################### NOTES ##############################
 
+#region ############## CHORDS ######################
+
+def playchord():
+    chord_notes = ["do", "mi", "so"]
+    random.shuffle(chord_notes)
+    sound1 = AudioSegment.from_mp3(Mapping[key_dropdown.get()]["Piano"][chord_notes[0]])
+    sound2 = AudioSegment.from_mp3(Mapping[key_dropdown.get()]["Piano"][chord_notes[1]])
+    sound3 = AudioSegment.from_mp3(Mapping[key_dropdown.get()]["Piano"][chord_notes[2]])
+    silence = AudioSegment.silent(duration=1000)  
+    extend = sound1 + silence
+    overlay = extend.overlay(sound2, position=300)
+    overlay2 = overlay.overlay(sound3, position=600)
+    #play(overlay)
+    overlay2.export(os.path.join(temp_dir, "chord.mp3"), format="mp3")
+    play = threading.Thread(target=playsound, args=(os.path.join(temp_dir, "chord.mp3"),))
+    play.start()
+
+generate_button = tk.Button(labelFrames["Chords"], text="Play Chord", command=playchord, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
+generate_button.grid(row=8, column=1, columnspan=1, padx=5, pady=4, sticky="w")
+
+
+#endregion #################### CHORDS ##############################
 #region ############## SCALES ######################
 
 # Add "Octave" dropdown to the Scales frame
