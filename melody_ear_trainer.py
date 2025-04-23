@@ -93,6 +93,7 @@ BG_COLOR = "#e1eaf7"  # Light blue background
 DEACTIVATED_BG_COLOR = "grey"  # Grey background for deactivated buttons
 BUTTON_COLOR = "#82aaf4"  # Sky blue for buttons
 TEXT_COLOR = "#0c1d43"  # Navy text color
+Melody = []
 
 # Create the main window
 root = tk.Tk()
@@ -129,7 +130,9 @@ def center_window(window):
 
 #region ############## FRAMES #####################
 
-labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chords", "Melody"]
+labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chord Settings", "Chords", "Melody"]
+hidden_frames = ["Settings", "Tonic", "Scales"]  # Frames to be hidden initially
+
 labelFrames = {}
 toggle_buttons = {}
 toggle_button_frame = tk.Frame(root, bg=BG_COLOR)
@@ -143,10 +146,14 @@ for i, lf in enumerate(labelFrameList):
 
     # Create a toggle button for the label frame
     toggle_button = tk.Button(toggle_button_frame, text=lf, font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-    toggle_button.grid(row=0, column=i, padx=10, pady=0, sticky="w")
+    toggle_button.grid(row=0, column=i, padx=5, pady=0, sticky="w")
     toggle_button.configure(command=lambda p=this_lf, b=toggle_button: toggle_settings(p, b))
     toggle_buttons[lf] = toggle_button
     toggle_button_tooltips[lf] = Tooltip(toggle_button, f"Show or hide {lf} section")
+
+    if lf in hidden_frames:
+        this_lf.grid_remove()
+        toggle_button.configure(bg=DEACTIVATED_BG_COLOR)
 
 # Function to toggle the visibility of the panes
 def toggle_settings(pane, button=None):
@@ -309,21 +316,74 @@ for i, note in enumerate(notes):
 
 #endregion #################### NOTES ##############################
 
+#region ############## CHORD SETTINGS ######################
+
+# Dropdown for "Maximum chord_frequency between notes"
+chord_frequency_label = tk.Label(labelFrames["Chord Settings"], text="Chord frequency:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+chord_frequency_label.grid(row=2, column=0, columnspan=2, padx=10, pady=4, sticky="w")
+chord_frequency_dropdown = ttk.Combobox(labelFrames["Chord Settings"], values=["Never", "Every 4 notes", "Every 2 notes", "Every note"], font=FONT, state="readonly", takefocus=True)
+chord_frequency_dropdown.grid(row=2, column=2, padx=10, pady=4, sticky="w")
+chord_frequency_dropdown.current(2)
+
+allow_repeated_chords_var = tk.BooleanVar(value=False)  # Unchecked by default
+allow_repeated_chords = tk.Label(labelFrames["Chord Settings"], text="Allow repeated chords:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+allow_repeated_chords.grid(row=5, column=0, columnspan=1, padx=10, pady=4, sticky="w")
+allow_repeated_chords_checkbox = tk.Checkbutton(labelFrames["Chord Settings"], text="Allow repeated chords", variable=allow_repeated_chords_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+allow_repeated_chords_checkbox.grid(row=5, column=2, padx=10, pady=4, sticky="w")
+
+arpeggiate_chords_var = tk.BooleanVar(value=False)  # Unchecked by default
+arpeggiate_chords = tk.Label(labelFrames["Chord Settings"], text="Arpeggiate chords:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+arpeggiate_chords.grid(row=6, column=0, columnspan=1, padx=10, pady=4, sticky="w")
+arpeggiate_checkbox = tk.Checkbutton(labelFrames["Chord Settings"], text="Arpeggiate chords", variable=arpeggiate_chords_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+arpeggiate_checkbox.grid(row=6, column=2, padx=10, pady=4, sticky="w")
+
+arpeggiate_chord_delay_label = tk.Label(labelFrames["Chord Settings"], text="Arpeggiate chord delay (ms):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+arpeggiate_chord_delay_label.grid(row=7, column=0, columnspan=2, padx=10, pady=4, sticky="w")
+arpeggiate_chord_delay_dropdown = ttk.Combobox(labelFrames["Chord Settings"], values=[100, 200, 300, 400, 500], font=FONT, state="readonly", takefocus=True)
+arpeggiate_chord_delay_dropdown.grid(row=7, column=2, padx=10, pady=4, sticky="w")
+arpeggiate_chord_delay_dropdown.current(2)  # Set the first option as the default
+
+# Dropdown for arpeggiate chord note order
+arpeggiate_chord_note_order_label = tk.Label(labelFrames["Chord Settings"], text="Arpeggiate chord note order:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+arpeggiate_chord_note_order_label.grid(row=8, column=0, columnspan=2, padx=10, pady=4, sticky="w")
+arpeggiate_chord_note_order_dropdown = ttk.Combobox(labelFrames["Chord Settings"], values=["Ascending", "Descending", "Random"], font=FONT, state="readonly", takefocus=True)
+arpeggiate_chord_note_order_dropdown.grid(row=8, column=2, padx=10, pady=4, sticky="w")
+arpeggiate_chord_note_order_dropdown.current(0)  # Set the first option as the default
+# Dropdown for harmonic vs arpeggiated chords
+
+#endregion #################### CHORD SETTINGS ##############################
+
 #region ############## CHORDS ######################
 
 def playchord():
+    chord_file = os.path.join(temp_dir, "chord.mp3")
+    os.remove(chord_file) if os.path.exists(chord_file) else None
     chord_notes = ["do", "mi", "so"]
-    random.shuffle(chord_notes)
-    sound1 = AudioSegment.from_mp3(Mapping[key_dropdown.get()]["Piano"][chord_notes[0]])
-    sound2 = AudioSegment.from_mp3(Mapping[key_dropdown.get()]["Piano"][chord_notes[1]])
-    sound3 = AudioSegment.from_mp3(Mapping[key_dropdown.get()]["Piano"][chord_notes[2]])
-    silence = AudioSegment.silent(duration=1000)  
-    extend = sound1 + silence
-    overlay = extend.overlay(sound2, position=300)
-    overlay2 = overlay.overlay(sound3, position=600)
-    #play(overlay)
-    overlay2.export(os.path.join(temp_dir, "chord.mp3"), format="mp3")
-    play = threading.Thread(target=playsound, args=(os.path.join(temp_dir, "chord.mp3"),))
+
+    if arpeggiate_chord_note_order_dropdown.get() == "Descending":
+        chord_notes.reverse()
+    elif arpeggiate_chord_note_order_dropdown.get() == "Random":
+        random.shuffle(chord_notes)
+
+    if arpeggiate_chords_var.get():
+        # Play the notes in the specified order with a delay
+
+        silence_length = (len(chord_notes) - 1) * int(arpeggiate_chord_delay_dropdown.get())
+        for i, note in enumerate(chord_notes):
+            if i == 0:
+                sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note])
+                silence = AudioSegment.silent(duration=silence_length)  
+                sound = sound + silence
+            else:
+                offset = int(arpeggiate_chord_delay_dropdown.get()) * i
+                sound = sound.overlay(AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note])                                                         
+                                      , position = offset)
+    else :
+        sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][chord_notes[0]])
+        for note in chord_notes[1:]:
+            sound = sound.overlay(AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note]))
+    sound.export(os.path.join(temp_dir, "chord.mp3"), format="mp3")
+    play = threading.Thread(target=playsound, args=(chord_file,))
     play.start()
 
 generate_button = tk.Button(labelFrames["Chords"], text="Play Chord", command=playchord, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
@@ -331,6 +391,7 @@ generate_button.grid(row=8, column=1, columnspan=1, padx=5, pady=4, sticky="w")
 
 
 #endregion #################### CHORDS ##############################
+
 #region ############## SCALES ######################
 
 # Add "Octave" dropdown to the Scales frame
@@ -380,22 +441,18 @@ update_note_set()
 
 #region ############## MELODY ######################
 
-# Functionality
-Melody = []
-
 def generate_melody():
     # Clear previous melody and files
     solfege_text.config(state="normal")  # Enable editing temporarily
     solfege_text.delete("1.0", tk.END)  # Clear the text box
     solfege_text.config(state="disabled")  # Disable editing again  
-    
-    # delete previous combined files
+    global Melody
+    Melody = []  # Clear the melody list
     for instrument in instruments:
         combined_file = instrument_temp_file(instrument)
         os.remove(combined_file) if os.path.exists(combined_file) else None
 
-    # initialize Melody and get user inputs
-    global Melody
+    # get user inputs
     available_notes = [note for note, var in note_vars.items() if var.get()]
     num_notes = int(notes_dropdown.get())
     max_distance = int(distance_dropdown.get())
@@ -412,7 +469,9 @@ def generate_melody():
     if len(available_notes) < min_number_of_notes:
         tk.messagebox.showwarning("Warning", "Not enough notes selected! Please select at least " + str(min_number_of_notes) + " note(s).")
         return  # Exit the function if no notes are available
-    # set the first note to"do" if "Start with do" is checked
+    
+    # create the actual melody according to the constraints
+    # set the first note to "do" if "Start with do" is checked
     if start_with_do_var.get():
         Melody = [start_with_do_dropdown.get()]
         if (not end_with_do_var.get() and num_notes > 1) or (end_with_do_var.get() and num_notes > 2):
@@ -440,6 +499,10 @@ def generate_melody():
     if end_with_do_var.get() and (len(Melody) < num_notes):
         Melody.append(end_with_do_dropdown.get())
 
+    # write the melodies to mp3 files
+    write_melody()
+
+def write_melody():
     # Combine MP3s for all instruments
     for instrument in instruments:
         combined = AudioSegment.empty()  # Start with an empty audio segment
@@ -507,5 +570,5 @@ for i in range(3):
 #endregion ################ MELODY ##############################
 
 # Run the application
-center_window(root)
+#center_window(root)
 root.mainloop()
