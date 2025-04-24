@@ -63,6 +63,7 @@ with open(mapping_file_path, "r") as file:
 mapping_keys = list(Mapping.keys())
 mapping_keys.sort()  # Sort the keys for better readability
 instruments = set()
+
 for instrument in Mapping.values():
     instruments.update(instrument.keys())
 instruments = sorted(instruments)  # Sort the instruments for better readability
@@ -84,8 +85,22 @@ for octave_scales in Note_sets.values():
     scales.update(octave_scales.keys())
 scales = sorted(scales)
 
+# Load Chords.txt into a dictionary named "Chords"
+chords_file_path = os.path.join(base_path, "mapping", "Chords.txt")
+Chords = {}
+chord_names = []  # List to store chord names in the same order as in the file
+with open(chords_file_path, "r") as file:
+    for line in file:
+        scale, chord_number, chord_name, notes = line.strip().split("\t")
+        if scale not in Chords:
+            Chords[scale] = {}
+        if chord_number not in Chords[scale]:
+            Chords[scale][chord_number] = {}
+        Chords[scale][chord_number][chord_name] = notes.split(",")  # Split notes into a list
+        chord_names.append(chord_name)  # Keep track of chord names in order
+
 # Define a global font and colors
-FONT = ("Arial", 14, "bold")
+FONT = ("Arial", 12, "bold")
 FONTLIGHT = ("Arial", 13)
 DEACTIVATEDFONT = ("Arial", 8)
 BIGFONT = ("Arial", 16, "bold")
@@ -124,7 +139,19 @@ def center_window(window):
     # Set the window position without specifying size
     window.geometry(f"+{x}+0")
 
-
+# initialize set of notes
+note_vars = {}
+# we have to load these as a hard-coded list to ensure that they stay in the right order.
+notes = [
+    "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
+    "do", "ga", "re", "nu", "mi", "fa", "jur", "so", "ki", "la", "pe", "ti",
+    "do1", "ga1", "re1", "nu1", "mi1", "fa1", "jur1", "so1", "ki1", "la1", "pe1", "ti1",
+    "do2"
+]
+# Initialize note_vars with BooleanVar for each note
+note_vars = {note: tk.BooleanVar(value=False) for note in notes}
+# Initialize BooleanVars for each chord
+chord_vars = {chord_name: tk.BooleanVar(value=True) for chord_name in chord_names}
 
 #endregion #######################SETUP##############################
 
@@ -210,7 +237,7 @@ instruments_label = tk.Label(labelFrames["Settings"], text="Instrument for playb
 instruments_label.grid(row=6, column=0, columnspan=2, padx=10, pady=4, sticky="w")
 instruments_dropdown = ttk.Combobox(labelFrames["Settings"], values=instruments, font=FONT, state="readonly", takefocus=True)
 instruments_dropdown.grid(row=6, column=2, padx=10, pady=4, sticky="w")
-instruments_dropdown.current(0)  # Set the first instrument as the default
+instruments_dropdown.current(1)  # Set the first instrument as the default
 
 #endregion #################### SETTINGS ##############################
 
@@ -259,17 +286,6 @@ def play_tonic(instrument):
 #endregion ############## TONIC ##########################33
 
 #region ############## NOTES ######################
-
-# initialize set of notes
-note_vars = {}
-notes = [
-    "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
-    "do", "ga", "re", "nu", "mi", "fa", "jur", "so", "ki", "la", "pe", "ti",
-    "do1", "ga1", "re1", "nu1", "mi1", "fa1", "jur1", "so1", "ki1", "la1", "pe1", "ti1",
-    "do2"
-]
-# Initialize note_vars with BooleanVar for each note
-note_vars = {note: tk.BooleanVar(value=False) for note in notes}
 
 # Function to toggle the state of a note button
 def toggle_note_state(note, button):
@@ -355,10 +371,19 @@ arpeggiate_chord_note_order_dropdown.current(0)  # Set the first option as the d
 
 #region ############## CHORDS ######################
 
-def playchord():
+# Function to toggle the state of a chord button
+def toggle_chord_state(chord_name, button):
+    if chord_vars[chord_name].get():  # If the chord is currently active
+        chord_vars[chord_name].set(False)  # Set it to inactive
+        button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Change the button color to grey
+    else:  # If the chord is currently inactive
+        chord_vars[chord_name].set(True)  # Set it to active
+        button.config(bg=BUTTON_COLOR, font=FONT)  # Change the button color to active color
+
+def playchord(chord_notes):
     chord_file = os.path.join(temp_dir, "chord.mp3")
     os.remove(chord_file) if os.path.exists(chord_file) else None
-    chord_notes = ["do", "mi", "so"]
+    #chord_notes = chord.split(",")
 
     if arpeggiate_chord_note_order_dropdown.get() == "Descending":
         chord_notes.reverse()
@@ -386,9 +411,36 @@ def playchord():
     play = threading.Thread(target=playsound, args=(chord_file,))
     play.start()
 
-generate_button = tk.Button(labelFrames["Chords"], text="Play Chord", command=playchord, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
-generate_button.grid(row=8, column=1, columnspan=1, padx=5, pady=4, sticky="w")
+#generate_button = tk.Button(labelFrames["Chords"], text="Play Chord", command=playchord, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
+#generate_button.grid(row=8, column=1, columnspan=1, padx=5, pady=4, sticky="w")
+# Create buttons for chords in the Chords LabelFrame
+chord_buttons = {}
+column = 0
+row = 0
+for scale, chord_numbers in Chords.items():
+    for chord_number, chords in chord_numbers.items():
+        for chord_name, notes in chords.items():
+            # Create a button for each chord
+            button = tk.Button(
+                labelFrames["Chords"],
+                text=chord_name,
+                font=FONT,
+                bg=BUTTON_COLOR,
+                fg=TEXT_COLOR,
+                height=1,
+                width=10,
+                command=lambda n=notes: playchord(n)  # Left-click plays the chord
+            )
+            button.grid(row=row, column=column, padx=4, pady=4, sticky="w")
 
+            # Bind right-click to toggle the state of the button
+            button.bind("<Button-3>", lambda event, n=chord_name, b=button: toggle_chord_state(n, b))
+
+            # Store the button reference in the dictionary
+            chord_buttons[chord_name] = button
+            column += 1
+        row += 1
+        column = 0
 
 #endregion #################### CHORDS ##############################
 
