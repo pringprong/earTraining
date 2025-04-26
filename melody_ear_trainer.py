@@ -158,7 +158,7 @@ chord_vars = {chord_name: tk.BooleanVar(value=True) for chord_name in chord_name
 #region ############## FRAMES #####################
 
 labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chord Settings", "Chords", "Melody"]
-hidden_frames = ["Settings", "Tonic", "Scales"]  # Frames to be hidden initially
+hidden_frames = ["Settings", "Tonic", "Scales", "Chord Settings"]  # Frames to be hidden initially
 
 labelFrames = {}
 toggle_buttons = {}
@@ -238,6 +238,20 @@ instruments_label.grid(row=6, column=0, columnspan=2, padx=10, pady=4, sticky="w
 instruments_dropdown = ttk.Combobox(labelFrames["Settings"], values=instruments, font=FONT, state="readonly", takefocus=True)
 instruments_dropdown.grid(row=6, column=2, padx=10, pady=4, sticky="w")
 instruments_dropdown.current(1)  # Set the first instrument as the default
+
+# Dropdown for time between notes selection
+melody_offset_label = tk.Label(labelFrames["Settings"], text="Time between notes in melody (ms):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+melody_offset_label.grid(row=7, column=0, columnspan=2, padx=10, pady=4, sticky="w")
+melody_offset_dropdown = ttk.Combobox(labelFrames["Settings"], values=[300, 600, 900, 1200], font=FONT, state="readonly", takefocus=True)
+melody_offset_dropdown.grid(row=7, column=2, padx=10, pady=4, sticky="w")
+melody_offset_dropdown.current(1)  
+
+# Dropdown for time between notes selection
+truncate_label = tk.Label(labelFrames["Settings"], text="Truncate notes in melody (ms):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+truncate_label.grid(row=8, column=0, columnspan=2, padx=10, pady=4, sticky="w")
+truncate_dropdown = ttk.Combobox(labelFrames["Settings"], values=["None", 600, 900, 1200, 1500, 1800], font=FONT, state="readonly", takefocus=True)
+truncate_dropdown.grid(row=8, column=2, padx=10, pady=4, sticky="w")
+truncate_dropdown.current(2) 
 
 #endregion #################### SETTINGS ##############################
 
@@ -347,7 +361,7 @@ allow_repeated_chords.grid(row=5, column=0, columnspan=1, padx=10, pady=4, stick
 allow_repeated_chords_checkbox = tk.Checkbutton(labelFrames["Chord Settings"], text="Allow repeated chords", variable=allow_repeated_chords_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 allow_repeated_chords_checkbox.grid(row=5, column=2, padx=10, pady=4, sticky="w")
 
-arpeggiate_chords_var = tk.BooleanVar(value=False)  # Unchecked by default
+arpeggiate_chords_var = tk.BooleanVar(value=True)  # Unchecked by default
 arpeggiate_chords = tk.Label(labelFrames["Chord Settings"], text="Arpeggiate chords:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 arpeggiate_chords.grid(row=6, column=0, columnspan=1, padx=10, pady=4, sticky="w")
 arpeggiate_checkbox = tk.Checkbutton(labelFrames["Chord Settings"], text="Arpeggiate chords", variable=arpeggiate_chords_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -380,34 +394,56 @@ def toggle_chord_state(chord_name, button):
         chord_vars[chord_name].set(True)  # Set it to active
         button.config(bg=BUTTON_COLOR, font=FONT)  # Change the button color to active color
 
-def playchord(chord_notes):
+def playchord(chord_notes_original):
     chord_file = os.path.join(temp_dir, "chord.mp3")
     os.remove(chord_file) if os.path.exists(chord_file) else None
-    #chord_notes = chord.split(",")
+    chord_notes = chord_notes_original.copy()  # Create a copy of the chord notes
 
     if arpeggiate_chord_note_order_dropdown.get() == "Descending":
         chord_notes.reverse()
     elif arpeggiate_chord_note_order_dropdown.get() == "Random":
         random.shuffle(chord_notes)
 
+    instrument = instruments_dropdown.get()
+    chord_length = len(chord_notes)
+
     if arpeggiate_chords_var.get():
         # Play the notes in the specified order with a delay
-
-        silence_length = (len(chord_notes) - 1) * int(arpeggiate_chord_delay_dropdown.get())
+        last_note= AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][chord_notes[-1]])
+        length_of_last_note = len(last_note) if last_note else 0
+        offset = int(arpeggiate_chord_delay_dropdown.get())
+        truncate = False
+        if (truncate_dropdown.get() != "None"):
+            truncate = True
+            truncation = int(truncate_dropdown.get())
+            length_of_last_note = min(length_of_last_note, truncation)
+        # the total length of the chord in ms is the number of notes substract 1
+        # times the time between notes plus the time of the last note
+        chord_length_ms = ((chord_length - 1) * offset) + length_of_last_note
+        sound = AudioSegment.silent(duration=chord_length_ms) 
+        # Combine MP3s for all instruments
         for i, note in enumerate(chord_notes):
-            if i == 0:
-                sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note])
-                silence = AudioSegment.silent(duration=silence_length)  
-                sound = sound + silence
-            else:
-                offset = int(arpeggiate_chord_delay_dropdown.get()) * i
-                sound = sound.overlay(AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note])                                                         
-                                      , position = offset)
+            this_offset = offset * i
+            new_sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][note])
+            if (truncate):
+                #new_sound = new_sound[:truncation]
+                new_sound = new_sound.fade(to_gain=-120, start=truncation, duration=200)
+            sound = sound.overlay(new_sound, position = this_offset)
     else :
-        sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][chord_notes[0]])
+        sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][chord_notes[0]])
+        length_of_first_note = len(sound) if sound else 0
+        truncate = False
+        if (truncate_dropdown.get() != "None"):
+            truncate = True
+            truncation = int(truncate_dropdown.get())
+            length_of_last_note = truncation
+            sound = sound.fade(to_gain=-120, start=truncation-200, duration=200)
         for note in chord_notes[1:]:
-            sound = sound.overlay(AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note]))
-    sound.export(os.path.join(temp_dir, "chord.mp3"), format="mp3")
+            next_note = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note])
+            if (truncate):
+                next_note = next_note.fade(to_gain=-120, start=truncation-200, duration=200)
+            sound = sound.overlay(next_note)
+    sound.export(chord_file, format="mp3")   
     play = threading.Thread(target=playsound, args=(chord_file,))
     play.start()
 
@@ -552,7 +588,7 @@ def generate_melody():
         Melody.append(end_with_do_dropdown.get())
 
     # write the melodies to mp3 files
-    write_melody()
+    write_overlay_melody()
 
 def write_melody():
     # Combine MP3s for all instruments
@@ -569,8 +605,38 @@ def write_melody():
             combined += audio  # Concatenate the audio
         # Save the combined audio for the instrument
         combined_file = instrument_temp_file(instrument)
-        combined.export(combined_file, format="mp3")     
+        combined.export(combined_file, format="mp3")      
 
+def write_overlay_melody():
+    # calculate the length of the melody
+    melody_length = len(Melody)
+
+    for instrument in instruments:
+
+        last_note= AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][Melody[-1]])
+        length_of_last_note = len(last_note) if last_note else 0
+        offset = int(melody_offset_dropdown.get())
+        truncate = False
+        if (truncate_dropdown.get() != "None"):
+            truncate = True
+            truncation = int(truncate_dropdown.get())
+            length_of_last_note = min(length_of_last_note, truncation)
+        # the total length of the melody in ms is the number of notes substract 1
+        # times the time between notes plus the time of the last note
+        melody_length_ms = (melody_length * offset) + length_of_last_note
+        sound = AudioSegment.silent(duration=melody_length_ms) 
+        #silence_length = melody_length_ms - length_of_first_note
+        # Combine MP3s for all instruments
+        for i, note in enumerate(Melody):
+            this_offset = offset * i
+            new_sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][note])
+            if (truncate):
+                #new_sound = new_sound[:truncation]
+                new_sound = new_sound.fade(to_gain=-120, start=truncation, duration=200)
+            sound = sound.overlay(new_sound, position = this_offset)
+        combined_file = instrument_temp_file(instrument)
+        sound.export(combined_file, format="mp3")   
+ 
 def show_solfege():
     solfege_text.config(state="normal")  # Enable editing temporarily
     solfege_text.delete("1.0", tk.END)  # Clear the text box
