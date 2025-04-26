@@ -89,6 +89,7 @@ scales = sorted(scales)
 chords_file_path = os.path.join(base_path, "mapping", "Chords.txt")
 Chords = {}
 chord_names = []  # List to store chord names in the same order as in the file
+chord_button_tooltips = {}
 with open(chords_file_path, "r") as file:
     for line in file:
         scale, chord_number, chord_name, notes = line.strip().split("\t")
@@ -157,7 +158,7 @@ chord_vars = {chord_name: tk.BooleanVar(value=True) for chord_name in chord_name
 
 #region ############## FRAMES #####################
 
-labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chord Settings", "Chords", "Melody"]
+labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chord Settings", "Major Scale Chords", "Minor Scale Chords", "Other Chords", "Melody"]
 hidden_frames = ["Settings", "Tonic", "Scales", "Chord Settings"]  # Frames to be hidden initially
 
 labelFrames = {}
@@ -385,14 +386,35 @@ arpeggiate_chord_note_order_dropdown.current(0)  # Set the first option as the d
 
 #region ############## CHORDS ######################
 
-# Function to toggle the state of a chord button
+def get_chord_button_color(chord_name):
+    color = BUTTON_COLOR
+    if chord_name.endswith("_L_R"):
+        color = "#2c7da0"
+    elif chord_name.endswith("_M_R"):
+        color = "#61a5c2"
+    elif chord_name.endswith("_H_R"):
+        color = "#a9d6e5"
+    elif chord_name.endswith("_L_1i"):
+        color = "#52b788"
+    elif chord_name.endswith("_M_1i"):
+        color = "#95d5b2"
+    elif chord_name.endswith("_H_1i"):
+        color = "#d8f3dc"
+    elif chord_name.endswith("_L_2i"):
+        color = "#b185db"
+    elif chord_name.endswith("_M_2i"):
+        color = "#d2b7e5"
+    elif chord_name.endswith("_H_2i"):
+        color = "#dec9e9"
+    return color
+
 def toggle_chord_state(chord_name, button):
     if chord_vars[chord_name].get():  # If the chord is currently active
         chord_vars[chord_name].set(False)  # Set it to inactive
         button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Change the button color to grey
     else:  # If the chord is currently inactive
         chord_vars[chord_name].set(True)  # Set it to active
-        button.config(bg=BUTTON_COLOR, font=FONT)  # Change the button color to active color
+        button.config(bg=get_chord_button_color(chord_name), font=FONT)  # Change the button color to active color
 
 def playchord(chord_notes_original):
     chord_file = os.path.join(temp_dir, "chord.mp3")
@@ -447,27 +469,32 @@ def playchord(chord_notes_original):
     play = threading.Thread(target=playsound, args=(chord_file,))
     play.start()
 
-#generate_button = tk.Button(labelFrames["Chords"], text="Play Chord", command=playchord, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
-#generate_button.grid(row=8, column=1, columnspan=1, padx=5, pady=4, sticky="w")
 # Create buttons for chords in the Chords LabelFrame
 chord_buttons = {}
 column = 0
 row = 0
 for scale, chord_numbers in Chords.items():
+    if (scale == "Major"):
+        frame_name = "Major Scale Chords"
+    elif (scale == "Minor"):
+        frame_name = "Minor Scale Chords"
+    else: 
+        frame_name = "Other Chords"
     for chord_number, chords in chord_numbers.items():
         for chord_name, notes in chords.items():
             # Create a button for each chord
             button = tk.Button(
-                labelFrames["Chords"],
+                labelFrames[frame_name],
                 text=chord_name,
                 font=FONT,
-                bg=BUTTON_COLOR,
+                bg=get_chord_button_color(chord_name),
                 fg=TEXT_COLOR,
                 height=1,
-                width=10,
+                width=8,
                 command=lambda n=notes: playchord(n)  # Left-click plays the chord
             )
             button.grid(row=row, column=column, padx=4, pady=4, sticky="w")
+            chord_button_tooltips[chord_name] = Tooltip(button, notes)
 
             # Bind right-click to toggle the state of the button
             button.bind("<Button-3>", lambda event, n=chord_name, b=button: toggle_chord_state(n, b))
