@@ -39,6 +39,97 @@ class Tooltip:
 
 #endregion ########### TOOLTIP
 
+#region ############## FONTS & COLORS ###############
+
+def multiply_hex_color(hex_color, factor):
+    """Multiplies a hex color by a factor.
+
+    Args:
+        hex_color: The hex color string (e.g., "#RRGGBB").
+        factor: The multiplication factor (a float or integer).
+
+    Returns:
+        The multiplied hex color string.
+    """
+    if (factor == 1):
+        return hex_color
+    hex_color = hex_color.lstrip("#")
+    r = int(hex_color[0:2], 16)
+    g = int(hex_color[2:4], 16)
+    b = int(hex_color[4:6], 16)
+
+    new_r = int(r * factor)
+    new_g = int(g * factor)
+    new_b = int(b * factor)
+
+    new_r = min(255, max(0, new_r))
+    new_g = min(255, max(0, new_g))
+    new_b = min(255, max(0, new_b))
+
+    return "#{:02x}{:02x}{:02x}".format(new_r, new_g, new_b)
+
+# Define a global font and colors
+FONT = ("Arial", 12, "bold")
+FONTLIGHT = ("Arial", 13)
+DEACTIVATEDFONT = ("Arial", 8)
+BIGFONT = ("Arial", 16, "bold")
+BG_COLOR = multiply_hex_color("#98a59c", 1.6)  # Light blue background
+DEACTIVATED_BG_COLOR = "#b8c7b2"  # Grey background for deactivated buttons
+BUTTON_COLOR = "#84b6d4"  # Sky blue for buttons
+TEXT_COLOR = "#34341d"  # 
+
+COLOR1 = "#8189d3" # dark blue green
+COLOR2 = "#89afaa"  # brown
+COLOR3 = "#bcae9a"  # blue
+COLOR4 = "#c3b2b7"  # brtck red
+COLOR5 = "#d0a89b"  # dusty purple
+
+FACTOR1 = 0.85  # Darker color factor
+FACTOR2 = 1  #  color factor
+FACTOR3 = 1.15  #  color factor
+FACTOR4 = 1.3  # Lightest color factor
+FACTOR5 = 1.45  # Lightest color factor
+
+def get_chord_button_color(chord_name):
+    color = BUTTON_COLOR
+    if chord_name.endswith("_VL_R"):
+        color = multiply_hex_color(COLOR1, FACTOR1)
+    elif chord_name.endswith("_L_R"):
+        color = multiply_hex_color(COLOR1, FACTOR2)
+    elif chord_name.endswith("_M_R"):
+        color = multiply_hex_color(COLOR1, FACTOR3)
+    elif chord_name.endswith("_H_R"):
+        color = multiply_hex_color(COLOR1, FACTOR4)
+    elif chord_name.endswith("_VL_1i"):
+        color = multiply_hex_color(COLOR2, FACTOR1)
+    elif chord_name.endswith("_L_1i"):
+        color = multiply_hex_color(COLOR2, FACTOR2)
+    elif chord_name.endswith("_M_1i"):
+        color = multiply_hex_color(COLOR2, FACTOR3)
+    elif chord_name.endswith("_H_1i"):
+        color = multiply_hex_color(COLOR2, FACTOR4)
+    elif chord_name.endswith("_VL_2i"):
+        color = multiply_hex_color(COLOR3, FACTOR1)
+    elif chord_name.endswith("_L_2i"):
+        color = multiply_hex_color(COLOR3, FACTOR2)
+    elif chord_name.endswith("_M_2i"):
+        color = multiply_hex_color(COLOR3, FACTOR3)
+    elif chord_name.endswith("_H_2i"):
+        color = multiply_hex_color(COLOR3, FACTOR4)
+    elif chord_name.endswith("_VL_3i"):
+        color = multiply_hex_color(COLOR4, FACTOR1)
+    elif chord_name.endswith("_L_3i"):
+        color = multiply_hex_color(COLOR4, FACTOR2)
+    elif chord_name.endswith("_M_3i"):
+        color = multiply_hex_color(COLOR4, FACTOR3)
+    elif chord_name.endswith("_H_3i"):
+        color = multiply_hex_color(COLOR4, FACTOR4)
+    elif chord_name.endswith("_All"):
+        color = multiply_hex_color(COLOR5, FACTOR2)
+    return color
+
+#endregion ########### FONTS & COLORS ###############
+
 #region ############## SETUP ######################
 
 # Determine the base path (for both development and PyInstaller executable)
@@ -100,15 +191,7 @@ with open(chords_file_path, "r") as file:
         Chords[scale][chord_number][chord_name] = notes.split(",")  # Split notes into a list
         chord_names.append(chord_name)  # Keep track of chord names in order
 
-# Define a global font and colors
-FONT = ("Arial", 12, "bold")
-FONTLIGHT = ("Arial", 13)
-DEACTIVATEDFONT = ("Arial", 8)
-BIGFONT = ("Arial", 16, "bold")
-BG_COLOR = "#e1eaf7"  # Light blue background
-DEACTIVATED_BG_COLOR = "grey"  # Grey background for deactivated buttons
-BUTTON_COLOR = "#82aaf4"  # Sky blue for buttons
-TEXT_COLOR = "#0c1d43"  # Navy text color
+# global variable Melody to store the generated melody
 Melody = []
 
 # Create the main window
@@ -385,28 +468,6 @@ arpeggiate_chord_note_order_dropdown.current(0)  # Set the first option as the d
 #endregion #################### CHORD SETTINGS ##############################
 
 #region ############## CHORDS ######################
-
-def get_chord_button_color(chord_name):
-    color = BUTTON_COLOR
-    if chord_name.endswith("_L_R"):
-        color = "#2c7da0"
-    elif chord_name.endswith("_M_R"):
-        color = "#61a5c2"
-    elif chord_name.endswith("_H_R"):
-        color = "#a9d6e5"
-    elif chord_name.endswith("_L_1i"):
-        color = "#52b788"
-    elif chord_name.endswith("_M_1i"):
-        color = "#95d5b2"
-    elif chord_name.endswith("_H_1i"):
-        color = "#d8f3dc"
-    elif chord_name.endswith("_L_2i"):
-        color = "#b185db"
-    elif chord_name.endswith("_M_2i"):
-        color = "#d2b7e5"
-    elif chord_name.endswith("_H_2i"):
-        color = "#dec9e9"
-    return color
 
 def toggle_chord_state(chord_name, button):
     if chord_vars[chord_name].get():  # If the chord is currently active
