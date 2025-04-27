@@ -491,7 +491,11 @@ def playchord(chord_notes_original):
 
     if arpeggiate_chords_var.get():
         # Play the notes in the specified order with a delay
-        last_note= AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][chord_notes[-1]])
+        file_to_play = Mapping[key_dropdown.get()][instrument][chord_notes[-1]]
+        folder, filename = os.path.split(file_to_play)   
+        full_path = os.path.join(base_path, folder, filename)
+
+        last_note= AudioSegment.from_mp3(full_path)
         length_of_last_note = len(last_note) if last_note else 0
         offset = int(arpeggiate_chord_delay_dropdown.get())
         truncate = False
@@ -506,13 +510,21 @@ def playchord(chord_notes_original):
         # Combine MP3s for all instruments
         for i, note in enumerate(chord_notes):
             this_offset = offset * i
-            new_sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][note])
+            file_to_play = Mapping[key_dropdown.get()][instrument][note]
+            folder, filename = os.path.split(file_to_play)   
+            full_path = os.path.join(base_path, folder, filename)
+
+            new_sound = AudioSegment.from_mp3(full_path)
             if (truncate):
                 #new_sound = new_sound[:truncation]
                 new_sound = new_sound.fade(to_gain=-120, start=truncation, duration=200)
             sound = sound.overlay(new_sound, position = this_offset)
     else :
-        sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][chord_notes[0]])
+        file_to_play = Mapping[key_dropdown.get()][instrument][chord_notes[0]]
+        folder, filename = os.path.split(file_to_play)   
+        full_path = os.path.join(base_path, folder, filename)
+        
+        sound = AudioSegment.from_mp3(full_path)
         length_of_first_note = len(sound) if sound else 0
         truncate = False
         if (truncate_dropdown.get() != "None"):
@@ -521,7 +533,10 @@ def playchord(chord_notes_original):
             length_of_last_note = truncation
             sound = sound.fade(to_gain=-120, start=truncation-200, duration=200)
         for note in chord_notes[1:]:
-            next_note = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note])
+            file_to_play = Mapping[key_dropdown.get()][instruments_dropdown.get()][note]
+            folder, filename = os.path.split(file_to_play)   
+            full_path = os.path.join(base_path, folder, filename)
+            next_note = AudioSegment.from_mp3(full_path)
             if (truncate):
                 next_note = next_note.fade(to_gain=-120, start=truncation-200, duration=200)
             sound = sound.overlay(next_note)
@@ -699,8 +714,11 @@ def write_overlay_melody():
     melody_length = len(Melody)
 
     for instrument in instruments:
+        file_to_play = Mapping[key_dropdown.get()][instrument][Melody[-1]]
+        folder, filename = os.path.split(file_to_play)   
+        full_path = os.path.join(base_path, folder, filename)
+        last_note= AudioSegment.from_mp3(full_path)
 
-        last_note= AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][Melody[-1]])
         length_of_last_note = len(last_note) if last_note else 0
         offset = int(melody_offset_dropdown.get())
         truncate = False
@@ -716,7 +734,10 @@ def write_overlay_melody():
         # Combine MP3s for all instruments
         for i, note in enumerate(Melody):
             this_offset = offset * i
-            new_sound = AudioSegment.from_mp3(Mapping[key_dropdown.get()][instrument][note])
+            file_to_play = Mapping[key_dropdown.get()][instrument][note]
+            folder, filename = os.path.split(file_to_play)   
+            full_path = os.path.join(base_path, folder, filename)
+            new_sound = AudioSegment.from_mp3(full_path)
             if (truncate):
                 #new_sound = new_sound[:truncation]
                 new_sound = new_sound.fade(to_gain=-120, start=truncation, duration=200)
