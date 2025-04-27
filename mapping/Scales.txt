@@ -1,9 +1,9 @@
-Lower octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
-Lower and middle octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
-Middle octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
-Middle and higher octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
-Higher octave	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
-All octaves	Default	so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
+Lower octave	Default	do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2
+Lower and middle octave	Default	do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2
+Middle octave	Default	do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2
+Middle and higher octave	Default	do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2
+Higher octave	Default	do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2
+All octaves	Default	do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2
 Lower octave	Diatonic major	do0,re0,mi0,fa0,so0,la0,ti0,do
 Lower and middle octave	Diatonic major	do0,re0,mi0,fa0,so0,la0,ti0,do,re,mi,fa,so,la,ti,do1
 Middle octave	Diatonic major	do,re,mi,fa,so,la,ti,do1

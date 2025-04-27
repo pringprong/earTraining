@@ -242,7 +242,7 @@ chord_vars = {chord_name: tk.BooleanVar(value=True) for chord_name in chord_name
 #region ############## FRAMES #####################
 
 labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chord Settings", "Major Scale Chords", "Minor Scale Chords", "Other Chords", "Melody"]
-hidden_frames = ["Settings", "Tonic", "Scales", "Chord Settings"]  # Frames to be hidden initially
+hidden_frames = ["Settings", "Tonic", "Scales", "Chord Settings", "Major Scale Chords", "Minor Scale Chords", "Other Chords"]  # Frames to be hidden initially
 
 labelFrames = {}
 toggle_buttons = {}
@@ -304,7 +304,7 @@ distance_label = tk.Label(labelFrames["Settings"], text="Max distance between ad
 distance_label.grid(row=2, column=0, columnspan=2, padx=10, pady=4, sticky="w")
 distance_dropdown = ttk.Combobox(labelFrames["Settings"], values=[1, 2, 3, 4, 5, 6, 7], font=FONT, state="readonly", takefocus=True)
 distance_dropdown.grid(row=2, column=2, padx=10, pady=4, sticky="w")
-distance_dropdown.current(2)
+distance_dropdown.current(6)
 
 # Define BooleanVars for checkboxes
 start_with_do_var = tk.BooleanVar(value=True)  # Checked by default
@@ -321,21 +321,21 @@ instruments_label = tk.Label(labelFrames["Settings"], text="Instrument for playb
 instruments_label.grid(row=6, column=0, columnspan=2, padx=10, pady=4, sticky="w")
 instruments_dropdown = ttk.Combobox(labelFrames["Settings"], values=instruments, font=FONT, state="readonly", takefocus=True)
 instruments_dropdown.grid(row=6, column=2, padx=10, pady=4, sticky="w")
-instruments_dropdown.current(1)  # Set the first instrument as the default
+instruments_dropdown.current(1)  
 
 # Dropdown for time between notes selection
 melody_offset_label = tk.Label(labelFrames["Settings"], text="Time between notes in melody (ms):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 melody_offset_label.grid(row=7, column=0, columnspan=2, padx=10, pady=4, sticky="w")
 melody_offset_dropdown = ttk.Combobox(labelFrames["Settings"], values=[300, 600, 900, 1200], font=FONT, state="readonly", takefocus=True)
 melody_offset_dropdown.grid(row=7, column=2, padx=10, pady=4, sticky="w")
-melody_offset_dropdown.current(1)  
+melody_offset_dropdown.current(2)  
 
 # Dropdown for time between notes selection
 truncate_label = tk.Label(labelFrames["Settings"], text="Truncate notes in melody (ms):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 truncate_label.grid(row=8, column=0, columnspan=2, padx=10, pady=4, sticky="w")
 truncate_dropdown = ttk.Combobox(labelFrames["Settings"], values=["None", 600, 900, 1200, 1500, 1800], font=FONT, state="readonly", takefocus=True)
 truncate_dropdown.grid(row=8, column=2, padx=10, pady=4, sticky="w")
-truncate_dropdown.current(2) 
+truncate_dropdown.current(3) 
 
 #endregion #################### SETTINGS ##############################
 
@@ -414,7 +414,6 @@ for i, note in enumerate(notes):
     button = tk.Button(
         labelFrames["Notes"],
         text=note,
-        #font=FONTLIGHT if note in ["ga0", "nu0", "jur0", "ki0", "pe0", "ga", "nu", "jur", "ki", "pe", "ga1", "nu1", "jur1", "ki1", "pe1"] else FONT,
         font=DEACTIVATEDFONT,
         bg=DEACTIVATED_BG_COLOR,  # Default to inactive color
         fg=TEXT_COLOR,
@@ -776,5 +775,5 @@ for i in range(3):
 #endregion ################ MELODY ##############################
 
 # Run the application
-#center_window(root)
+center_window(root)
 root.mainloop()
