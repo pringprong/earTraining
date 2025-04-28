@@ -204,6 +204,12 @@ temp_dir = tempfile.gettempdir()  # Get the system's temporary directory
 def instrument_temp_file(instrument):
     return os.path.join(temp_dir, f"combined_melody_{instrument}.mp3")
 
+# this is to ensure that we always use the os.path method to get the mp3 from the filename
+def get_mp3(file_to_play):
+    folder, filename = os.path.split(file_to_play)   
+    full_path = os.path.join(base_path, folder, filename)
+    return AudioSegment.from_mp3(full_path)
+
 def on_closing():      
     for instrument in instruments:
         combined_file = instrument_temp_file(instrument)
@@ -264,15 +270,15 @@ for i, lf in enumerate(labelFrameList):
 
     if lf in hidden_frames:
         this_lf.grid_remove()
-        toggle_button.configure(bg=DEACTIVATED_BG_COLOR)
+        toggle_button.configure(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)
 
 # Function to toggle the visibility of the panes
 def toggle_settings(pane, button=None):
     if button is not None:
         if button['bg'] == BUTTON_COLOR:
-            button.configure(bg=DEACTIVATED_BG_COLOR)
+            button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Change the button color to grey
         else:
-            button.configure(bg=BUTTON_COLOR)
+            button.config(bg=BUTTON_COLOR, font=FONT)
     if pane.winfo_ismapped():
         pane.grid_remove()  # Hide the pane
     else:
@@ -290,7 +296,7 @@ key_dropdown.grid(row=0, column=2, padx=10, pady=4, sticky="w")
 key_dropdown.current(3)
 # Set initial focus
 key_dropdown.focus_set()
-key_dropdown_tooltip = Tooltip(key_dropdown, "The note \"do\" will be set to the key of the melody.")
+key_dropdown_tooltip = Tooltip(key_dropdown, "The note \"do\" will be set to the key of the melody. E is the lowest key.")
 
 # Dropdown for "Number of notes"
 notes_label = tk.Label(labelFrames["Settings"], text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -358,28 +364,30 @@ end_with_do_dropdown = ttk.Combobox(labelFrames["Tonic"], values=["do0", "la0", 
 end_with_do_dropdown.grid(row=4, column=2, padx=10, pady=4, sticky="w")
 end_with_do_dropdown.current(2)
 
-play_guitar_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Guitar Tonic", command=lambda: play_tonic("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_guitar_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Guitar Tonic", 
+                                     command=lambda: play_single_note("Guitar", start_with_do_dropdown.get(), True), 
+                                     font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
 play_guitar_tonic_button.grid(row=10, column=0, padx=10, pady=4, sticky="w")
 
-play_piano_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Piano Tonic", command=lambda: play_tonic("Piano"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_piano_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Piano Tonic", 
+                                    command=lambda: play_single_note("Piano", start_with_do_dropdown.get(), True), 
+                                    font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
 play_piano_tonic_button.grid(row=10, column=1, padx=10, pady=4, sticky="w")
 
-play_solfege_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Solfege Tonic", command=lambda: play_tonic("Solfege"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+play_solfege_tonic_button = tk.Button(labelFrames["Tonic"], text="Play Solfege Tonic", 
+                                      command=lambda: play_single_note("Solfege", start_with_do_dropdown.get(), True), 
+                                      font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR)
 play_solfege_tonic_button.grid(row=10, column=2, padx=10, pady=4, sticky="w")
 
-def play_tonic(instrument):
-    key = key_dropdown.get()
-    file_to_play = Mapping[key][instrument][start_with_do_dropdown.get()]
-    
-    # Split file_to_play into folder and filename
-    folder, filename = os.path.split(file_to_play)
-    
-    # Reassemble the path using base_path
-    full_path = os.path.join(base_path, folder, filename)
-    
-    # Play the file
-    play = threading.Thread(target=playsound, args=(full_path,))
-    play.start()
+# Function to play a single note when an active button is left-clicked, or when the play tonic buttons are clicked
+def play_single_note(instrument, note, should_play):
+    if (should_play):
+        key = key_dropdown.get()
+        file_to_play = Mapping[key][instrument][note]
+        folder, filename = os.path.split(file_to_play)
+        full_path = os.path.join(base_path, folder, filename)
+        play = threading.Thread(target=playsound, args=(full_path,))
+        play.start()
 
 #endregion ############## TONIC ##########################33
 
@@ -394,19 +402,6 @@ def toggle_note_state(note, button):
         note_vars[note].set(True)  # Set it to active
         button.config(bg=BUTTON_COLOR, font=FONT)  # Change the button color to active color
 
-# Function to play a single note when an active button is left-clicked
-def play_single_note(note):
-    if note_vars[note].get():  # Only play if the note is active
-        key = key_dropdown.get()
-        file_to_play = Mapping[key][instruments_dropdown.get()][note]
-        # Split file_to_play into folder and filename
-        folder, filename = os.path.split(file_to_play)
-        # Reassemble the path using base_path
-        full_path = os.path.join(base_path, folder, filename)
-        # Play the file
-        play = threading.Thread(target=playsound, args=(full_path,))
-        play.start()
-
 # Dictionary to store references to the buttons
 note_buttons = {}
 for i, note in enumerate(notes):
@@ -419,9 +414,9 @@ for i, note in enumerate(notes):
         fg=TEXT_COLOR,
         height=1,
         width=3,
-        command=lambda n=note: play_single_note(n)  # Left-click plays the note if active
     )
     button.grid(row=i // 12, column=i % 12, padx=4, pady=4)
+    button.configure(command=lambda n=note: play_single_note(instruments_dropdown.get(), n, note_vars[n].get()))  # Left-click plays the note
     # Bind right-click to toggle the state of the button
     button.bind("<Button-3>", lambda event, n=note, b=button: toggle_note_state(n, b))
     # Store the button reference in the dictionary
@@ -491,11 +486,7 @@ def playchord(chord_notes_original):
 
     if arpeggiate_chords_var.get():
         # Play the notes in the specified order with a delay
-        file_to_play = Mapping[key_dropdown.get()][instrument][chord_notes[-1]]
-        folder, filename = os.path.split(file_to_play)   
-        full_path = os.path.join(base_path, folder, filename)
-
-        last_note= AudioSegment.from_mp3(full_path)
+        last_note= get_mp3(Mapping[key_dropdown.get()][instrument][chord_notes[-1]])
         length_of_last_note = len(last_note) if last_note else 0
         offset = int(arpeggiate_chord_delay_dropdown.get())
         truncate = False
@@ -510,21 +501,12 @@ def playchord(chord_notes_original):
         # Combine MP3s for all instruments
         for i, note in enumerate(chord_notes):
             this_offset = offset * i
-            file_to_play = Mapping[key_dropdown.get()][instrument][note]
-            folder, filename = os.path.split(file_to_play)   
-            full_path = os.path.join(base_path, folder, filename)
-
-            new_sound = AudioSegment.from_mp3(full_path)
+            new_sound = get_mp3(Mapping[key_dropdown.get()][instrument][note])
             if (truncate):
-                #new_sound = new_sound[:truncation]
                 new_sound = new_sound.fade(to_gain=-120, start=truncation, duration=200)
             sound = sound.overlay(new_sound, position = this_offset)
-    else :
-        file_to_play = Mapping[key_dropdown.get()][instrument][chord_notes[0]]
-        folder, filename = os.path.split(file_to_play)   
-        full_path = os.path.join(base_path, folder, filename)
-        
-        sound = AudioSegment.from_mp3(full_path)
+    else :       
+        sound = get_mp3(Mapping[key_dropdown.get()][instrument][chord_notes[0]])
         length_of_first_note = len(sound) if sound else 0
         truncate = False
         if (truncate_dropdown.get() != "None"):
@@ -533,10 +515,7 @@ def playchord(chord_notes_original):
             length_of_last_note = truncation
             sound = sound.fade(to_gain=-120, start=truncation-200, duration=200)
         for note in chord_notes[1:]:
-            file_to_play = Mapping[key_dropdown.get()][instruments_dropdown.get()][note]
-            folder, filename = os.path.split(file_to_play)   
-            full_path = os.path.join(base_path, folder, filename)
-            next_note = AudioSegment.from_mp3(full_path)
+            next_note = get_mp3(Mapping[key_dropdown.get()][instruments_dropdown.get()][note])
             if (truncate):
                 next_note = next_note.fade(to_gain=-120, start=truncation-200, duration=200)
             sound = sound.overlay(next_note)
@@ -698,12 +677,7 @@ def write_melody():
         combined = AudioSegment.empty()  # Start with an empty audio segment
         key = key_dropdown.get()
         for note in Melody:
-            file_to_play = Mapping[key][instrument][note]
-            # Split file_to_play into folder and filename
-            folder, filename = os.path.split(file_to_play)  
-            # Reassemble the path using base_path
-            full_path = os.path.join(base_path, folder, filename)
-            audio = AudioSegment.from_file(full_path, format="mp3")  # Load the MP3 file
+            audio = get_mp3(Mapping[key][instrument][note])
             combined += audio  # Concatenate the audio
         # Save the combined audio for the instrument
         combined_file = instrument_temp_file(instrument)
@@ -714,11 +688,7 @@ def write_overlay_melody():
     melody_length = len(Melody)
 
     for instrument in instruments:
-        file_to_play = Mapping[key_dropdown.get()][instrument][Melody[-1]]
-        folder, filename = os.path.split(file_to_play)   
-        full_path = os.path.join(base_path, folder, filename)
-        last_note= AudioSegment.from_mp3(full_path)
-
+        last_note= get_mp3(Mapping[key_dropdown.get()][instrument][Melody[-1]])
         length_of_last_note = len(last_note) if last_note else 0
         offset = int(melody_offset_dropdown.get())
         truncate = False
@@ -730,16 +700,11 @@ def write_overlay_melody():
         # times the time between notes plus the time of the last note
         melody_length_ms = (melody_length * offset) + length_of_last_note
         sound = AudioSegment.silent(duration=melody_length_ms) 
-        #silence_length = melody_length_ms - length_of_first_note
         # Combine MP3s for all instruments
         for i, note in enumerate(Melody):
             this_offset = offset * i
-            file_to_play = Mapping[key_dropdown.get()][instrument][note]
-            folder, filename = os.path.split(file_to_play)   
-            full_path = os.path.join(base_path, folder, filename)
-            new_sound = AudioSegment.from_mp3(full_path)
+            new_sound = get_mp3(Mapping[key_dropdown.get()][instrument][note])
             if (truncate):
-                #new_sound = new_sound[:truncation]
                 new_sound = new_sound.fade(to_gain=-120, start=truncation, duration=200)
             sound = sound.overlay(new_sound, position = this_offset)
         combined_file = instrument_temp_file(instrument)
@@ -752,7 +717,6 @@ def show_solfege():
     solfege_text.config(state="disabled")  # Disable editing again    
 
 def play_melody(instrument):
- 
     # Path to the pre-generated combined MP3 for the selected instrument
     combined_file = instrument_temp_file(instrument)   
     # Play the file
