@@ -179,6 +179,7 @@ scales = sorted(scales)
 # Load Chords.txt into a dictionary named "Chords"
 chords_file_path = os.path.join(base_path, "mapping", "Chords.txt")
 Chords = {}
+Chord_lookup = {}
 chord_names = []  # List to store chord names in the same order as in the file
 chord_button_tooltips = {}
 with open(chords_file_path, "r") as file:
@@ -190,6 +191,7 @@ with open(chords_file_path, "r") as file:
             Chords[scale][chord_number] = {}
         Chords[scale][chord_number][chord_name] = notes.split(",")  # Split notes into a list
         chord_names.append(chord_name)  # Keep track of chord names in order
+        Chord_lookup[chord_name] = notes.split(",")  # Store the chord name and its notes
 
 # global variable Melody to store the generated melody
 Melody = []
@@ -301,7 +303,7 @@ key_dropdown_tooltip = Tooltip(key_dropdown, "The note \"do\" will be set to the
 # Dropdown for "Number of notes"
 notes_label = tk.Label(labelFrames["Settings"], text="Number of notes in melody:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 notes_label.grid(row=1, column=0, columnspan=2, padx=10, pady=4, sticky="w")
-notes_dropdown = ttk.Combobox(labelFrames["Settings"], values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], font=FONT, state="readonly", takefocus=True)
+notes_dropdown = ttk.Combobox(labelFrames["Settings"], values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], font=FONT, state="readonly", takefocus=True)
 notes_dropdown.grid(row=1, column=2, padx=10, pady=4, sticky="w")
 notes_dropdown.current(5)
 
@@ -342,6 +344,10 @@ truncate_label.grid(row=8, column=0, columnspan=2, padx=10, pady=4, sticky="w")
 truncate_dropdown = ttk.Combobox(labelFrames["Settings"], values=["None", 600, 900, 1200, 1500, 1800], font=FONT, state="readonly", takefocus=True)
 truncate_dropdown.grid(row=8, column=2, padx=10, pady=4, sticky="w")
 truncate_dropdown.current(3) 
+
+# this didn't work because the overall window was still bright
+#dark_mode_checkbox = tk.Checkbutton(labelFrames["Settings"], text="Dark mode", variable=dark_mode_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+#dark_mode_checkbox.grid(row=9, column=2, padx=10, pady=4, sticky="w")
 
 #endregion #################### SETTINGS ##############################
 
@@ -671,6 +677,93 @@ def generate_melody():
     # write the melodies to mp3 files
     write_overlay_melody()
 
+def generate_chord_melody():
+    # Clear previous melody and files
+    solfege_text.config(state="normal")  # Enable editing temporarily
+    solfege_text.delete("1.0", tk.END)  # Clear the text box
+    solfege_text.config(state="disabled")  # Disable editing again  
+    global Melody
+    Melody = []  # Clear the melody list
+    for instrument in instruments:
+        combined_file = instrument_temp_file(instrument)
+        os.remove(combined_file) if os.path.exists(combined_file) else None
+
+    # Get user inputs
+    num_notes = int(notes_dropdown.get())
+    max_distance = int(distance_dropdown.get())
+    allow_repeated_notes = allow_repeated_notes_var.get()
+    allow_repeated_chords = allow_repeated_chords_var.get()
+    chord_frequency = chord_frequency_dropdown.get()
+    # values=["Never", "Every 4 notes", "Every 2 notes", "Every note"]
+
+    # Get available notes and chords
+    available_notes = [note for note, var in note_vars.items() if var.get()]
+    available_chords = [chord for chord, var in chord_vars.items() if var.get()]
+
+    # Show a warning if not enough notes are selected
+    # the minimum number of notes is the minimum of 2 and the effective length of the melody
+    # where the effective length is the original length reduced by 1 for each of the "Start with do" and "End with do" checkboxes
+    min_number_of_notes = 2 if not allow_repeated_notes else 1
+    min_number_of_notes = 0 if chord_frequency == "Every note" else min_number_of_notes
+
+    min_number_of_chords = 2 if not allow_repeated_chords else 1
+    min_number_of_chords = 0 if chord_frequency == "Never" else min_number_of_chords
+    effective_length = num_notes - (start_with_do_var.get() + end_with_do_var.get())
+    min_number_of_notes = min(min_number_of_notes, effective_length)  # Ensure at least 2 notes are selected
+    min_number_of_chords = min(min_number_of_chords, effective_length)  # Ensure at least 2 notes are selected
+
+    if len(available_notes) < min_number_of_notes or len(available_chords) < min_number_of_chords:
+        tk.messagebox.showwarning(
+            "Warning",
+            f"Not enough notes or chords selected! Please select at least {min_number_of_notes} notes and {min_number_of_chords} chords."
+        )
+        return
+
+    # Generate the melody
+    for i in range(1, num_notes + 1):
+        if i == 1 and start_with_do_var.get():  # First note
+            Melody.append(start_with_do_dropdown.get())
+        elif i == num_notes and end_with_do_var.get():  # Last note
+            Melody.append(end_with_do_dropdown.get())
+        elif chord_frequency != "Never" and (i+2) % {"Every 4 notes": 4, "Every 2 notes": 2, "Every note": 1}[chord_frequency] == 0:
+            # Add a chord
+            if allow_repeated_chords:
+                selected_chord = random.choice(available_chords)
+            else:
+                available_chords = [chord for chord in available_chords if chord not in Melody]
+                if not available_chords:
+                    tk.messagebox.showwarning(
+                        "Warning",
+                        "Not enough unique chords available! Please enable repeated chords or select more chords."
+                    )
+                    return
+                selected_chord = random.choice(available_chords)
+            Melody.append(Chord_lookup[selected_chord])
+        else:
+            # Add a note
+            if allow_repeated_notes:
+                next_note = random.choice(available_notes)
+            else:
+                current_note = Melody[-1] if Melody else None
+                current_note = current_note if isinstance(current_note, str) else None
+                candidates = [
+                    note for note in available_notes
+                    if not current_note or (note != current_note 
+                                            and abs(available_notes.index(note) - available_notes.index(current_note)) <= max_distance)
+                ]
+                if not candidates:
+                    tk.messagebox.showwarning(
+                        "Warning",
+                        "Not enough unique notes available! Please enable repeated notes or select more notes."
+                    )
+                    return
+                next_note = random.choice(candidates)
+            Melody.append(next_note)
+
+    # Write the melody to MP3 files
+    print("Melody:", Melody)
+    #write_overlay_melody()
+
 def write_melody():
     # Combine MP3s for all instruments
     for instrument in instruments:
@@ -724,9 +817,9 @@ def play_melody(instrument):
     play.start()
 
 # Buttons for the Melody frame
-generate_button = tk.Button(labelFrames["Melody"], text="Generate melody", command=generate_melody, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
+generate_button = tk.Button(labelFrames["Melody"], text="Generate melody", command=generate_chord_melody, font=BIGFONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=0)
 generate_button.grid(row=8, column=1, columnspan=1, padx=5, pady=4, sticky="w")
-root.bind("g", lambda event: generate_melody())
+root.bind("g", lambda event: generate_chord_melody())
 generate_button_tooltip = Tooltip(generate_button, "Generate a new melody. The previous melody will be overwritten.")
 
 # Text area for "Solfege"
