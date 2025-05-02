@@ -193,6 +193,23 @@ with open(chords_file_path, "r") as file:
         chord_names.append(chord_name)  # Keep track of chord names in order
         Chord_lookup[chord_name] = notes.split(",")  # Store the chord name and its notes
 
+# Load ChordSets.txt into a dictionary named "Chord_sets"
+chordsets_file_path = os.path.join(base_path, "mapping", "ChordSets.txt")
+Chord_sets = {}
+with open(chordsets_file_path, "r") as file:
+    for line in file:
+        octave, chordset_name, chords = line.strip().split("\t")
+        if octave not in Chord_sets:
+            Chord_sets[octave] = {}
+        Chord_sets[octave][chordset_name] = chords.split(",")  # Split notes into a list
+
+# Extract octaves and scales for the dropdowns
+chordset_octaves = list(Chord_sets.keys())
+chordsets = set()
+for thingy in Chord_sets.values():
+    chordsets.update(thingy.keys())
+chordsets = sorted(chordsets)
+
 # global variable Melody to store the generated melody
 Melody = []
 melody_text = []
@@ -250,7 +267,7 @@ chord_vars = {chord_name: tk.BooleanVar(value=True) for chord_name in chord_name
 
 #region ############## FRAMES #####################
 
-labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chord Settings", "Major Scale Chords", "Minor Scale Chords", "Other Chords", "Melody"]
+labelFrameList = ["Settings", "Tonic", "Scales", "Notes", "Chord Settings", "Chord Sets", "Major Scale Chords", "Minor Scale Chords", "Other Chords", "Melody"]
 hidden_frames = ["Settings", "Tonic", "Scales", "Chord Settings", "Major Scale Chords", "Minor Scale Chords", "Other Chords"]  # Frames to be hidden initially
 
 labelFrames = {}
@@ -436,7 +453,7 @@ for i, note in enumerate(notes):
 # Dropdown for "Maximum chord_frequency between notes"
 chord_frequency_label = tk.Label(labelFrames["Chord Settings"], text="Chord frequency:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 chord_frequency_label.grid(row=2, column=0, columnspan=2, padx=10, pady=4, sticky="w")
-chord_frequency_dropdown = ttk.Combobox(labelFrames["Chord Settings"], values=["Never", "Every 4 notes", "Every 2 notes", "Every note"], font=FONT, state="readonly", takefocus=True)
+chord_frequency_dropdown = ttk.Combobox(labelFrames["Chord Settings"], values=["Never", "Every 4 notes", "Every 3 notes", "Every 2 notes", "Every note"], font=FONT, state="readonly", takefocus=True)
 chord_frequency_dropdown.grid(row=2, column=2, padx=10, pady=4, sticky="w")
 chord_frequency_dropdown.current(2)
 
@@ -454,9 +471,9 @@ arpeggiate_checkbox.grid(row=6, column=2, padx=10, pady=4, sticky="w")
 
 arpeggiate_chord_delay_label = tk.Label(labelFrames["Chord Settings"], text="Arpeggiate chord delay (ms):", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
 arpeggiate_chord_delay_label.grid(row=7, column=0, columnspan=2, padx=10, pady=4, sticky="w")
-arpeggiate_chord_delay_dropdown = ttk.Combobox(labelFrames["Chord Settings"], values=[100, 200, 300, 400, 500], font=FONT, state="readonly", takefocus=True)
+arpeggiate_chord_delay_dropdown = ttk.Combobox(labelFrames["Chord Settings"], values=[50,  100, 200, 300, 400, 500], font=FONT, state="readonly", takefocus=True)
 arpeggiate_chord_delay_dropdown.grid(row=7, column=2, padx=10, pady=4, sticky="w")
-arpeggiate_chord_delay_dropdown.current(2)  # Set the first option as the default
+arpeggiate_chord_delay_dropdown.current(1)  # Set the first option as the default
 
 # Dropdown for arpeggiate chord note order
 arpeggiate_chord_note_order_label = tk.Label(labelFrames["Chord Settings"], text="Arpeggiate chord note order:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -622,6 +639,55 @@ update_note_set()
 
 #endregion ############################ SCALES ##############################
 
+#region ############## CHORD SETS ######################
+
+# Add "Octave" dropdown to the Chord Sets frame
+chordset_octave_label = tk.Label(labelFrames["Chord Sets"], text="Range:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+chordset_octave_label.grid(row=5, column=0, columnspan=1, padx=10, pady=4, sticky="w")
+chordset_octave_dropdown = ttk.Combobox(labelFrames["Chord Sets"], values=chordset_octaves, font=FONT, state="readonly", takefocus=True)
+chordset_octave_dropdown.grid(row=5, column=2, padx=10, pady=4, sticky="w")
+chordset_octave_dropdown.current(0)  # Set the first octave as the default
+
+# Update the "Note set" dropdown to use scales from Chord Sets.txt
+chord_set_label = tk.Label(labelFrames["Chord Sets"], text="Set:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+chord_set_label.grid(row=6, column=0, columnspan=1, padx=10, pady=4, sticky="w")
+chord_set_dropdown = ttk.Combobox(labelFrames["Chord Sets"], values=chordsets, font=FONT, state="readonly", takefocus=True)
+chord_set_dropdown.grid(row=6, column=2, padx=10, pady=4, sticky="w")
+chord_set_dropdown.current(0)  
+
+# Update the "update_chord_set" function to use the selected octave and scale
+def update_chord_set(event=None):
+    selected_octave = chordset_octave_dropdown.get()
+    selected_scale = chord_set_dropdown.get()
+
+    # Get the notes for the selected octave and scale
+    if selected_scale == "Select all":
+        checked_chords = chord_names
+    elif selected_octave in Chord_sets and selected_scale in Chord_sets[selected_octave]:
+        checked_chords = Chord_sets[selected_octave][selected_scale]
+    else:
+        checked_chords = []
+
+    # Update note_vars based on the selected notes
+    for chord, var in chord_vars.items():
+        var.set(chord in checked_chords)
+    
+    # Update the button states based on note_vars
+    for chord, button in chord_buttons.items():
+        if chord_vars[chord].get():
+            button.config(bg=get_chord_button_color(chord), font=FONT)  # Active state
+        else:
+            button.config(bg=DEACTIVATED_BG_COLOR, font=DEACTIVATEDFONT)  # Inactive state
+
+# Bind the dropdowns to the update_chord_set function
+chordset_octave_dropdown.bind("<<ComboboxSelected>>", update_chord_set)
+chord_set_dropdown.bind("<<ComboboxSelected>>", update_chord_set)
+
+# Initialize the note set to the default values
+update_chord_set()
+
+#endregion ############################ CHORD SETS ##############################
+
 #region ############## MELODY ######################
 
 def generate_melody():
@@ -703,6 +769,7 @@ def generate_chord_melody():
     Melody = []  # Clear the melody list
     global melody_text
     melody_text = []
+
     for instrument in instruments:
         combined_file = instrument_temp_file(instrument)
         os.remove(combined_file) if os.path.exists(combined_file) else None
@@ -713,8 +780,10 @@ def generate_chord_melody():
     allow_repeated_notes = allow_repeated_notes_var.get()
     allow_repeated_chords = allow_repeated_chords_var.get()
     chord_frequency = chord_frequency_dropdown.get()
-    # values=["Never", "Every 4 notes", "Every 2 notes", "Every note"]
-
+    # values=["Never", "Every 4 notes", "Every 3 notes", "Every 2 notes", "Every note"]
+    chord_start_offset = 2
+    if chord_frequency == "Every 3 notes":
+        chord_start_offset = 1
     # Get available notes and chords
     available_notes = [note for note, var in note_vars.items() if var.get()]
     available_chords = [chord for chord, var in chord_vars.items() if var.get()]
@@ -746,7 +815,7 @@ def generate_chord_melody():
         elif i == num_notes and end_with_do_var.get():  # Last note
             Melody.append(end_with_do_dropdown.get())
             melody_text.append(end_with_do_dropdown.get())
-        elif chord_frequency != "Never" and (i+2) % {"Every 4 notes": 4, "Every 2 notes": 2, "Every note": 1}[chord_frequency] == 0:
+        elif (chord_frequency != "Never") and (i+chord_start_offset) % {"Every 4 notes": 4, "Every 3 notes": 3, "Every 2 notes": 2, "Every note": 1}[chord_frequency] == 0:
             # Add a chord
             if allow_repeated_chords:
                 selected_chord = random.choice(available_chords)
@@ -784,7 +853,6 @@ def generate_chord_melody():
             melody_text.append(next_note)
 
     # Write the melody to MP3 files
-    print("Melody:", melody_text)
     write_chord_melody()
 
 def write_melody():
@@ -943,7 +1011,7 @@ show_solfege_button = tk.Button(solfege_frame, text="Show Solfege", command=show
 show_solfege_button.grid(row=0, column=0, padx=5, pady=4, sticky="w")
 root.bind("s", lambda event: show_solfege())
 
-solfege_text = tk.Text(solfege_frame, font=FONTLIGHT, height=1, width=56, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
+solfege_text = tk.Text(solfege_frame, font=FONTLIGHT, height=2, width=56, bg="white", fg=TEXT_COLOR, takefocus=False, state="disabled")
 solfege_text.grid(row=0, column=1, columnspan=1, padx=5, pady=4, sticky="w")
 
 play_guitar_melody_button = tk.Button(labelFrames["Melody"], text="Play Guitar Melody", command=lambda: play_melody("Guitar"), font=FONT, bg=BUTTON_COLOR, fg=TEXT_COLOR, underline=16)
