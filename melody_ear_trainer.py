@@ -195,6 +195,7 @@ with open(chords_file_path, "r") as file:
 
 # global variable Melody to store the generated melody
 Melody = []
+melody_text = []
 
 # Create the main window
 root = tk.Tk()
@@ -465,6 +466,13 @@ arpeggiate_chord_note_order_dropdown.grid(row=8, column=2, padx=10, pady=4, stic
 arpeggiate_chord_note_order_dropdown.current(0)  # Set the first option as the default
 # Dropdown for harmonic vs arpeggiated chords
 
+display_chord_notes_chords_var = tk.BooleanVar(value=False)  # Unchecked by default
+display_chord_notes_chords = tk.Label(labelFrames["Chord Settings"], text="Display chord notes in Solfege text section:", font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+display_chord_notes_chords.grid(row=5, column=0, columnspan=1, padx=10, pady=4, sticky="w")
+display_chord_notes_chords_checkbox = tk.Checkbutton(labelFrames["Chord Settings"], text="Display individual notes", variable=display_chord_notes_chords_var, font=FONT, bg=BG_COLOR, fg=TEXT_COLOR)
+display_chord_notes_chords_checkbox.grid(row=5, column=2, padx=10, pady=4, sticky="w")
+
+
 #endregion #################### CHORD SETTINGS ##############################
 
 #region ############## CHORDS ######################
@@ -623,6 +631,8 @@ def generate_melody():
     solfege_text.config(state="disabled")  # Disable editing again  
     global Melody
     Melody = []  # Clear the melody list
+    global melody_text
+    melody_text = []  # Clear the melody text list
     for instrument in instruments:
         combined_file = instrument_temp_file(instrument)
         os.remove(combined_file) if os.path.exists(combined_file) else None
@@ -649,11 +659,16 @@ def generate_melody():
     # set the first note to "do" if "Start with do" is checked
     if start_with_do_var.get():
         Melody = [start_with_do_dropdown.get()]
+        melody_text.append(start_with_do_dropdown.get())
         if (not end_with_do_var.get() and num_notes > 1) or (end_with_do_var.get() and num_notes > 2):
-            Melody.append(random.choice(available_notes))
+            newnote = random.choice(available_notes)
+            Melody.append(newnote)
+            melody_text.append(newnote)
         starting_index = 2
     elif (not end_with_do_var.get()) or (end_with_do_var.get() and num_notes > 1):  
-        Melody = [random.choice(available_notes)]
+        newnote = random.choice(available_notes)
+        Melody = [newnote]
+        melody_text.append(newnote)
 
     # stop before the last note if "End with do" is checked
     if end_with_do_var.get():
@@ -669,10 +684,12 @@ def generate_melody():
         else: # just pick one
            next_note = random.choice(available_notes[start:end]) 
         Melody.append(next_note)
+        melody_text.append(next_note)
 
     # Replace the last note with "do" if "End with do" is checked
     if end_with_do_var.get() and (len(Melody) < num_notes):
         Melody.append(end_with_do_dropdown.get())
+        melody_text.append(end_with_do_dropdown.get())
 
     # write the melodies to mp3 files
     write_overlay_melody()
@@ -684,6 +701,8 @@ def generate_chord_melody():
     solfege_text.config(state="disabled")  # Disable editing again  
     global Melody
     Melody = []  # Clear the melody list
+    global melody_text
+    melody_text = []
     for instrument in instruments:
         combined_file = instrument_temp_file(instrument)
         os.remove(combined_file) if os.path.exists(combined_file) else None
@@ -723,8 +742,10 @@ def generate_chord_melody():
     for i in range(1, num_notes + 1):
         if i == 1 and start_with_do_var.get():  # First note
             Melody.append(start_with_do_dropdown.get())
+            melody_text.append(start_with_do_dropdown.get())
         elif i == num_notes and end_with_do_var.get():  # Last note
             Melody.append(end_with_do_dropdown.get())
+            melody_text.append(end_with_do_dropdown.get())
         elif chord_frequency != "Never" and (i+2) % {"Every 4 notes": 4, "Every 2 notes": 2, "Every note": 1}[chord_frequency] == 0:
             # Add a chord
             if allow_repeated_chords:
@@ -739,6 +760,7 @@ def generate_chord_melody():
                     return
                 selected_chord = random.choice(available_chords)
             Melody.append(Chord_lookup[selected_chord])
+            melody_text.append(selected_chord)
         else:
             # Add a note
             if allow_repeated_notes:
@@ -759,10 +781,11 @@ def generate_chord_melody():
                     return
                 next_note = random.choice(candidates)
             Melody.append(next_note)
+            melody_text.append(next_note)
 
     # Write the melody to MP3 files
-    print("Melody:", Melody)
-    #write_overlay_melody()
+    print("Melody:", melody_text)
+    write_chord_melody()
 
 def write_melody():
     # Combine MP3s for all instruments
@@ -802,12 +825,101 @@ def write_overlay_melody():
             sound = sound.overlay(new_sound, position = this_offset)
         combined_file = instrument_temp_file(instrument)
         sound.export(combined_file, format="mp3")   
- 
+
+def write_chord_melody():
+    global Melody
+
+    # Step 1: Count single notes and chords in the Melody
+    melody_structure = []
+    for item in Melody:
+        if isinstance(item, list):  # It's a chord
+            melody_structure.append(len(item))  # Store the number of notes in the chord
+        else:  # It's a single note
+            melody_structure.append(1)
+
+    # Step 2: Get settings that impact the chord melody
+    melody_offset = int(melody_offset_dropdown.get())
+    truncate = truncate_dropdown.get() != "None"
+    truncation_length = int(truncate_dropdown.get()) if truncate else None
+    arpeggiate_chords = arpeggiate_chords_var.get()
+    arpeggiate_order = arpeggiate_chord_note_order_dropdown.get()
+    chord_offset = int(arpeggiate_chord_delay_dropdown.get())
+
+    # Step 3: Process each instrument
+    for instrument in instruments:
+        # Step 3a: Calculate the total length of the melody in milliseconds
+        total_length = 0
+
+        # Determine the length of the last note or chord
+        last_item = Melody[-1]
+        if isinstance(last_item, list):  # Last item is a chord
+            last_note = get_mp3(Mapping[key_dropdown.get()][instrument][last_item[-1]])
+        else:  # Last item is a single note
+            last_note = get_mp3(Mapping[key_dropdown.get()][instrument][last_item])
+        length_of_last_note = len(last_note) if last_note else 0
+        effective_length_of_last_note = min(length_of_last_note, truncation_length) if truncate else length_of_last_note
+
+        for i, item in enumerate(Melody):
+            if isinstance(item, list):  # It's a chord
+                if arpeggiate_chords:
+                    total_length += melody_offset + (len(item) - 1) * chord_offset
+                else:
+                    total_length += melody_offset
+            else:  # It's a single note
+                total_length += melody_offset
+        total_length += effective_length_of_last_note
+
+        # Step 3b: Create a silent audio segment of the total length
+        sound = AudioSegment.silent(duration=total_length)
+
+        # Step 3c: Iterate through each single note and each note in each chord
+        current_position = 0
+        for item in Melody:
+            if isinstance(item, list):  # It's a chord
+                chord_notes = item.copy()
+                if arpeggiate_order == "Descending":
+                    chord_notes.reverse()
+                elif arpeggiate_order == "Random":
+                    random.shuffle(chord_notes)
+
+                for i, note in enumerate(chord_notes):
+                    note_audio = get_mp3(Mapping[key_dropdown.get()][instrument][note])
+                    if truncate:
+                        note_audio = note_audio.fade(to_gain=-120, start=truncation_length, duration=200)
+                    offset = current_position + (i * chord_offset if arpeggiate_chords else 0)
+                    sound = sound.overlay(note_audio, position=offset)
+
+                current_position += melody_offset + (len(chord_notes) - 1) * chord_offset if arpeggiate_chords else melody_offset
+            else:  # It's a single note
+                note_audio = get_mp3(Mapping[key_dropdown.get()][instrument][item])
+                if truncate:
+                    note_audio = note_audio.fade(to_gain=-120, start=truncation_length, duration=200)
+                sound = sound.overlay(note_audio, position=current_position)
+                current_position += melody_offset
+
+        # Step 3d: Export the MP3 to file
+        combined_file = instrument_temp_file(instrument)
+        sound.export(combined_file, format="mp3")
+
 def show_solfege():
     solfege_text.config(state="normal")  # Enable editing temporarily
     solfege_text.delete("1.0", tk.END)  # Clear the text box
-    solfege_text.insert(tk.END, " ".join(Melody))  # Insert the melody
-    solfege_text.config(state="disabled")  # Disable editing again    
+    display_text = melody_text
+    if display_chord_notes_chords_var.get():
+        display_text = Melody
+    # Build the solfege string
+    solfege_display = []
+#    for item in Melody:
+    for item in display_text:
+        if isinstance(item, list):  # It's a chord
+            chord_display = "[" + " ".join(item) + "]"  # Format chord notes in square brackets
+            solfege_display.append(chord_display)
+        else:  # It's a single note
+            solfege_display.append(item)
+
+    # Insert the formatted solfege into the text box
+    solfege_text.insert(tk.END, " ".join(solfege_display))
+    solfege_text.config(state="disabled")  # Disable editing again 
 
 def play_melody(instrument):
     # Path to the pre-generated combined MP3 for the selected instrument
