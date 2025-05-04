@@ -8,7 +8,7 @@ a = Analysis(
     ['melody_ear_trainer.py'],
     pathex=[],
     binaries=[],
-    datas=[('./mapping/Mapping.txt', 'mapping'), ('./mapping/Scales.txt', 'mapping'), ('./mapping/Chords.txt', 'mapping'), ('mp3', 'mp3'), ('piano_mp3', 'piano_mp3')],
+    datas=[('./mapping/Mapping.txt', 'mapping'), ('./mapping/Scales.txt', 'mapping'), ('./mapping/Chords.txt', 'mapping'), ('./mapping/ChordSets.txt', 'mapping'), ('mp3', 'mp3'), ('piano_mp3', 'piano_mp3')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

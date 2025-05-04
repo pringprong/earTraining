@@ -780,6 +780,10 @@ def generate_chord_melody():
     allow_repeated_notes = allow_repeated_notes_var.get()
     allow_repeated_chords = allow_repeated_chords_var.get()
     chord_frequency = chord_frequency_dropdown.get()
+    start_with_do = start_with_do_var.get()
+    end_with_do = end_with_do_var.get()
+    starting_do = start_with_do_dropdown.get()
+    ending_do = end_with_do_dropdown.get()
     # values=["Never", "Every 4 notes", "Every 3 notes", "Every 2 notes", "Every note"]
     chord_start_offset = 2
     if chord_frequency == "Every 3 notes":
@@ -796,9 +800,9 @@ def generate_chord_melody():
 
     min_number_of_chords = 2 if not allow_repeated_chords else 1
     min_number_of_chords = 0 if chord_frequency == "Never" else min_number_of_chords
-    effective_length = num_notes - (start_with_do_var.get() + end_with_do_var.get())
+    effective_length = num_notes - (start_with_do + end_with_do)
     min_number_of_notes = min(min_number_of_notes, effective_length)  # Ensure at least 2 notes are selected
-    min_number_of_chords = min(min_number_of_chords, effective_length)  # Ensure at least 2 notes are selected
+    min_number_of_chords = min(min_number_of_chords, effective_length)  # Ensure at least 2 chords are selected
 
     if len(available_notes) < min_number_of_notes or len(available_chords) < min_number_of_chords:
         tk.messagebox.showwarning(
@@ -809,12 +813,12 @@ def generate_chord_melody():
 
     # Generate the melody
     for i in range(1, num_notes + 1):
-        if i == 1 and start_with_do_var.get():  # First note
-            Melody.append(start_with_do_dropdown.get())
-            melody_text.append(start_with_do_dropdown.get())
-        elif i == num_notes and end_with_do_var.get():  # Last note
-            Melody.append(end_with_do_dropdown.get())
-            melody_text.append(end_with_do_dropdown.get())
+        if i == 1 and start_with_do:  # First note
+            Melody.append(starting_do)
+            melody_text.append(starting_do)
+        elif i == num_notes and end_with_do:  # Last note
+            Melody.append(ending_do)
+            melody_text.append(ending_do)
         elif (chord_frequency != "Never") and (i+chord_start_offset) % {"Every 4 notes": 4, "Every 3 notes": 3, "Every 2 notes": 2, "Every note": 1}[chord_frequency] == 0:
             # Add a chord
             if allow_repeated_chords:
@@ -832,23 +836,43 @@ def generate_chord_melody():
             melody_text.append(selected_chord)
         else:
             # Add a note
-            if allow_repeated_notes:
-                next_note = random.choice(available_notes)
+            if (i == 2 and start_with_do):
+               # second note of melody: we don't want it to be the same as starting_do
+                if allow_repeated_notes:
+                    candidates = available_notes
+                else:
+                    candidates = [note for note in available_notes if note != starting_do]
             else:
+                # third or later note of melody: need to check distance from previous note
                 current_note = Melody[-1] if Melody else None
-                current_note = current_note if isinstance(current_note, str) else None
-                candidates = [
-                    note for note in available_notes
-                    if not current_note or (note != current_note 
-                                            and abs(available_notes.index(note) - available_notes.index(current_note)) <= max_distance)
-                ]
+                if not isinstance(current_note, str):
+                    current_note = Melody[-2] if Melody else None
+                if allow_repeated_notes:
+                    # check distance from previous note only
+                    candidates = [
+                        note for note in available_notes
+                        if not current_note or abs(available_notes.index(note) - available_notes.index(current_note)) <= max_distance ]
+                elif i == num_notes - 1 and end_with_do:
+                    # second last note of melody: we also don't want it to be the same as ending_do
+                    candidates = [
+                        note for note in available_notes
+                        if not current_note or (note != current_note
+                                                and note != ending_do
+                                                and abs(available_notes.index(note) - available_notes.index(current_note)) <= max_distance) ]
+                else:
+                    # middle note of melody: we don't want it to be the same as current_note
+                    candidates = [
+                        note for note in available_notes
+                        if not current_note or (note != current_note 
+                                                and abs(available_notes.index(note) - available_notes.index(current_note)) <= max_distance)
+                    ]
                 if not candidates:
                     tk.messagebox.showwarning(
                         "Warning",
                         "Not enough unique notes available! Please enable repeated notes or select more notes."
                     )
                     return
-                next_note = random.choice(candidates)
+            next_note = random.choice(candidates)
             Melody.append(next_note)
             melody_text.append(next_note)
 
