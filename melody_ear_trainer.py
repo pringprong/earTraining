@@ -690,76 +690,6 @@ update_chord_set()
 
 #region ############## MELODY ######################
 
-def generate_melody():
-    # Clear previous melody and files
-    solfege_text.config(state="normal")  # Enable editing temporarily
-    solfege_text.delete("1.0", tk.END)  # Clear the text box
-    solfege_text.config(state="disabled")  # Disable editing again  
-    global Melody
-    Melody = []  # Clear the melody list
-    global melody_text
-    melody_text = []  # Clear the melody text list
-    for instrument in instruments:
-        combined_file = instrument_temp_file(instrument)
-        os.remove(combined_file) if os.path.exists(combined_file) else None
-
-    # get user inputs
-    available_notes = [note for note, var in note_vars.items() if var.get()]
-    num_notes = int(notes_dropdown.get())
-    max_distance = int(distance_dropdown.get())
-    starting_index = 1
-    ending_index = num_notes
-
-    # Show a warning if not enough notes are selected
-    # the minimum number of notes is the minimum of 2 and the effective length of the melody
-    # where the effective length is the original length reduced by 1 for each of the "Start with do" and "End with do" checkboxes
-    min_number_of_notes_no_repeats = 2 if not allow_repeated_notes_var.get() else 1
-    effective_length = num_notes - (start_with_do_var.get() + end_with_do_var.get())
-    min_number_of_notes = min(min_number_of_notes_no_repeats, effective_length)  # Ensure at least 2 notes are selected
-
-    if len(available_notes) < min_number_of_notes:
-        tk.messagebox.showwarning("Warning", "Not enough notes selected! Please select at least " + str(min_number_of_notes) + " note(s).")
-        return  # Exit the function if no notes are available
-    
-    # create the actual melody according to the constraints
-    # set the first note to "do" if "Start with do" is checked
-    if start_with_do_var.get():
-        Melody = [start_with_do_dropdown.get()]
-        melody_text.append(start_with_do_dropdown.get())
-        if (not end_with_do_var.get() and num_notes > 1) or (end_with_do_var.get() and num_notes > 2):
-            newnote = random.choice(available_notes)
-            Melody.append(newnote)
-            melody_text.append(newnote)
-        starting_index = 2
-    elif (not end_with_do_var.get()) or (end_with_do_var.get() and num_notes > 1):  
-        newnote = random.choice(available_notes)
-        Melody = [newnote]
-        melody_text.append(newnote)
-
-    # stop before the last note if "End with do" is checked
-    if end_with_do_var.get():
-        ending_index = num_notes - 1  
-    for _ in range(starting_index, ending_index):
-        current_index = available_notes.index(Melody[-1])
-        start = max(0, current_index - max_distance)
-        end = min(len(available_notes), current_index + max_distance + 1)
-        next_note = random.choice(available_notes[start:end])
-        if not allow_repeated_notes_var.get():  # Check if repeated notes are allowed
-            while next_note == Melody[-1]:  # Ensure the next note is not the same as the last one
-                next_note = random.choice(available_notes[start:end])
-        else: # just pick one
-           next_note = random.choice(available_notes[start:end]) 
-        Melody.append(next_note)
-        melody_text.append(next_note)
-
-    # Replace the last note with "do" if "End with do" is checked
-    if end_with_do_var.get() and (len(Melody) < num_notes):
-        Melody.append(end_with_do_dropdown.get())
-        melody_text.append(end_with_do_dropdown.get())
-
-    # write the melodies to mp3 files
-    write_overlay_melody()
-
 def generate_chord_melody():
     # Clear previous melody and files
     solfege_text.config(state="normal")  # Enable editing temporarily
@@ -877,46 +807,7 @@ def generate_chord_melody():
             melody_text.append(next_note)
 
     # Write the melody to MP3 files
-    write_chord_melody()
-
-def write_melody():
-    # Combine MP3s for all instruments
-    for instrument in instruments:
-        combined = AudioSegment.empty()  # Start with an empty audio segment
-        key = key_dropdown.get()
-        for note in Melody:
-            audio = get_mp3(Mapping[key][instrument][note])
-            combined += audio  # Concatenate the audio
-        # Save the combined audio for the instrument
-        combined_file = instrument_temp_file(instrument)
-        combined.export(combined_file, format="mp3")      
-
-def write_overlay_melody():
-    # calculate the length of the melody
-    melody_length = len(Melody)
-
-    for instrument in instruments:
-        last_note= get_mp3(Mapping[key_dropdown.get()][instrument][Melody[-1]])
-        length_of_last_note = len(last_note) if last_note else 0
-        offset = int(melody_offset_dropdown.get())
-        truncate = False
-        if (truncate_dropdown.get() != "None"):
-            truncate = True
-            truncation = int(truncate_dropdown.get())
-            length_of_last_note = min(length_of_last_note, truncation)
-        # the total length of the melody in ms is the number of notes substract 1
-        # times the time between notes plus the time of the last note
-        melody_length_ms = (melody_length * offset) + length_of_last_note
-        sound = AudioSegment.silent(duration=melody_length_ms) 
-        # Combine MP3s for all instruments
-        for i, note in enumerate(Melody):
-            this_offset = offset * i
-            new_sound = get_mp3(Mapping[key_dropdown.get()][instrument][note])
-            if (truncate):
-                new_sound = new_sound.fade(to_gain=-120, start=truncation, duration=200)
-            sound = sound.overlay(new_sound, position = this_offset)
-        combined_file = instrument_temp_file(instrument)
-        sound.export(combined_file, format="mp3")   
+    write_chord_melody()  
 
 def write_chord_melody():
     global Melody
