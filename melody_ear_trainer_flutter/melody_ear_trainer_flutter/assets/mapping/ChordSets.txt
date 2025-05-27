@@ -1,0 +1,15 @@
+Lower	I_IV_V	I_L_R,IV_L_R,V_L_R
+Middle	I_IV_V	I_M_R,IV_M_R,V_M_R
+All_Root	I_IV_V	I_L_R,IV_L_R,V_L_R,I_M_R,IV_M_R,V_M_R
+Lower	I_IV_V_vi	I_L_R,IV_L_R,V_L_R,vi_L_R
+Middle	I_IV_V_vi	I_M_R,IV_M_R,V_M_R,vi_M_R
+All_Root	I_IV_V_vi	I_L_R,IV_L_R,V_L_R,I_M_R,IV_M_R,V_M_R,vi_L_R,vi_M_R
+Lower	I_IV_V_V7_vi	I_L_R,IV_L_R,V_L_R,vi_L_R,V7_L_R
+Middle	I_IV_V_V7_vi	I_IV_V,I_M_R,IV_M_R,V_M_R,V7_M_R
+All_Root	I_IV_V_V7_vi	I_L_R,IV_L_R,V_L_R,I_M_R,IV_M_R,V_M_R,vi_L_R,vi_M_R,V7_L_R,V7_M_R
+Lower	Select all	d
+Middle	Select all	d
+All_Root	Select all	d
+Lower	Select none	d
+Middle	Select none	d
+All_Root	Select none	d

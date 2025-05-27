@@ -1,0 +1,29 @@
+# yml or yaml
+#To create a Dart/Flutter application that replicates the functionality of the Melody Ear Trainer, 
+#we will need to set up a basic Flutter project structure. Below is the content for the `main.dart` 
+#file, which will serve as the entry point for the application. 
+#This file will include the necessary imports, a basic UI layout with dropdowns and checkboxes, 
+#and functionality for playing notes and chords.
+
+#File: melody.dart
+
+name: melody_ear_trainer_flutter
+description: A Flutter application for Melody Ear Training
+version: 1.0.0+1
+publish_to: 'none' # Remove this line if you want to publish to pub.dev
+environment:
+  sdk: ">=3.0.0 < 5.0.0" # Adjust the SDK version as needed
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  provider: ^6.0.0 # For state management
+  audioplayers: 6.4.0 # For playing audio files
+
+#flutter:
+#  uses-material-design: true
+#  assets:
+#    - assets/audio/ # Directory for sound files
+#    - assets/mapping/ # Directory for mapping files
+
+
