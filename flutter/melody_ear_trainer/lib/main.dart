@@ -1,74 +1,117 @@
+import 'dart:developer' as dev;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
-import 'dart:async';
-//import 'package:flutter/scheduler.dart';
+import 'package:logging/logging.dart';
+import 'audio/audio_controller.dart';
 
-void main() {
-  runApp(const MelodyEarTrainerApp());
+void main() async {
+  // The `flutter_soloud` package logs everything
+  // (from severe warnings to fine debug messages)
+  // using the standard `package:logging`.
+  // You can listen to the logs as shown below.
+  Logger.root.level = kDebugMode ? Level.FINE : Level.INFO;
+  Logger.root.onRecord.listen((record) {
+    dev.log(
+      record.message,
+      time: record.time,
+      level: record.level.value,
+      name: record.loggerName,
+      zone: record.zone,
+      error: record.error,
+      stackTrace: record.stackTrace,
+    );
+  });
+
+  WidgetsFlutterBinding.ensureInitialized();
+  final audioController = AudioController();
+  await audioController.initialize();
+  runApp(MelodyEarTrainerApp (audioController: audioController));
 }
 
-class MelodyEarTrainerApp extends StatelessWidget {
-  const MelodyEarTrainerApp({super.key});
+class MelodyEarTrainerApp  extends StatelessWidget {
+  const MelodyEarTrainerApp ({required this.audioController, super.key});
+  final AudioController audioController;
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MelodyHomePage(),
+    return MaterialApp(
+      title: 'Melody Ear Trainer',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
+        useMaterial3: true,
+      ),
+      home: MelodyHomePage(audioController: audioController),
     );
   }
 }
 
 class MelodyHomePage extends StatefulWidget {
-  const MelodyHomePage({super.key});
-
+  const MelodyHomePage({super.key, required this.audioController});
+  final AudioController audioController;
   @override
   State<MelodyHomePage> createState() => _MelodyHomePageState();
 }
 
 class _MelodyHomePageState extends State<MelodyHomePage> {
-  final AudioPlayer _player1 = AudioPlayer();
-  final AudioPlayer _player2 = AudioPlayer();
-
-  Future<void> _playTwoNotes() async {
-    try {
-      _player1.setAsset('assets/audio/C-do.mp3');
-      _player1.setClip(start: Duration(seconds: 0), end: Duration(seconds: 1));
-      _player2.setAsset('assets/audio/C-re.mp3');
-      _player2.setClip(start: Duration(seconds: 0), end: Duration(seconds: 1));
-
-      _player1.play();
-      // Wait 500ms, then start the second note (overlapping)
-      Future.delayed(Duration(milliseconds: 500), () {
-        _player2.play();
-      });
-
-
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error playing audio: $e')),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _player1.dispose();
-    _player2.dispose();
-    super.dispose();
-  }
-
+  static const _gap = SizedBox(height: 16);
+  bool filterApplied = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Melody Ear Trainer')),
+      appBar: AppBar(title: const Text('Flutter SoLoud Demo')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: _playTwoNotes,
-          child: const Text('Play C-do then C-re'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            OutlinedButton(
+              onPressed: () {
+                widget.audioController.playSound('assets/audio/C4.mp3');
+                Future.delayed(Duration(milliseconds: 800), () {
+                  widget.audioController.playSound('assets/audio/E4.mp3');
+                  Future.delayed(Duration(milliseconds: 800), () {
+                    widget.audioController.playSound('assets/audio/G4.mp3');
+                });
+               });
+              },
+              child: const Text('Play Sound'),
+            ),
+            _gap,
+            OutlinedButton(
+              onPressed: () {
+                widget.audioController.startMusic();
+              },
+              child: const Text('Start Music'),
+            ),
+            _gap,
+            OutlinedButton(
+              onPressed: () {
+                widget.audioController.fadeOutMusic();
+              },
+              child: const Text('Fade Out Music'),
+            ),
+            _gap,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Apply Filter'),
+                Checkbox(
+                  value: filterApplied,
+                  onChanged: (value) {
+                    setState(() {
+                      filterApplied = value!;
+                    });
+                    if (filterApplied) {
+                      widget.audioController.applyFilter();
+                    } else {
+                      widget.audioController.removeFilter();
+                    }
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-
