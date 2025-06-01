@@ -10,6 +10,7 @@ import 'general.dart';
 import 'tonic.dart';
 import 'providers/general_provider.dart';
 import 'homepage.dart';
+import 'scales.dart';
 
 void main() async {
   // The `flutter_soloud` package logs everything
@@ -60,6 +61,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
             '/home': (context) => MelodyHomePage(audioController: audioController),
             '/general': (context) => GeneralPage(),
             '/tonic': (context) => TonicPage(audioController: audioController),
+            '/scales': (context) => ScalesPage(),
             // Add other routes here
           },
       ),

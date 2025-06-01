@@ -81,5 +81,38 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Map of booleans for note selection
+  static const List<String> noteKeys = [
+    "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
+    "do", "ga", "re", "nu", "mi", "fa", "jur", "so", "ki", "la", "pe", "ti",
+    "do1", "ga1", "re1", "nu1", "mi1", "fa1", "jur1", "so1", "ki1", "la1", "pe1", "ti1",
+    "do2"
+  ];
+
+  Map<String, bool> noteSelection = {
+    for (var key in noteKeys) key: false,
+  };
+
+  /// 1. Set all values of the map at once
+  void setNoteSelection(List<String> selectedKeys) {
+    for (var key in noteKeys) {
+      noteSelection[key] = selectedKeys.contains(key);
+    }
+    notifyListeners();
+  }
+
+  /// 2. Toggle one value of the map
+  void toggleNoteSelection(String key) {
+    if (noteSelection.containsKey(key)) {
+      noteSelection[key] = !(noteSelection[key] ?? false);
+      notifyListeners();
+    }
+  }
+
+  /// 3. Get all values that are set to True as a list of Strings, in order
+  List<String> getSelectedNotes() {
+    return noteKeys.where((key) => noteSelection[key] == true).toList();
+  }
+
   
 }
