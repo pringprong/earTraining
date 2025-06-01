@@ -1,0 +1,332 @@
+[
+	{
+		"Octave": "Lower octave",
+		"Set": "Default",
+		"Notes": "do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Default",
+		"Notes": "do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Default",
+		"Notes": "do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Default",
+		"Notes": "do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Default",
+		"Notes": "do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Default",
+		"Notes": "do0,re0,mi0,ti0,do,re,mi,ti,do1,re1,mi1,ti1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Diatonic major",
+		"Notes": "do0,re0,mi0,fa0,so0,la0,ti0,do"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Diatonic major",
+		"Notes": "do0,re0,mi0,fa0,so0,la0,ti0,do,re,mi,fa,so,la,ti,do1"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Diatonic major",
+		"Notes": "do,re,mi,fa,so,la,ti,do1"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Diatonic major",
+		"Notes": "do,re,mi,fa,so,la,ti,do1,re1,mi1,fa1,so1,la1,ti1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Diatonic major",
+		"Notes": "do1,re1,mi1,fa1,so1,la1,ti1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Diatonic major",
+		"Notes": "do0,re0,mi0,fa0,so0,la0,ti0,do,re,mi,fa,so,la,ti,do1,re1,mi1,fa1,so1,la1,ti1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Natural minor",
+		"Notes": "do0,re0,nu0,fa0,so0,ki0,pe0,do"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Natural minor",
+		"Notes": "do0,re0,nu0,fa0,so0,ki0,pe0,do,re,nu,fa,so,ki,pe,do1"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Natural minor",
+		"Notes": "do,re,nu,fa,so,ki,pe,do1"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Natural minor",
+		"Notes": "do,re,nu,fa,so,ki,pe,do1,re1,nu1,fa1,so1,ki1,pe1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Natural minor",
+		"Notes": "do1,re1,nu1,fa1,so1,ki1,pe1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Natural minor",
+		"Notes": "do0,re0,nu0,fa0,so0,ki0,pe0,do,re,nu,fa,so,ki,pe,do1,re1,nu1,fa1,so1,ki1,pe1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "La-based minor",
+		"Notes": "do0,re0,mi0,fa0,so0,la0"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "La-based minor",
+		"Notes": "la0,ti0,do,re,mi,fa,so,la"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "La-based minor",
+		"Notes": "la0,ti0,do,re,mi,fa,so,la,ti,do1"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "La-based minor",
+		"Notes": "la,ti,do1,re1,mi1,fa1,so1,la1"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "La-based minor",
+		"Notes": "la,ti,do1,re1,mi1,fa1,so1,la1,ti1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "La-based minor",
+		"Notes": "do0,re0,mi0,fa0,so0,la0,ti0,do,re,mi,fa,so,la,ti,do1,re1,mi1,fa1,so1,la1,ti1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Pentatonic major",
+		"Notes": "do0,re0,mi0,so0,la0,do"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Pentatonic major",
+		"Notes": "do0,re0,mi0,so0,la0,do,re,mi,so,la,do1"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Pentatonic major",
+		"Notes": "do,re,mi,so,la,do1"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Pentatonic major",
+		"Notes": "do,re,mi,so,la,do1,re1,mi1,so1,la1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Pentatonic major",
+		"Notes": "do1,re1,mi1,so1,la1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Pentatonic major",
+		"Notes": "do0,re0,mi0,so0,la0,do,re,mi,so,la,do1,re1,mi1,so1,la1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Pentatonic minor",
+		"Notes": "do0,nu0,fa0,so0,pe0,do"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Pentatonic minor",
+		"Notes": "do0,nu0,fa0,so0,pe0,do,nu,fa,so,pe,do1"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Pentatonic minor",
+		"Notes": "do,nu,fa,so,pe,do1"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Pentatonic minor",
+		"Notes": "do,nu,fa,so,pe,do1,nu1,fa1,so1,pe1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Pentatonic minor",
+		"Notes": "do1,nu1,fa1,so1,pe1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Pentatonic minor",
+		"Notes": "do0,nu0,fa0,so0,pe0,do,nu,fa,so,pe,do1,nu1,fa1,so1,pe1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Blues major",
+		"Notes": "do0,re0,nu0,mi0,so0,la0,do"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Blues major",
+		"Notes": "do0,re0,nu0,mi0,so0,la0,do,re,nu,mi,so,la,do1"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Blues major",
+		"Notes": "do,re,nu,mi,so,la,do1"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Blues major",
+		"Notes": "do,re,nu,mi,so,la,do1,re1,nu1,mi1,so1,la1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Blues major",
+		"Notes": "do1,re1,nu1,mi1,so1,la1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Blues major",
+		"Notes": "do0,re0,nu0,mi0,so0,la0,do,re,nu,mi,so,la,do1,re1,nu1,mi1,so1,la1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Blues minor",
+		"Notes": "do0,nu0,fa0,jur0,so0,pe0,do"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Blues minor",
+		"Notes": "do0,nu0,fa0,jur0,so0,pe0,do,nu,fa,jur,so,pe,do1"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Blues minor",
+		"Notes": "do,nu,fa,jur,so,pe,do1"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Blues minor",
+		"Notes": "do,nu,fa,jur,so,pe,do1,nu1,fa1,jur1,so1,pe1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Blues minor",
+		"Notes": "do1,nu1,fa1,jur1,so1,pe1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Blues minor",
+		"Notes": "do0,nu0,fa0,jur0,so0,pe0,do,nu,fa,jur,so,pe,do1,nu1,fa1,jur1,so1,pe1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Chromatic",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Chromatic",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Chromatic",
+		"Notes": "do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Chromatic",
+		"Notes": "do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Chromatic",
+		"Notes": "do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Chromatic",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Select all",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Select all",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Select all",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Select all",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Select all",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Select all",
+		"Notes": "do0,ga0,re0,nu0,mi0,fa0,jur0,so0,ki0,la0,pe0,ti0,do,ga,re,nu,mi,fa,jur,so,ki,la,pe,ti,do1,ga1,re1,nu1,mi1,fa1,jur1,so1,ki1,la1,pe1,ti1,do2"
+	},
+	{
+		"Octave": "Lower octave",
+		"Set": "Select none",
+		"Notes": "d"
+	},
+	{
+		"Octave": "Lower and middle octave",
+		"Set": "Select none",
+		"Notes": "d"
+	},
+	{
+		"Octave": "Middle octave",
+		"Set": "Select none",
+		"Notes": "d"
+	},
+	{
+		"Octave": "Middle and higher octave",
+		"Set": "Select none",
+		"Notes": "d"
+	},
+	{
+		"Octave": "Higher octave",
+		"Set": "Select none",
+		"Notes": "d"
+	},
+	{
+		"Octave": "All octaves",
+		"Set": "Select none",
+		"Notes": "d"
+	}
+]

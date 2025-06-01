@@ -3,6 +3,7 @@ import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 import 'audio/audio_controller.dart';
+import 'dart:convert';
 
 class TonicPage extends StatefulWidget {
   const TonicPage({super.key, required this.audioController});
@@ -19,7 +20,8 @@ class _TonicPageState extends State<TonicPage> {
   @override
   void initState() {
     super.initState();
-    loadMappingFiles();
+    //loadMappingFiles();
+    loadMappingJSON();
   }
 
   @override
@@ -48,9 +50,15 @@ class _TonicPageState extends State<TonicPage> {
             DropdownButton<String>(
               value: context.watch<GeneralProvider>().startingDo,
               items:
-                  ["do0", "la0", "do", "la", "do1", "la1", "do2"].map<DropdownMenuItem<String>>((
-                    String value,
-                  ) {
+                  [
+                    "do0",
+                    "la0",
+                    "do",
+                    "la",
+                    "do1",
+                    "la1",
+                    "do2",
+                  ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -83,9 +91,15 @@ class _TonicPageState extends State<TonicPage> {
             DropdownButton<String>(
               value: context.watch<GeneralProvider>().endingDo,
               items:
-                  ["do0", "la0", "do", "la", "do1", "la1", "do2"].map<DropdownMenuItem<String>>((
-                    String value,
-                  ) {
+                  [
+                    "do0",
+                    "la0",
+                    "do",
+                    "la",
+                    "do1",
+                    "la1",
+                    "do2",
+                  ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -113,9 +127,9 @@ class _TonicPageState extends State<TonicPage> {
                       '';
                   filename = "assets/audio/$filename";
                   if (filename.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('No tonic found')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('No tonic found')));
                     return;
                   }
                   widget.audioController.playSound(filename);
@@ -137,9 +151,9 @@ class _TonicPageState extends State<TonicPage> {
                       '';
                   filename = "assets/audio/$filename";
                   if (filename.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('No tonic found')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('No tonic found')));
                     return;
                   }
                   widget.audioController.playSound(filename);
@@ -161,9 +175,9 @@ class _TonicPageState extends State<TonicPage> {
                       '';
                   filename = "assets/audio/$filename";
                   if (filename.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('No tonic found')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('No tonic found')));
                     return;
                   }
                   widget.audioController.playSound(filename);
@@ -193,6 +207,27 @@ class _TonicPageState extends State<TonicPage> {
         nestedMapping[key1]![key2] ??= {};
         nestedMapping[key1]![key2]![key3] = value.trim();
       }
+    }
+    setState(() {});
+  }
+
+  Future<void> loadMappingJSON() async {
+    // Load Scales.json and populate scalesMapping
+    String jsonData = await DefaultAssetBundle.of(
+      context,
+    ).loadString("assets/mapping/Mapping.json");
+    //final jsonResult = jsonDecode(jsonData);
+    final List<dynamic> items = json.decode(jsonData);
+
+    for (var item in items) {
+      String key = item['Key'];
+      String instrument = item['Instrument'];
+      String note = item['Note'];
+      String filename = item['File'];
+      //List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+      nestedMapping[key] ??= {};
+      nestedMapping[key]![instrument] ??= {};
+      nestedMapping[key]![instrument]![note] = filename;
     }
     setState(() {});
   }

@@ -3,17 +3,19 @@ import 'audio/audio_controller.dart';
 import 'dart:io';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
+//import 'dart:math';
 
 class MelodyHomePage extends StatefulWidget {
   const MelodyHomePage({super.key, required this.audioController});
   final AudioController audioController;
+  
   @override
   State<MelodyHomePage> createState() => _MelodyHomePageState();
 }
 
 class _MelodyHomePageState extends State<MelodyHomePage> {
   Map<String, Map<String, Map<String, String>>> nestedMapping = {};
-
+  //final _random = new Random();
   String selectedKey = "";
   String selectedInstrument = "";
   int numberOfNotes = 5;
@@ -54,15 +56,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             ListTile(
-              title: Text('Melody'),
-              onTap: () {
-                // Update the state of the app
-                // Then close the drawer
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/home');
-              },
-            ),
-            ListTile(
               title: Text('General'),
               onTap: () {
                 // Update the state of the app
@@ -96,9 +89,16 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // Notes Section
-              Text("Notes:", style: TextStyle(fontWeight: FontWeight.bold)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:
+                [ 
+                  Text("Notes:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+                ),
               ...List.generate(noteRows.length, (rowIdx) {
                 final rowNotes =
                     noteRows[rowIdx]
@@ -106,16 +106,18 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         .toList();
                 if (rowNotes.isEmpty) return SizedBox.shrink();
                 return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children:
                       rowNotes.map((note) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
+                        return Expanded(
+                          //padding: const EdgeInsets.all(2.0),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              minimumSize: Size(36, 36),
+                              //minimumSize: Size(80, 36),
+                              //maximumSize: Size(80, 36),
                               backgroundColor: Colors.blue,
                               textStyle: TextStyle(fontSize: 14),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4),),
                             ),
                             onPressed: () async {
                               // Play note using AudioController and nestedMapping
@@ -145,6 +147,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               SizedBox(height: 16),
               // Generate Melody Button
               ElevatedButton(
+                
                 onPressed: () {
                   generateMelody(generalProvider);
                   setState(() {
@@ -231,7 +234,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               }).toList();
         }
         if (allowed.isEmpty) allowed = notes;
-        final next = allowed[(allowed.length * (i + 1) * 37) % allowed.length];
+        final next = (allowed..shuffle()).first;
+        //final next = allowed[(allowed.length * (i + 1) * 37) % allowed.length];
         melody.add(next);
         lastNote = next;
       }
@@ -262,22 +266,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     solfegeText = melody.join(' ');
     setState(() {});
   }
-
-  // Future<void> loadMappingFiles() async {
-  //   // Load Mapping.txt and populate mappingKeys and instruments
-  //   String mappingData = await File('mapping/Mapping.txt').readAsString();
-  //   List<String> lines = mappingData.split('\n');
-  //   for (String line in lines) {
-  //     List<String> parts = line.split('\t');
-  //     if (parts.isNotEmpty && !mappingKeys.contains(parts[0])) {
-  //       mappingKeys.add(parts[0]);
-  //     }
-  //     if (parts.length > 1 && !instruments.contains(parts[1])) {
-  //       instruments.add(parts[1]);
-  //     }
-  //   }
-  //   setState(() {});
-  // }
 
   Future<void> loadMappingFiles() async {
     // Load Mapping.txt and populate nestedMapping

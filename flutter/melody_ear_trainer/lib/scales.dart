@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
-import 'dart:io';
+//import 'dart:io';
+import 'dart:convert';
 
 class ScalesPage extends StatefulWidget {
   const ScalesPage({super.key});
@@ -18,7 +19,8 @@ class _ScalesPageState extends State<ScalesPage> {
   @override
   void initState() {
     super.initState();
-    loadScales();
+    //loadScales();
+    loadScalesJSON();
   }
 
   @override
@@ -27,9 +29,8 @@ class _ScalesPageState extends State<ScalesPage> {
 
     // Get octave and scale dropdown values
     final octaveKeys = scalesMapping.keys.toList();
-    final scaleKeys = <String>{
-      for (var v in scalesMapping.values) ...v.keys
-    }.toList();
+    final scaleKeys =
+        <String>{for (var v in scalesMapping.values) ...v.keys}.toList();
 
     // Get notes for current selection
     List<String> selectedNotes = [];
@@ -55,25 +56,30 @@ class _ScalesPageState extends State<ScalesPage> {
                 DropdownButton<String>(
                   value: selectedOctave,
                   hint: Text('Select Octave'),
-                  items: octaveKeys.map((oct) => DropdownMenuItem(
-                            value: oct,
-                            child: Text(oct),
-                          ))
-                      .toList(),
+                  items:
+                      octaveKeys
+                          .map(
+                            (oct) =>
+                                DropdownMenuItem(value: oct, child: Text(oct)),
+                          )
+                          .toList(),
                   onChanged: (oct) {
                     setState(() {
                       selectedOctave = oct;
                       // Reset scale if not available for new octave
                       if (selectedOctave != null &&
                           (selectedScale == null ||
-                              !scalesMapping[selectedOctave!]!
-                                  .containsKey(selectedScale))) {
+                              !scalesMapping[selectedOctave!]!.containsKey(
+                                selectedScale,
+                              ))) {
                         selectedScale =
                             scalesMapping[selectedOctave!]!.keys.first;
                       }
                       // Update note selection
                       if (selectedOctave != null && selectedScale != null) {
-                        final notes = scalesMapping[selectedOctave!]![selectedScale!] ?? [];
+                        final notes =
+                            scalesMapping[selectedOctave!]![selectedScale!] ??
+                            [];
                         generalProvider.setNoteSelection(notes);
                       }
                     });
@@ -91,19 +97,26 @@ class _ScalesPageState extends State<ScalesPage> {
                 DropdownButton<String>(
                   value: selectedScale,
                   hint: Text('Select Scale'),
-                  items: (selectedOctave != null
-                          ? scalesMapping[selectedOctave!]!.keys.toSet().toList()
-                          : scaleKeys)
-                      .map((scale) => DropdownMenuItem(
-                            value: scale,
-                            child: Text(scale),
-                          ))
-                      .toList(),
+                  items:
+                      (selectedOctave != null
+                              ? scalesMapping[selectedOctave!]!.keys
+                                  .toSet()
+                                  .toList()
+                              : scaleKeys)
+                          .map(
+                            (scale) => DropdownMenuItem(
+                              value: scale,
+                              child: Text(scale),
+                            ),
+                          )
+                          .toList(),
                   onChanged: (scale) {
                     setState(() {
                       selectedScale = scale;
                       if (selectedOctave != null && selectedScale != null) {
-                        final notes = scalesMapping[selectedOctave!]![selectedScale!] ?? [];
+                        final notes =
+                            scalesMapping[selectedOctave!]![selectedScale!] ??
+                            [];
                         generalProvider.setNoteSelection(notes);
                       }
                     });
@@ -112,8 +125,8 @@ class _ScalesPageState extends State<ScalesPage> {
               ],
             ),
             // Notes grid
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+            Expanded(
+              //padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: _buildNotesGrid(generalProvider),
             ),
           ],
@@ -139,10 +152,11 @@ class _ScalesPageState extends State<ScalesPage> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: selected ? Colors.blue : Colors.grey,
-                minimumSize: Size(32, 32),
+                //minimumSize: Size(40, 40),
                 padding: EdgeInsets.zero,
-                textStyle: TextStyle(
-                  fontSize: selected ? 16 : 12,
+                textStyle: TextStyle(fontSize: selected ? 16 : 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
               ),
               onPressed: () {
@@ -159,33 +173,50 @@ class _ScalesPageState extends State<ScalesPage> {
           ),
         );
       }
-      rows.add(Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: buttons,
-      ));
+      rows.add(
+        Row(mainAxisAlignment: MainAxisAlignment.start, children: buttons),
+      );
     }
     return Column(children: rows);
   }
 
-  Future<void> loadScales() async {
-    // Load Scales.txt and populate mappingKeys and instruments
-    String mappingData = await File('assets/mapping/Scales.txt').readAsString();
-    List<String> lines = mappingData.split('\n');
-    for (String line in lines) {
-      List<String> parts = line.split('\t');
-      if (parts.length >= 3) {
-        String key1 = parts[0];
-        String key2 = parts[1];
-        String value = parts[2].trim();
-        List<String> values = value.split(',');
-        scalesMapping[key1] ??= {};
-        scalesMapping[key1]![key2] = values;
-      }
-    }
-    // Set defaults
-    if (scalesMapping.isNotEmpty) {
-      selectedOctave = scalesMapping.keys.first;
-      selectedScale = scalesMapping[selectedOctave!]!.keys.first;
+  // Future<void> loadScales() async {
+  //   // Load Scales.txt and populate mappingKeys and instruments
+  //   String mappingData = await File('assets/mapping/Scales.txt').readAsString();
+  //   List<String> lines = mappingData.split('\n');
+  //   for (String line in lines) {
+  //     List<String> parts = line.split('\t');
+  //     if (parts.length >= 3) {
+  //       String key1 = parts[0];
+  //       String key2 = parts[1];
+  //       String value = parts[2].trim();
+  //       List<String> values = value.split(',');
+  //       scalesMapping[key1] ??= {};
+  //       scalesMapping[key1]![key2] = values;
+  //     }
+  //   }
+  //   // Set defaults
+  //   if (scalesMapping.isNotEmpty) {
+  //     selectedOctave = scalesMapping.keys.first;
+  //     selectedScale = scalesMapping[selectedOctave!]!.keys.first;
+  //   }
+  //   setState(() {});
+  // }
+
+  Future<void> loadScalesJSON() async {
+    // Load Scales.json and populate scalesMapping
+    String jsonData = await DefaultAssetBundle.of(context).loadString("assets/mapping/Scales.json");
+    //final jsonResult = jsonDecode(jsonData);
+    final List<dynamic> items = json.decode(jsonData);
+
+    for (var item in items) {
+      String octave = item['Octave'];
+      String set = item['Set'];
+      String notesStr = item['Notes'];
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+
+      scalesMapping[octave] ??= {};
+      scalesMapping[octave]![set] = notes;
     }
     setState(() {});
   }

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
-
+import 'dart:convert';
 
 class GeneralPage extends StatefulWidget {
   const GeneralPage({super.key});
-
 
   @override
   State<GeneralPage> createState() => _GeneralPageState();
@@ -19,7 +18,8 @@ class _GeneralPageState extends State<GeneralPage> {
   @override
   void initState() {
     super.initState();
-    loadMappingFiles();
+    //loadMappingFiles();
+    loadMappingJSON();
   }
 
   @override
@@ -27,170 +27,198 @@ class _GeneralPageState extends State<GeneralPage> {
     return Scaffold(
       appBar: AppBar(title: Text('General Settings')),
       body: Center(
-        child:
-          Column(
-            children: [ 
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Select Key:'),
-                  ),
-                  DropdownButton<String>(
-                    hint: Text('Select Key'),
-                    value: context.watch<GeneralProvider>().selectedKey,
-                    items: mappingKeys.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Select Key:'),
+                ),
+                DropdownButton<String>(
+                  hint: Text('Select Key'),
+                  value: context.watch<GeneralProvider>().selectedKey,
+                  items:
+                      mappingKeys.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      context.read<GeneralProvider>().updateSelectedKey(
+                        newkey: newValue,
                       );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateSelectedKey(newkey: newValue);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Select Instrument:'),
-                  ),
-                  DropdownButton<String>(
-                    hint: Text('Select Instrument'),
-                    value: context.watch<GeneralProvider>().selectedInstrument,
-                    items: instruments.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
+                    }
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Select Instrument:'),
+                ),
+                DropdownButton<String>(
+                  hint: Text('Select Instrument'),
+                  value: context.watch<GeneralProvider>().selectedInstrument,
+                  items:
+                      instruments.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      context.read<GeneralProvider>().updateSelectedInstrument(
+                        instrument: newValue,
                       );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateSelectedInstrument(instrument: newValue);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Number of notes in melody:'),
-                  ),
-                  DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().numberOfNotes,
-                    items: List.generate(18, (i) => i + 1)
-                        .map<DropdownMenuItem<int>>((int value) {
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Text(value.toString()),
+                    }
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Number of notes in melody:'),
+                ),
+                DropdownButton<int>(
+                  value: context.watch<GeneralProvider>().numberOfNotes,
+                  items:
+                      List.generate(
+                        18,
+                        (i) => i + 1,
+                      ).map<DropdownMenuItem<int>>((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Text(value.toString()),
+                        );
+                      }).toList(),
+                  onChanged: (int? newValue) {
+                    if (newValue != null) {
+                      context.read<GeneralProvider>().updateNumberOfNotes(
+                        count: newValue,
                       );
-                    }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateNumberOfNotes(count: newValue);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Max distance between adjacent notes:'),
-                  ),
-                  DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().maxDistance,
-                    items: List.generate(7, (i) => i + 1)
-                        .map<DropdownMenuItem<int>>((int value) {
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Text(value.toString()),
+                    }
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Max distance between adjacent notes:'),
+                ),
+                DropdownButton<int>(
+                  value: context.watch<GeneralProvider>().maxDistance,
+                  items:
+                      List.generate(7, (i) => i + 1).map<DropdownMenuItem<int>>(
+                        (int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        },
+                      ).toList(),
+                  onChanged: (int? newValue) {
+                    if (newValue != null) {
+                      context.read<GeneralProvider>().updateMaxDistance(
+                        distance: newValue,
                       );
-                    }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateMaxDistance(distance: newValue);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Allow repeated notes:'),
-                  ),
-                  Checkbox(
-                    value: context.watch<GeneralProvider>().allowRepeatedNotes,
-                    onChanged: (bool? newValue) {
-                      context.read<GeneralProvider>().toggleAllowRepeatedNotes();
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Time between notes in melody (ms):'),
-                  ),
-                  DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().timeBetweenNotes,
-                    items: [300, 600, 900, 1200]
-                        .map<DropdownMenuItem<int>>((int value) {
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Text(value.toString()),
+                    }
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Allow repeated notes:'),
+                ),
+                Checkbox(
+                  value: context.watch<GeneralProvider>().allowRepeatedNotes,
+                  onChanged: (bool? newValue) {
+                    context.read<GeneralProvider>().toggleAllowRepeatedNotes();
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Time between notes in melody (ms):'),
+                ),
+                DropdownButton<int>(
+                  value: context.watch<GeneralProvider>().timeBetweenNotes,
+                  items:
+                      [300, 600, 900, 1200].map<DropdownMenuItem<int>>((
+                        int value,
+                      ) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Text(value.toString()),
+                        );
+                      }).toList(),
+                  onChanged: (int? newValue) {
+                    if (newValue != null) {
+                      context.read<GeneralProvider>().updateTimeBetweenNotes(
+                        time: newValue,
                       );
-                    }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateTimeBetweenNotes(time: newValue);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Truncate notes in melody (ms):'),
-                  ),
-                  DropdownButton<String>(
-                    value: context.watch<GeneralProvider>().truncateNotes,
-                    items: ["None", "600", "900", "1200", "1500", "1800"]
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
+                    }
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Truncate notes in melody (ms):'),
+                ),
+                DropdownButton<String>(
+                  value: context.watch<GeneralProvider>().truncateNotes,
+                  items:
+                      [
+                        "None",
+                        "600",
+                        "900",
+                        "1200",
+                        "1500",
+                        "1800",
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      context.read<GeneralProvider>().updateTruncateNotes(
+                        time: newValue,
                       );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateTruncateNotes(time: newValue);
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ], // Children of Column
-          ),
+                    }
+                  },
+                ),
+              ],
+            ),
+          ], // Children of Column
+        ),
       ),
     );
   }
 
   Future<void> loadMappingFiles() async {
     // Load Mapping.txt and populate mappingKeys and instruments
-    String mappingData = await File('assets/mapping/Mapping.txt').readAsString();
+    String mappingData =
+        await File('assets/mapping/Mapping.txt').readAsString();
     List<String> lines = mappingData.split('\n');
     for (String line in lines) {
       List<String> parts = line.split('\t');
@@ -199,6 +227,27 @@ class _GeneralPageState extends State<GeneralPage> {
       }
       if (parts.length > 1 && !instruments.contains(parts[1])) {
         instruments.add(parts[1]);
+      }
+    }
+    setState(() {});
+  }
+
+  Future<void> loadMappingJSON() async {
+    // Load Scales.json and populate scalesMapping
+    String jsonData = await DefaultAssetBundle.of(
+      context,
+    ).loadString("assets/mapping/Mapping.json");
+    //final jsonResult = jsonDecode(jsonData);
+    final List<dynamic> items = json.decode(jsonData);
+
+    for (var item in items) {
+      String key = item['Key'];
+      String instrument = item['Instrument'];
+      if (key.isNotEmpty && !mappingKeys.contains(key)) {
+        mappingKeys.add(key);
+      }
+      if (instrument.length > 1 && !instruments.contains(instrument)) {
+        instruments.add(instrument);
       }
     }
     setState(() {});

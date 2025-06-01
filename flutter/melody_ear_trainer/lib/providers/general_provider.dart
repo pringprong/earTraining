@@ -16,6 +16,17 @@ class GeneralProvider extends ChangeNotifier {
   bool endWithDo = true;
   String startingDo = "do"; // Default starting note
   String endingDo = "do"; // Default ending note
+    // Map of booleans for note selection
+  static const List<String> noteKeys = [
+    "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
+    "do", "ga", "re", "nu", "mi", "fa", "jur", "so", "ki", "la", "pe", "ti",
+    "do1", "ga1", "re1", "nu1", "mi1", "fa1", "jur1", "so1", "ki1", "la1", "pe1", "ti1",
+    "do2"
+  ];
+
+  Map<String, bool> noteSelection = {
+    for (var key in noteKeys) key: true,
+  };
 
   GeneralProvider({
     this.selectedKey = "C",
@@ -81,17 +92,7 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Map of booleans for note selection
-  static const List<String> noteKeys = [
-    "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
-    "do", "ga", "re", "nu", "mi", "fa", "jur", "so", "ki", "la", "pe", "ti",
-    "do1", "ga1", "re1", "nu1", "mi1", "fa1", "jur1", "so1", "ki1", "la1", "pe1", "ti1",
-    "do2"
-  ];
 
-  Map<String, bool> noteSelection = {
-    for (var key in noteKeys) key: false,
-  };
 
   /// 1. Set all values of the map at once
   void setNoteSelection(List<String> selectedKeys) {
