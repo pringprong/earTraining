@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 class GeneralProvider extends ChangeNotifier {
   // Define your provider variables here
   String selectedKey = "C";
-  // String selectedInstrument = "";
-  // int numberOfNotes = 5;
-  // bool allowRepeatedNotes = false;
-  // bool startWithDo = true;
-  // bool endWithDo = true;
+  String selectedInstrument = "";
+  int numberOfNotes = 5;
+  bool allowRepeatedNotes = false;
+  bool startWithDo = true;
+  bool endWithDo = true;
 
   GeneralProvider({
     this.selectedKey = "C",
-    //  this.selectedInstrument ="Piano", // Initialize any default values or load settings if necessary
+    this.selectedInstrument ="Piano", // Initialize any default values or load settings if necessary
   });
 
   // Add methods to update the state
@@ -23,28 +23,32 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void updateSelectedInstrument(String instrument) {
-  //   selectedInstrument = instrument;
-  //   notifyListeners();
-  // }
+  void updateSelectedInstrument({
+    required String instrument,
+    }) async {
+    selectedInstrument = instrument;
+    notifyListeners();
+  }
 
-  // void updateNumberOfNotes(int count) {
-  //   numberOfNotes = count;
-  //   notifyListeners();
-  // }
+  void updateNumberOfNotes({
+    required int count, 
+    }) async {
+    numberOfNotes = count;
+    notifyListeners();
+  }
 
-  // void toggleAllowRepeatedNotes() {
-  //   allowRepeatedNotes = !allowRepeatedNotes;
-  //   notifyListeners();
-  // }
+  void toggleAllowRepeatedNotes() {
+    allowRepeatedNotes = !allowRepeatedNotes;
+    notifyListeners();
+  }
 
-  // void toggleStartWithDo() {
-  //   startWithDo = !startWithDo;
-  //   notifyListeners();
-  // }
+  void toggleStartWithDo() {
+    startWithDo = !startWithDo;
+    notifyListeners();
+  }
 
-  // void toggleEndWithDo() {
-  //   endWithDo = !endWithDo;
-  //   notifyListeners();
-  // }
+  void toggleEndWithDo() {
+    endWithDo = !endWithDo;
+    notifyListeners();
+  }
 }

@@ -22,7 +22,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   @override
   void initState() {
     super.initState();
-    loadMappingFiles();
+    //loadMappingFiles();
   }
 
   @override
