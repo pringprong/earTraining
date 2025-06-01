@@ -76,6 +76,112 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Number of notes in melody:'),
+                  ),
+                  DropdownButton<int>(
+                    value: context.watch<GeneralProvider>().numberOfNotes,
+                    items: List.generate(18, (i) => i + 1)
+                        .map<DropdownMenuItem<int>>((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text(value.toString()),
+                      );
+                    }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateNumberOfNotes(count: newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Max distance between adjacent notes:'),
+                  ),
+                  DropdownButton<int>(
+                    value: context.watch<GeneralProvider>().maxDistance,
+                    items: List.generate(7, (i) => i + 1)
+                        .map<DropdownMenuItem<int>>((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text(value.toString()),
+                      );
+                    }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateMaxDistance(distance: newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Allow repeated notes:'),
+                  ),
+                  Checkbox(
+                    value: context.watch<GeneralProvider>().allowRepeatedNotes,
+                    onChanged: (bool? newValue) {
+                      context.read<GeneralProvider>().toggleAllowRepeatedNotes();
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Time between notes in melody (ms):'),
+                  ),
+                  DropdownButton<int>(
+                    value: context.watch<GeneralProvider>().timeBetweenNotes,
+                    items: [300, 600, 900, 1200]
+                        .map<DropdownMenuItem<int>>((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text(value.toString()),
+                      );
+                    }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateTimeBetweenNotes(time: newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Truncate notes in melody (ms):'),
+                  ),
+                  DropdownButton<String>(
+                    value: context.watch<GeneralProvider>().truncateNotes,
+                    items: ["None", "600", "900", "1200", "1500", "1800"]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateTruncateNotes(time: newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
             ], // Children of Column
           ),
       ),
