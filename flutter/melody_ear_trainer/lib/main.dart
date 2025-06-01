@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 //import 'dart:convert';
 import 'audio/audio_controller.dart';
 import 'general.dart';
+import 'tonic.dart';
 import 'providers/general_provider.dart';
 import 'homepage.dart';
 
@@ -58,6 +59,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
           routes: {
             '/home': (context) => MelodyHomePage(audioController: audioController),
             '/general': (context) => GeneralPage(),
+            '/tonic': (context) => TonicPage(audioController: audioController),
             // Add other routes here
           },
       ),

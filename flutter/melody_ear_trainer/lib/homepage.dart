@@ -56,7 +56,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 // Update the state of the app
                 // Then close the drawer
                 Navigator.pop(context);
-              },
+                Navigator.pushNamed(context, '/tonic');
+               },
             ),
             ListTile(
               title: Text('Scales'),

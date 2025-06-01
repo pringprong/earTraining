@@ -23,6 +23,8 @@ class GeneralProvider extends ChangeNotifier {
         "Piano", // Initialize any default values or load settings if necessary
   });
 
+  get tonicNote => null;
+
   // Add methods to update the state
   void updateSelectedKey({required String newkey}) async {
     selectedKey = newkey;
@@ -78,4 +80,6 @@ class GeneralProvider extends ChangeNotifier {
     truncateNotes = time;
     notifyListeners();
   }
+
+  
 }
