@@ -8,7 +8,7 @@ import 'dart:convert';
 class MelodyHomePage extends StatefulWidget {
   const MelodyHomePage({super.key, required this.audioController});
   final AudioController audioController;
-  
+
   @override
   State<MelodyHomePage> createState() => _MelodyHomePageState();
 }
@@ -97,11 +97,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               // Notes Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children:
-                [ 
+                children: [
                   Text("Notes:", style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
-                ),
+              ),
               ...List.generate(noteRows.length, (rowIdx) {
                 final rowNotes =
                     noteRows[rowIdx]
@@ -124,8 +123,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               textStyle: TextStyle(
                                 fontSize: 14,
                                 //padding: EdgeInsets.zero,
-                                ),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4),),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                             ),
                             onPressed: () async {
                               // Play note using AudioController and nestedMapping
@@ -256,14 +257,24 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   ) async {
     final key = generalProvider.selectedKey;
     final timeBetween = generalProvider.timeBetweenNotes;
-    //final truncate = generalProvider.truncateNotes;
+    final truncate = generalProvider.truncateNotes;
     if (melody.isEmpty) return;
-
     for (var note in melody) {
       final filename = nestedMapping[key]?[instrument]?[note] ?? '';
       if (filename.isNotEmpty) {
-        await widget.audioController.playSound("assets/audio/$filename");
-        //truncateMs: truncate == "None" ? null : int.tryParse(truncate));
+        //await widget.audioController.playSound("assets/audio/$filename");
+        if (truncate == "None") {
+          widget.audioController.playSound("assets/audio/$filename");
+        } else {
+          // Truncate the sound if specified
+          //await widget.audioController.playSoundFade("assets/audio/$filename", int.tryParse(truncate) ?? 0);
+          widget.audioController.playSoundFade(
+            "assets/audio/$filename",
+            int.parse(truncate),
+            500,
+          );
+          //truncateMs: truncate == "None" ? null : int.tryParse(truncate));
+        }
       }
       await Future.delayed(Duration(milliseconds: timeBetween));
     }
@@ -294,7 +305,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     setState(() {});
   }
 
-    Future<void> loadMappingJSON() async {
+  Future<void> loadMappingJSON() async {
     // Load Scales.json and populate scalesMapping
     String jsonData = await DefaultAssetBundle.of(
       context,
@@ -314,5 +325,4 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     }
     setState(() {});
   }
-
 }

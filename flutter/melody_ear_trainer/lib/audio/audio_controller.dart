@@ -25,6 +25,22 @@ class AudioController {
     }
   }
 
+  Future<void> playSoundFade(String assetKey, int dur, int fadeDur) async {
+    try {
+      final source = await _soloud!.loadAsset(assetKey);
+      final myhandle = await _soloud!.play(source);
+      await Future.delayed(Duration(milliseconds: dur));
+      _soloud!.fadeVolume(
+        myhandle,
+        0.0,
+        Duration(milliseconds: fadeDur),
+      );
+    } on SoLoudException catch (e) {
+      _log.severe("Cannot play sound '$assetKey'. Ignoring.", e);
+    }
+  }
+
+
   Future<void> startMusic() async {
     if (_musicHandle != null) {
       if (_soloud!.getIsValidVoiceHandle(_musicHandle!)) {
