@@ -16,6 +16,9 @@ class GeneralProvider extends ChangeNotifier {
   bool endWithDo = true;
   String startingDo = "do"; // Default starting note
   String endingDo = "do"; // Default ending note
+
+  String selectedOctave  = "All octaves"; // Default octave selection
+  String selectedScale = "Chromatic"; // Default scale selection
     // Map of booleans for note selection
   static const List<String> noteKeys = [
     "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
@@ -92,8 +95,6 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
   /// 1. Set all values of the map at once
   void setNoteSelection(List<String> selectedKeys) {
     for (var key in noteKeys) {
@@ -115,5 +116,14 @@ class GeneralProvider extends ChangeNotifier {
     return noteKeys.where((key) => noteSelection[key] == true).toList();
   }
 
+  void updateSelectedOctave({required String octave}) async {
+    selectedOctave = octave;
+    notifyListeners();
+  }
+
+  void updateSelectedScale({required String newscale}) async {
+    selectedScale = newscale;
+    notifyListeners();
+  }
   
 }

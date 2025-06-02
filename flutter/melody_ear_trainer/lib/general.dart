@@ -234,6 +234,8 @@ class _GeneralPageState extends State<GeneralPage> {
 
   Future<void> loadMappingJSON() async {
     // Load Scales.json and populate scalesMapping
+    // this version only gets the keys and instruments
+    // from the Mapping.json file, not the full mapping
     String jsonData = await DefaultAssetBundle.of(
       context,
     ).loadString("assets/mapping/Mapping.json");

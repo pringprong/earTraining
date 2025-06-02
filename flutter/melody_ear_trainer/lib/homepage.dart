@@ -3,7 +3,7 @@ import 'audio/audio_controller.dart';
 import 'dart:io';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
-//import 'dart:math';
+import 'dart:convert';
 
 class MelodyHomePage extends StatefulWidget {
   const MelodyHomePage({super.key, required this.audioController});
@@ -29,7 +29,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   @override
   void initState() {
     super.initState();
-    loadMappingFiles();
+    //loadMappingFiles();
+    loadMappingJSON();
   }
 
   @override
@@ -51,38 +52,40 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Melody Ear Trainer')),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            ListTile(
-              title: Text('General'),
-              onTap: () {
-                // Update the state of the app
-                // Then close the drawer
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/general');
-              },
-            ),
-            ListTile(
-              title: Text('Tonic'),
-              onTap: () {
-                // Update the state of the app
-                // Then close the drawer
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/tonic');
-              },
-            ),
-            ListTile(
-              title: Text('Scales'),
-              onTap: () {
-                // Update the state of the app
-                // Then close the drawer
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/scales');
-              },
-            ),
-          ],
+      drawer: SafeArea(
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              ListTile(
+                title: Text('General'),
+                onTap: () {
+                  // Update the state of the app
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/general');
+                },
+              ),
+              ListTile(
+                title: Text('Tonic'),
+                onTap: () {
+                  // Update the state of the app
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/tonic');
+                },
+              ),
+              ListTile(
+                title: Text('Scales'),
+                onTap: () {
+                  // Update the state of the app
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/scales');
+                },
+              ),
+            ],
+          ),
         ),
       ),
       body: Padding(
@@ -116,7 +119,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               //minimumSize: Size(80, 36),
                               //maximumSize: Size(80, 36),
                               backgroundColor: Colors.blue,
-                              textStyle: TextStyle(fontSize: 14),
+                              padding: const EdgeInsets.all(0.0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              textStyle: TextStyle(
+                                fontSize: 14,
+                                //padding: EdgeInsets.zero,
+                                ),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4),),
                             ),
                             onPressed: () async {
@@ -147,7 +155,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               SizedBox(height: 16),
               // Generate Melody Button
               ElevatedButton(
-                
                 onPressed: () {
                   generateMelody(generalProvider);
                   setState(() {
@@ -286,4 +293,26 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     }
     setState(() {});
   }
+
+    Future<void> loadMappingJSON() async {
+    // Load Scales.json and populate scalesMapping
+    String jsonData = await DefaultAssetBundle.of(
+      context,
+    ).loadString("assets/mapping/Mapping.json");
+    //final jsonResult = jsonDecode(jsonData);
+    final List<dynamic> items = json.decode(jsonData);
+
+    for (var item in items) {
+      String key = item['Key'];
+      String instrument = item['Instrument'];
+      String note = item['Note'];
+      String filename = item['File'];
+      //List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+      nestedMapping[key] ??= {};
+      nestedMapping[key]![instrument] ??= {};
+      nestedMapping[key]![instrument]![note] = filename;
+    }
+    setState(() {});
+  }
+
 }

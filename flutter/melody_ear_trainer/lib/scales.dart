@@ -13,8 +13,9 @@ class ScalesPage extends StatefulWidget {
 
 class _ScalesPageState extends State<ScalesPage> {
   Map<String, Map<String, List<String>>> scalesMapping = {};
-  String? selectedOctave;
-  String? selectedScale;
+
+  List<String> octavekeys = [];
+  List<String> scalekeys = [];
 
   @override
   void initState() {
@@ -26,20 +27,24 @@ class _ScalesPageState extends State<ScalesPage> {
   @override
   Widget build(BuildContext context) {
     final generalProvider = Provider.of<GeneralProvider>(context);
-
+    //String? selectedOctave = "All octaves"; // Default octave selection
+    String? selectedOctave =
+        generalProvider.selectedOctave; // Default octave selection
+    String? selectedScale =
+        generalProvider.selectedScale; // Default scale selection
     // Get octave and scale dropdown values
-    final octaveKeys = scalesMapping.keys.toList();
-    final scaleKeys =
-        <String>{for (var v in scalesMapping.values) ...v.keys}.toList();
+    //final octaveKeys = scalesMapping.keys.toList();
+    //final scaleKeys =
+    //    <String>{for (var v in scalesMapping.values) ...v.keys}.toList();
 
     // Get notes for current selection
-    List<String> selectedNotes = [];
-    if (selectedOctave != null &&
-        selectedScale != null &&
-        scalesMapping[selectedOctave!] != null &&
-        scalesMapping[selectedOctave!]![selectedScale!] != null) {
-      selectedNotes = scalesMapping[selectedOctave!]![selectedScale!]!;
-    }
+    // List<String> selectedNotes = [];
+    // if (selectedOctave != null &&
+    //     selectedScale != null &&
+    //     scalesMapping[selectedOctave!] != null &&
+    //     scalesMapping[selectedOctave!]![selectedScale!] != null) {
+    //   selectedNotes = scalesMapping[selectedOctave!]![selectedScale!]!;
+    // }
 
     return Scaffold(
       appBar: AppBar(title: Text('Scales Settings')),
@@ -54,28 +59,23 @@ class _ScalesPageState extends State<ScalesPage> {
                   child: Text('Octave:'),
                 ),
                 DropdownButton<String>(
-                  value: selectedOctave,
+                  value: context.watch<GeneralProvider>().selectedOctave,
                   hint: Text('Select Octave'),
                   items:
-                      octaveKeys
+                      octavekeys
                           .map(
-                            (oct) =>
-                                DropdownMenuItem(value: oct, child: Text(oct)),
+                            (octave) => DropdownMenuItem(
+                              value: octave,
+                              child: Text(octave),
+                            ),
                           )
                           .toList(),
-                  onChanged: (oct) {
+                  onChanged: (octave) {
                     setState(() {
-                      selectedOctave = oct;
-                      // Reset scale if not available for new octave
-                      if (selectedOctave != null &&
-                          (selectedScale == null ||
-                              !scalesMapping[selectedOctave!]!.containsKey(
-                                selectedScale,
-                              ))) {
-                        selectedScale =
-                            scalesMapping[selectedOctave!]!.keys.first;
-                      }
-                      // Update note selection
+                      selectedOctave = octave;
+                      context.read<GeneralProvider>().updateSelectedOctave(
+                        octave: selectedOctave ?? '',
+                      );
                       if (selectedOctave != null && selectedScale != null) {
                         final notes =
                             scalesMapping[selectedOctave!]![selectedScale!] ??
@@ -95,14 +95,10 @@ class _ScalesPageState extends State<ScalesPage> {
                   child: Text('Scale:'),
                 ),
                 DropdownButton<String>(
-                  value: selectedScale,
+                  value: context.watch<GeneralProvider>().selectedScale,
                   hint: Text('Select Scale'),
                   items:
-                      (selectedOctave != null
-                              ? scalesMapping[selectedOctave!]!.keys
-                                  .toSet()
-                                  .toList()
-                              : scaleKeys)
+                      scalekeys
                           .map(
                             (scale) => DropdownMenuItem(
                               value: scale,
@@ -113,6 +109,9 @@ class _ScalesPageState extends State<ScalesPage> {
                   onChanged: (scale) {
                     setState(() {
                       selectedScale = scale;
+                      context.read<GeneralProvider>().updateSelectedScale(
+                        newscale: selectedScale ?? '',
+                      );
                       if (selectedOctave != null && selectedScale != null) {
                         final notes =
                             scalesMapping[selectedOctave!]![selectedScale!] ??
@@ -147,8 +146,8 @@ class _ScalesPageState extends State<ScalesPage> {
         final note = noteKeys[i];
         final selected = generalProvider.noteSelection[note] ?? false;
         buttons.add(
-          Padding(
-            padding: const EdgeInsets.all(2.0),
+          Expanded(
+            //padding: const EdgeInsets.all(2.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: selected ? Colors.blue : Colors.grey,
@@ -205,7 +204,9 @@ class _ScalesPageState extends State<ScalesPage> {
 
   Future<void> loadScalesJSON() async {
     // Load Scales.json and populate scalesMapping
-    String jsonData = await DefaultAssetBundle.of(context).loadString("assets/mapping/Scales.json");
+    String jsonData = await DefaultAssetBundle.of(
+      context,
+    ).loadString("assets/mapping/Scales.json");
     //final jsonResult = jsonDecode(jsonData);
     final List<dynamic> items = json.decode(jsonData);
 
@@ -217,6 +218,13 @@ class _ScalesPageState extends State<ScalesPage> {
 
       scalesMapping[octave] ??= {};
       scalesMapping[octave]![set] = notes;
+
+      if (octave.isNotEmpty && !octavekeys.contains(octave)) {
+        octavekeys.add(octave);
+      }
+      if (set.isNotEmpty && !scalekeys.contains(set)) {
+        scalekeys.add(set);
+      }
     }
     setState(() {});
   }

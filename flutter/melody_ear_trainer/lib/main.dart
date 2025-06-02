@@ -12,6 +12,7 @@ import 'providers/general_provider.dart';
 import 'homepage.dart';
 import 'scales.dart';
 
+
 void main() async {
   // The `flutter_soloud` package logs everything
   // (from severe warnings to fine debug messages)
@@ -45,9 +46,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => GeneralProvider(),
-        ),
+        ChangeNotifierProvider(create: (context) => GeneralProvider()),
       ],
       child: MaterialApp(
         title: 'Melody Ear Trainer',
@@ -57,19 +56,15 @@ class MelodyEarTrainerApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: MelodyHomePage(audioController: audioController),
-          routes: {
-            '/home': (context) => MelodyHomePage(audioController: audioController),
-            '/general': (context) => GeneralPage(),
-            '/tonic': (context) => TonicPage(audioController: audioController),
-            '/scales': (context) => ScalesPage(),
-            // Add other routes here
-          },
+        routes: {
+          '/home':
+              (context) => MelodyHomePage(audioController: audioController),
+          '/general': (context) => GeneralPage(),
+          '/tonic': (context) => TonicPage(audioController: audioController),
+          '/scales': (context) => ScalesPage(),
+          // Add other routes here
+        },
       ),
-    );  
-  }
-
-  
-}
-
-
-
+    );
+  } // Build method
+} // MelodyEarTrainerApp
