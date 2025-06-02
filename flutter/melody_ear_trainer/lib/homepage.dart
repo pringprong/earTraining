@@ -15,7 +15,6 @@ class MelodyHomePage extends StatefulWidget {
 
 class _MelodyHomePageState extends State<MelodyHomePage> {
   Map<String, Map<String, Map<String, String>>> nestedMapping = {};
-  //final _random = new Random();
   String selectedKey = "";
   String selectedInstrument = "";
   int numberOfNotes = 5;
@@ -25,6 +24,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
 
   List<String> melody = [];
   String solfegeText = "";
+
+  // --- Write Melody Section ---
+  List<String> writtenMelody = [];
+  String comparisonResult = "";
 
   @override
   void initState() {
@@ -47,7 +50,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       GeneralProvider.noteKeys.where((n) => n.contains('2')).toList(),
     ];
 
-    // Only show selected notes as buttons in the grid
     final selectedNotes = generalProvider.getSelectedNotes();
 
     return Scaffold(
@@ -146,6 +148,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               await widget.audioController.playSound(
                                 "assets/audio/$filename",
                               );
+                              // Add to writtenMelody
+                              setState(() {
+                                writtenMelody.add(note);
+                              });
                             },
                             child: Text(note),
                           ),
@@ -173,7 +179,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Play Melody:", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    "Play Melody:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
               Row(
@@ -199,7 +208,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Solfege:", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    "Solfege:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
               // Show Solfege Button
@@ -232,10 +244,98 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Write melody:", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    "Write melody:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
-
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    writtenMelody.join(' '),
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        writtenMelody.clear();
+                        comparisonResult = "";
+                      });
+                    },
+                    child: Text("Clear"),
+                  ),
+                  SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        if (writtenMelody.isNotEmpty) {
+                          writtenMelody.removeLast();
+                        }
+                        comparisonResult = "";
+                      });
+                    },
+                    child: Text("Backspace"),
+                  ),
+                  SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        comparisonResult =
+                            listEquals(writtenMelody, melody)
+                                ? "Same"
+                                : "not the same";
+                      });
+                    },
+                    child: Text("Compare"),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Comparison Result: $comparisonResult",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    onPressed:
+                        () => playWrittenMelody("Guitar", generalProvider),
+                    child: Text("Guitar"),
+                  ),
+                  SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed:
+                        () => playWrittenMelody("Piano", generalProvider),
+                    child: Text("Piano"),
+                  ),
+                  SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed:
+                        () => playWrittenMelody("Solfege", generalProvider),
+                    child: Text("Solfege"),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -245,6 +345,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
 
   void generateMelody(GeneralProvider generalProvider) {
     melody = [];
+    writtenMelody = [];
+    comparisonResult = "";
     final numNotes = generalProvider.numberOfNotes;
     final maxDist = generalProvider.maxDistance;
     final allowRepeats = generalProvider.allowRepeatedNotes;
@@ -358,4 +460,39 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     }
     setState(() {});
   }
+
+  Future<void> playWrittenMelody(
+    String instrument,
+    GeneralProvider generalProvider,
+  ) async {
+    final key = generalProvider.selectedKey;
+    final timeBetween = generalProvider.timeBetweenNotes;
+    final truncate = generalProvider.truncateNotes;
+    if (writtenMelody.isEmpty) return;
+    for (var note in writtenMelody) {
+      final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+      if (filename.isNotEmpty) {
+        if (truncate == "None") {
+          widget.audioController.playSound("assets/audio/$filename");
+        } else {
+          widget.audioController.playSoundFade(
+            "assets/audio/$filename",
+            int.parse(truncate),
+            500,
+          );
+        }
+      }
+      await Future.delayed(Duration(milliseconds: timeBetween));
+    }
+  }
+}
+
+// Helper for list comparison
+bool listEquals<T>(List<T>? a, List<T>? b) {
+  if (a == null || b == null) return false;
+  if (a.length != b.length) return false;
+  for (int i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
 }
