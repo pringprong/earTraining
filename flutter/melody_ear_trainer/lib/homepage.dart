@@ -262,18 +262,15 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     for (var note in melody) {
       final filename = nestedMapping[key]?[instrument]?[note] ?? '';
       if (filename.isNotEmpty) {
-        //await widget.audioController.playSound("assets/audio/$filename");
         if (truncate == "None") {
           widget.audioController.playSound("assets/audio/$filename");
         } else {
           // Truncate the sound if specified
-          //await widget.audioController.playSoundFade("assets/audio/$filename", int.tryParse(truncate) ?? 0);
           widget.audioController.playSoundFade(
             "assets/audio/$filename",
             int.parse(truncate),
             500,
           );
-          //truncateMs: truncate == "None" ? null : int.tryParse(truncate));
         }
       }
       await Future.delayed(Duration(milliseconds: timeBetween));
