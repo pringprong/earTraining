@@ -155,37 +155,65 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               }),
               SizedBox(height: 16),
               // Generate Melody Button
-              ElevatedButton(
-                onPressed: () {
-                  generateMelody(generalProvider);
-                  setState(() {
-                    solfegeText = ""; // Clear solfege area
-                  });
-                },
-                child: Text("Generate melody"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      generateMelody(generalProvider);
+                      setState(() {
+                        solfegeText = ""; // Clear solfege area
+                      });
+                    },
+                    child: Text("Generate melody"),
+                  ),
+                ],
               ),
-              // Play Guitar Melody Button
-              ElevatedButton(
-                onPressed: () => playMelody("Guitar", generalProvider),
-                child: Text("Play Guitar Melody"),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Play Melody:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
               ),
-              // Play Piano Melody Button
-              ElevatedButton(
-                onPressed: () => playMelody("Piano", generalProvider),
-                child: Text("Play Piano Melody"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => playMelody("Guitar", generalProvider),
+                    child: Text("Guitar"),
+                  ),
+                  // Play Piano Melody Button
+                  ElevatedButton(
+                    onPressed: () => playMelody("Piano", generalProvider),
+                    child: Text("Piano"),
+                  ),
+                  // Play Solfege Melody Button
+                  ElevatedButton(
+                    onPressed: () => playMelody("Solfege", generalProvider),
+                    child: Text("Solfege"),
+                  ),
+                ],
               ),
-              // Play Solfege Melody Button
-              ElevatedButton(
-                onPressed: () => playMelody("Solfege", generalProvider),
-                child: Text("Play Solfege Melody"),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Solfege:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
               ),
               // Show Solfege Button
-              ElevatedButton(
-                onPressed: () {
-                  showSolfege();
-                  setState(() {});
-                },
-                child: Text("Show Solfege"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      showSolfege();
+                      setState(() {});
+                    },
+                    child: Text("Show Solfege"),
+                  ),
+                ],
               ),
               // Solfege Text Area
               Padding(
@@ -200,6 +228,14 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   child: Text(solfegeText, style: TextStyle(fontSize: 18)),
                 ),
               ),
+              SizedBox(height: 6),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Write melody:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+
             ],
           ),
         ),

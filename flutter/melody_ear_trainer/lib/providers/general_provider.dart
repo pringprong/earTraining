@@ -17,8 +17,13 @@ class GeneralProvider extends ChangeNotifier {
   String startingDo = "do"; // Default starting note
   String endingDo = "do"; // Default ending note
 
-  String selectedOctave  = "All octaves"; // Default octave selection
-  String selectedScale = "Chromatic"; // Default scale selection
+  String selectedOctave  = "Middle octave"; // Default octave selection
+  String selectedScale = "Diatonic major"; // Default scale selection
+  static const List<String> defaultNoteKeys = [
+    "do", "re", "mi", "fa", "so", "la", "ti",
+    "do1"
+  ];
+
     // Map of booleans for note selection
   static const List<String> noteKeys = [
     "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
@@ -28,13 +33,15 @@ class GeneralProvider extends ChangeNotifier {
   ];
 
   Map<String, bool> noteSelection = {
-    for (var key in noteKeys) key: true,
+    for (var key in noteKeys) key: false,
+    for (var key in defaultNoteKeys) key: true,
   };
 
   GeneralProvider({
     this.selectedKey = "C",
     this.selectedInstrument =
         "Piano", // Initialize any default values or load settings if necessary
+    
   });
 
   get tonicNote => null;
