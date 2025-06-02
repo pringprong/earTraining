@@ -1,0 +1,902 @@
+[
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_L_R",
+		"Notes": "do0,mi0,so0"
+	},
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_L_1i",
+		"Notes": "mi0,so0,do"
+	},
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_L_2i",
+		"Notes": "so0,do,mi"
+	},
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_M_R",
+		"Notes": "do,mi,so"
+	},
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_M_1i",
+		"Notes": "mi,so,do1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_M_2i",
+		"Notes": "so,do1,mi1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_H_R",
+		"Notes": "do1,mi1,so1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_H_1i",
+		"Notes": "mi1,so1,do2"
+	},
+	{
+		"Category": "Major",
+		"Degree": "I",
+		"Chord Set": "I_All",
+		"Notes": "do0,mi0,so0,do,mi,so,do1,mi1,so1,do2"
+	},
+	{
+		"Category": "Major",
+		"Degree": "ii",
+		"Chord Set": "ii_L_R",
+		"Notes": "re0,fa0,la0"
+	},
+	{
+		"Category": "Major",
+		"Degree": "ii",
+		"Chord Set": "ii_L_1i",
+		"Notes": "fa0,la0,re"
+	},
+	{
+		"Category": "Major",
+		"Degree": "ii",
+		"Chord Set": "ii_L_2i",
+		"Notes": "la0,re,fa"
+	},
+	{
+		"Category": "Major",
+		"Degree": "ii",
+		"Chord Set": "ii_M_R",
+		"Notes": "re,fa,la"
+	},
+	{
+		"Category": "Major",
+		"Degree": "ii",
+		"Chord Set": "ii_M_1i",
+		"Notes": "fa,la,re1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "ii",
+		"Chord Set": "ii_M_2i",
+		"Notes": "la,re1,fa1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "ii",
+		"Chord Set": "ii_H_R",
+		"Notes": "re1,fa1,la1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "ii",
+		"Chord Set": "ii_All",
+		"Notes": "re0,fa0,la0,re,fa,la,re1,fa1,la1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "iii",
+		"Chord Set": "iii_L_R",
+		"Notes": "mi0,so0,ti0"
+	},
+	{
+		"Category": "Major",
+		"Degree": "iii",
+		"Chord Set": "iii_L_1i",
+		"Notes": "so0,ti0,mi"
+	},
+	{
+		"Category": "Major",
+		"Degree": "iii",
+		"Chord Set": "iii_L_2i",
+		"Notes": "ti0,mi,so"
+	},
+	{
+		"Category": "Major",
+		"Degree": "iii",
+		"Chord Set": "iii_M_R",
+		"Notes": "mi,so,ti"
+	},
+	{
+		"Category": "Major",
+		"Degree": "iii",
+		"Chord Set": "iii_M_1i",
+		"Notes": "so,ti,mi1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "iii",
+		"Chord Set": "iii_M_2i",
+		"Notes": "ti,mi1,so1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "iii",
+		"Chord Set": "iii_H_R",
+		"Notes": "mi1,so1,ti1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "iii",
+		"Chord Set": "iii_All",
+		"Notes": "mi0,so0,ti0,mi,so,ti,mi1,so1,ti1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_VL_2i",
+		"Notes": "do0,fa0,la0"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_L_R",
+		"Notes": "fa0,la0,do"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_L_1i",
+		"Notes": "la0,do,fa"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_L_2i",
+		"Notes": "do,fa,la"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_M_R",
+		"Notes": "fa,la,do1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_M_1i",
+		"Notes": "la,do1,fa1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_M_2i",
+		"Notes": "do1,fa1,la1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_H_R",
+		"Notes": "fa1,la1,do2"
+	},
+	{
+		"Category": "Major",
+		"Degree": "IV",
+		"Chord Set": "IV_All",
+		"Notes": "do0,fa0,la0,do,fa,la,do1,fa1,la1,do2"
+	},
+	{
+		"Category": "Major",
+		"Degree": "V",
+		"Chord Set": "V_VL_2i",
+		"Notes": "re0,so0,ti0"
+	},
+	{
+		"Category": "Major",
+		"Degree": "V",
+		"Chord Set": "V_L_R",
+		"Notes": "so0,ti0,re"
+	},
+	{
+		"Category": "Major",
+		"Degree": "V",
+		"Chord Set": "V_L_1i",
+		"Notes": "ti0,re,so"
+	},
+	{
+		"Category": "Major",
+		"Degree": "V",
+		"Chord Set": "V_L_2i",
+		"Notes": "re,so,ti"
+	},
+	{
+		"Category": "Major",
+		"Degree": "V",
+		"Chord Set": "V_M_R",
+		"Notes": "so,ti,re1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "V",
+		"Chord Set": "V_M_1i",
+		"Notes": "ti,re1,so1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "V",
+		"Chord Set": "V_M_2i",
+		"Notes": "re1,so1,ti1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "V",
+		"Chord Set": "V_All",
+		"Notes": "re0,so0,ti0,re,so,ti,re1,so1,ti1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_VL_1i",
+		"Notes": "do0,mi0,la0"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_VL_2i",
+		"Notes": "mi0,la0,do"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_L_R",
+		"Notes": "la0,do,mi"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_L_1i",
+		"Notes": "do,mi,la"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_L_2i",
+		"Notes": "mi,la,do1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_M_R",
+		"Notes": "la,do1,mi1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_M_1i",
+		"Notes": "do1,mi1,la1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_M_2i",
+		"Notes": "mi1,la1,do2"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vi",
+		"Chord Set": "vi_All",
+		"Notes": "do0,mi0,la0,do,mi,la,do1,mi1,la1,do2"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vii0",
+		"Chord Set": "vii0_VL_1i",
+		"Notes": "re0,fa0,ti0"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vii0",
+		"Chord Set": "vii0_VL_2i",
+		"Notes": "fa0,ti0,re"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vii0",
+		"Chord Set": "vii0_L_R",
+		"Notes": "ti0,re,fa"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vii0",
+		"Chord Set": "vii0_L_1i",
+		"Notes": "re,fa,ti"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vii0",
+		"Chord Set": "vii0_L_2i",
+		"Notes": "fa,ti,re1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vii0",
+		"Chord Set": "vii0_M_R",
+		"Notes": "ti,re1,fa1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vii0",
+		"Chord Set": "vii0_M_1i",
+		"Notes": "re1,fa1,ti1"
+	},
+	{
+		"Category": "Major",
+		"Degree": "vii0",
+		"Chord Set": "vii0_All",
+		"Notes": "re0,fa0,ti0,re,fa,ti,re1,fa1,ti1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_L_R",
+		"Notes": "do0,nu0,so0"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_L_1i",
+		"Notes": "nu0,so0,do"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_L_2i",
+		"Notes": "so0,do,nu"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_M_R",
+		"Notes": "do,nu,so"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_M_1i",
+		"Notes": "nu,so,do1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_M_2i",
+		"Notes": "so,do1,nu1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_H_R",
+		"Notes": "do1,nu1,so1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_H_1i",
+		"Notes": "nu1,so1,do2"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "i",
+		"Chord Set": "i_All",
+		"Notes": "do0,nu0,so0,do,nu,so,do1,nu1,so1,do2"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "ii0",
+		"Chord Set": "ii0_L_R",
+		"Notes": "re0,fa0,ki0"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "ii0",
+		"Chord Set": "ii0_L_1i",
+		"Notes": "fa0,ki0,re"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "ii0",
+		"Chord Set": "ii0_L_2i",
+		"Notes": "ki0,re,fa"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "ii0",
+		"Chord Set": "ii0_M_R",
+		"Notes": "re,fa,ki"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "ii0",
+		"Chord Set": "ii0_M_1i",
+		"Notes": "fa,ki,re1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "ii0",
+		"Chord Set": "ii0_M_2i",
+		"Notes": "ki,re1,fa1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "ii0",
+		"Chord Set": "ii0_H_R",
+		"Notes": "re1,fa1,ki1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "ii0",
+		"Chord Set": "ii0_All",
+		"Notes": "re0,fa0,ki0,re,fa,ki,re1,fa1,ki1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "III",
+		"Chord Set": "III_L_R",
+		"Notes": "nu0,so0,pe0"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "III",
+		"Chord Set": "III_L_1i",
+		"Notes": "so0,pe0,nu"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "III",
+		"Chord Set": "III_L_2i",
+		"Notes": "pe0,nu,so"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "III",
+		"Chord Set": "III_M_R",
+		"Notes": "nu,so,pe"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "III",
+		"Chord Set": "III_M_1i",
+		"Notes": "so,pe,nu1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "III",
+		"Chord Set": "III_M_2i",
+		"Notes": "pe,nu1,so1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "III",
+		"Chord Set": "III_H_R",
+		"Notes": "nu1,so1,pe1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "III",
+		"Chord Set": "III_All",
+		"Notes": "nu0,so0,pe0,nu,so,pe,nu1,so1,pe1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_VL_2i",
+		"Notes": "do0,fa0,ki0"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_L_R",
+		"Notes": "fa0,ki0,do"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_L_1i",
+		"Notes": "ki0,do,fa"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_L_2i",
+		"Notes": "do,fa,ki"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_M_R",
+		"Notes": "fa,ki,do1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_M_1i",
+		"Notes": "ki,do1,fa1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_M_2i",
+		"Notes": "do1,fa1,ki1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_H_R",
+		"Notes": "fa1,ki1,do2"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "iv",
+		"Chord Set": "iv_All",
+		"Notes": "do0,fa0,ki0,do,fa,ki,do1,fa1,ki1,do2"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "v",
+		"Chord Set": "v_VL_2i",
+		"Notes": "re0,so0,pe0"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "v",
+		"Chord Set": "v_L_R",
+		"Notes": "so0,pe0,re"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "v",
+		"Chord Set": "v_L_1i",
+		"Notes": "pe0,re,so"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "v",
+		"Chord Set": "v_L_2i",
+		"Notes": "re,so,pe"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "v",
+		"Chord Set": "v_M_R",
+		"Notes": "so,pe,re1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "v",
+		"Chord Set": "v_M_1i",
+		"Notes": "pe,re1,so1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "v",
+		"Chord Set": "v_M_2i",
+		"Notes": "re1,so1,pe1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "v",
+		"Chord Set": "v_All",
+		"Notes": "re0,so0,pe0,re,so,pe,re1,so1,pe1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_VL_1i",
+		"Notes": "do0,nu0,ki0"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_VL_2i",
+		"Notes": "nu0,ki0,do"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_L_R",
+		"Notes": "ki0,do,nu"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_L_1i",
+		"Notes": "do,nu,ki"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_L_2i",
+		"Notes": "nu,ki,do1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_M_R",
+		"Notes": "ki,do1,nu1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_M_1i",
+		"Notes": "do1,nu1,ki1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_M_2i",
+		"Notes": "nu1,ki1,do2"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VI",
+		"Chord Set": "VI_All",
+		"Notes": "do0,nu0,ki0,do,nu,ki,do1,nu1,ki1,do2"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VII",
+		"Chord Set": "VII_VL_1i",
+		"Notes": "re0,fa0,pe0"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VII",
+		"Chord Set": "VII_VL_2i",
+		"Notes": "fa0,pe0,re"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VII",
+		"Chord Set": "VII_L_R",
+		"Notes": "pe0,re,fa"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VII",
+		"Chord Set": "VII_L_1i",
+		"Notes": "re,fa,pe"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VII",
+		"Chord Set": "VII_L_2i",
+		"Notes": "fa,pe,re1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VII",
+		"Chord Set": "VII_M_R",
+		"Notes": "pe,re1,fa1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VII",
+		"Chord Set": "VII_M_1i",
+		"Notes": "re1,fa1,pe1"
+	},
+	{
+		"Category": "Minor",
+		"Degree": "VII",
+		"Chord Set": "VII_All",
+		"Notes": "re0,fa0,pe0,re,fa,pe,re1,fa1,pe1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_L_R",
+		"Notes": "do0,mi0,so0,pe0"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_L_1i",
+		"Notes": "mi0,so0,pe0,do"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_L_2i",
+		"Notes": "so0,pe0,do,mi"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_L_3i",
+		"Notes": "pe0,do,mi,so"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_M_R",
+		"Notes": "do,mi,so,pe"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_M_1i",
+		"Notes": "mi,so,pe,do1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_M_2i",
+		"Notes": "so,pe,do1,mi1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_M_3i",
+		"Notes": "pe,do1,mi1,so1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_H_R",
+		"Notes": "do1,mi1,so1,pe1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_H_1i",
+		"Notes": "mi1,so1,pe1,do2"
+	},
+	{
+		"Category": "Other",
+		"Degree": "I7",
+		"Chord Set": "I7_All",
+		"Notes": "do0,mi0,so0,pe0,do,mi,so,pe,do1,mi1,so1,pe1,do2"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_VL_2i",
+		"Notes": "do0,nu0,fa0,la0"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_VL_3i",
+		"Notes": "nu0,fa0,la0,do"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_L_R",
+		"Notes": "fa0,la0,do,nu"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_L_1i",
+		"Notes": "la0,do,nu,fa"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_L_2i",
+		"Notes": "do,nu,fa,la"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_L_3i",
+		"Notes": "nu,fa,la,do1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_M_R",
+		"Notes": "fa,la,do1,nu1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_M_1i",
+		"Notes": "la,do1,nu1,fa1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_M_2i",
+		"Notes": "do1,nu1,fa1,la1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_M_3i",
+		"Notes": "nu1,fa1,la1,do2"
+	},
+	{
+		"Category": "Other",
+		"Degree": "IV7",
+		"Chord Set": "IV7_All",
+		"Notes": "do0,nu0,fa0,la0,do,nu,fa,la,do1,nu1,fa1,la1,do2"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_VL_2i",
+		"Notes": "re0,fa0,so0,ti0"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_VL_3i",
+		"Notes": "fa0,so0,ti0,re"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_L_R",
+		"Notes": "so0,ti0,re,fa"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_L_1i",
+		"Notes": "ti0,re,fa,so"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_L_2i",
+		"Notes": "re,fa,so,ti"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_L_3i",
+		"Notes": "fa,so,ti,re1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_M_R",
+		"Notes": "so,ti,re1,fa1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_M_1i",
+		"Notes": "ti,re1,fa1,so1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_M_2i",
+		"Notes": "re1,fa1,so1,ti1"
+	},
+	{
+		"Category": "Other",
+		"Degree": "V7",
+		"Chord Set": "V7_All",
+		"Notes": "re0,fa0,so0,ti0,re,fa,so,ti,re1,fa1,so1,ti1"
+	}
+]

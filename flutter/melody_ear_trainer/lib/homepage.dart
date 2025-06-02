@@ -245,13 +245,13 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Write melody:",
+                    "Write and play your own melody:",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(12),
@@ -289,28 +289,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     },
                     child: Text("Backspace"),
                   ),
-                  SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        comparisonResult =
-                            listEquals(writtenMelody, melody)
-                                ? "Same"
-                                : "not the same";
-                      });
-                    },
-                    child: Text("Compare"),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Comparison Result: $comparisonResult",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
                 ],
               ),
               SizedBox(height: 8),
@@ -333,6 +311,32 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     onPressed:
                         () => playWrittenMelody("Solfege", generalProvider),
                     child: Text("Solfege"),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        comparisonResult =
+                            listEquals(writtenMelody, melody)
+                                ? "Same"
+                                : "not the same";
+                      });
+                    },
+                    child: Text("Compare with generated melody"),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Comparison Result: $comparisonResult",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
