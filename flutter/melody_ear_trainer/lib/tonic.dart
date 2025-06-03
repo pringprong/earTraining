@@ -28,164 +28,203 @@ class _TonicPageState extends State<TonicPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Tonic')),
-      body: Center(
-        child: Column(
-          children: [
-            // Starting note "always start with" checkbox
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Starting note (tonic): Always start with'),
-            ),
-            Checkbox(
-              value: context.watch<GeneralProvider>().startWithDo,
-              onChanged: (bool? value) {
-                context.read<GeneralProvider>().toggleStartWithDo();
-              },
-            ),
-            // Starting note dropdown
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Tonic Note:'),
-            ),
-            DropdownButton<String>(
-              value: context.watch<GeneralProvider>().startingDo,
-              items:
-                  [
-                    "do0",
-                    "la0",
-                    "do",
-                    "la",
-                    "do1",
-                    "la1",
-                    "do2",
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  context.read<GeneralProvider>().updateStartingDo(
-                    newStartingDo: newValue,
-                  );
-                }
-              },
-            ),
-            // Ending note "always start with" checkbox
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Ending note: Always start with'),
-            ),
-            Checkbox(
-              value: context.watch<GeneralProvider>().endWithDo,
-              onChanged: (bool? value) {
-                context.read<GeneralProvider>().toggleEndWithDo();
-              },
-            ),
-            // Ending note dropdown
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Ending Note:'),
-            ),
-            DropdownButton<String>(
-              value: context.watch<GeneralProvider>().endingDo,
-              items:
-                  [
-                    "do0",
-                    "la0",
-                    "do",
-                    "la",
-                    "do1",
-                    "la1",
-                    "do2",
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  context.read<GeneralProvider>().updateEndingDo(
-                    newEndingDo: newValue,
-                  );
-                }
-              },
-            ),
-            // Play Guitar Tonic Button
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  String filename =
-                      nestedMapping[context
-                          .read<GeneralProvider>()
-                          .selectedKey]!['Guitar']![context
-                          .read<GeneralProvider>()
-                          .startingDo] ??
-                      '';
-                  filename = "assets/audio/$filename";
-                  if (filename.isEmpty) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text('No tonic found')));
-                    return;
-                  }
-                  widget.audioController.playSound(filename);
-                },
-                child: Text('Play Guitar Tonic'),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Starting note "always start with" checkbox
+              Row(
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Starting note (tonic): Always start with'),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            // Play Piano Tonic Button
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  String filename =
-                      nestedMapping[context
-                          .read<GeneralProvider>()
-                          .selectedKey]!['Piano']![context
-                          .read<GeneralProvider>()
-                          .startingDo] ??
-                      '';
-                  filename = "assets/audio/$filename";
-                  if (filename.isEmpty) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text('No tonic found')));
-                    return;
-                  }
-                  widget.audioController.playSound(filename);
-                },
-                child: Text('Play Piano Tonic'),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Checkbox(
+                    value: context.watch<GeneralProvider>().startWithDo,
+                    onChanged: (bool? value) {
+                      context.read<GeneralProvider>().toggleStartWithDo();
+                    },
+                  ),
+                  // Starting note dropdown
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Tonic Note:'),
+                  ),
+                  DropdownButton<String>(
+                    value: context.watch<GeneralProvider>().startingDo,
+                    items:
+                        [
+                          "do0",
+                          "la0",
+                          "do",
+                          "la",
+                          "do1",
+                          "la1",
+                          "do2",
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateStartingDo(
+                          newStartingDo: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
-            ),
-            // Play Solfege Tonic Button
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  String filename =
-                      nestedMapping[context
-                          .read<GeneralProvider>()
-                          .selectedKey]!['Solfege']![context
-                          .read<GeneralProvider>()
-                          .startingDo] ??
-                      '';
-                  filename = "assets/audio/$filename";
-                  if (filename.isEmpty) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text('No tonic found')));
-                    return;
-                  }
-                  widget.audioController.playSound(filename);
-                },
-                child: Text('Play Solfege Tonic'),
+              SizedBox(height: 8),
+              // Ending note "always start with" checkbox
+              Row(
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Ending note: Always end with'),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ], // Children of Column
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Checkbox(
+                    value: context.watch<GeneralProvider>().endWithDo,
+                    onChanged: (bool? value) {
+                      context.read<GeneralProvider>().toggleEndWithDo();
+                    },
+                  ),
+                  // Ending note dropdown
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Ending Note:'),
+                  ),
+                  DropdownButton<String>(
+                    value: context.watch<GeneralProvider>().endingDo,
+                    items:
+                        [
+                          "do0",
+                          "la0",
+                          "do",
+                          "la",
+                          "do1",
+                          "la1",
+                          "do2",
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateEndingDo(
+                          newEndingDo: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              // Play Guitar Tonic Button
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        String filename =
+                            nestedMapping[context
+                                .read<GeneralProvider>()
+                                .selectedKey]!['Guitar']![context
+                                .read<GeneralProvider>()
+                                .startingDo] ??
+                            '';
+                        filename = "assets/audio/$filename";
+                        if (filename.isEmpty) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text('No tonic found')));
+                          return;
+                        }
+                        widget.audioController.playSound(filename);
+                      },
+                      child: Text('Play Guitar Tonic'),
+                    ),
+                  ),
+                ],
+              ),
+              // Play Piano Tonic Button
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        String filename =
+                            nestedMapping[context
+                                .read<GeneralProvider>()
+                                .selectedKey]!['Piano']![context
+                                .read<GeneralProvider>()
+                                .startingDo] ??
+                            '';
+                        filename = "assets/audio/$filename";
+                        if (filename.isEmpty) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text('No tonic found')));
+                          return;
+                        }
+                        widget.audioController.playSound(filename);
+                      },
+                      child: Text('Play Piano Tonic'),
+                    ),
+                  ),
+                ],
+              ),
+              // Play Solfege Tonic Button
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        String filename =
+                            nestedMapping[context
+                                .read<GeneralProvider>()
+                                .selectedKey]!['Solfege']![context
+                                .read<GeneralProvider>()
+                                .startingDo] ??
+                            '';
+                        filename = "assets/audio/$filename";
+                        if (filename.isEmpty) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text('No tonic found')));
+                          return;
+                        }
+                        widget.audioController.playSound(filename);
+                      },
+                      child: Text('Play Solfege Tonic'),
+                    ),
+                  ),
+                ],
+              ),
+            ], // Children of Column
+          ),
         ),
       ),
     );

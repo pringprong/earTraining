@@ -48,7 +48,8 @@ class _ScalesPageState extends State<ScalesPage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Scales Settings')),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             // Octave dropdown
@@ -125,9 +126,8 @@ class _ScalesPageState extends State<ScalesPage> {
             ),
             // Notes grid
             Expanded(
-              //padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: _buildNotesGrid(generalProvider),
-            ),
+                child: _buildNotesGrid(generalProvider),
+              ),
           ],
         ),
       ),
@@ -147,25 +147,27 @@ class _ScalesPageState extends State<ScalesPage> {
         final selected = generalProvider.noteSelection[note] ?? false;
         buttons.add(
           Expanded(
-            //padding: const EdgeInsets.all(2.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: selected ? Colors.blue : Colors.grey,
-                //minimumSize: Size(40, 40),
-                padding: EdgeInsets.zero,
-                textStyle: TextStyle(fontSize: selected ? 16 : 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: selected ? Colors.blue : Colors.grey,
+                  //minimumSize: Size(40, 40),
+                  padding: EdgeInsets.zero,
+                  textStyle: TextStyle(fontSize: selected ? 12 : 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                 ),
-              ),
-              onPressed: () {
-                generalProvider.toggleNoteSelection(note);
-              },
-              child: Text(
-                note,
-                style: TextStyle(
-                  fontSize: selected ? 16 : 12,
-                  color: Colors.white,
+                onPressed: () {
+                  generalProvider.toggleNoteSelection(note);
+                },
+                child: Text(
+                  note,
+                  style: TextStyle(
+                    fontSize: selected ? 12 : 10,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
+//import 'package:expandable/expandable.dart';
+//import 'dart:math' as math;
 
 class MelodyHomePage extends StatefulWidget {
   const MelodyHomePage({super.key, required this.audioController});
@@ -96,11 +98,107 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              // Generate Melody Button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          generateMelody(generalProvider);
+                          setState(() {
+                            solfegeText = ""; // Clear solfege area
+                          });
+                        },
+                        child: Text("Generate melody"),
+                      ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Play Melody:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => playMelody("Guitar", generalProvider),
+                      child: Text("Guitar"),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  // Play Piano Melody Button
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => playMelody("Piano", generalProvider),
+                      child: Text("Piano"),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              ExpansionTile(
+                title: Text(
+                  "Solfege",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                initiallyExpanded: false,
+                children: [
+                  // Show Solfege Button Row
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                      onPressed: () {
+                        showSolfege();
+                        setState(() {});
+                      },
+                      child: Text("Show Solfege"),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    // Play Solfege Melody Button
+                    Expanded(
+                      child: ElevatedButton(
+                      onPressed: () => playMelody("Solfege", generalProvider),
+                      child: Text("Play Solfege"),
+                      ),
+                    ),
+                  ],
+                  ),
+                  // Solfege Text Area
+                  Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(solfegeText, style: TextStyle(fontSize: 18)),
+                  ),
+                  ),
+                ],
+                ),
+              SizedBox(height: 8),
               // Notes Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Notes:", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Flexible(child: 
+                  Text("Play the melody back:", 
+                  style: TextStyle(fontWeight: FontWeight.bold))),
                 ],
               ),
               ...List.generate(noteRows.length, (rowIdx) {
@@ -115,141 +213,56 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       rowNotes.map((note) {
                         return Expanded(
                           //padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              //minimumSize: Size(80, 36),
-                              //maximumSize: Size(80, 36),
-                              backgroundColor: Colors.blue,
-                              padding: const EdgeInsets.all(0.0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              textStyle: TextStyle(
-                                fontSize: 14,
-                                //padding: EdgeInsets.zero,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                //minimumSize: Size(80, 36),
+                                //maximumSize: Size(80, 36),
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.all(0.0),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                textStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  //padding: EdgeInsets.zero,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                            onPressed: () async {
-                              // Play note using AudioController and nestedMapping
-                              final key = generalProvider.selectedKey;
-                              final instrument =
-                                  generalProvider.selectedInstrument;
-                              final filename =
-                                  nestedMapping[key]?[instrument]?[note] ?? '';
-                              if (filename.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('No audio file for $note'),
-                                  ),
+                              onPressed: () async {
+                                // Play note using AudioController and nestedMapping
+                                final key = generalProvider.selectedKey;
+                                final instrument =
+                                    generalProvider.selectedInstrument;
+                                final filename =
+                                    nestedMapping[key]?[instrument]?[note] ?? '';
+                                if (filename.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('No audio file for $note'),
+                                    ),
+                                  );
+                                  return;
+                                }
+                                await widget.audioController.playSound(
+                                  "assets/audio/$filename",
                                 );
-                                return;
-                              }
-                              await widget.audioController.playSound(
-                                "assets/audio/$filename",
-                              );
-                              // Add to writtenMelody
-                              setState(() {
-                                writtenMelody.add(note);
-                              });
-                            },
-                            child: Text(note),
+                                // Add to writtenMelody
+                                setState(() {
+                                  writtenMelody.add(note);
+                                });
+                              },
+                              child: Text(note),
+                            ),
                           ),
                         );
                       }).toList(),
                 );
               }),
-              SizedBox(height: 16),
-              // Generate Melody Button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      generateMelody(generalProvider);
-                      setState(() {
-                        solfegeText = ""; // Clear solfege area
-                      });
-                    },
-                    child: Text("Generate melody"),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Play Melody:",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => playMelody("Guitar", generalProvider),
-                    child: Text("Guitar"),
-                  ),
-                  // Play Piano Melody Button
-                  ElevatedButton(
-                    onPressed: () => playMelody("Piano", generalProvider),
-                    child: Text("Piano"),
-                  ),
-                  // Play Solfege Melody Button
-                  ElevatedButton(
-                    onPressed: () => playMelody("Solfege", generalProvider),
-                    child: Text("Solfege"),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Solfege:",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              // Show Solfege Button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      showSolfege();
-                      setState(() {});
-                    },
-                    child: Text("Show Solfege"),
-                  ),
-                ],
-              ),
-              // Solfege Text Area
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(solfegeText, style: TextStyle(fontSize: 18)),
-                ),
-              ),
-              SizedBox(height: 6),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Write and play your own melody:",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+              SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -265,29 +278,34 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   ),
                 ),
               ),
+              SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        writtenMelody.clear();
-                        comparisonResult = "";
-                      });
-                    },
-                    child: Text("Clear"),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          writtenMelody.clear();
+                          comparisonResult = "";
+                        });
+                      },
+                      child: Text("Clear"),
+                    ),
                   ),
                   SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        if (writtenMelody.isNotEmpty) {
-                          writtenMelody.removeLast();
-                        }
-                        comparisonResult = "";
-                      });
-                    },
-                    child: Text("Backspace"),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          if (writtenMelody.isNotEmpty) {
+                            writtenMelody.removeLast();
+                          }
+                          comparisonResult = "";
+                        });
+                      },
+                      child: Text("Backspace"),
+                    ),
                   ),
                 ],
               ),
@@ -295,48 +313,57 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                    onPressed:
-                        () => playWrittenMelody("Guitar", generalProvider),
-                    child: Text("Guitar"),
-                  ),
-                  SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed:
-                        () => playWrittenMelody("Piano", generalProvider),
-                    child: Text("Piano"),
-                  ),
-                  SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed:
-                        () => playWrittenMelody("Solfege", generalProvider),
-                    child: Text("Solfege"),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          comparisonResult =
+                              listEquals(writtenMelody, melody)
+                                  ? "Same"
+                                  : "not the same";
+                        });
+                      },
+                      child: Text("Compare with generated melody"),
+                    ),
                   ),
                 ],
               ),
               SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        comparisonResult =
-                            listEquals(writtenMelody, melody)
-                                ? "Same"
-                                : "not the same";
-                      });
-                    },
-                    child: Text("Compare with generated melody"),
-                  ),
-                ],
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     "Comparison Result: $comparisonResult",
                     style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed:
+                          () => playWrittenMelody("Guitar", generalProvider),
+                      child: Text("Guitar"),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed:
+                          () => playWrittenMelody("Piano", generalProvider),
+                      child: Text("Piano"),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed:
+                          () => playWrittenMelody("Solfege", generalProvider),
+                      child: Text("Solfege"),
+                    ),
                   ),
                 ],
               ),
