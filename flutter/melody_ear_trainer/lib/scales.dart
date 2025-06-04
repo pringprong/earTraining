@@ -53,76 +53,88 @@ class _ScalesPageState extends State<ScalesPage> {
         child: Column(
           children: [
             // Octave dropdown
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Octave:'),
-                ),
-                DropdownButton<String>(
-                  value: context.watch<GeneralProvider>().selectedOctave,
-                  hint: Text('Select Octave'),
-                  items:
-                      octavekeys
-                          .map(
-                            (octave) => DropdownMenuItem(
-                              value: octave,
-                              child: Text(octave),
-                            ),
-                          )
-                          .toList(),
-                  onChanged: (octave) {
-                    setState(() {
-                      selectedOctave = octave;
-                      context.read<GeneralProvider>().updateSelectedOctave(
-                        octave: selectedOctave ?? '',
-                      );
-                      if (selectedOctave != null && selectedScale != null) {
-                        final notes =
-                            scalesMapping[selectedOctave!]![selectedScale!] ??
-                            [];
-                        generalProvider.setNoteSelection(notes);
-                      }
-                    });
-                  },
-                ),
-              ],
-            ),
-            // Scale dropdown
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Scale:'),
-                ),
-                DropdownButton<String>(
-                  value: context.watch<GeneralProvider>().selectedScale,
-                  hint: Text('Select Scale'),
-                  items:
-                      scalekeys
-                          .map(
-                            (scale) => DropdownMenuItem(
-                              value: scale,
-                              child: Text(scale),
-                            ),
-                          )
-                          .toList(),
-                  onChanged: (scale) {
-                    setState(() {
-                      selectedScale = scale;
-                      context.read<GeneralProvider>().updateSelectedScale(
-                        newscale: selectedScale ?? '',
-                      );
-                      if (selectedOctave != null && selectedScale != null) {
-                        final notes =
-                            scalesMapping[selectedOctave!]![selectedScale!] ??
-                            [];
-                        generalProvider.setNoteSelection(notes);
-                      }
-                    });
-                  },
-                ),
-              ],
+            SizedBox(
+              width: double.infinity,
+              child: Wrap(
+                alignment: WrapAlignment.start,
+                children: [
+                  Row(
+                    mainAxisSize:MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Octave:'),
+                      ),
+                      DropdownButton<String>(
+                        value: context.watch<GeneralProvider>().selectedOctave,
+                        hint: Text('Select Octave'),
+                        items:
+                            octavekeys
+                                .map(
+                                  (octave) => DropdownMenuItem(
+                                    value: octave,
+                                    child: Text(octave),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (octave) {
+                          setState(() {
+                            selectedOctave = octave;
+                            context.read<GeneralProvider>().updateSelectedOctave(
+                              octave: selectedOctave ?? '',
+                            );
+                            if (selectedOctave != null && selectedScale != null) {
+                              final notes =
+                                  scalesMapping[selectedOctave!]![selectedScale!] ??
+                                  [];
+                              generalProvider.setNoteSelection(notes);
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+              
+                  Row(
+                    mainAxisSize:MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Scale:'),
+                      ),
+                      DropdownButton<String>(
+                        value: context.watch<GeneralProvider>().selectedScale,
+                        hint: Text('Select Scale'),
+                        items:
+                            scalekeys
+                                .map(
+                                  (scale) => DropdownMenuItem(
+                                    value: scale,
+                                    child: Text(scale),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (scale) {
+                          setState(() {
+                            selectedScale = scale;
+                            context.read<GeneralProvider>().updateSelectedScale(
+                              newscale: selectedScale ?? '',
+                            );
+                            if (selectedOctave != null && selectedScale != null) {
+                              final notes =
+                                  scalesMapping[selectedOctave!]![selectedScale!] ??
+                                  [];
+                              generalProvider.setNoteSelection(notes);
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             // Notes grid
             Expanded(
@@ -154,7 +166,8 @@ class _ScalesPageState extends State<ScalesPage> {
                   backgroundColor: selected ? Colors.blue : Colors.grey,
                   //minimumSize: Size(40, 40),
                   padding: EdgeInsets.zero,
-                  textStyle: TextStyle(fontSize: selected ? 12 : 10),
+                  textStyle: TextStyle(fontWeight: 
+                    selected ? FontWeight.bold : FontWeight.normal,),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),

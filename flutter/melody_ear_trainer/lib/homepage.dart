@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'dart:convert';
 //import 'package:expandable/expandable.dart';
 //import 'dart:math' as math;
+//import 'package:auto_size_text/auto_size_text.dart';
 
 class MelodyHomePage extends StatefulWidget {
   const MelodyHomePage({super.key, required this.audioController});
@@ -223,11 +224,11 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.all(0.0),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                textStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
+                                //textStyle: TextStyle(
+                                  //fontSize: 14,
+                                  ///color: Colors.white,
                                   //padding: EdgeInsets.zero,
-                                ),
+                                //),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4),
                                 ),

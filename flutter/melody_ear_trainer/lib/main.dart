@@ -11,7 +11,7 @@ import 'tonic.dart';
 import 'providers/general_provider.dart';
 import 'homepage.dart';
 import 'scales.dart';
-
+//import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   // The `flutter_soloud` package logs everything
