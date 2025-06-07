@@ -19,7 +19,15 @@ class GeneralProvider extends ChangeNotifier {
 
   String selectedOctave  = "Middle octave"; // Default octave selection
   String selectedScale = "Diatonic major"; // Default scale selection
+
+  String chordFrequency = "Every 4 notes"; // Default chord frequency
+  bool displayChordNames = true; // Default display chord notes setting
+  bool arpeggiateChords = false; // Default arpeggiate chords setting
+  int arpeggiateChordDelay = 100; // Default chord arpeggiation speed
+  String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
+
   static const List<String> defaultNoteKeys = [
+    "do0", "re0", "mi0", "fa0", "so0",  "la0", "ti0",
     "do", "re", "mi", "fa", "so", "la", "ti",
     "do1"
   ];
@@ -132,5 +140,32 @@ class GeneralProvider extends ChangeNotifier {
     selectedScale = newscale;
     notifyListeners();
   }
+
+  void updateChordFrequency({required String frequency}) async {
+    chordFrequency = frequency;
+    notifyListeners();
+  }
+
+  void toggleDisplayChordNames() {
+    displayChordNames = !displayChordNames;
+    notifyListeners();
+  }
+
+  void toggleArpeggiateChords() {
+    arpeggiateChords = !arpeggiateChords;
+    notifyListeners();
+  }
+
+  void updateArpeggiateChordDelay({required int delay}) async {
+    arpeggiateChordDelay = delay;
+    notifyListeners();
+  }
+
+  void updateArpeggiateChordOrder({required String order}) async {
+    arpeggiateChordOrder = order;
+    notifyListeners();
+  }
+
+
   
 }

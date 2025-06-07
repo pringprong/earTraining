@@ -211,6 +211,121 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),
+               Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Chord frequency:'),
+                  ),
+                  DropdownButton<String>(
+                    value: context.watch<GeneralProvider>().chordFrequency,
+                    items:
+                        [
+                          "Never",
+                          "Every 4 notes",
+                          "Every 3 notes",
+                          "Every 2 notes",
+                          "Every note"
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateChordFrequency(
+                          frequency: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Display chord names:'),
+                  ),
+                  Checkbox(
+                    value: context.watch<GeneralProvider>().displayChordNames,
+                    onChanged: (bool? newValue) {
+                      context.read<GeneralProvider>().toggleDisplayChordNames();
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Arpeggiate chords:'),
+                  ),
+                  Checkbox(
+                    value: context.watch<GeneralProvider>().arpeggiateChords,
+                    onChanged: (bool? newValue) {
+                      context.read<GeneralProvider>().toggleArpeggiateChords();
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Arpeggiate chord delay (ms):'),
+                  ),
+                  DropdownButton<int>(
+                    value: context.watch<GeneralProvider>().arpeggiateChordDelay,
+                    items:
+                        [50, 100, 200, 300, 400, 500].map<DropdownMenuItem<int>>((
+                          int value,
+                        ) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateArpeggiateChordDelay(
+                          delay: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Arpeggiation order:'),
+                  ),
+                  DropdownButton<String>(
+                    value: context.watch<GeneralProvider>().arpeggiateChordOrder,
+                    items:
+                        [
+                          "Ascending",
+                          "Descending",
+                          "Random"
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateArpeggiateChordOrder(
+                          order: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),      
             ], // Children of Column
           ),
         ),

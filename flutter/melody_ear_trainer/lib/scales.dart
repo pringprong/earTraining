@@ -175,11 +175,15 @@ class _ScalesPageState extends State<ScalesPage> {
                 onPressed: () {
                   generalProvider.toggleNoteSelection(note);
                 },
-                child: Text(
-                  note,
-                  style: TextStyle(
-                    fontSize: selected ? 12 : 10,
-                    color: Colors.white,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    note,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

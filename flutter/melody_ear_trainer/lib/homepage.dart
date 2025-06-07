@@ -111,7 +111,13 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             solfegeText = ""; // Clear solfege area
                           });
                         },
-                        child: Text("Generate melody"),
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text("Generate melody",
+                            style: TextStyle(fontSize: 20,
+                            ),
+                          ),
+                        ),
                       ),
                   ),
                 ],
@@ -256,9 +262,18 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                   writtenMelody.add(note);
                                 });
                               },
-                              child: Text(note),
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Text(
+                                  note,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                             ),
                           ),
+                        ),
                         );
                       }).toList(),
                 );
