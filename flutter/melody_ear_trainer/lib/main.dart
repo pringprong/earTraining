@@ -11,6 +11,7 @@ import 'tonic.dart';
 import 'providers/general_provider.dart';
 import 'homepage.dart';
 import 'scales.dart';
+import 'chords.dart';
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
@@ -62,6 +63,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
           '/general': (context) => GeneralPage(),
           '/tonic': (context) => TonicPage(audioController: audioController),
           '/scales': (context) => ScalesPage(),
+          '/chords': (context) => ChordsPage(),
           // Add other routes here
         },
       ),

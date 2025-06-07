@@ -17,7 +17,7 @@ class GeneralProvider extends ChangeNotifier {
   String startingDo = "do"; // Default starting note
   String endingDo = "do"; // Default ending note
 
-  String selectedOctave  = "Middle octave"; // Default octave selection
+  String selectedOctave = "Middle octave"; // Default octave selection
   String selectedScale = "Diatonic major"; // Default scale selection
 
   String chordFrequency = "Every 4 notes"; // Default chord frequency
@@ -26,18 +26,66 @@ class GeneralProvider extends ChangeNotifier {
   int arpeggiateChordDelay = 100; // Default chord arpeggiation speed
   String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
 
+  String chordSetRange = "Middle"; // Default chord set range
+  String chordSet = "I_IV_V"; // Default chord set
+
   static const List<String> defaultNoteKeys = [
-    "do0", "re0", "mi0", "fa0", "so0",  "la0", "ti0",
-    "do", "re", "mi", "fa", "so", "la", "ti",
-    "do1"
+    "do0",
+    "re0",
+    "mi0",
+    "fa0",
+    "so0",
+    "la0",
+    "ti0",
+    "do",
+    "re",
+    "mi",
+    "fa",
+    "so",
+    "la",
+    "ti",
+    "do1",
   ];
 
-    // Map of booleans for note selection
+  // Map of booleans for note selection
   static const List<String> noteKeys = [
-    "do0", "ga0", "re0", "nu0", "mi0", "fa0", "jur0", "so0", "ki0", "la0", "pe0", "ti0",
-    "do", "ga", "re", "nu", "mi", "fa", "jur", "so", "ki", "la", "pe", "ti",
-    "do1", "ga1", "re1", "nu1", "mi1", "fa1", "jur1", "so1", "ki1", "la1", "pe1", "ti1",
-    "do2"
+    "do0",
+    "ga0",
+    "re0",
+    "nu0",
+    "mi0",
+    "fa0",
+    "jur0",
+    "so0",
+    "ki0",
+    "la0",
+    "pe0",
+    "ti0",
+    "do",
+    "ga",
+    "re",
+    "nu",
+    "mi",
+    "fa",
+    "jur",
+    "so",
+    "ki",
+    "la",
+    "pe",
+    "ti",
+    "do1",
+    "ga1",
+    "re1",
+    "nu1",
+    "mi1",
+    "fa1",
+    "jur1",
+    "so1",
+    "ki1",
+    "la1",
+    "pe1",
+    "ti1",
+    "do2",
   ];
 
   Map<String, bool> noteSelection = {
@@ -49,7 +97,6 @@ class GeneralProvider extends ChangeNotifier {
     this.selectedKey = "C",
     this.selectedInstrument =
         "Piano", // Initialize any default values or load settings if necessary
-    
   });
 
   get tonicNote => null;
@@ -166,6 +213,13 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateChordRange({required String newChordRange}) async {
+    chordSetRange = newChordRange;
+    notifyListeners();
+  }
 
-  
+  void updateChordSet({required String newChordSet}) async {
+    chordSet = newChordSet;
+    notifyListeners();
+  }
 }

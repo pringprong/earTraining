@@ -89,6 +89,15 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Navigator.pushNamed(context, '/scales');
                 },
               ),
+              ListTile(
+                title: Text('Chords'),
+                onTap: () {
+                  // Update the state of the app
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/chords');
+                },
+              ),
             ],
           ),
         ),
