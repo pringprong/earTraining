@@ -93,6 +93,12 @@ class GeneralProvider extends ChangeNotifier {
     for (var key in defaultNoteKeys) key: true,
   };
 
+  // --- Selected Chords Map ---
+  Map<String, bool> selectedChords = {
+    for (var key in "I_M_R,IV_M_R,V_M_R".split(','))
+      key: true, // Initialize all chords as not selected
+  };
+
   GeneralProvider({
     this.selectedKey = "C",
     this.selectedInstrument =
@@ -221,5 +227,33 @@ class GeneralProvider extends ChangeNotifier {
   void updateChordSet({required String newChordSet}) async {
     chordSet = newChordSet;
     notifyListeners();
+  }
+
+  /// Toggle a single chord in the selectedChords map
+  void toggleSelectedChord(String chord) {
+    if (selectedChords.containsKey(chord) && selectedChords[chord] == true) {
+      selectedChords[chord] = false;
+    } else {
+      selectedChords[chord] = true;
+    }
+    notifyListeners();
+  }
+
+  /// Set all selected chords at once from a list of chord names
+  void setSelectedChords(List<String> chords) {
+    // Clear all previous selections
+    selectedChords.clear();
+    for (var chord in chords) {
+      selectedChords[chord] = true;
+    }
+    notifyListeners();
+  }
+
+  /// Get all selected chords as a list of strings
+  List<String> getSelectedChords() {
+    return selectedChords.entries
+        .where((entry) => entry.value == true)
+        .map((entry) => entry.key)
+        .toList();
   }
 }
