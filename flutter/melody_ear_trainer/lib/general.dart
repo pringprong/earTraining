@@ -256,21 +256,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Arpeggiate chords:'),
-                  ),
-                  Checkbox(
-                    value: context.watch<GeneralProvider>().arpeggiateChords,
-                    onChanged: (bool? newValue) {
-                      context.read<GeneralProvider>().toggleArpeggiateChords();
-                    },
-                  ),
-                ],
-              ),
-              Row(
+               Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -279,7 +265,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   DropdownButton<int>(
                     value: context.watch<GeneralProvider>().arpeggiateChordDelay,
                     items:
-                        [50, 100, 200, 300, 400, 500].map<DropdownMenuItem<int>>((
+                        [0, 50, 100, 200, 300, 400, 500].map<DropdownMenuItem<int>>((
                           int value,
                         ) {
                           return DropdownMenuItem<int>(

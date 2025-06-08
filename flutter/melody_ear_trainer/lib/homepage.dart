@@ -44,6 +44,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     super.initState();
     //loadMappingFiles();
     loadMappingJSON();
+    loadChordsJSON();
   }
 
   @override
@@ -275,12 +276,13 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                   );
                                   return;
                                 }
-                                await widget.audioController.playSound(
+                                widget.audioController.playSound(
                                   "assets/audio/$filename",
                                 );
                                 // Add to writtenMelody
                                 setState(() {
                                   writtenMelody.add(note);
+                                  writtenChordMelody.add([note]);
                                 });
                               },
                               child: FittedBox(
@@ -300,6 +302,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 );
               }),
               SizedBox(height: 8),
+              // Chord buttons section
+              buildSelectedChordButtons(generalProvider),
+              SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -310,7 +315,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    writtenMelody.join(' '),
+                    chordMelodyToString(writtenChordMelody),
+                    //dMelody.expand((e) => e).toList().join(' '),
+                    //writtenChordMelody.join(' '),
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
@@ -400,6 +407,109 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       onPressed:
                           () => playWrittenMelody("Solfege", generalProvider),
                       child: Text("Solfege"),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          writtenChordMelody.clear();
+                        });
+                      },
+                      child: Text("Clear Chords"),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          if (writtenChordMelody.isNotEmpty) {
+                            writtenChordMelody.removeLast();
+                          }
+                        });
+                      },
+                      child: Text("Backspace Chord"),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          // Compare writtenChordMelody with generated melody
+                          // Flatten the writtenChordMelody for comparison
+                          List<String> flatWrittenChordMelody =
+                              writtenChordMelody.expand((e) => e).toList();
+                          comparisonResult =
+                              listEquals(flatWrittenChordMelody, melody)
+                                  ? "Same"
+                                  : "not the same";
+                        });
+                      },
+                      child: Text("Compare Chords with generated melody"),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Chord Comparison Result: $comparisonResult",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed:
+                          () => playChordMelody(
+                            "Guitar",
+                            generalProvider,
+                            writtenChordMelody,
+                          ),
+                      child: Text("Play Chord Melody (Guitar)"),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed:
+                          () => playChordMelody(
+                            "Piano",
+                            generalProvider,
+                            writtenChordMelody,
+                          ),
+                      child: Text("Play Chord Melody (Piano)"),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed:
+                          () => playChordMelody(
+                            "Solfege",
+                            generalProvider,
+                            writtenChordMelody,
+                          ),
+                      child: Text("Play Chord Melody (Solfege)"),
                     ),
                   ),
                 ],
@@ -548,7 +658,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
         chordList.add(chordSet);
       }
 
-      if (chordSet.isNotEmpty && notes.isNotEmpty && !chordMap.containsKey(chordSet)) {
+      if (chordSet.isNotEmpty && !chordMap.containsKey(chordSet)) {
         // Add to chordMap if not already present
         chordMap[chordSet] = notes;
       }
@@ -583,6 +693,109 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       await Future.delayed(Duration(milliseconds: timeBetween));
     }
   }
+
+  // 1. Add chord buttons below notes section
+  Widget buildSelectedChordButtons(GeneralProvider generalProvider) {
+    final selectedChords = generalProvider.getSelectedChords();
+    return Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      children:
+          selectedChords.map((chord) {
+            final color = generalProvider.getChordButtonColor(chord);
+            final notes = chordMap[chord] ?? [];
+            return Tooltip(
+              message: notes.join(' '),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                onPressed: () {
+                  setState(() {
+                    // 2b. Append chord as a list of notes to writtenChordMelody
+                    writtenChordMelody.add(List<String>.from(notes));
+                    playChordMelody(
+                      generalProvider.selectedInstrument,
+                      generalProvider,
+                      [notes],
+                    );
+                  });
+                },
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    chord,
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+    );
+  }
+
+  // 3. Add playChordMelody function
+  Future<void> playChordMelody(
+    String instrument,
+    GeneralProvider generalProvider,
+    List<List<String>> melodyList,
+  ) async {
+    final key = generalProvider.selectedKey;
+    final timeBetween = generalProvider.timeBetweenNotes;
+    final truncate = generalProvider.truncateNotes;
+    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
+    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
+    final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
+    for (var notes in melodyList) {
+      if (notes.length == 1) {
+        final note = notes[0];
+        final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+        if (filename.isNotEmpty) {
+          if (truncate == "None" || truncate == "Never") {
+            widget.audioController.playSound("assets/audio/$filename");
+          } else {
+            widget.audioController.playSoundFade(
+              "assets/audio/$filename",
+              int.parse(truncate),
+              500,
+            );
+          }
+        }
+      } else if (notes.length > 1) {
+        List<String> chordNotes = List<String>.from(notes);
+        if (arpeggiateOrder == "Descending") {
+          chordNotes = chordNotes.reversed.toList();
+        } else if (arpeggiateOrder == "Random") {
+          chordNotes.shuffle();
+        }
+        for (var note in chordNotes) {
+          final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+          if (filename.isNotEmpty) {
+            if (truncate == "None" || truncate == "Never") {
+              widget.audioController.playSound("assets/audio/$filename");
+            } else {
+              widget.audioController.playSoundFade(
+                "assets/audio/$filename",
+                int.parse(truncate),
+                500,
+              );
+            }
+          }
+          if (arpeggiate) {
+            await Future.delayed(Duration(milliseconds: arpeggiateDelay));
+          }
+        }
+      }
+      await Future.delayed(Duration(milliseconds: timeBetween));
+    }
+  }
 }
 
 // Helper for list comparison
@@ -593,4 +806,10 @@ bool listEquals<T>(List<T>? a, List<T>? b) {
     if (a[i] != b[i]) return false;
   }
   return true;
+}
+
+// Add this utility function to your file (e.g., below the listEquals function or anywhere in your class/file):
+
+String chordMelodyToString(List<List<String>> data) {
+  return data.map((inner) => inner.join('-')).join(' ');
 }

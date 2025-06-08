@@ -22,8 +22,7 @@ class GeneralProvider extends ChangeNotifier {
 
   String chordFrequency = "Every 4 notes"; // Default chord frequency
   bool displayChordNames = true; // Default display chord notes setting
-  bool arpeggiateChords = false; // Default arpeggiate chords setting
-  int arpeggiateChordDelay = 100; // Default chord arpeggiation speed
+  int arpeggiateChordDelay = 0; // Default chord arpeggiation speed
   String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
 
   String chordSetRange = "Middle"; // Default chord set range
@@ -201,11 +200,6 @@ class GeneralProvider extends ChangeNotifier {
 
   void toggleDisplayChordNames() {
     displayChordNames = !displayChordNames;
-    notifyListeners();
-  }
-
-  void toggleArpeggiateChords() {
-    arpeggiateChords = !arpeggiateChords;
     notifyListeners();
   }
 
