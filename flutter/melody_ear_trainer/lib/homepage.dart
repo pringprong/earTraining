@@ -18,6 +18,10 @@ class MelodyHomePage extends StatefulWidget {
 
 class _MelodyHomePageState extends State<MelodyHomePage> {
   Map<String, Map<String, Map<String, String>>> nestedMapping = {};
+  Map<String, Map<String, Map<String, List<String>>>> chordsMapping = {};
+  List<String> chordList = [];
+  Map<String, List<String>> chordMap = {};
+
   String selectedKey = "";
   String selectedInstrument = "";
   int numberOfNotes = 5;
@@ -31,6 +35,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   // --- Write Melody Section ---
   List<String> writtenMelody = [];
   String comparisonResult = "";
+
+  List<List<String>> chordMelody = [];
+  List<List<String>> writtenChordMelody = [];
 
   @override
   void initState() {
@@ -114,20 +121,20 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                        onPressed: () {
-                          generateMelody(generalProvider);
-                          setState(() {
-                            solfegeText = ""; // Clear solfege area
-                          });
-                        },
-                        child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: Text("Generate melody",
-                            style: TextStyle(fontSize: 20,
-                            ),
-                          ),
+                      onPressed: () {
+                        generateMelody(generalProvider);
+                        setState(() {
+                          solfegeText = ""; // Clear solfege area
+                        });
+                      },
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text(
+                          "Generate melody",
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
+                    ),
                   ),
                 ],
               ),
@@ -171,50 +178,54 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 children: [
                   // Show Solfege Button Row
                   Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                      onPressed: () {
-                        showSolfege();
-                        setState(() {});
-                      },
-                      child: Text("Show Solfege"),
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showSolfege();
+                            setState(() {});
+                          },
+                          child: Text("Show Solfege"),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 8),
-                    // Play Solfege Melody Button
-                    Expanded(
-                      child: ElevatedButton(
-                      onPressed: () => playMelody("Solfege", generalProvider),
-                      child: Text("Play Solfege"),
+                      SizedBox(width: 8),
+                      // Play Solfege Melody Button
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed:
+                              () => playMelody("Solfege", generalProvider),
+                          child: Text("Play Solfege"),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
                   ),
                   // Solfege Text Area
                   Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(solfegeText, style: TextStyle(fontSize: 18)),
                     ),
-                    child: Text(solfegeText, style: TextStyle(fontSize: 18)),
-                  ),
                   ),
                 ],
-                ),
+              ),
               SizedBox(height: 8),
               // Notes Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Flexible(child: 
-                  Text("Play the melody back:", 
-                  style: TextStyle(fontWeight: FontWeight.bold))),
+                  Flexible(
+                    child: Text(
+                      "Play the melody back:",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ],
               ),
               ...List.generate(noteRows.length, (rowIdx) {
@@ -240,9 +251,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 padding: const EdgeInsets.all(0.0),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 //textStyle: TextStyle(
-                                  //fontSize: 14,
-                                  ///color: Colors.white,
-                                  //padding: EdgeInsets.zero,
+                                //fontSize: 14,
+                                ///color: Colors.white,
+                                //padding: EdgeInsets.zero,
                                 //),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4),
@@ -254,7 +265,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 final instrument =
                                     generalProvider.selectedInstrument;
                                 final filename =
-                                    nestedMapping[key]?[instrument]?[note] ?? '';
+                                    nestedMapping[key]?[instrument]?[note] ??
+                                    '';
                                 if (filename.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -280,9 +292,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                              ),
                             ),
                           ),
-                        ),
                         );
                       }).toList(),
                 );
@@ -513,6 +525,36 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       nestedMapping[key] ??= {};
       nestedMapping[key]![instrument] ??= {};
       nestedMapping[key]![instrument]![note] = filename;
+    }
+    setState(() {});
+  }
+
+  Future<void> loadChordsJSON() async {
+    // Load Chords.json and populate chordsMapping
+    String jsonData = await DefaultAssetBundle.of(
+      context,
+    ).loadString("assets/mapping/Chords.json");
+    //final jsonResult = jsonDecode(jsonData);
+    final List<dynamic> items = json.decode(jsonData);
+
+    for (var item in items) {
+      String category = item['Category'];
+      String degree = item['Degree'];
+      String chordSet = item['Chord Set'];
+      String notesStr = item['Notes'];
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+
+      if (chordSet.isNotEmpty && !chordList.contains(chordSet)) {
+        chordList.add(chordSet);
+      }
+
+      if (chordSet.isNotEmpty && notes.isNotEmpty && !chordMap.containsKey(chordSet)) {
+        // Add to chordMap if not already present
+        chordMap[chordSet] = notes;
+      }
+      chordsMapping[category] ??= {};
+      chordsMapping[category]![degree] ??= {};
+      chordsMapping[category]![degree]![chordSet] = notes;
     }
     setState(() {});
   }

@@ -286,7 +286,7 @@ class _ChordsPageState extends State<ChordsPage> {
                     decoration: BoxDecoration(
                       color:
                           selected
-                              ? getChordButtonColor(chordName)
+                              ? generalProvider.getChordButtonColor(chordName)
                               : Colors.grey[400],
                       borderRadius: BorderRadius.circular(6),
                     ),
