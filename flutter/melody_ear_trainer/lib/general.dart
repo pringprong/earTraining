@@ -31,59 +31,16 @@ class _GeneralPageState extends State<GeneralPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
+               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Select Key:'),
-                  ),
-                  DropdownButton<String>(
-                    hint: Text('Select Key'),
-                    value: context.watch<GeneralProvider>().selectedKey,
-                    items:
-                        mappingKeys.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateSelectedKey(
-                          newkey: newValue,
-                        );
-                      }
-                    },
+                  Text(
+                    "Melody Settings:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Select Instrument:'),
-                  ),
-                  DropdownButton<String>(
-                    hint: Text('Select Instrument'),
-                    value: context.watch<GeneralProvider>().selectedInstrument,
-                    items:
-                        instruments.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateSelectedInstrument(
-                          instrument: newValue,
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Row(
+             Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -156,6 +113,114 @@ class _GeneralPageState extends State<GeneralPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
+                    child: Text('Chord frequency:'),
+                  ),
+                  DropdownButton<String>(
+                    value: context.watch<GeneralProvider>().chordFrequency,
+                    items:
+                        [
+                          "Never",
+                          "Every 4 notes",
+                          "Every 3 notes",
+                          "Every 2 notes",
+                          "Every note"
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateChordFrequency(
+                          frequency: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Allow repeated chords:'),
+                  ),
+                  Checkbox(
+                    value: context.watch<GeneralProvider>().allowRepeatedChords,
+                    onChanged: (bool? newValue) {
+                      context.read<GeneralProvider>().toggleAllowRepeatedChords();
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Playback Settings:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Select Key:'),
+                  ),
+                  DropdownButton<String>(
+                    hint: Text('Select Key'),
+                    value: context.watch<GeneralProvider>().selectedKey,
+                    items:
+                        mappingKeys.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateSelectedKey(
+                          newkey: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Select Instrument:'),
+                  ),
+                  DropdownButton<String>(
+                    hint: Text('Select Instrument'),
+                    value: context.watch<GeneralProvider>().selectedInstrument,
+                    items:
+                        instruments.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().updateSelectedInstrument(
+                          instrument: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text('Time between notes in melody (ms):'),
                   ),
                   DropdownButton<int>(
@@ -207,51 +272,6 @@ class _GeneralPageState extends State<GeneralPage> {
                           time: newValue,
                         );
                       }
-                    },
-                  ),
-                ],
-              ),
-               Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Chord frequency:'),
-                  ),
-                  DropdownButton<String>(
-                    value: context.watch<GeneralProvider>().chordFrequency,
-                    items:
-                        [
-                          "Never",
-                          "Every 4 notes",
-                          "Every 3 notes",
-                          "Every 2 notes",
-                          "Every note"
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        context.read<GeneralProvider>().updateChordFrequency(
-                          frequency: newValue,
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Display chord names:'),
-                  ),
-                  Checkbox(
-                    value: context.watch<GeneralProvider>().displayChordNames,
-                    onChanged: (bool? newValue) {
-                      context.read<GeneralProvider>().toggleDisplayChordNames();
                     },
                   ),
                 ],
@@ -312,6 +332,30 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),      
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Display Settings:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+             Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Display chord names:'),
+                  ),
+                  Checkbox(
+                    value: context.watch<GeneralProvider>().displayChordNames,
+                    onChanged: (bool? newValue) {
+                      context.read<GeneralProvider>().toggleDisplayChordNames();
+                    },
+                  ),
+                ],
+              ),
             ], // Children of Column
           ),
         ),

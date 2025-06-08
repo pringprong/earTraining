@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
+import 'dart:math';
 //import 'package:expandable/expandable.dart';
-//import 'dart:math' as math;
 //import 'package:auto_size_text/auto_size_text.dart';
 
 class MelodyHomePage extends StatefulWidget {
@@ -122,10 +122,21 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  Text(
+                    "Generate melody:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        generateMelody(generalProvider);
+                        //generateMelody(generalProvider);
+                        generateChordMelody(generalProvider);
                         setState(() {
                           solfegeText = ""; // Clear solfege area
                         });
@@ -157,7 +168,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => playMelody("Guitar", generalProvider),
+                      //onPressed: () => playMelody("Guitar", generalProvider),
+                      onPressed: () => playChordMelody("Guitar", generalProvider, chordMelodySolfege),
                       child: Text("Guitar"),
                     ),
                   ),
@@ -165,7 +177,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   // Play Piano Melody Button
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => playMelody("Piano", generalProvider),
+                      //onPressed: () => playMelody("Piano", generalProvider),
+                      onPressed: () => playChordMelody("Piano", generalProvider, chordMelodySolfege),
                       child: Text("Piano"),
                     ),
                   ),
@@ -196,8 +209,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       // Play Solfege Melody Button
                       Expanded(
                         child: ElevatedButton(
-                          onPressed:
-                              () => playMelody("Solfege", generalProvider),
+                          //onPressed:() => playMelody("Solfege", generalProvider),
+                          onPressed:() => playChordMelody("Solfege", generalProvider, chordMelodySolfege),
                           child: Text("Play Solfege"),
                         ),
                       ),
@@ -319,7 +332,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   ),
                   child: Text(
                     //chordMelodySolfegeToString(writtenChordMelodySolfege),
-                    writtenChordMelody.join('  '),
+                    writtenChordMelody.join(' '),
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
@@ -425,7 +438,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           writtenChordMelodySolfege.clear();
                         });
                       },
-                      child: Text("Clear Chords"),
+                      child: Text("Clear"),
                     ),
                   ),
                   SizedBox(width: 8),
@@ -439,7 +452,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           }
                         });
                       },
-                      child: Text("Backspace Chord"),
+                      child: Text("Backspace"),
                     ),
                   ),
                 ],
@@ -454,15 +467,17 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         setState(() {
                           // Compare writtenChordMelody with generated melody
                           // Flatten the writtenChordMelody for comparison
-                          List<String> flatWrittenChordMelody =
-                              writtenChordMelodySolfege.expand((e) => e).toList();
+                          //List<String> flatWrittenChordMelody =
+                          //    writtenChordMelodySolfege
+                          //        .expand((e) => e)
+                          //        .toList();
                           comparisonResult =
-                              listEquals(flatWrittenChordMelody, melody)
+                              listEquals(chordMelody, writtenChordMelody)
                                   ? "Same"
                                   : "not the same";
                         });
                       },
-                      child: Text("Compare Chords with generated melody"),
+                      child: Text("Compare with generated melody"),
                     ),
                   ),
                 ],
@@ -481,6 +496,16 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  Text(
+                    "Play back your melody:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed:
@@ -489,7 +514,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             generalProvider,
                             writtenChordMelodySolfege,
                           ),
-                      child: Text("Play Chord Melody (Guitar)"),
+                      child: Text("Guitar"),
                     ),
                   ),
                   SizedBox(width: 8),
@@ -501,7 +526,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             generalProvider,
                             writtenChordMelodySolfege,
                           ),
-                      child: Text("Play Chord Melody (Piano)"),
+                      child: Text("Piano"),
                     ),
                   ),
                   SizedBox(width: 8),
@@ -513,7 +538,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             generalProvider,
                             writtenChordMelodySolfege,
                           ),
-                      child: Text("Play Chord Melody (Solfege)"),
+                      child: Text("Solfege"),
                     ),
                   ),
                 ],
@@ -525,80 +550,80 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     );
   }
 
-  void generateMelody(GeneralProvider generalProvider) {
-    melody = [];
-    writtenMelody = [];
-    comparisonResult = "";
-    final numNotes = generalProvider.numberOfNotes;
-    final maxDist = generalProvider.maxDistance;
-    final allowRepeats = generalProvider.allowRepeatedNotes;
-    final startWithDo = generalProvider.startWithDo;
-    final endWithDo = generalProvider.endWithDo;
-    final startingDo = generalProvider.startingDo;
-    final endingDo = generalProvider.endingDo;
-    final notes = generalProvider.getSelectedNotes();
+  // void generateMelody(GeneralProvider generalProvider) {
+  //   melody = [];
+  //   writtenMelody = [];
+  //   comparisonResult = "";
+  //   final numNotes = generalProvider.numberOfNotes;
+  //   final maxDist = generalProvider.maxDistance;
+  //   final allowRepeats = generalProvider.allowRepeatedNotes;
+  //   final startWithDo = generalProvider.startWithDo;
+  //   final endWithDo = generalProvider.endWithDo;
+  //   final startingDo = generalProvider.startingDo;
+  //   final endingDo = generalProvider.endingDo;
+  //   final notes = generalProvider.getSelectedNotes();
 
-    if (notes.isEmpty || numNotes < 1) return;
+  //   if (notes.isEmpty || numNotes < 1) return;
 
-    String? lastNote;
-    for (int i = 0; i < numNotes; i++) {
-      if (i == 0 && startWithDo) {
-        melody.add(startingDo);
-        lastNote = startingDo;
-      } else if (i == numNotes - 1 && endWithDo) {
-        melody.add(endingDo);
-        lastNote = endingDo;
-      } else {
-        // Allowed notes: within maxDist of lastNote, and not repeated if not allowed
-        List<String> allowed = notes;
-        if (lastNote != null) {
-          int lastIdx = notes.indexOf(lastNote);
-          allowed =
-              notes.where((n) {
-                int idx = notes.indexOf(n);
-                bool withinDist = (lastIdx - idx).abs() <= maxDist;
-                bool notRepeat = allowRepeats || n != lastNote;
-                return withinDist && notRepeat;
-              }).toList();
-        }
-        if (allowed.isEmpty) allowed = notes;
-        final next = (allowed..shuffle()).first;
-        //final next = allowed[(allowed.length * (i + 1) * 37) % allowed.length];
-        melody.add(next);
-        lastNote = next;
-      }
-    }
-    setState(() {});
-  }
+  //   String? lastNote;
+  //   for (int i = 0; i < numNotes; i++) {
+  //     if (i == 0 && startWithDo) {
+  //       melody.add(startingDo);
+  //       lastNote = startingDo;
+  //     } else if (i == numNotes - 1 && endWithDo) {
+  //       melody.add(endingDo);
+  //       lastNote = endingDo;
+  //     } else {
+  //       // Allowed notes: within maxDist of lastNote, and not repeated if not allowed
+  //       List<String> allowed = notes;
+  //       if (lastNote != null) {
+  //         int lastIdx = notes.indexOf(lastNote);
+  //         allowed =
+  //             notes.where((n) {
+  //               int idx = notes.indexOf(n);
+  //               bool withinDist = (lastIdx - idx).abs() <= maxDist;
+  //               bool notRepeat = allowRepeats || n != lastNote;
+  //               return withinDist && notRepeat;
+  //             }).toList();
+  //       }
+  //       if (allowed.isEmpty) allowed = notes;
+  //       final next = (allowed..shuffle()).first;
+  //       //final next = allowed[(allowed.length * (i + 1) * 37) % allowed.length];
+  //       melody.add(next);
+  //       lastNote = next;
+  //     }
+  //   }
+  //   setState(() {});
+  // }
 
-  Future<void> playMelody(
-    String instrument,
-    GeneralProvider generalProvider,
-  ) async {
-    final key = generalProvider.selectedKey;
-    final timeBetween = generalProvider.timeBetweenNotes;
-    final truncate = generalProvider.truncateNotes;
-    if (melody.isEmpty) return;
-    for (var note in melody) {
-      final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-      if (filename.isNotEmpty) {
-        if (truncate == "None") {
-          widget.audioController.playSound("assets/audio/$filename");
-        } else {
-          // Truncate the sound if specified
-          widget.audioController.playSoundFade(
-            "assets/audio/$filename",
-            int.parse(truncate),
-            500,
-          );
-        }
-      }
-      await Future.delayed(Duration(milliseconds: timeBetween));
-    }
-  }
+  // Future<void> playMelody(
+  //   String instrument,
+  //   GeneralProvider generalProvider,
+  // ) async {
+  //   final key = generalProvider.selectedKey;
+  //   final timeBetween = generalProvider.timeBetweenNotes;
+  //   final truncate = generalProvider.truncateNotes;
+  //   if (melody.isEmpty) return;
+  //   for (var note in melody) {
+  //     final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+  //     if (filename.isNotEmpty) {
+  //       if (truncate == "None") {
+  //         widget.audioController.playSound("assets/audio/$filename");
+  //       } else {
+  //         // Truncate the sound if specified
+  //         widget.audioController.playSoundFade(
+  //           "assets/audio/$filename",
+  //           int.parse(truncate),
+  //           500,
+  //         );
+  //       }
+  //     }
+  //     await Future.delayed(Duration(milliseconds: timeBetween));
+  //   }
+  // }
 
   void showSolfege() {
-    solfegeText = melody.join(' ');
+    solfegeText = chordMelody.join(' ');
     setState(() {});
   }
 
@@ -673,30 +698,30 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     setState(() {});
   }
 
-  Future<void> playWrittenMelody(
-    String instrument,
-    GeneralProvider generalProvider,
-  ) async {
-    final key = generalProvider.selectedKey;
-    final timeBetween = generalProvider.timeBetweenNotes;
-    final truncate = generalProvider.truncateNotes;
-    if (writtenMelody.isEmpty) return;
-    for (var note in writtenMelody) {
-      final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-      if (filename.isNotEmpty) {
-        if (truncate == "None") {
-          widget.audioController.playSound("assets/audio/$filename");
-        } else {
-          widget.audioController.playSoundFade(
-            "assets/audio/$filename",
-            int.parse(truncate),
-            500,
-          );
-        }
-      }
-      await Future.delayed(Duration(milliseconds: timeBetween));
-    }
-  }
+  // Future<void> playWrittenMelody(
+  //   String instrument,
+  //   GeneralProvider generalProvider,
+  // ) async {
+  //   final key = generalProvider.selectedKey;
+  //   final timeBetween = generalProvider.timeBetweenNotes;
+  //   final truncate = generalProvider.truncateNotes;
+  //   if (writtenMelody.isEmpty) return;
+  //   for (var note in writtenMelody) {
+  //     final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+  //     if (filename.isNotEmpty) {
+  //       if (truncate == "None") {
+  //         widget.audioController.playSound("assets/audio/$filename");
+  //       } else {
+  //         widget.audioController.playSoundFade(
+  //           "assets/audio/$filename",
+  //           int.parse(truncate),
+  //           500,
+  //         );
+  //       }
+  //     }
+  //     await Future.delayed(Duration(milliseconds: timeBetween));
+  //   }
+  // }
 
   // 1. Add chord buttons below notes section
   Widget buildSelectedChordButtons(GeneralProvider generalProvider) {
@@ -800,6 +825,167 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       }
       await Future.delayed(Duration(milliseconds: timeBetween));
     }
+  }
+
+  void generateChordMelody(GeneralProvider generalProvider) {
+    chordMelody.clear();
+    chordMelodySolfege.clear();
+    writtenChordMelody.clear();
+    writtenChordMelodySolfege.clear();
+    comparisonResult = "";
+
+    final numNotes = generalProvider.numberOfNotes;
+    final maxDist = generalProvider.maxDistance;
+    final allowRepeats = generalProvider.allowRepeatedNotes;
+    final startWithDo = generalProvider.startWithDo;
+    final endWithDo = generalProvider.endWithDo;
+    final startingDo = generalProvider.startingDo;
+    final endingDo = generalProvider.endingDo;
+    final notes = generalProvider.getSelectedNotes();
+    final chordFrequency = generalProvider.chordFrequency;
+    final chords = generalProvider.getSelectedChords();
+    final allowRepeatedChords = generalProvider.allowRepeatedChords;
+
+    int chordStartOffset = 2;
+    if (chordFrequency == "Every 3 notes") {
+      chordStartOffset = 1;
+    }
+
+    List<String> availableNotes = List<String>.from(notes);
+    List<String> availableChords = List<String>.from(chords);
+
+    // Calculate minimums
+    int minNumberOfNotes = !allowRepeats ? 2 : 1;
+    minNumberOfNotes = chordFrequency == "Every note" ? 0 : minNumberOfNotes;
+
+    int minNumberOfChords = !allowRepeatedChords ? 2 : 1;
+    minNumberOfChords = chordFrequency == "Never" ? 0 : minNumberOfChords;
+
+    int effectiveLength =
+        numNotes - (startWithDo ? 1 : 0) - (endWithDo ? 1 : 0);
+    minNumberOfNotes = min(minNumberOfNotes, effectiveLength);
+    minNumberOfChords = min(minNumberOfChords, effectiveLength);
+
+    if (availableNotes.length < minNumberOfNotes ||
+        availableChords.length < minNumberOfChords) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Not enough notes or chords selected! Please select at least $minNumberOfNotes notes and $minNumberOfChords chords.",
+          ),
+        ),
+      );
+      return;
+    }
+
+    Random random = Random();
+
+    for (int i = 1; i <= numNotes; i++) {
+      if (i == 1 && startWithDo) {
+        chordMelody.add(startingDo);
+        chordMelodySolfege.add([startingDo]);
+      } else if (i == numNotes && endWithDo) {
+        chordMelody.add(endingDo);
+        chordMelodySolfege.add([endingDo]);
+      } else if (chordFrequency != "Never" &&
+          ((i + chordStartOffset) %
+                  {
+                    "Every 4 notes": 4,
+                    "Every 3 notes": 3,
+                    "Every 2 notes": 2,
+                    "Every note": 1,
+                  }[chordFrequency]! ==
+              0)) {
+        // Add a chord
+        String selectedChord;
+        if (allowRepeatedChords) {
+          selectedChord =
+              availableChords[random.nextInt(availableChords.length)];
+        } else {
+          List<String> unusedChords =
+              availableChords
+                  .where((chord) => !chordMelody.contains(chord))
+                  .toList();
+          if (unusedChords.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "Not enough unique chords available! Please select more chords.",
+                ),
+              ),
+            );
+            return;
+          }
+          selectedChord = unusedChords[random.nextInt(unusedChords.length)];
+        }
+        chordMelody.add(selectedChord);
+        chordMelodySolfege.add(
+          List<String>.from(chordMap[selectedChord] ?? []),
+        );
+      } else {
+        // Add a note
+        List<String> candidates = [];
+        if (i == 2 && startWithDo) {
+          if (allowRepeats) {
+            candidates = List<String>.from(availableNotes);
+          } else {
+            candidates =
+                availableNotes.where((note) => note != startingDo).toList();
+          }
+        } else {
+          // third or later note of melody: need to check distance from previous note
+          var currentNote = chordMelody.isNotEmpty ? chordMelody.last : null;
+          if (currentNote is! String && chordMelody.length >= 2) {
+            currentNote = chordMelody[chordMelody.length - 2];
+          }
+          if (allowRepeats) {
+            candidates =
+                availableNotes.where((note) {
+                  if (currentNote == null) return true;
+                  return (availableNotes.indexOf(note) -
+                              availableNotes.indexOf(currentNote))
+                          .abs() <=
+                      maxDist;
+                }).toList();
+          } else if (i == numNotes - 1 && endWithDo) {
+            candidates =
+                availableNotes.where((note) {
+                  if (currentNote == null) return true;
+                  return note != currentNote &&
+                      note != endingDo &&
+                      (availableNotes.indexOf(note) -
+                                  availableNotes.indexOf(currentNote))
+                              .abs() <=
+                          maxDist;
+                }).toList();
+          } else {
+            candidates =
+                availableNotes.where((note) {
+                  if (currentNote == null) return true;
+                  return note != currentNote &&
+                      (availableNotes.indexOf(note) -
+                                  availableNotes.indexOf(currentNote))
+                              .abs() <=
+                          maxDist;
+                }).toList();
+          }
+        }
+        if (candidates.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Not enough unique notes available! Please enable repeated notes or select more notes.",
+              ),
+            ),
+          );
+          return;
+        }
+        String nextNote = candidates[random.nextInt(candidates.length)];
+        chordMelody.add(nextNote);
+        chordMelodySolfege.add([nextNote]);
+      }
+    }
+    setState(() {});
   }
 }
 

@@ -24,6 +24,7 @@ class GeneralProvider extends ChangeNotifier {
   bool displayChordNames = true; // Default display chord notes setting
   int arpeggiateChordDelay = 0; // Default chord arpeggiation speed
   String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
+  bool allowRepeatedChords = false; // Allow repeated chords
 
   String chordSetRange = "Middle"; // Default chord set range
   String chordSet = "I_IV_V"; // Default chord set
@@ -251,6 +252,8 @@ class GeneralProvider extends ChangeNotifier {
         .toList();
   }
 
+
+
     Color multiplyHexColor(String hexColor, double factor) {
     hexColor = hexColor.replaceAll('#', '');
     if (hexColor.length == 6) {
@@ -307,5 +310,8 @@ class GeneralProvider extends ChangeNotifier {
     return multiplyHexColor(buttonColor, 1.0);
   }
 
-  
+  void toggleAllowRepeatedChords() {
+    allowRepeatedChords = !allowRepeatedChords;
+    notifyListeners();
+  }
 }
