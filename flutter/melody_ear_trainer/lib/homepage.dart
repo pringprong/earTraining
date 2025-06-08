@@ -36,8 +36,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   List<String> writtenMelody = [];
   String comparisonResult = "";
 
-  List<List<String>> chordMelody = [];
-  List<List<String>> writtenChordMelody = [];
+  List<String> chordMelody = [];
+  List<List<String>> chordMelodySolfege = [];
+  List<String> writtenChordMelody = [];
+  List<List<String>> writtenChordMelodySolfege = [];
 
   @override
   void initState() {
@@ -282,7 +284,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 // Add to writtenMelody
                                 setState(() {
                                   writtenMelody.add(note);
-                                  writtenChordMelody.add([note]);
+                                  writtenChordMelody.add(note);
+                                  writtenChordMelodySolfege.add([note]);
                                 });
                               },
                               child: FittedBox(
@@ -315,102 +318,101 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    chordMelodyToString(writtenChordMelody),
-                    //dMelody.expand((e) => e).toList().join(' '),
-                    //writtenChordMelody.join(' '),
+                    //chordMelodySolfegeToString(writtenChordMelodySolfege),
+                    writtenChordMelody.join('  '),
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
               ),
               SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          writtenMelody.clear();
-                          comparisonResult = "";
-                        });
-                      },
-                      child: Text("Clear"),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          if (writtenMelody.isNotEmpty) {
-                            writtenMelody.removeLast();
-                          }
-                          comparisonResult = "";
-                        });
-                      },
-                      child: Text("Backspace"),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          comparisonResult =
-                              listEquals(writtenMelody, melody)
-                                  ? "Same"
-                                  : "not the same";
-                        });
-                      },
-                      child: Text("Compare with generated melody"),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Comparison Result: $comparisonResult",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed:
-                          () => playWrittenMelody("Guitar", generalProvider),
-                      child: Text("Guitar"),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed:
-                          () => playWrittenMelody("Piano", generalProvider),
-                      child: Text("Piano"),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed:
-                          () => playWrittenMelody("Solfege", generalProvider),
-                      child: Text("Solfege"),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed: () {
+              //           setState(() {
+              //             writtenMelody.clear();
+              //             comparisonResult = "";
+              //           });
+              //         },
+              //         child: Text("Clear"),
+              //       ),
+              //     ),
+              //     SizedBox(width: 8),
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed: () {
+              //           setState(() {
+              //             if (writtenMelody.isNotEmpty) {
+              //               writtenMelody.removeLast();
+              //             }
+              //             comparisonResult = "";
+              //           });
+              //         },
+              //         child: Text("Backspace"),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 8),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed: () {
+              //           setState(() {
+              //             comparisonResult =
+              //                 listEquals(writtenMelody, melody)
+              //                     ? "Same"
+              //                     : "not the same";
+              //           });
+              //         },
+              //         child: Text("Compare with generated melody"),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 8),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Text(
+              //       "Comparison Result: $comparisonResult",
+              //       style: TextStyle(fontWeight: FontWeight.bold),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 8),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed:
+              //             () => playWrittenMelody("Guitar", generalProvider),
+              //         child: Text("Guitar"),
+              //       ),
+              //     ),
+              //     SizedBox(width: 8),
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed:
+              //             () => playWrittenMelody("Piano", generalProvider),
+              //         child: Text("Piano"),
+              //       ),
+              //     ),
+              //     SizedBox(width: 8),
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed:
+              //             () => playWrittenMelody("Solfege", generalProvider),
+              //         child: Text("Solfege"),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -420,6 +422,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       onPressed: () {
                         setState(() {
                           writtenChordMelody.clear();
+                          writtenChordMelodySolfege.clear();
                         });
                       },
                       child: Text("Clear Chords"),
@@ -432,6 +435,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         setState(() {
                           if (writtenChordMelody.isNotEmpty) {
                             writtenChordMelody.removeLast();
+                            writtenChordMelodySolfege.removeLast();
                           }
                         });
                       },
@@ -451,7 +455,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           // Compare writtenChordMelody with generated melody
                           // Flatten the writtenChordMelody for comparison
                           List<String> flatWrittenChordMelody =
-                              writtenChordMelody.expand((e) => e).toList();
+                              writtenChordMelodySolfege.expand((e) => e).toList();
                           comparisonResult =
                               listEquals(flatWrittenChordMelody, melody)
                                   ? "Same"
@@ -483,7 +487,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           () => playChordMelody(
                             "Guitar",
                             generalProvider,
-                            writtenChordMelody,
+                            writtenChordMelodySolfege,
                           ),
                       child: Text("Play Chord Melody (Guitar)"),
                     ),
@@ -495,7 +499,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           () => playChordMelody(
                             "Piano",
                             generalProvider,
-                            writtenChordMelody,
+                            writtenChordMelodySolfege,
                           ),
                       child: Text("Play Chord Melody (Piano)"),
                     ),
@@ -507,7 +511,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           () => playChordMelody(
                             "Solfege",
                             generalProvider,
-                            writtenChordMelody,
+                            writtenChordMelodySolfege,
                           ),
                       child: Text("Play Chord Melody (Solfege)"),
                     ),
@@ -720,7 +724,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 onPressed: () {
                   setState(() {
                     // 2b. Append chord as a list of notes to writtenChordMelody
-                    writtenChordMelody.add(List<String>.from(notes));
+                    writtenChordMelody.add(chord);
+                    writtenChordMelodySolfege.add(List<String>.from(notes));
                     playChordMelody(
                       generalProvider.selectedInstrument,
                       generalProvider,
@@ -810,6 +815,6 @@ bool listEquals<T>(List<T>? a, List<T>? b) {
 
 // Add this utility function to your file (e.g., below the listEquals function or anywhere in your class/file):
 
-String chordMelodyToString(List<List<String>> data) {
+String chordMelodySolfegeToString(List<List<String>> data) {
   return data.map((inner) => inner.join('-')).join(' ');
 }
