@@ -34,12 +34,16 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
 
   // --- Write Melody Section ---
   List<String> writtenMelody = [];
-  String comparisonResult = "";
+  bool melodiesSame = false;
 
   List<String> chordMelody = [];
   List<List<String>> chordMelodySolfege = [];
   List<String> writtenChordMelody = [];
   List<List<String>> writtenChordMelodySolfege = [];
+
+  // Add this to your _MelodyHomePageState class:
+  IconData comparisonIcon = Icons.help_outline;
+  Color comparisonIconColor = Colors.grey;
 
   @override
   void initState() {
@@ -139,6 +143,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         generateChordMelody(generalProvider);
                         setState(() {
                           solfegeText = ""; // Clear solfege area
+                          comparisonIcon = Icons.help_outline;
+                          comparisonIconColor = Colors.grey;
                         });
                       },
                       child: FittedBox(
@@ -169,7 +175,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton(
                       //onPressed: () => playMelody("Guitar", generalProvider),
-                      onPressed: () => playChordMelody("Guitar", generalProvider, chordMelodySolfege),
+                      onPressed:
+                          () => playChordMelody(
+                            "Guitar",
+                            generalProvider,
+                            chordMelodySolfege,
+                          ),
                       child: Text("Guitar"),
                     ),
                   ),
@@ -178,7 +189,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton(
                       //onPressed: () => playMelody("Piano", generalProvider),
-                      onPressed: () => playChordMelody("Piano", generalProvider, chordMelodySolfege),
+                      onPressed:
+                          () => playChordMelody(
+                            "Piano",
+                            generalProvider,
+                            chordMelodySolfege,
+                          ),
                       child: Text("Piano"),
                     ),
                   ),
@@ -210,7 +226,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       Expanded(
                         child: ElevatedButton(
                           //onPressed:() => playMelody("Solfege", generalProvider),
-                          onPressed:() => playChordMelody("Solfege", generalProvider, chordMelodySolfege),
+                          onPressed:
+                              () => playChordMelody(
+                                "Solfege",
+                                generalProvider,
+                                chordMelodySolfege,
+                              ),
                           child: Text("Play Solfege"),
                         ),
                       ),
@@ -436,6 +457,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         setState(() {
                           writtenChordMelody.clear();
                           writtenChordMelodySolfege.clear();
+                          melodiesSame = false;
+                          comparisonIcon = Icons.help_outline;
+                          comparisonIconColor = Colors.grey;
                         });
                       },
                       child: Text("Clear"),
@@ -449,6 +473,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           if (writtenChordMelody.isNotEmpty) {
                             writtenChordMelody.removeLast();
                             writtenChordMelodySolfege.removeLast();
+                            melodiesSame = false;
+                            comparisonIcon = Icons.help_outline;
+                            comparisonIconColor = Colors.grey;
                           }
                         });
                       },
@@ -461,8 +488,33 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  // Expanded(
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         // Compare writtenChordMelody with generated melody
+                  //         // Flatten the writtenChordMelody for comparison
+                  //         //List<String> flatWrittenChordMelody =
+                  //         //    writtenChordMelodySolfege
+                  //         //        .expand((e) => e)
+                  //         //        .toList();
+                  //         melodiesSame = listEquals(chordMelody, writtenChordMelody);
+                  //         if (melodiesSame) {
+                  //           comparisonIcon = Icons.check_circle;
+                  //           comparisonIconColor = Colors.green;
+                  //         } else {
+                  //           comparisonIcon = Icons.cancel;
+                  //           comparisonIconColor = Colors.red;
+                  //         }
+                  //       });
+                  //     },
+                  //     child: Text("Compare with generated melody:"),
+                  //   ),
+                  // ),
                   Expanded(
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
+                      icon: Icon(comparisonIcon, color: comparisonIconColor),
+                      label: Text("Compare with generated melody"),
                       onPressed: () {
                         setState(() {
                           // Compare writtenChordMelody with generated melody
@@ -471,24 +523,17 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           //    writtenChordMelodySolfege
                           //        .expand((e) => e)
                           //        .toList();
-                          comparisonResult =
-                              listEquals(chordMelody, writtenChordMelody)
-                                  ? "Same"
-                                  : "not the same";
+                          melodiesSame = listEquals(chordMelody, writtenChordMelody);
+                          if (melodiesSame) {
+                            comparisonIcon = Icons.check_circle;
+                            comparisonIconColor = Colors.green;
+                          } else {
+                            comparisonIcon = Icons.cancel;
+                            comparisonIconColor = Colors.red;
+                          }
                         });
                       },
-                      child: Text("Compare with generated melody"),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Chord Comparison Result: $comparisonResult",
-                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -553,7 +598,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   // void generateMelody(GeneralProvider generalProvider) {
   //   melody = [];
   //   writtenMelody = [];
-  //   comparisonResult = "";
   //   final numNotes = generalProvider.numberOfNotes;
   //   final maxDist = generalProvider.maxDistance;
   //   final allowRepeats = generalProvider.allowRepeatedNotes;
@@ -832,7 +876,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     chordMelodySolfege.clear();
     writtenChordMelody.clear();
     writtenChordMelodySolfege.clear();
-    comparisonResult = "";
+    melodiesSame = false;
 
     final numNotes = generalProvider.numberOfNotes;
     final maxDist = generalProvider.maxDistance;
