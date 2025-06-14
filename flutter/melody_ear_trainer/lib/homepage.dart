@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'audio/audio_controller.dart';
-import 'dart:io';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
-import 'dart:convert';
 import 'dart:math';
 //import 'package:expandable/expandable.dart';
 //import 'package:auto_size_text/auto_size_text.dart';
@@ -11,17 +9,11 @@ import 'dart:math';
 class MelodyHomePage extends StatefulWidget {
   const MelodyHomePage({super.key, required this.audioController});
   final AudioController audioController;
-
   @override
   State<MelodyHomePage> createState() => _MelodyHomePageState();
 }
 
 class _MelodyHomePageState extends State<MelodyHomePage> {
-  Map<String, Map<String, Map<String, String>>> nestedMapping = {};
-  Map<String, Map<String, Map<String, List<String>>>> chordsMapping = {};
-  List<String> chordList = [];
-  Map<String, List<String>> chordMap = {};
-
   String selectedKey = "";
   String selectedInstrument = "";
   int numberOfNotes = 5;
@@ -46,21 +38,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   Color comparisonIconColor = Colors.grey;
 
   @override
-  void initState() {
-    super.initState();
-    //loadMappingFiles();
-    loadMappingJSON();
-    loadChordsJSON();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final generalProvider = Provider.of<GeneralProvider>(context);
-
     context.read<GeneralProvider>().loadMappingJSON;
-    //context.read<GeneralProvider>().loadChordsJSON;
     context.read<GeneralProvider>().loadChordSetsJSON();
     context.read<GeneralProvider>().loadScalesJSON(); 
+    final nestedMapping = generalProvider.getNestedMapping; 
     // Notes grid: group notes by row
     final noteRows = [
       GeneralProvider.noteKeys.where((n) => n.contains('0')).toList(),
@@ -70,9 +53,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       GeneralProvider.noteKeys.where((n) => n.contains('1')).toList(),
       GeneralProvider.noteKeys.where((n) => n.contains('2')).toList(),
     ];
-
     final selectedNotes = generalProvider.getSelectedNotes();
-
     return Scaffold(
       appBar: AppBar(title: Text('Melody Ear Trainer')),
       drawer: SafeArea(
@@ -178,7 +159,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      //onPressed: () => playMelody("Guitar", generalProvider),
                       onPressed:
                           () => playChordMelody(
                             "Guitar",
@@ -192,7 +172,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   // Play Piano Melody Button
                   Expanded(
                     child: ElevatedButton(
-                      //onPressed: () => playMelody("Piano", generalProvider),
                       onPressed:
                           () => playChordMelody(
                             "Piano",
@@ -229,7 +208,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       // Play Solfege Melody Button
                       Expanded(
                         child: ElevatedButton(
-                          //onPressed:() => playMelody("Solfege", generalProvider),
                           onPressed:
                               () => playChordMelody(
                                 "Solfege",
@@ -490,80 +468,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     setState(() {});
   }
 
-  Future<void> loadMappingFiles() async {
-    // Load Mapping.txt and populate nestedMapping
-    String mappingData =
-        await File('assets/mapping/Mapping.txt').readAsString();
-    List<String> lines = mappingData.split('\n');
-    for (String line in lines) {
-      List<String> parts = line.split('\t');
-      if (parts.length >= 4) {
-        String key1 = parts[0];
-        String key2 = parts[1];
-        String key3 = parts[2];
-        String value = parts[3];
-        nestedMapping[key1] ??= {};
-        nestedMapping[key1]![key2] ??= {};
-        nestedMapping[key1]![key2]![key3] = value.trim();
-      }
-    }
-    setState(() {});
-  }
-
-  Future<void> loadMappingJSON() async {
-    // Load Scales.json and populate scalesMapping
-    String jsonData = await DefaultAssetBundle.of(
-      context,
-    ).loadString("assets/mapping/Mapping.json");
-    //final jsonResult = jsonDecode(jsonData);
-    final List<dynamic> items = json.decode(jsonData);
-
-    for (var item in items) {
-      String key = item['Key'];
-      String instrument = item['Instrument'];
-      String note = item['Note'];
-      String filename = item['File'];
-      //List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
-      nestedMapping[key] ??= {};
-      nestedMapping[key]![instrument] ??= {};
-      nestedMapping[key]![instrument]![note] = filename;
-    }
-    setState(() {});
-  }
-
-  Future<void> loadChordsJSON() async {
-    // Load Chords.json and populate chordsMapping
-    String jsonData = await DefaultAssetBundle.of(
-      context,
-    ).loadString("assets/mapping/Chords.json");
-    //final jsonResult = jsonDecode(jsonData);
-    final List<dynamic> items = json.decode(jsonData);
-
-    for (var item in items) {
-      String category = item['Category'];
-      String degree = item['Degree'];
-      String chordSet = item['Chord Set'];
-      String notesStr = item['Notes'];
-      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
-
-      if (chordSet.isNotEmpty && !chordList.contains(chordSet)) {
-        chordList.add(chordSet);
-      }
-
-      if (chordSet.isNotEmpty && !chordMap.containsKey(chordSet)) {
-        // Add to chordMap if not already present
-        chordMap[chordSet] = notes;
-      }
-      chordsMapping[category] ??= {};
-      chordsMapping[category]![degree] ??= {};
-      chordsMapping[category]![degree]![chordSet] = notes;
-    }
-    setState(() {});
-  }
-
   // 1. Add chord buttons below notes section
   Widget buildSelectedChordButtons(GeneralProvider generalProvider) {
     final selectedChords = generalProvider.getSelectedChords();
+    final chordMap = generalProvider.getChordMap;
     return Wrap(
       spacing: 4,
       runSpacing: 4,
@@ -621,6 +529,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
     final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
+    final nestedMapping = generalProvider.getNestedMapping;
     for (var notes in melodyList) {
       if (notes.length == 1) {
         final note = notes[0];
@@ -666,6 +575,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   }
 
   void generateChordMelody(GeneralProvider generalProvider) {
+    final chordMap = generalProvider.getChordMap;
     chordMelody.clear();
     chordMelodySolfege.clear();
     writtenChordMelody.clear();
@@ -838,7 +748,6 @@ bool listEquals<T>(List<T>? a, List<T>? b) {
 }
 
 // Add this utility function to your file (e.g., below the listEquals function or anywhere in your class/file):
-
 String chordMelodySolfegeToString(List<List<String>> data) {
   return data.map((inner) => inner.join('-')).join(' ');
 }

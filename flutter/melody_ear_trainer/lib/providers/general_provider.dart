@@ -51,6 +51,7 @@ class GeneralProvider extends ChangeNotifier {
   Map<String, Map<String, List<String>>> chordSetsMapping = {};
   List<String> rangesList = [];
   List<String> chordSetsList = [];
+  Map<String, List<String>> chordMap = {};
   List<String> get getChordList {
     return chordList;
   }
@@ -61,6 +62,10 @@ class GeneralProvider extends ChangeNotifier {
 
   List<String> get getChordSetsList {
     return chordSetsList;
+  }
+
+  Map<String, List<String>> get getChordMap {
+    return chordMap;
   }
 
   Map<String, Map<String, List<String>>> get getChordSetsMapping {
@@ -409,6 +414,9 @@ class GeneralProvider extends ChangeNotifier {
 
       if (chordSet.isNotEmpty && !chordList.contains(chordSet)) {
         chordList.add(chordSet);
+      }
+      if (chordSet.isNotEmpty && !chordMap.containsKey(chordSet)) {
+        chordMap[chordSet] = notes;
       }
       chordsMapping[category] ??= {};
       chordsMapping[category]![degree] ??= {};
