@@ -34,18 +34,41 @@ class GeneralProvider extends ChangeNotifier {
   List<String> mappingKeys = [];
   List<String> instruments = [];
   Map<String, Map<String, Map<String, String>>> nestedMapping = {};
-  //Map<String, dynamic> nestedMapping = {};
-   Map<String, Map<String, Map<String, String>>> get getNestedMapping {
-     return nestedMapping;
-   }
-  // Map<String, dynamic> get getNestedMapping {
-  //   return nestedMapping;
-  // }
+  Map<String, Map<String, Map<String, String>>> get getNestedMapping {
+    return nestedMapping;
+  }
+
   List<String> get getMappingKeys {
     return mappingKeys;
   }
+
   List<String> get getInstruments {
     return instruments;
+  }
+
+  Map<String, Map<String, Map<String, List<String>>>> chordsMapping = {};
+  List<String> chordList = [];
+  Map<String, Map<String, List<String>>> chordSetsMapping = {};
+  List<String> rangesList = [];
+  List<String> chordSetsList = [];
+  List<String> get getChordList {
+    return chordList;
+  }
+
+  List<String> get getRangesList {
+    return rangesList;
+  }
+
+  List<String> get getChordSetsList {
+    return chordSetsList;
+  }
+
+  Map<String, Map<String, List<String>>> get getChordSetsMapping {
+    return chordSetsMapping;
+  }
+
+  Map<String, Map<String, Map<String, List<String>>>> get getChordsMapping {
+    return chordsMapping;
   }
 
   static const List<String> defaultNoteKeys = [
@@ -122,7 +145,6 @@ class GeneralProvider extends ChangeNotifier {
     this.selectedKey = "C",
     this.selectedInstrument =
         "Piano", // Initialize any default values or load settings if necessary
-
     //this.nestedMapping = loadMappingJSON(),
   });
 
@@ -335,7 +357,8 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   Future<void> get loadMappingJSON async {
-    final String jsonData = await File('assets/mapping/Mapping.json').readAsString();
+    final String jsonData =
+        await File('assets/mapping/Mapping.json').readAsString();
     final List<dynamic> items = json.decode(jsonData);
     for (var item in items) {
       String key = item['Key'];
@@ -356,5 +379,55 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> loadChordSetsJSON() async {
 
+    // Load Chords.json and populate chordsMapping
+    final String jsonData =
+        await File("assets/mapping/Chords.json").readAsString();
+    final List<dynamic> items = json.decode(jsonData);
+
+    for (var item in items) {
+      String category = item['Category'];
+      String degree = item['Degree'];
+      String chordSet = item['Chord Set'];
+      String notesStr = item['Notes'];
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+
+      if (chordSet.isNotEmpty && !chordList.contains(chordSet)) {
+        chordList.add(chordSet);
+      }
+      chordsMapping[category] ??= {};
+      chordsMapping[category]![degree] ??= {};
+      chordsMapping[category]![degree]![chordSet] = notes;
+    }
+    // Load Chords.json and populate chordsSetMapping
+    final String jsonData2 =
+        await File("assets/mapping/ChordSets.json").readAsString();
+    final List<dynamic> items2 = json.decode(jsonData2);
+    for (var item in items2) {
+      String rangeValue = item['Range'];
+      String set = item['Set'];
+      String chordSet = item['Chords'];
+      List<String> chordSets =
+          chordSet.split(',').map((s) => s.trim()).toList();
+
+      chordSetsMapping[rangeValue] ??= {};
+      chordSetsMapping[rangeValue]![set] = chordSets;
+
+      if (rangeValue.isNotEmpty && !rangesList.contains(rangeValue)) {
+        rangesList.add(rangeValue);
+      }
+      if (set.isNotEmpty && !chordSetsList.contains(set)) {
+        chordSetsList.add(set);
+      }
+    }
+
+    // Add "Select all" set for each rangeValue
+    for (var rangeValue in rangesList) {
+      chordSetsMapping[rangeValue]?["Select all"] = List<String>.from(
+        chordList,
+      );
+    }
+    notifyListeners();
+  }
 }

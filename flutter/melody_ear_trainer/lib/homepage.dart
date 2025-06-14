@@ -58,6 +58,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final generalProvider = Provider.of<GeneralProvider>(context);
 
     context.read<GeneralProvider>().loadMappingJSON;
+    //context.read<GeneralProvider>().loadChordsJSON;
+    context.read<GeneralProvider>().loadChordSetsJSON();
     // Notes grid: group notes by row
     final noteRows = [
       GeneralProvider.noteKeys.where((n) => n.contains('0')).toList(),
@@ -360,95 +362,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 ),
               ),
               SizedBox(height: 8),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed: () {
-              //           setState(() {
-              //             writtenMelody.clear();
-              //             comparisonResult = "";
-              //           });
-              //         },
-              //         child: Text("Clear"),
-              //       ),
-              //     ),
-              //     SizedBox(width: 8),
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed: () {
-              //           setState(() {
-              //             if (writtenMelody.isNotEmpty) {
-              //               writtenMelody.removeLast();
-              //             }
-              //             comparisonResult = "";
-              //           });
-              //         },
-              //         child: Text("Backspace"),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(height: 8),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed: () {
-              //           setState(() {
-              //             comparisonResult =
-              //                 listEquals(writtenMelody, melody)
-              //                     ? "Same"
-              //                     : "not the same";
-              //           });
-              //         },
-              //         child: Text("Compare with generated melody"),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(height: 8),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     Text(
-              //       "Comparison Result: $comparisonResult",
-              //       style: TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(height: 8),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed:
-              //             () => playWrittenMelody("Guitar", generalProvider),
-              //         child: Text("Guitar"),
-              //       ),
-              //     ),
-              //     SizedBox(width: 8),
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed:
-              //             () => playWrittenMelody("Piano", generalProvider),
-              //         child: Text("Piano"),
-              //       ),
-              //     ),
-              //     SizedBox(width: 8),
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed:
-              //             () => playWrittenMelody("Solfege", generalProvider),
-              //         child: Text("Solfege"),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -489,29 +402,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Expanded(
-                  //   child: ElevatedButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         // Compare writtenChordMelody with generated melody
-                  //         // Flatten the writtenChordMelody for comparison
-                  //         //List<String> flatWrittenChordMelody =
-                  //         //    writtenChordMelodySolfege
-                  //         //        .expand((e) => e)
-                  //         //        .toList();
-                  //         melodiesSame = listEquals(chordMelody, writtenChordMelody);
-                  //         if (melodiesSame) {
-                  //           comparisonIcon = Icons.check_circle;
-                  //           comparisonIconColor = Colors.green;
-                  //         } else {
-                  //           comparisonIcon = Icons.cancel;
-                  //           comparisonIconColor = Colors.red;
-                  //         }
-                  //       });
-                  //     },
-                  //     child: Text("Compare with generated melody:"),
-                  //   ),
-                  // ),
                   Expanded(
                     child: ElevatedButton.icon(
                       icon: Icon(comparisonIcon, color: comparisonIconColor),
@@ -519,11 +409,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       onPressed: () {
                         setState(() {
                           // Compare writtenChordMelody with generated melody
-                          // Flatten the writtenChordMelody for comparison
-                          //List<String> flatWrittenChordMelody =
-                          //    writtenChordMelodySolfege
-                          //        .expand((e) => e)
-                          //        .toList();
                           melodiesSame = listEquals(
                             chordMelody,
                             writtenChordMelody,
@@ -598,77 +483,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       ),
     );
   }
-
-  // void generateMelody(GeneralProvider generalProvider) {
-  //   melody = [];
-  //   writtenMelody = [];
-  //   final numNotes = generalProvider.numberOfNotes;
-  //   final maxDist = generalProvider.maxDistance;
-  //   final allowRepeats = generalProvider.allowRepeatedNotes;
-  //   final startWithDo = generalProvider.startWithDo;
-  //   final endWithDo = generalProvider.endWithDo;
-  //   final startingDo = generalProvider.startingDo;
-  //   final endingDo = generalProvider.endingDo;
-  //   final notes = generalProvider.getSelectedNotes();
-
-  //   if (notes.isEmpty || numNotes < 1) return;
-
-  //   String? lastNote;
-  //   for (int i = 0; i < numNotes; i++) {
-  //     if (i == 0 && startWithDo) {
-  //       melody.add(startingDo);
-  //       lastNote = startingDo;
-  //     } else if (i == numNotes - 1 && endWithDo) {
-  //       melody.add(endingDo);
-  //       lastNote = endingDo;
-  //     } else {
-  //       // Allowed notes: within maxDist of lastNote, and not repeated if not allowed
-  //       List<String> allowed = notes;
-  //       if (lastNote != null) {
-  //         int lastIdx = notes.indexOf(lastNote);
-  //         allowed =
-  //             notes.where((n) {
-  //               int idx = notes.indexOf(n);
-  //               bool withinDist = (lastIdx - idx).abs() <= maxDist;
-  //               bool notRepeat = allowRepeats || n != lastNote;
-  //               return withinDist && notRepeat;
-  //             }).toList();
-  //       }
-  //       if (allowed.isEmpty) allowed = notes;
-  //       final next = (allowed..shuffle()).first;
-  //       //final next = allowed[(allowed.length * (i + 1) * 37) % allowed.length];
-  //       melody.add(next);
-  //       lastNote = next;
-  //     }
-  //   }
-  //   setState(() {});
-  // }
-
-  // Future<void> playMelody(
-  //   String instrument,
-  //   GeneralProvider generalProvider,
-  // ) async {
-  //   final key = generalProvider.selectedKey;
-  //   final timeBetween = generalProvider.timeBetweenNotes;
-  //   final truncate = generalProvider.truncateNotes;
-  //   if (melody.isEmpty) return;
-  //   for (var note in melody) {
-  //     final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-  //     if (filename.isNotEmpty) {
-  //       if (truncate == "None") {
-  //         widget.audioController.playSound("assets/audio/$filename");
-  //       } else {
-  //         // Truncate the sound if specified
-  //         widget.audioController.playSoundFade(
-  //           "assets/audio/$filename",
-  //           int.parse(truncate),
-  //           500,
-  //         );
-  //       }
-  //     }
-  //     await Future.delayed(Duration(milliseconds: timeBetween));
-  //   }
-  // }
 
   void showSolfege() {
     solfegeText = chordMelody.join(' ');
@@ -745,31 +559,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     }
     setState(() {});
   }
-
-  // Future<void> playWrittenMelody(
-  //   String instrument,
-  //   GeneralProvider generalProvider,
-  // ) async {
-  //   final key = generalProvider.selectedKey;
-  //   final timeBetween = generalProvider.timeBetweenNotes;
-  //   final truncate = generalProvider.truncateNotes;
-  //   if (writtenMelody.isEmpty) return;
-  //   for (var note in writtenMelody) {
-  //     final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-  //     if (filename.isNotEmpty) {
-  //       if (truncate == "None") {
-  //         widget.audioController.playSound("assets/audio/$filename");
-  //       } else {
-  //         widget.audioController.playSoundFade(
-  //           "assets/audio/$filename",
-  //           int.parse(truncate),
-  //           500,
-  //         );
-  //       }
-  //     }
-  //     await Future.delayed(Duration(milliseconds: timeBetween));
-  //   }
-  // }
 
   // 1. Add chord buttons below notes section
   Widget buildSelectedChordButtons(GeneralProvider generalProvider) {
