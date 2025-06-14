@@ -1,29 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
-import 'dart:convert';
 
 class GeneralPage extends StatefulWidget {
   const GeneralPage({super.key});
-
   @override
   State<GeneralPage> createState() => _GeneralPageState();
 }
 
 class _GeneralPageState extends State<GeneralPage> {
-  List<String> mappingKeys = [];
-  List<String> instruments = [];
-
-  @override
-  void initState() {
-    super.initState();
-    //loadMappingFiles();
-    loadMappingJSON();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final mappingKeys = context.watch<GeneralProvider>().mappingKeys;
+    final instruments = context.watch<GeneralProvider>().instruments;
     return Scaffold(
       appBar: AppBar(title: Text('General Settings')),
       body: Padding(
@@ -361,45 +350,5 @@ class _GeneralPageState extends State<GeneralPage> {
         ),
       ),
     );
-  }
-
-  Future<void> loadMappingFiles() async {
-    // Load Mapping.txt and populate mappingKeys and instruments
-    String mappingData =
-        await File('assets/mapping/Mapping.txt').readAsString();
-    List<String> lines = mappingData.split('\n');
-    for (String line in lines) {
-      List<String> parts = line.split('\t');
-      if (parts.isNotEmpty && !mappingKeys.contains(parts[0])) {
-        mappingKeys.add(parts[0]);
-      }
-      if (parts.length > 1 && !instruments.contains(parts[1])) {
-        instruments.add(parts[1]);
-      }
-    }
-    setState(() {});
-  }
-
-  Future<void> loadMappingJSON() async {
-    // Load Scales.json and populate scalesMapping
-    // this version only gets the keys and instruments
-    // from the Mapping.json file, not the full mapping
-    String jsonData = await DefaultAssetBundle.of(
-      context,
-    ).loadString("assets/mapping/Mapping.json");
-    //final jsonResult = jsonDecode(jsonData);
-    final List<dynamic> items = json.decode(jsonData);
-
-    for (var item in items) {
-      String key = item['Key'];
-      String instrument = item['Instrument'];
-      if (key.isNotEmpty && !mappingKeys.contains(key)) {
-        mappingKeys.add(key);
-      }
-      if (instrument.length > 1 && !instruments.contains(instrument)) {
-        instruments.add(instrument);
-      }
-    }
-    setState(() {});
   }
 }
