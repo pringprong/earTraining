@@ -60,6 +60,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     context.read<GeneralProvider>().loadMappingJSON;
     //context.read<GeneralProvider>().loadChordsJSON;
     context.read<GeneralProvider>().loadChordSetsJSON();
+    context.read<GeneralProvider>().loadScalesJSON(); 
     // Notes grid: group notes by row
     final noteRows = [
       GeneralProvider.noteKeys.where((n) => n.contains('0')).toList(),

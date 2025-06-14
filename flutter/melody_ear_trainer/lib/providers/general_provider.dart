@@ -71,6 +71,21 @@ class GeneralProvider extends ChangeNotifier {
     return chordsMapping;
   }
 
+  Map<String, Map<String, List<String>>> scalesMapping = {};
+  List<String> octavekeys = [];
+  List<String> scalekeys = [];
+  List<String> get getOctaveKeys {
+    return octavekeys;
+  }
+
+  List<String> get getScaleKeys {
+    return scalekeys;
+  }
+
+  Map<String, Map<String, List<String>>> get getScalesMapping {
+    return scalesMapping;
+  }
+
   static const List<String> defaultNoteKeys = [
     "do0",
     "re0",
@@ -380,7 +395,6 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   Future<void> loadChordSetsJSON() async {
-
     // Load Chords.json and populate chordsMapping
     final String jsonData =
         await File("assets/mapping/Chords.json").readAsString();
@@ -427,6 +441,30 @@ class GeneralProvider extends ChangeNotifier {
       chordSetsMapping[rangeValue]?["Select all"] = List<String>.from(
         chordList,
       );
+    }
+    notifyListeners();
+  }
+
+  Future<void> loadScalesJSON() async {
+    // Load Scales.json and populate scalesMapping
+    final String jsonData =
+        await File("assets/mapping/Scales.json").readAsString();
+    final List<dynamic> items = json.decode(jsonData);
+    for (var item in items) {
+      String octave = item['Octave'];
+      String set = item['Set'];
+      String notesStr = item['Notes'];
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+
+      scalesMapping[octave] ??= {};
+      scalesMapping[octave]![set] = notes;
+
+      if (octave.isNotEmpty && !octavekeys.contains(octave)) {
+        octavekeys.add(octave);
+      }
+      if (set.isNotEmpty && !scalekeys.contains(set)) {
+        scalekeys.add(set);
+      }
     }
     notifyListeners();
   }

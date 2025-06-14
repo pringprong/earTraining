@@ -1,51 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
-//import 'dart:io';
-import 'dart:convert';
 
 class ScalesPage extends StatefulWidget {
   const ScalesPage({super.key});
-
   @override
   State<ScalesPage> createState() => _ScalesPageState();
 }
 
 class _ScalesPageState extends State<ScalesPage> {
-  Map<String, Map<String, List<String>>> scalesMapping = {};
-
-  List<String> octavekeys = [];
-  List<String> scalekeys = [];
-
-  @override
-  void initState() {
-    super.initState();
-    //loadScales();
-    loadScalesJSON();
-  }
-
   @override
   Widget build(BuildContext context) {
     final generalProvider = Provider.of<GeneralProvider>(context);
-    //String? selectedOctave = "All octaves"; // Default octave selection
+    final scalesMapping =
+        context.watch<GeneralProvider>().getScalesMapping;
+    final octavekeys = context.watch<GeneralProvider>().getOctaveKeys;
+    final scalekeys = context.watch<GeneralProvider>().getScaleKeys;
     String? selectedOctave =
         generalProvider.selectedOctave; // Default octave selection
     String? selectedScale =
         generalProvider.selectedScale; // Default scale selection
-    // Get octave and scale dropdown values
-    //final octaveKeys = scalesMapping.keys.toList();
-    //final scaleKeys =
-    //    <String>{for (var v in scalesMapping.values) ...v.keys}.toList();
-
-    // Get notes for current selection
-    // List<String> selectedNotes = [];
-    // if (selectedOctave != null &&
-    //     selectedScale != null &&
-    //     scalesMapping[selectedOctave!] != null &&
-    //     scalesMapping[selectedOctave!]![selectedScale!] != null) {
-    //   selectedNotes = scalesMapping[selectedOctave!]![selectedScale!]!;
-    // }
-
     return Scaffold(
       appBar: AppBar(title: Text('Scales Settings')),
       body: Padding(
@@ -196,55 +170,5 @@ class _ScalesPageState extends State<ScalesPage> {
       );
     }
     return Column(children: rows);
-  }
-
-  // Future<void> loadScales() async {
-  //   // Load Scales.txt and populate mappingKeys and instruments
-  //   String mappingData = await File('assets/mapping/Scales.txt').readAsString();
-  //   List<String> lines = mappingData.split('\n');
-  //   for (String line in lines) {
-  //     List<String> parts = line.split('\t');
-  //     if (parts.length >= 3) {
-  //       String key1 = parts[0];
-  //       String key2 = parts[1];
-  //       String value = parts[2].trim();
-  //       List<String> values = value.split(',');
-  //       scalesMapping[key1] ??= {};
-  //       scalesMapping[key1]![key2] = values;
-  //     }
-  //   }
-  //   // Set defaults
-  //   if (scalesMapping.isNotEmpty) {
-  //     selectedOctave = scalesMapping.keys.first;
-  //     selectedScale = scalesMapping[selectedOctave!]!.keys.first;
-  //   }
-  //   setState(() {});
-  // }
-
-  Future<void> loadScalesJSON() async {
-    // Load Scales.json and populate scalesMapping
-    String jsonData = await DefaultAssetBundle.of(
-      context,
-    ).loadString("assets/mapping/Scales.json");
-    //final jsonResult = jsonDecode(jsonData);
-    final List<dynamic> items = json.decode(jsonData);
-
-    for (var item in items) {
-      String octave = item['Octave'];
-      String set = item['Set'];
-      String notesStr = item['Notes'];
-      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
-
-      scalesMapping[octave] ??= {};
-      scalesMapping[octave]![set] = notes;
-
-      if (octave.isNotEmpty && !octavekeys.contains(octave)) {
-        octavekeys.add(octave);
-      }
-      if (set.isNotEmpty && !scalekeys.contains(set)) {
-        scalekeys.add(set);
-      }
-    }
-    setState(() {});
   }
 }
