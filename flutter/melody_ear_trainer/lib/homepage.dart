@@ -57,6 +57,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   Widget build(BuildContext context) {
     final generalProvider = Provider.of<GeneralProvider>(context);
 
+    context.read<GeneralProvider>().loadMappingJSON;
     // Notes grid: group notes by row
     final noteRows = [
       GeneralProvider.noteKeys.where((n) => n.contains('0')).toList(),
@@ -523,7 +524,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           //    writtenChordMelodySolfege
                           //        .expand((e) => e)
                           //        .toList();
-                          melodiesSame = listEquals(chordMelody, writtenChordMelody);
+                          melodiesSame = listEquals(
+                            chordMelody,
+                            writtenChordMelody,
+                          );
                           if (melodiesSame) {
                             comparisonIcon = Icons.check_circle;
                             comparisonIconColor = Colors.green;

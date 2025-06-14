@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 import 'audio/audio_controller.dart';
-import 'dart:convert';
 
 class TonicPage extends StatefulWidget {
   const TonicPage({super.key, required this.audioController});
@@ -14,18 +12,10 @@ class TonicPage extends StatefulWidget {
 }
 
 class _TonicPageState extends State<TonicPage> {
-  // Replace mappingKeys/instruments with nested mapping
-  Map<String, Map<String, Map<String, String>>> nestedMapping = {};
-
-  @override
-  void initState() {
-    super.initState();
-    //loadMappingFiles();
-    loadMappingJSON();
-  }
-
   @override
   Widget build(BuildContext context) {
+    // Get the nestedMapping from the provider (auto-updates on notifyListeners)
+    final nestedMapping = context.watch<GeneralProvider>().getNestedMapping;
     return Scaffold(
       appBar: AppBar(title: Text('Tonic')),
       body: Padding(
@@ -155,9 +145,9 @@ class _TonicPageState extends State<TonicPage> {
                             '';
                         filename = "assets/audio/$filename";
                         if (filename.isEmpty) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text('No tonic found')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('No tonic found')),
+                          );
                           return;
                         }
                         widget.audioController.playSound(filename);
@@ -183,9 +173,9 @@ class _TonicPageState extends State<TonicPage> {
                             '';
                         filename = "assets/audio/$filename";
                         if (filename.isEmpty) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text('No tonic found')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('No tonic found')),
+                          );
                           return;
                         }
                         widget.audioController.playSound(filename);
@@ -211,9 +201,9 @@ class _TonicPageState extends State<TonicPage> {
                             '';
                         filename = "assets/audio/$filename";
                         if (filename.isEmpty) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text('No tonic found')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('No tonic found')),
+                          );
                           return;
                         }
                         widget.audioController.playSound(filename);
@@ -228,46 +218,5 @@ class _TonicPageState extends State<TonicPage> {
         ),
       ),
     );
-  }
-
-  Future<void> loadMappingFiles() async {
-    // Load Mapping.txt and populate nestedMapping
-    String mappingData =
-        await File('assets/mapping/Mapping.txt').readAsString();
-    List<String> lines = mappingData.split('\n');
-    for (String line in lines) {
-      List<String> parts = line.split('\t');
-      if (parts.length >= 4) {
-        String key1 = parts[0];
-        String key2 = parts[1];
-        String key3 = parts[2];
-        String value = parts[3];
-        nestedMapping[key1] ??= {};
-        nestedMapping[key1]![key2] ??= {};
-        nestedMapping[key1]![key2]![key3] = value.trim();
-      }
-    }
-    setState(() {});
-  }
-
-  Future<void> loadMappingJSON() async {
-    // Load Scales.json and populate scalesMapping
-    String jsonData = await DefaultAssetBundle.of(
-      context,
-    ).loadString("assets/mapping/Mapping.json");
-    //final jsonResult = jsonDecode(jsonData);
-    final List<dynamic> items = json.decode(jsonData);
-
-    for (var item in items) {
-      String key = item['Key'];
-      String instrument = item['Instrument'];
-      String note = item['Note'];
-      String filename = item['File'];
-      //List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
-      nestedMapping[key] ??= {};
-      nestedMapping[key]![instrument] ??= {};
-      nestedMapping[key]![instrument]![note] = filename;
-    }
-    setState(() {});
   }
 }

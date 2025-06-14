@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
+import 'dart:convert';
+import 'dart:io';
 
 class GeneralProvider extends ChangeNotifier {
   // Define your provider variables here
@@ -28,6 +30,23 @@ class GeneralProvider extends ChangeNotifier {
 
   String chordSetRange = "Middle"; // Default chord set range
   String chordSet = "I_IV_V"; // Default chord set
+
+  List<String> mappingKeys = [];
+  List<String> instruments = [];
+  Map<String, Map<String, Map<String, String>>> nestedMapping = {};
+  //Map<String, dynamic> nestedMapping = {};
+   Map<String, Map<String, Map<String, String>>> get getNestedMapping {
+     return nestedMapping;
+   }
+  // Map<String, dynamic> get getNestedMapping {
+  //   return nestedMapping;
+  // }
+  List<String> get getMappingKeys {
+    return mappingKeys;
+  }
+  List<String> get getInstruments {
+    return instruments;
+  }
 
   static const List<String> defaultNoteKeys = [
     "do0",
@@ -103,6 +122,8 @@ class GeneralProvider extends ChangeNotifier {
     this.selectedKey = "C",
     this.selectedInstrument =
         "Piano", // Initialize any default values or load settings if necessary
+
+    //this.nestedMapping = loadMappingJSON(),
   });
 
   get tonicNote => null;
@@ -252,9 +273,7 @@ class GeneralProvider extends ChangeNotifier {
         .toList();
   }
 
-
-
-    Color multiplyHexColor(String hexColor, double factor) {
+  Color multiplyHexColor(String hexColor, double factor) {
     hexColor = hexColor.replaceAll('#', '');
     if (hexColor.length == 6) {
       int r = int.parse(hexColor.substring(0, 2), radix: 16);
@@ -314,4 +333,28 @@ class GeneralProvider extends ChangeNotifier {
     allowRepeatedChords = !allowRepeatedChords;
     notifyListeners();
   }
+
+  Future<void> get loadMappingJSON async {
+    final String jsonData = await File('assets/mapping/Mapping.json').readAsString();
+    final List<dynamic> items = json.decode(jsonData);
+    for (var item in items) {
+      String key = item['Key'];
+      String instrument = item['Instrument'];
+      String note = item['Note'];
+      String filename = item['File'];
+      nestedMapping[key] ??= {};
+      nestedMapping[key]![instrument] ??= {};
+      nestedMapping[key]![instrument]![note] = filename;
+
+      if (key.isNotEmpty && !mappingKeys.contains(key)) {
+        mappingKeys.add(key);
+      }
+      if (instrument.length > 1 && !instruments.contains(instrument)) {
+        instruments.add(instrument);
+      }
+    }
+    notifyListeners();
+  }
+
+
 }
