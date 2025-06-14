@@ -93,14 +93,16 @@ class GeneralProvider extends ChangeNotifier {
 
   List<String> noteKeys = [];
   Map<String, String> noteColors = {};
-  Map<String, String> noteColorFactors = {};
+  Map<String, double> noteColorFactors = {};
   List<String> get getNoteKeys {
     return noteKeys;
   }
+
   Map<String, String> get getNoteColors {
     return noteColors;
   }
-  Map<String, String> get getNoteColorFactors {
+
+  Map<String, double> get getNoteColorFactors {
     return noteColorFactors;
   }
 
@@ -123,7 +125,7 @@ class GeneralProvider extends ChangeNotifier {
   ];
 
   // Map of booleans for note selection
-  // static const List<String> noteKeys = [
+  // List<String> noteKeys = [
   //   "do0",
   //   "ga0",
   //   "re0",
@@ -164,6 +166,9 @@ class GeneralProvider extends ChangeNotifier {
   // ];
 
   Map<String, bool> noteSelection = {};
+  Map<String, bool> get getNoteSelection {
+    return noteSelection;
+  }
 
   // --- Selected Chords Map ---
   Map<String, bool> selectedChords = {
@@ -175,7 +180,8 @@ class GeneralProvider extends ChangeNotifier {
     this.selectedKey = "C",
     this.selectedInstrument =
         "Piano", // Initialize any default values or load settings if necessary
-    //this.nestedMapping = loadMappingJSON(),
+    //this.selectedOctave = "Middle octave",
+    //this.selectedScale = "Diatonic major",
   });
 
   get tonicNote => null;
@@ -495,17 +501,13 @@ class GeneralProvider extends ChangeNotifier {
     for (var item in items) {
       String note = item['Note'];
       String color = item['Color'];
-      String factor = item['Factor'];
+      double factor = double.parse(item['Factor']);
       noteColors[note] = color;
       noteColorFactors[note] = factor;
       if (note.isNotEmpty && !noteKeys.contains(note)) {
         noteKeys.add(note);
       }
     }
-    noteSelection = {
-      for (var key in noteKeys) key: false,
-      for (var key in defaultNoteKeys) key: true,
-    };
     notifyListeners();
   }
 }

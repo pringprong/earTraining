@@ -42,18 +42,25 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final generalProvider = Provider.of<GeneralProvider>(context);
     context.read<GeneralProvider>().loadMappingJSON;
     context.read<GeneralProvider>().loadChordSetsJSON;
-    context.read<GeneralProvider>().loadScalesJSON; 
+    context.read<GeneralProvider>().loadScalesJSON;
+    context.read<GeneralProvider>().loadNotesJSON;
     final nestedMapping = generalProvider.getNestedMapping;
-    final noteKeys = generalProvider.getNoteKeys; 
+    final noteKeys = generalProvider.getNoteKeys;
     // Notes grid: group notes by row
     final noteRows = [
       noteKeys.where((n) => n.contains('0')).toList(),
-      noteKeys.where((n) => !RegExp(r'\d').hasMatch(n))
-          .toList(),
+      noteKeys.where((n) => !RegExp(r'\d').hasMatch(n)).toList(),
       noteKeys.where((n) => n.contains('1')).toList(),
       noteKeys.where((n) => n.contains('2')).toList(),
     ];
+    //final scalesMapping = generalProvider.getScalesMapping;
+    //final selectedOctave = generalProvider.selectedOctave;
+    //final selectedScale = generalProvider.selectedScale;
+    //final notes = scalesMapping[selectedOctave]![selectedScale] ?? [];
+    //generalProvider.setNoteSelection(notes);
     final selectedNotes = generalProvider.getSelectedNotes();
+    final noteColors = generalProvider.getNoteColors;
+    final noteColorFactor = generalProvider.getNoteColorFactors;
     return Scaffold(
       appBar: AppBar(title: Text('Melody Ear Trainer')),
       drawer: SafeArea(
@@ -265,7 +272,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               style: ElevatedButton.styleFrom(
                                 //minimumSize: Size(80, 36),
                                 //maximumSize: Size(80, 36),
-                                backgroundColor: Colors.blue,
+                                backgroundColor: generalProvider.multiplyHexColor(
+                                  noteColors[note].toString(),
+                                  noteColorFactor[note] ?? 1.0,
+                                ),
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.all(0.0),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
