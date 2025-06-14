@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -24,7 +23,7 @@ class GeneralProvider extends ChangeNotifier {
 
   String chordFrequency = "Every 4 notes"; // Default chord frequency
   bool displayChordNames = true; // Default display chord notes setting
-  int arpeggiateChordDelay = 0; // Default chord arpeggiation speed
+  int arpeggiateChordDelay = 50; // Default chord arpeggiation speed
   String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
   bool allowRepeatedChords = false; // Allow repeated chords
 
@@ -176,13 +175,20 @@ class GeneralProvider extends ChangeNotifier {
       key: true, // Initialize all chords as not selected
   };
 
-  GeneralProvider({
-    this.selectedKey = "C",
-    this.selectedInstrument =
-        "Piano", // Initialize any default values or load settings if necessary
-    //this.selectedOctave = "Middle octave",
-    //this.selectedScale = "Diatonic major",
-  });
+  GeneralProvider(){
+    initData();
+  }
+
+  Future<void> initData() async {
+    selectedKey = "C";
+    selectedInstrument = "Piano";
+    selectedOctave = "Lower and middle octave";
+    selectedScale = "Diatonic major";
+    noteSelection = {
+      for (var key in noteKeys) key: false,
+      for (var key in defaultNoteKeys) key: true,
+  };
+  }
 
   get tonicNote => null;
 
@@ -331,7 +337,7 @@ class GeneralProvider extends ChangeNotifier {
         .toList();
   }
 
-  Color multiplyHexColor(String hexColor, double factor) {
+  static Color multiplyHexColor(String hexColor, double factor) {
     hexColor = hexColor.replaceAll('#', '');
     if (hexColor.length == 6) {
       int r = int.parse(hexColor.substring(0, 2), radix: 16);
@@ -348,7 +354,7 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   // b. Get chord button color
-  Color getChordButtonColor(String chordName) {
+  static Color getChordButtonColor(String chordName) {
     const color1 = "#8189d3";
     const color2 = "#89afaa";
     const color3 = "#bcae9a";

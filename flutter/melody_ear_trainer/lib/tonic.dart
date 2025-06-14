@@ -135,6 +135,12 @@ class _TonicPageState extends State<TonicPage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_2i",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed: () {
                         String filename =
                             nestedMapping[context
@@ -163,6 +169,12 @@ class _TonicPageState extends State<TonicPage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_All",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed: () {
                         String filename =
                             nestedMapping[context
@@ -191,6 +203,12 @@ class _TonicPageState extends State<TonicPage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_R",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed: () {
                         String filename =
                             nestedMapping[context

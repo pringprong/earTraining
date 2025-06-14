@@ -36,6 +36,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   // Add this to your _MelodyHomePageState class:
   IconData comparisonIcon = Icons.help_outline;
   Color comparisonIconColor = Colors.grey;
+  Color comparisonColor = Colors.grey.shade300;
+  Color foregroundColor = Colors.black;
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +55,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       noteKeys.where((n) => n.contains('1')).toList(),
       noteKeys.where((n) => n.contains('2')).toList(),
     ];
-    //final scalesMapping = generalProvider.getScalesMapping;
-    //final selectedOctave = generalProvider.selectedOctave;
-    //final selectedScale = generalProvider.selectedScale;
-    //final notes = scalesMapping[selectedOctave]![selectedScale] ?? [];
-    //generalProvider.setNoteSelection(notes);
     final selectedNotes = generalProvider.getSelectedNotes();
     final noteColors = generalProvider.getNoteColors;
     final noteColorFactor = generalProvider.getNoteColorFactors;
@@ -130,6 +127,13 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_1i",
+                        ),
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.all(12.0),
+                      ),
                       onPressed: () {
                         //generateMelody(generalProvider);
                         generateChordMelody(generalProvider);
@@ -137,6 +141,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           solfegeText = ""; // Clear solfege area
                           comparisonIcon = Icons.help_outline;
                           comparisonIconColor = Colors.grey;
+                          comparisonColor = Colors.grey.shade300;
                         });
                       },
                       child: FittedBox(
@@ -155,7 +160,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Play Melody:",
+                    "Listen to generated melody:",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -166,35 +171,56 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_2i",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed:
                           () => playChordMelody(
                             "Guitar",
                             generalProvider,
                             chordMelodySolfege,
                           ),
-                      child: Text("Guitar"),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text("Guitar", style: TextStyle(fontSize: 20)),
+                      ),
                     ),
                   ),
                   SizedBox(width: 8),
                   // Play Piano Melody Button
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_All",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed:
                           () => playChordMelody(
                             "Piano",
                             generalProvider,
                             chordMelodySolfege,
                           ),
-                      child: Text("Piano"),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text("Piano", style: TextStyle(fontSize: 20)),
+                      ),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 8),
               ExpansionTile(
-                title: Text(
-                  "Solfege",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                title: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    "View solfege for generated melody",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
                 initiallyExpanded: false,
                 children: [
@@ -204,6 +230,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     children: [
                       Expanded(
                         child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_H_R",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                           onPressed: () {
                             showSolfege();
                             setState(() {});
@@ -215,6 +247,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       // Play Solfege Melody Button
                       Expanded(
                         child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_R",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                           onPressed:
                               () => playChordMelody(
                                 "Solfege",
@@ -270,20 +308,14 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             padding: const EdgeInsets.all(1.0),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                //minimumSize: Size(80, 36),
-                                //maximumSize: Size(80, 36),
-                                backgroundColor: generalProvider.multiplyHexColor(
-                                  noteColors[note].toString(),
-                                  noteColorFactor[note] ?? 1.0,
-                                ),
+                                backgroundColor: GeneralProvider
+                                    .multiplyHexColor(
+                                      noteColors[note].toString(),
+                                      noteColorFactor[note] ?? 1.0,
+                                    ),
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.all(0.0),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                //textStyle: TextStyle(
-                                //fontSize: 14,
-                                ///color: Colors.white,
-                                //padding: EdgeInsets.zero,
-                                //),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4),
                                 ),
@@ -356,6 +388,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 176, 204, 231),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed: () {
                         setState(() {
                           writtenChordMelody.clear();
@@ -363,14 +399,23 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           melodiesSame = false;
                           comparisonIcon = Icons.help_outline;
                           comparisonIconColor = Colors.grey;
+                          comparisonColor = Colors.grey.shade400;
                         });
                       },
-                      child: Text("Clear"),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text("Clear", style: TextStyle(fontSize: 20)),
+                      ),
                     ),
                   ),
                   SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 181, 196, 212),
+                        foregroundColor: Colors.black,
+                      ),
+
                       onPressed: () {
                         setState(() {
                           if (writtenChordMelody.isNotEmpty) {
@@ -379,10 +424,17 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             melodiesSame = false;
                             comparisonIcon = Icons.help_outline;
                             comparisonIconColor = Colors.grey;
+                            comparisonColor = Colors.grey.shade300;
                           }
                         });
                       },
-                      child: Text("Backspace"),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text(
+                          "Backspace",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -394,7 +446,21 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton.icon(
                       icon: Icon(comparisonIcon, color: comparisonIconColor),
-                      label: Text("Compare with generated melody"),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          comparisonColor,
+                        ),
+                        foregroundColor: WidgetStateProperty.all<Color>(
+                          foregroundColor,
+                        ),
+                      ),
+                      label: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text(
+                          "Compare with generated melody",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
                       onPressed: () {
                         setState(() {
                           // Compare writtenChordMelody with generated melody
@@ -405,9 +471,14 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           if (melodiesSame) {
                             comparisonIcon = Icons.check_circle;
                             comparisonIconColor = Colors.green;
+                            comparisonColor = const Color.fromARGB(255, 191, 220, 158);
+                            // style: ElevatedButton.styleFrom(
+                            //   backgroundColor: Colors.lightGreenAccent,
+                            // );
                           } else {
                             comparisonIcon = Icons.cancel;
                             comparisonIconColor = Colors.red;
+                            comparisonColor = const Color.fromARGB(255, 254, 192, 192);
                           }
                         });
                       },
@@ -420,7 +491,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Play back your melody:",
+                    "Listen to your melody:",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -431,37 +502,64 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_2i",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed:
                           () => playChordMelody(
                             "Guitar",
                             generalProvider,
                             writtenChordMelodySolfege,
                           ),
-                      child: Text("Guitar"),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text("Guitar", style: TextStyle(fontSize: 20)),
+                      ),
                     ),
                   ),
                   SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_All",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed:
                           () => playChordMelody(
                             "Piano",
                             generalProvider,
                             writtenChordMelodySolfege,
                           ),
-                      child: Text("Piano"),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text("Piano", style: TextStyle(fontSize: 20)),
+                      ),
                     ),
                   ),
                   SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                          "blah_M_R",
+                        ),
+                        foregroundColor: Colors.black,
+                      ),
                       onPressed:
                           () => playChordMelody(
                             "Solfege",
                             generalProvider,
                             writtenChordMelodySolfege,
                           ),
-                      child: Text("Solfege"),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text("Solfege", style: TextStyle(fontSize: 20)),
+                      ),
                     ),
                   ),
                 ],
@@ -481,13 +579,17 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   // 1. Add chord buttons below notes section
   Widget buildSelectedChordButtons(GeneralProvider generalProvider) {
     final selectedChords = generalProvider.getSelectedChords();
+    final chordFrequency = generalProvider.chordFrequency;
     final chordMap = generalProvider.getChordMap;
+    if (chordFrequency == "Never") {
+      return Padding(padding: const EdgeInsets.all(8.0));
+    }
     return Wrap(
       spacing: 4,
       runSpacing: 4,
       children:
           selectedChords.map((chord) {
-            final color = generalProvider.getChordButtonColor(chord);
+            final color = GeneralProvider.getChordButtonColor(chord);
             final notes = chordMap[chord] ?? [];
             return Tooltip(
               message: notes.join(' '),

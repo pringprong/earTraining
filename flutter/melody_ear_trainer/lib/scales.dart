@@ -137,7 +137,7 @@ class _ScalesPageState extends State<ScalesPage> {
         final selected = noteSelection[note] ?? false;
         final String tempColor = noteColors[note].toString();
         final double tempFactor = noteColorFactor[note] ?? 1.0;
-        final buttonColor = generalProvider.multiplyHexColor(
+        final buttonColor = GeneralProvider.multiplyHexColor(
           tempColor,
           tempFactor,
         );
