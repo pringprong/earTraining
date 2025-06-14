@@ -121,7 +121,7 @@ class _ScalesPageState extends State<ScalesPage> {
   }
 
   Widget _buildNotesGrid(GeneralProvider generalProvider) {
-    const noteKeys = GeneralProvider.noteKeys;
+    final noteKeys = generalProvider.getNoteKeys;
     List<Widget> rows = [];
     for (int row = 0; row < 4; row++) {
       int start = row * 12;

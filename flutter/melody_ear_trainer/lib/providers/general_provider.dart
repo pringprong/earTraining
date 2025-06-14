@@ -91,6 +91,19 @@ class GeneralProvider extends ChangeNotifier {
     return scalesMapping;
   }
 
+  List<String> noteKeys = [];
+  Map<String, String> noteColors = {};
+  Map<String, String> noteColorFactors = {};
+  List<String> get getNoteKeys {
+    return noteKeys;
+  }
+  Map<String, String> get getNoteColors {
+    return noteColors;
+  }
+  Map<String, String> get getNoteColorFactors {
+    return noteColorFactors;
+  }
+
   static const List<String> defaultNoteKeys = [
     "do0",
     "re0",
@@ -110,50 +123,47 @@ class GeneralProvider extends ChangeNotifier {
   ];
 
   // Map of booleans for note selection
-  static const List<String> noteKeys = [
-    "do0",
-    "ga0",
-    "re0",
-    "nu0",
-    "mi0",
-    "fa0",
-    "jur0",
-    "so0",
-    "ki0",
-    "la0",
-    "pe0",
-    "ti0",
-    "do",
-    "ga",
-    "re",
-    "nu",
-    "mi",
-    "fa",
-    "jur",
-    "so",
-    "ki",
-    "la",
-    "pe",
-    "ti",
-    "do1",
-    "ga1",
-    "re1",
-    "nu1",
-    "mi1",
-    "fa1",
-    "jur1",
-    "so1",
-    "ki1",
-    "la1",
-    "pe1",
-    "ti1",
-    "do2",
-  ];
+  // static const List<String> noteKeys = [
+  //   "do0",
+  //   "ga0",
+  //   "re0",
+  //   "nu0",
+  //   "mi0",
+  //   "fa0",
+  //   "jur0",
+  //   "so0",
+  //   "ki0",
+  //   "la0",
+  //   "pe0",
+  //   "ti0",
+  //   "do",
+  //   "ga",
+  //   "re",
+  //   "nu",
+  //   "mi",
+  //   "fa",
+  //   "jur",
+  //   "so",
+  //   "ki",
+  //   "la",
+  //   "pe",
+  //   "ti",
+  //   "do1",
+  //   "ga1",
+  //   "re1",
+  //   "nu1",
+  //   "mi1",
+  //   "fa1",
+  //   "jur1",
+  //   "so1",
+  //   "ki1",
+  //   "la1",
+  //   "pe1",
+  //   "ti1",
+  //   "do2",
+  // ];
 
-  Map<String, bool> noteSelection = {
-    for (var key in noteKeys) key: false,
-    for (var key in defaultNoteKeys) key: true,
-  };
+  Map<String, bool> noteSelection = {};
 
   // --- Selected Chords Map ---
   Map<String, bool> selectedChords = {
@@ -474,6 +484,28 @@ class GeneralProvider extends ChangeNotifier {
         scalekeys.add(set);
       }
     }
+    notifyListeners();
+  }
+
+  Future<void> get loadNotesJSON async {
+    // Load Notes.json and populate Notes, NoteColors, and NoteColorFactors
+    final String jsonData =
+        await File("assets/mapping/Notes.json").readAsString();
+    final List<dynamic> items = json.decode(jsonData);
+    for (var item in items) {
+      String note = item['Note'];
+      String color = item['Color'];
+      String factor = item['Factor'];
+      noteColors[note] = color;
+      noteColorFactors[note] = factor;
+      if (note.isNotEmpty && !noteKeys.contains(note)) {
+        noteKeys.add(note);
+      }
+    }
+    noteSelection = {
+      for (var key in noteKeys) key: false,
+      for (var key in defaultNoteKeys) key: true,
+    };
     notifyListeners();
   }
 }

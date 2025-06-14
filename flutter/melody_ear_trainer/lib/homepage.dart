@@ -43,15 +43,15 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     context.read<GeneralProvider>().loadMappingJSON;
     context.read<GeneralProvider>().loadChordSetsJSON;
     context.read<GeneralProvider>().loadScalesJSON; 
-    final nestedMapping = generalProvider.getNestedMapping; 
+    final nestedMapping = generalProvider.getNestedMapping;
+    final noteKeys = generalProvider.getNoteKeys; 
     // Notes grid: group notes by row
     final noteRows = [
-      GeneralProvider.noteKeys.where((n) => n.contains('0')).toList(),
-      GeneralProvider.noteKeys
-          .where((n) => !RegExp(r'\d').hasMatch(n))
+      noteKeys.where((n) => n.contains('0')).toList(),
+      noteKeys.where((n) => !RegExp(r'\d').hasMatch(n))
           .toList(),
-      GeneralProvider.noteKeys.where((n) => n.contains('1')).toList(),
-      GeneralProvider.noteKeys.where((n) => n.contains('2')).toList(),
+      noteKeys.where((n) => n.contains('1')).toList(),
+      noteKeys.where((n) => n.contains('2')).toList(),
     ];
     final selectedNotes = generalProvider.getSelectedNotes();
     return Scaffold(
