@@ -41,8 +41,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   Widget build(BuildContext context) {
     final generalProvider = Provider.of<GeneralProvider>(context);
     context.read<GeneralProvider>().loadMappingJSON;
-    context.read<GeneralProvider>().loadChordSetsJSON();
-    context.read<GeneralProvider>().loadScalesJSON(); 
+    context.read<GeneralProvider>().loadChordSetsJSON;
+    context.read<GeneralProvider>().loadScalesJSON; 
     final nestedMapping = generalProvider.getNestedMapping; 
     // Notes grid: group notes by row
     final noteRows = [

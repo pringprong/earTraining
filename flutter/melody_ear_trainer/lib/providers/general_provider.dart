@@ -399,7 +399,7 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadChordSetsJSON() async {
+  Future<void> get loadChordSetsJSON async {
     // Load Chords.json and populate chordsMapping
     final String jsonData =
         await File("assets/mapping/Chords.json").readAsString();
@@ -453,7 +453,7 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadScalesJSON() async {
+  Future<void> get loadScalesJSON async {
     // Load Scales.json and populate scalesMapping
     final String jsonData =
         await File("assets/mapping/Scales.json").readAsString();
