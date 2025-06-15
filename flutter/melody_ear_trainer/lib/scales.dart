@@ -64,7 +64,9 @@ class _ScalesPageState extends State<ScalesPage> {
                               final notes =
                                   scalesMapping[selectedOctave!]![selectedScale!] ??
                                   [];
-                              generalProvider.setNoteSelection(notes);
+                              generalProvider.setNoteSelection(
+                                selectedKeys: notes,
+                              );
                             }
                           });
                         },
@@ -103,7 +105,9 @@ class _ScalesPageState extends State<ScalesPage> {
                               final notes =
                                   scalesMapping[selectedOctave!]![selectedScale!] ??
                                   [];
-                              generalProvider.setNoteSelection(notes);
+                              generalProvider.setNoteSelection(
+                                selectedKeys: notes,
+                              );
                             }
                           });
                         },
@@ -126,6 +130,7 @@ class _ScalesPageState extends State<ScalesPage> {
     final noteColors = generalProvider.getNoteColors;
     final noteColorFactor = generalProvider.getNoteColorFactors;
     final noteSelection = generalProvider.getNoteSelection;
+    //print(noteSelection);
     List<Widget> rows = [];
     for (int row = 0; row < 4; row++) {
       int start = row * 12;
@@ -159,7 +164,7 @@ class _ScalesPageState extends State<ScalesPage> {
                   ),
                 ),
                 onPressed: () {
-                  generalProvider.toggleNoteSelection(note);
+                  generalProvider.toggleNoteSelection(key: note);
                 },
                 child: FittedBox(
                   fit: BoxFit.fill,

@@ -6,10 +6,9 @@ import '../theme/theme.dart';
 class GeneralProvider extends ChangeNotifier {
   ThemeData _themeData = darkMode;
 
-  ThemeData get getThemeData
-  {
+  ThemeData get getThemeData {
     return _themeData;
-  } 
+  }
 
   bool darkModeBool = false;
 
@@ -41,7 +40,7 @@ class GeneralProvider extends ChangeNotifier {
   int numberOfNotes = 5;
   int maxDistance = 7; // Maximum distance between notes
   bool allowRepeatedNotes = false;
-  String selectedInstrument = "";
+  String selectedInstrument = "Piano";
 
   int timeBetweenNotes = 900; // Time in milliseconds between notes
   String truncateNotes = "1200"; // Truncate notes to 1200 milliseconds
@@ -51,7 +50,7 @@ class GeneralProvider extends ChangeNotifier {
   String startingDo = "do"; // Default starting note
   String endingDo = "do"; // Default ending note
 
-  String selectedOctave = "Middle octave"; // Default octave selection
+  String selectedOctave = "Lower and middle octave"; // Default octave selection
   String selectedScale = "Diatonic major"; // Default scale selection
 
   String chordFrequency = "Every 4 notes"; // Default chord frequency
@@ -213,14 +212,20 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   Future<void> initData() async {
-    selectedKey = "C";
-    selectedInstrument = "Piano";
-    selectedOctave = "Lower and middle octave";
-    selectedScale = "Diatonic major";
+    //void initData()  {
+    //selectedKey = "C";
+    //selectedInstrument = "Piano";
+    // selectedOctave = "Lower and middle octave";
+    // selectedScale = "Diatonic major";
+    // updateSelectedOctave(octave: selectedOctave);
+    // updateSelectedScale(newscale: selectedScale);
+    // print(noteKeys);
     noteSelection = {
-      for (var key in noteKeys) key: false,
+      // for (var key in noteKeys) key: false,
       for (var key in defaultNoteKeys) key: true,
     };
+    // setNoteSelection(selectedKeys: defaultNoteKeys);
+    // notifyListeners();
   }
 
   get tonicNote => null;
@@ -282,7 +287,7 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   /// 1. Set all values of the map at once
-  void setNoteSelection(List<String> selectedKeys) {
+  void setNoteSelection({required List<String> selectedKeys}) async {
     for (var key in noteKeys) {
       noteSelection[key] = selectedKeys.contains(key);
     }
@@ -290,11 +295,9 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   /// 2. Toggle one value of the map
-  void toggleNoteSelection(String key) {
-    if (noteSelection.containsKey(key)) {
+  void toggleNoteSelection({required String key}) async {
       noteSelection[key] = !(noteSelection[key] ?? false);
       notifyListeners();
-    }
   }
 
   /// 3. Get all values that are set to True as a list of Strings, in order
