@@ -212,20 +212,9 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   Future<void> initData() async {
-    //void initData()  {
-    //selectedKey = "C";
-    //selectedInstrument = "Piano";
-    // selectedOctave = "Lower and middle octave";
-    // selectedScale = "Diatonic major";
-    // updateSelectedOctave(octave: selectedOctave);
-    // updateSelectedScale(newscale: selectedScale);
-    // print(noteKeys);
     noteSelection = {
-      // for (var key in noteKeys) key: false,
-      for (var key in defaultNoteKeys) key: true,
+       for (var key in defaultNoteKeys) key: true,
     };
-    // setNoteSelection(selectedKeys: defaultNoteKeys);
-    // notifyListeners();
   }
 
   get tonicNote => null;
