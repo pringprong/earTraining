@@ -335,16 +335,30 @@ class _GeneralPageState extends State<GeneralPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Display chord names:'),
+                    child: Text('Light mode:'),
                   ),
                   Checkbox(
-                    value: context.watch<GeneralProvider>().displayChordNames,
-                    onChanged: (bool? newValue) {
-                      context.read<GeneralProvider>().toggleDisplayChordNames();
+                    value: context.watch<GeneralProvider>().darkModeBool,
+                     onChanged: (bool? newValue) {
+                       context.read<GeneralProvider>().toggleDarkMode();
                     },
                   ),
                 ],
               ),
+            //  Row(
+            //     children: [
+            //       Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: Text('Display chord names:'),
+            //       ),
+            //       Checkbox(
+            //         value: context.watch<GeneralProvider>().displayChordNames,
+            //         onChanged: (bool? newValue) {
+            //           context.read<GeneralProvider>().toggleDisplayChordNames();
+            //         },
+            //       ),
+            //     ],
+            //   ),
             ], // Children of Column
           ),
         ),

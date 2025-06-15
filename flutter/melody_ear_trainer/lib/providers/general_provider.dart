@@ -1,8 +1,41 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import '../theme/theme.dart';
 
 class GeneralProvider extends ChangeNotifier {
+  ThemeData _themeData = lightMode;
+
+  ThemeData get getThemeData
+  {
+    return _themeData;
+  } 
+
+  bool darkModeBool = true;
+
+  set themeData(ThemeData themeData) {
+    _themeData = themeData;
+    notifyListeners();
+  }
+
+  void toggleTheme() {
+    if (_themeData == lightMode) {
+      themeData = darkMode;
+    } else {
+      themeData = lightMode;
+    }
+  }
+
+  void toggleDarkMode() {
+    if (darkModeBool) {
+      darkModeBool = false;
+      themeData = darkMode;
+    } else {
+      darkModeBool = true;
+      themeData = lightMode;
+    }
+  }
+
   // Define your provider variables here
   String selectedKey = "C";
   int numberOfNotes = 5;

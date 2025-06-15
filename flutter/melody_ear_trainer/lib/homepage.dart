@@ -59,6 +59,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final noteColors = generalProvider.getNoteColors;
     final noteColorFactor = generalProvider.getNoteColorFactors;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody Ear Trainer')),
       drawer: SafeArea(
         child: Drawer(

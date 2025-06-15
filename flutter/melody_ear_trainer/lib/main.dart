@@ -1,7 +1,7 @@
 // import 'dart:developer' as dev;
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-//import 'package:melody_ear_trainer/providers/general_provider.dart';
+//import 'package:melody_ear_trainer/theme/theme.dart';
 import 'package:provider/provider.dart';
 // import 'package:logging/logging.dart';
 //import 'dart:convert';
@@ -36,7 +36,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final audioController = AudioController();
   await audioController.initialize();
-  runApp(MelodyEarTrainerApp(audioController: audioController));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GeneralProvider>(
+          create: (context) => GeneralProvider()),
+      ],
+      child: MelodyEarTrainerApp(audioController: audioController)),
+  );
 }
 
 class MelodyEarTrainerApp extends StatelessWidget {
@@ -45,17 +52,10 @@ class MelodyEarTrainerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => GeneralProvider()),
-      ],
-      child: MaterialApp(
+    return MaterialApp(
         title: 'Melody Ear Trainer',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
-          useMaterial3: true,
-          primarySwatch: Colors.blue,
-        ),
+        //theme: ThemeData.dark(),
+        theme: context.watch<GeneralProvider>().getThemeData,
         home: MelodyHomePage(audioController: audioController),
         routes: {
           '/home':
@@ -66,7 +66,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
           '/chords': (context) => ChordsPage(),
           // Add other routes here
         },
-      ),
-    );
+      );
+ //   );
   } // Build method
 } // MelodyEarTrainerApp
