@@ -4,14 +4,14 @@ import 'package:flutter/services.dart';
 import '../theme/theme.dart';
 
 class GeneralProvider extends ChangeNotifier {
-  ThemeData _themeData = lightMode;
+  ThemeData _themeData = darkMode;
 
   ThemeData get getThemeData
   {
     return _themeData;
   } 
 
-  bool darkModeBool = true;
+  bool darkModeBool = false;
 
   set themeData(ThemeData themeData) {
     _themeData = themeData;
