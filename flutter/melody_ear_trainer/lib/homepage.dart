@@ -215,12 +215,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               ),
               SizedBox(height: 8),
               ExpansionTile(
-                title: FittedBox(
-                  fit: BoxFit.fill,
-                  child: Text(
-                    "View solfege for generated melody",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+                title: Text(
+                  "Solfege for generated melody",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                 ),
                 initiallyExpanded: false,
                 children: [
@@ -240,7 +237,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             showSolfege();
                             setState(() {});
                           },
-                          child: Text("Show Solfege"),
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Text("Show",
+                              style: TextStyle(fontSize: 20),                            
+                            ),
+                            ),
                         ),
                       ),
                       SizedBox(width: 8),
@@ -259,7 +261,13 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 generalProvider,
                                 chordMelodySolfege,
                               ),
-                          child: Text("Play Solfege"),
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Text("Listen",
+                              style: TextStyle(fontSize: 20
+                            )
+                            ),
+                        ),
                         ),
                       ),
                     ],
@@ -328,6 +336,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 final filename =
                                     nestedMapping[key]?[instrument]?[note] ??
                                     '';
+                                comparisonIcon = Icons.help_outline;
+                                comparisonIconColor = Colors.grey;
+                                comparisonColor = Colors.grey.shade300;
                                 if (filename.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -609,6 +620,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     // 2b. Append chord as a list of notes to writtenChordMelody
                     writtenChordMelody.add(chord);
                     writtenChordMelodySolfege.add(List<String>.from(notes));
+                    comparisonIcon = Icons.help_outline;
+                    comparisonIconColor = Colors.grey;
+                    comparisonColor = Colors.grey.shade300;
                     playChordMelody(
                       generalProvider.selectedInstrument,
                       generalProvider,

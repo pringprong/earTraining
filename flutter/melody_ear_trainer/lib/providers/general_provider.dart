@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/services.dart';
 
 class GeneralProvider extends ChangeNotifier {
   // Define your provider variables here
@@ -175,7 +175,7 @@ class GeneralProvider extends ChangeNotifier {
       key: true, // Initialize all chords as not selected
   };
 
-  GeneralProvider(){
+  GeneralProvider() {
     initData();
   }
 
@@ -187,7 +187,7 @@ class GeneralProvider extends ChangeNotifier {
     noteSelection = {
       for (var key in noteKeys) key: false,
       for (var key in defaultNoteKeys) key: true,
-  };
+    };
   }
 
   get tonicNote => null;
@@ -399,9 +399,10 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   Future<void> get loadMappingJSON async {
-    final String jsonData =
-        await File('assets/mapping/Mapping.json').readAsString();
-    final List<dynamic> items = json.decode(jsonData);
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Mapping.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
     for (var item in items) {
       String key = item['Key'];
       String instrument = item['Instrument'];
@@ -423,10 +424,10 @@ class GeneralProvider extends ChangeNotifier {
 
   Future<void> get loadChordSetsJSON async {
     // Load Chords.json and populate chordsMapping
-    final String jsonData =
-        await File("assets/mapping/Chords.json").readAsString();
-    final List<dynamic> items = json.decode(jsonData);
-
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Chords.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
     for (var item in items) {
       String category = item['Category'];
       String degree = item['Degree'];
@@ -445,9 +446,10 @@ class GeneralProvider extends ChangeNotifier {
       chordsMapping[category]![degree]![chordSet] = notes;
     }
     // Load Chords.json and populate chordsSetMapping
-    final String jsonData2 =
-        await File("assets/mapping/ChordSets.json").readAsString();
-    final List<dynamic> items2 = json.decode(jsonData2);
+    final String jsonData2 = await rootBundle.loadString(
+      'assets/mapping/ChordSets.json',
+    );
+    final List<dynamic> items2 = await json.decode(jsonData2);
     for (var item in items2) {
       String rangeValue = item['Range'];
       String set = item['Set'];
@@ -477,9 +479,10 @@ class GeneralProvider extends ChangeNotifier {
 
   Future<void> get loadScalesJSON async {
     // Load Scales.json and populate scalesMapping
-    final String jsonData =
-        await File("assets/mapping/Scales.json").readAsString();
-    final List<dynamic> items = json.decode(jsonData);
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Scales.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
     for (var item in items) {
       String octave = item['Octave'];
       String set = item['Set'];
@@ -500,10 +503,10 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   Future<void> get loadNotesJSON async {
-    // Load Notes.json and populate Notes, NoteColors, and NoteColorFactors
-    final String jsonData =
-        await File("assets/mapping/Notes.json").readAsString();
-    final List<dynamic> items = json.decode(jsonData);
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Notes.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
     for (var item in items) {
       String note = item['Note'];
       String color = item['Color'];
