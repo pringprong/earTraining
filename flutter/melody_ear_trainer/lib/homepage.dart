@@ -326,7 +326,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 ),
                               ),
                               onPressed: () async {
-                                // Play note using AudioController and nestedMapping
                                 final key = generalProvider.selectedKey;
                                 final instrument =
                                     generalProvider.selectedInstrument;
@@ -650,12 +649,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     );
   }
 
-  // 3. Add playChordMelody function
   Future<void> playChordMelody(
     String instrument,
     GeneralProvider generalProvider,
     List<List<String>> melodyList,
   ) async {
+    await widget.audioController.refresh();
     final key = generalProvider.selectedKey;
     final timeBetween = generalProvider.timeBetweenNotes;
     final truncate = generalProvider.truncateNotes;
@@ -663,6 +662,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
     final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
     final nestedMapping = generalProvider.getNestedMapping;
+    int i = 0;
     for (var notes in melodyList) {
       if (notes.length == 1) {
         final note = notes[0];
@@ -679,6 +679,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
           }
         }
       } else if (notes.length > 1) {
+        if (i % 7 == 0) {
+          await widget.audioController.refresh();
+        }
         List<String> chordNotes = List<String>.from(notes);
         if (arpeggiateOrder == "Descending") {
           chordNotes = chordNotes.reversed.toList();
@@ -704,6 +707,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
         }
       }
       await Future.delayed(Duration(milliseconds: timeBetween));
+      i++;
     }
   }
 
@@ -726,6 +730,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final chordFrequency = generalProvider.chordFrequency;
     final chords = generalProvider.getSelectedChords();
     final allowRepeatedChords = generalProvider.allowRepeatedChords;
+    String previousChord = "";
 
     int chordStartOffset = 2;
     if (chordFrequency == "Every 3 notes") {
@@ -793,9 +798,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               availableChords[random.nextInt(availableChords.length)];
         } else {
           List<String> unusedChords =
-              availableChords
-                  .where((chord) => !chordMelody.contains(chord))
-                  .toList();
+              availableChords.where((chord) => chord != previousChord).toList();
           if (unusedChords.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -807,6 +810,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
             return;
           }
           selectedChord = unusedChords[random.nextInt(unusedChords.length)];
+          previousChord = selectedChord; // Update previous chord
         }
         chordMelody.add(selectedChord);
         chordMelodySolfege.add(

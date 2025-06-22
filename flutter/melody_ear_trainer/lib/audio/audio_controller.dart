@@ -16,6 +16,12 @@ class AudioController {
     _soloud?.deinit();
   }
 
+  Future<void> refresh() async {
+    //_log.info('Refreshing audio controller');
+    _soloud?.deinit();
+    _soloud?.init();
+  }
+
   Future<void> playSound(String assetKey) async {
     try {
       final source = await _soloud!.loadAsset(assetKey);
