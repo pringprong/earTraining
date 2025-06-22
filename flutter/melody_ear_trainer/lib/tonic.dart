@@ -158,7 +158,9 @@ class _TonicPageState extends State<TonicPage> {
                         }
                         widget.audioController.playSound(filename);
                       },
-                      child: Text('Play Guitar Tonic'),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text('Play Guitar Tonic', style: TextStyle(fontSize: 20))),
                     ),
                   ),
                 ],
@@ -192,7 +194,9 @@ class _TonicPageState extends State<TonicPage> {
                         }
                         widget.audioController.playSound(filename);
                       },
-                      child: Text('Play Piano Tonic'),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text('Play Piano Tonic', style: TextStyle(fontSize: 20))),
                     ),
                   ),
                 ],
@@ -226,7 +230,9 @@ class _TonicPageState extends State<TonicPage> {
                         }
                         widget.audioController.playSound(filename);
                       },
-                      child: Text('Play Solfege Tonic'),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text('Play Solfege Tonic', style: TextStyle(fontSize: 20))),
                     ),
                   ),
                 ],

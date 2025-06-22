@@ -348,6 +348,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),
+              SizedBox(height: 8),
               Row(
                 children: [
                   Padding(
@@ -378,18 +379,29 @@ class _GeneralPageState extends State<GeneralPage> {
               //       ),
               //     ],
               //   ),
+              SizedBox(height: 8),
               Row(
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<GeneralProvider>().resetAllSettings();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('All settings reset to default!'),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GeneralProvider.getChordButtonColor(
+                            "blah_M_R",
+                          ),
+                          foregroundColor: Colors.black,
                         ),
-                      );
-                    },
-                    child: Text("Reset all settings"),
+                      onPressed: () {
+                        context.read<GeneralProvider>().resetAllSettings();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('All settings reset to default!'),
+                          ),
+                        );
+                      },
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text("Reset all settings", style: TextStyle(fontSize: 20))),
+                    ),
                   ),
                 ],
               ),
