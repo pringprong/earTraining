@@ -113,16 +113,16 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // Generate Melody Button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Generate melody:",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Text(
+              //       "Generate melody:",
+              //       style: TextStyle(fontWeight: FontWeight.bold),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -228,34 +228,30 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
-                          "blah_H_R",
-                        ),
-                        foregroundColor: Colors.black,
-                      ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                GeneralProvider.getChordButtonColor("blah_H_R"),
+                            foregroundColor: Colors.black,
+                          ),
                           onPressed: () {
                             showSolfege();
                             setState(() {});
                           },
                           child: FittedBox(
                             fit: BoxFit.fill,
-                            child: Text("Show",
-                              style: TextStyle(fontSize: 20),                            
-                            ),
-                            ),
+                            child: Text("Show", style: TextStyle(fontSize: 20)),
+                          ),
                         ),
                       ),
                       SizedBox(width: 8),
                       // Play Solfege Melody Button
                       Expanded(
                         child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
-                          "blah_M_R",
-                        ),
-                        foregroundColor: Colors.black,
-                      ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                GeneralProvider.getChordButtonColor("blah_M_R"),
+                            foregroundColor: Colors.black,
+                          ),
                           onPressed:
                               () => playChordMelody(
                                 "Solfege",
@@ -264,11 +260,11 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               ),
                           child: FittedBox(
                             fit: BoxFit.fill,
-                            child: Text("Listen",
-                              style: TextStyle(fontSize: 20
-                            )
+                            child: Text(
+                              "Listen",
+                              style: TextStyle(fontSize: 20),
                             ),
-                        ),
+                          ),
                         ),
                       ),
                     ],
@@ -317,8 +313,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             padding: const EdgeInsets.all(1.0),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: GeneralProvider
-                                    .multiplyHexColor(
+                                backgroundColor:
+                                    GeneralProvider.multiplyHexColor(
                                       noteColors[note].toString(),
                                       noteColorFactor[note] ?? 1.0,
                                     ),
@@ -483,14 +479,24 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           if (melodiesSame) {
                             comparisonIcon = Icons.check_circle;
                             comparisonIconColor = Colors.green;
-                            comparisonColor = const Color.fromARGB(255, 191, 220, 158);
+                            comparisonColor = const Color.fromARGB(
+                              255,
+                              191,
+                              220,
+                              158,
+                            );
                             // style: ElevatedButton.styleFrom(
                             //   backgroundColor: Colors.lightGreenAccent,
                             // );
                           } else {
                             comparisonIcon = Icons.cancel;
                             comparisonIconColor = Colors.red;
-                            comparisonColor = const Color.fromARGB(255, 254, 192, 192);
+                            comparisonColor = const Color.fromARGB(
+                              255,
+                              254,
+                              192,
+                              192,
+                            );
                           }
                         });
                       },
@@ -593,8 +599,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final selectedChords = generalProvider.getSelectedChords();
     final chordFrequency = generalProvider.chordFrequency;
     final chordMap = generalProvider.getChordMap;
-    if (chordFrequency == "Never") {
-      return Padding(padding: const EdgeInsets.all(8.0));
+    if (chordFrequency == "Never" || selectedChords.isEmpty) {
+      return Padding(padding: const EdgeInsets.all(0.0));
     }
     return Wrap(
       spacing: 4,
@@ -741,12 +747,21 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     minNumberOfNotes = min(minNumberOfNotes, effectiveLength);
     minNumberOfChords = min(minNumberOfChords, effectiveLength);
 
-    if (availableNotes.length < minNumberOfNotes ||
-        availableChords.length < minNumberOfChords) {
+    if (availableNotes.length < minNumberOfNotes) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Not enough notes or chords selected! Please select at least $minNumberOfNotes notes and $minNumberOfChords chords.",
+            "Not enough notes selected! Please select at least $minNumberOfNotes notes.",
+          ),
+        ),
+      );
+      return;
+    }
+    if (availableChords.length < minNumberOfChords) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Not enough chords selected! Please select at least $minNumberOfChords chords or set Chord frequency to Never.",
           ),
         ),
       );
@@ -785,7 +800,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  "Not enough unique chords available! Please select more chords.",
+                  "Not enough unique chords available! Please select more chords or set Chord Frequency to Never.",
                 ),
               ),
             );

@@ -62,16 +62,16 @@
 	{
 		"Range": "Lower",
 		"Set": "Select none",
-		"Chords": "d"
+		"Chords": ""
 	},
 	{
 		"Range": "Middle",
 		"Set": "Select none",
-		"Chords": "d"
+		"Chords": ""
 	},
 	{
 		"Range": "All_Root",
 		"Set": "Select none",
-		"Chords": "d"
+		"Chords": ""
 	}
 ]

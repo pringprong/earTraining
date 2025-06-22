@@ -6,35 +6,18 @@ import '../theme/theme.dart';
 
 class GeneralProvider extends ChangeNotifier {
   ThemeData _themeData = darkMode;
-
   ThemeData get getThemeData {
     return _themeData;
   }
-
   bool darkModeBool = false;
-
-  set themeData(ThemeData themeData) {
-    _themeData = themeData;
-
-    notifyListeners();
-  }
-
-  void toggleTheme() {
-    if (_themeData == lightMode) {
-      themeData = darkMode;
-    } else {
-      themeData = lightMode;
-    }
-  }
-
-  void toggleDarkMode() {
+  void setDarkMode(bool value) {
+    darkModeBool = value;
     if (darkModeBool) {
-      darkModeBool = false;
-      themeData = darkMode;
+      _themeData = lightMode;
     } else {
-      darkModeBool = true;
-      themeData = lightMode;
+      _themeData = darkMode;
     }
+    notifyListeners();
     saveSettings();
   }
 
@@ -53,7 +36,7 @@ class GeneralProvider extends ChangeNotifier {
   String startingDo = "do"; // Default starting note
   String endingDo = "do"; // Default ending note
 
-  String selectedOctave = "Lower and middle octave"; // Default octave selection
+  String selectedOctave = "Middle octave"; // Default octave selection
   String selectedScale = "Diatonic major"; // Default scale selection
 
   String chordFrequency = "Every 4 notes"; // Default chord frequency
@@ -141,13 +124,6 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   static const List<String> defaultNoteKeys = [
-    "do0",
-    "re0",
-    "mi0",
-    "fa0",
-    "so0",
-    "la0",
-    "ti0",
     "do",
     "re",
     "mi",
@@ -157,47 +133,6 @@ class GeneralProvider extends ChangeNotifier {
     "ti",
     "do1",
   ];
-
-  // Map of booleans for note selection
-  // List<String> noteKeys = [
-  //   "do0",
-  //   "ga0",
-  //   "re0",
-  //   "nu0",
-  //   "mi0",
-  //   "fa0",
-  //   "jur0",
-  //   "so0",
-  //   "ki0",
-  //   "la0",
-  //   "pe0",
-  //   "ti0",
-  //   "do",
-  //   "ga",
-  //   "re",
-  //   "nu",
-  //   "mi",
-  //   "fa",
-  //   "jur",
-  //   "so",
-  //   "ki",
-  //   "la",
-  //   "pe",
-  //   "ti",
-  //   "do1",
-  //   "ga1",
-  //   "re1",
-  //   "nu1",
-  //   "mi1",
-  //   "fa1",
-  //   "jur1",
-  //   "so1",
-  //   "ki1",
-  //   "la1",
-  //   "pe1",
-  //   "ti1",
-  //   "do2",
-  // ];
 
   Map<String, bool> noteSelection = {};
   Map<String, bool> get getNoteSelection {
@@ -211,14 +146,8 @@ class GeneralProvider extends ChangeNotifier {
   };
 
   GeneralProvider() {
-    initData();
+    loadSettings();
   }
-
-  Future<void> initData() async {
-    noteSelection = {for (var key in defaultNoteKeys) key: true};
-  }
-
-  get tonicNote => null;
 
   // Add methods to update the state
   void updateSelectedKey({required String newkey}) async {
@@ -380,6 +309,9 @@ class GeneralProvider extends ChangeNotifier {
 
   /// Get all selected chords as a list of strings
   List<String> getSelectedChords() {
+    if (selectedChords.isEmpty) {
+      return [];
+    }
     return selectedChords.entries
         .where((entry) => entry.value == true)
         .map((entry) => entry.key)
@@ -598,9 +530,6 @@ class GeneralProvider extends ChangeNotifier {
       'noteSelection': jsonEncode(noteSelection),
       'selectedChords': jsonEncode(selectedChords),
     };
-
-    print(jsonEncode(noteSelection));
-    print(jsonEncode(selectedChords));
     prefs.setString('general_settings', jsonEncode(settings));
   }
 
@@ -622,7 +551,7 @@ class GeneralProvider extends ChangeNotifier {
     endWithDo = settings['endWithDo'] ?? true;
     startingDo = settings['startingDo'] ?? "do";
     endingDo = settings['endingDo'] ?? "do";
-    selectedOctave = settings['selectedOctave'] ?? "Lower and middle octave";
+    selectedOctave = settings['selectedOctave'] ?? "Middle octave";
     selectedScale = settings['selectedScale'] ?? "Diatonic major";
     chordFrequency = settings['chordFrequency'] ?? "Every 4 notes";
     displayChordNames = settings['displayChordNames'] ?? false;
@@ -632,18 +561,18 @@ class GeneralProvider extends ChangeNotifier {
     chordSetRange = settings['chordSetRange'] ?? "Middle";
     chordSet = settings['chordSet'] ?? "I_IV_V";
     noteSelection = Map<String, bool>.from(
-      jsonDecode(settings['noteSelection'] ?? '{}'),
+      jsonDecode(settings['noteSelection'] ?? 
+      '{"do":true,"re":true,"mi":true,"fa":true,"so":true,"la":true,"ti":true,"do1":true}'),
     );
     selectedChords = Map<String, bool>.from(
-      jsonDecode(settings['selectedChords'] ?? '{}'),
+      jsonDecode(settings['selectedChords'] ?? '{"I_M_R":true,"IV_M_R":true,"V_M_R":true}'),
     );
-
+    if (darkModeBool) {
+      _themeData = lightMode;
+    } else {
+      _themeData = darkMode;
+    }
     notifyListeners();
-  }
-
-  // Call this in your provider constructor or app startup
-  void initializeSettings() {
-    loadSettings();
   }
 
   void resetAllSettings() {
@@ -660,7 +589,7 @@ class GeneralProvider extends ChangeNotifier {
     endWithDo = true;
     startingDo = "do";
     endingDo = "do";
-    selectedOctave = "Lower and middle octave";
+    selectedOctave = "Middle octave";
     selectedScale = "Diatonic major";
     chordFrequency = "Every 4 notes";
     displayChordNames = true;
@@ -674,7 +603,11 @@ class GeneralProvider extends ChangeNotifier {
       for (var key in "I_M_R,IV_M_R,V_M_R".split(','))
         key: true, // Initialize all chords as not selected
     };
-
+    if (darkModeBool) {
+      _themeData = lightMode;
+    } else {
+      _themeData = darkMode;
+    }
     saveSettings();
     notifyListeners();
   }

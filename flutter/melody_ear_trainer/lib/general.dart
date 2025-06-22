@@ -20,7 +20,7 @@ class _GeneralPageState extends State<GeneralPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
@@ -29,7 +29,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),
-             Row(
+              Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -66,14 +66,15 @@ class _GeneralPageState extends State<GeneralPage> {
                   DropdownButton<int>(
                     value: context.watch<GeneralProvider>().maxDistance,
                     items:
-                        List.generate(7, (i) => i + 1).map<DropdownMenuItem<int>>(
-                          (int value) {
-                            return DropdownMenuItem<int>(
-                              value: value,
-                              child: Text(value.toString()),
-                            );
-                          },
-                        ).toList(),
+                        List.generate(
+                          7,
+                          (i) => i + 1,
+                        ).map<DropdownMenuItem<int>>((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
                         context.read<GeneralProvider>().updateMaxDistance(
@@ -93,7 +94,9 @@ class _GeneralPageState extends State<GeneralPage> {
                   Checkbox(
                     value: context.watch<GeneralProvider>().allowRepeatedNotes,
                     onChanged: (bool? newValue) {
-                      context.read<GeneralProvider>().toggleAllowRepeatedNotes();
+                      context
+                          .read<GeneralProvider>()
+                          .toggleAllowRepeatedNotes();
                     },
                   ),
                 ],
@@ -112,7 +115,7 @@ class _GeneralPageState extends State<GeneralPage> {
                           "Every 4 notes",
                           "Every 3 notes",
                           "Every 2 notes",
-                          "Every note"
+                          "Every note",
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -138,7 +141,9 @@ class _GeneralPageState extends State<GeneralPage> {
                   Checkbox(
                     value: context.watch<GeneralProvider>().allowRepeatedChords,
                     onChanged: (bool? newValue) {
-                      context.read<GeneralProvider>().toggleAllowRepeatedChords();
+                      context
+                          .read<GeneralProvider>()
+                          .toggleAllowRepeatedChords();
                     },
                   ),
                 ],
@@ -164,7 +169,9 @@ class _GeneralPageState extends State<GeneralPage> {
                     hint: Text('Select Key'),
                     value: context.watch<GeneralProvider>().selectedKey,
                     items:
-                        mappingKeys.map<DropdownMenuItem<String>>((String value) {
+                        mappingKeys.map<DropdownMenuItem<String>>((
+                          String value,
+                        ) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -190,7 +197,9 @@ class _GeneralPageState extends State<GeneralPage> {
                     hint: Text('Select Instrument'),
                     value: context.watch<GeneralProvider>().selectedInstrument,
                     items:
-                        instruments.map<DropdownMenuItem<String>>((String value) {
+                        instruments.map<DropdownMenuItem<String>>((
+                          String value,
+                        ) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -198,9 +207,9 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateSelectedInstrument(
-                          instrument: newValue,
-                        );
+                        context
+                            .read<GeneralProvider>()
+                            .updateSelectedInstrument(instrument: newValue);
                       }
                     },
                   ),
@@ -265,18 +274,25 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),
-               Row(
+              Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text('Arpeggiate chord delay (ms):'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().arpeggiateChordDelay,
+                    value:
+                        context.watch<GeneralProvider>().arpeggiateChordDelay,
                     items:
-                        [0, 50, 100, 200, 300, 400, 500].map<DropdownMenuItem<int>>((
-                          int value,
-                        ) {
+                        [
+                          0,
+                          50,
+                          100,
+                          200,
+                          300,
+                          400,
+                          500,
+                        ].map<DropdownMenuItem<int>>((int value) {
                           return DropdownMenuItem<int>(
                             value: value,
                             child: Text(value.toString()),
@@ -284,9 +300,9 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateArpeggiateChordDelay(
-                          delay: newValue,
-                        );
+                        context
+                            .read<GeneralProvider>()
+                            .updateArpeggiateChordDelay(delay: newValue);
                       }
                     },
                   ),
@@ -299,12 +315,13 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Arpeggiation order:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<GeneralProvider>().arpeggiateChordOrder,
+                    value:
+                        context.watch<GeneralProvider>().arpeggiateChordOrder,
                     items:
                         [
                           "Ascending",
                           "Descending",
-                          "Random"
+                          "Random",
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -313,14 +330,14 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateArpeggiateChordOrder(
-                          order: newValue,
-                        );
+                        context
+                            .read<GeneralProvider>()
+                            .updateArpeggiateChordOrder(order: newValue);
                       }
                     },
                   ),
                 ],
-              ),      
+              ),
               SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -331,7 +348,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                 ],
               ),
-             Row(
+              Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -339,37 +356,43 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                   Checkbox(
                     value: context.watch<GeneralProvider>().darkModeBool,
-                     onChanged: (bool? newValue) {
-                       context.read<GeneralProvider>().toggleDarkMode();
+                    onChanged: (bool? newValue) {
+                      if (newValue != null) {
+                        context.read<GeneralProvider>().setDarkMode(newValue);
+                      }
                     },
                   ),
                 ],
               ),
-            //  Row(
-            //     children: [
-            //       Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: Text('Display chord names:'),
-            //       ),
-            //       Checkbox(
-            //         value: context.watch<GeneralProvider>().displayChordNames,
-            //         onChanged: (bool? newValue) {
-            //           context.read<GeneralProvider>().toggleDisplayChordNames();
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            Row(children: [
-              ElevatedButton(
-  onPressed: () {
-    context.read<GeneralProvider>().resetAllSettings();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('All settings reset to default!')),
-    );
-  },
-  child: Text("Reset all settings"),
-),
-            ],)
+              //  Row(
+              //     children: [
+              //       Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Text('Display chord names:'),
+              //       ),
+              //       Checkbox(
+              //         value: context.watch<GeneralProvider>().displayChordNames,
+              //         onChanged: (bool? newValue) {
+              //           context.read<GeneralProvider>().toggleDisplayChordNames();
+              //         },
+              //       ),
+              //     ],
+              //   ),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<GeneralProvider>().resetAllSettings();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('All settings reset to default!'),
+                        ),
+                      );
+                    },
+                    child: Text("Reset all settings"),
+                  ),
+                ],
+              ),
             ], // Children of Column
           ),
         ),

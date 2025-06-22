@@ -42,7 +42,6 @@ void main() async {
         ChangeNotifierProvider<GeneralProvider>(
           create: (context) {
             final provider = GeneralProvider();
-            provider.initializeSettings();
             return provider;
           },
         ),
