@@ -41,6 +41,7 @@ dependencies:
   logging: ^1.2.0
   auto_size_text: ^3.0.0
   flutter_screenutil: ^5.9.3
+  shared_preferences: ^2.5.3
 
 
 dev_dependencies:

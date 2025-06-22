@@ -40,9 +40,14 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<GeneralProvider>(
-          create: (context) => GeneralProvider()),
+          create: (context) {
+            final provider = GeneralProvider();
+            provider.initializeSettings();
+            return provider;
+          },
+        ),
       ],
-      child: MelodyEarTrainerApp(audioController: audioController)),
+    child: MelodyEarTrainerApp(audioController: audioController)),
   );
 }
 

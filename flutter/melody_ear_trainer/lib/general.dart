@@ -359,6 +359,17 @@ class _GeneralPageState extends State<GeneralPage> {
             //       ),
             //     ],
             //   ),
+            Row(children: [
+              ElevatedButton(
+  onPressed: () {
+    context.read<GeneralProvider>().resetAllSettings();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('All settings reset to default!')),
+    );
+  },
+  child: Text("Reset all settings"),
+),
+            ],)
             ], // Children of Column
           ),
         ),

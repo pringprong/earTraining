@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/theme.dart';
 
 class GeneralProvider extends ChangeNotifier {
@@ -14,6 +15,7 @@ class GeneralProvider extends ChangeNotifier {
 
   set themeData(ThemeData themeData) {
     _themeData = themeData;
+
     notifyListeners();
   }
 
@@ -33,6 +35,7 @@ class GeneralProvider extends ChangeNotifier {
       darkModeBool = true;
       themeData = lightMode;
     }
+    saveSettings();
   }
 
   // Define your provider variables here
@@ -212,9 +215,7 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   Future<void> initData() async {
-    noteSelection = {
-       for (var key in defaultNoteKeys) key: true,
-    };
+    noteSelection = {for (var key in defaultNoteKeys) key: true};
   }
 
   get tonicNote => null;
@@ -222,56 +223,67 @@ class GeneralProvider extends ChangeNotifier {
   // Add methods to update the state
   void updateSelectedKey({required String newkey}) async {
     selectedKey = newkey;
+    saveSettings();
     notifyListeners();
   }
 
   void updateSelectedInstrument({required String instrument}) async {
     selectedInstrument = instrument;
+    saveSettings();
     notifyListeners();
   }
 
   void updateNumberOfNotes({required int count}) async {
     numberOfNotes = count;
+    saveSettings();
     notifyListeners();
   }
 
   void toggleAllowRepeatedNotes() {
     allowRepeatedNotes = !allowRepeatedNotes;
+    saveSettings();
     notifyListeners();
   }
 
   void toggleStartWithDo() {
     startWithDo = !startWithDo;
+    saveSettings();
     notifyListeners();
   }
 
   void toggleEndWithDo() {
     endWithDo = !endWithDo;
+    saveSettings();
     notifyListeners();
   }
 
   void updateStartingDo({required String newStartingDo}) async {
     startingDo = newStartingDo;
+    saveSettings();
     notifyListeners();
   }
 
   void updateEndingDo({required String newEndingDo}) async {
     endingDo = newEndingDo;
+    saveSettings();
     notifyListeners();
   }
 
   void updateMaxDistance({required int distance}) async {
     maxDistance = distance;
+    saveSettings();
     notifyListeners();
   }
 
   void updateTimeBetweenNotes({required int time}) async {
     timeBetweenNotes = time;
+    saveSettings();
     notifyListeners();
   }
 
   void updateTruncateNotes({required String time}) async {
     truncateNotes = time;
+    saveSettings();
     notifyListeners();
   }
 
@@ -280,13 +292,15 @@ class GeneralProvider extends ChangeNotifier {
     for (var key in noteKeys) {
       noteSelection[key] = selectedKeys.contains(key);
     }
+    saveSettings();
     notifyListeners();
   }
 
   /// 2. Toggle one value of the map
   void toggleNoteSelection({required String key}) async {
-      noteSelection[key] = !(noteSelection[key] ?? false);
-      notifyListeners();
+    noteSelection[key] = !(noteSelection[key] ?? false);
+    saveSettings();
+    notifyListeners();
   }
 
   /// 3. Get all values that are set to True as a list of Strings, in order
@@ -296,41 +310,49 @@ class GeneralProvider extends ChangeNotifier {
 
   void updateSelectedOctave({required String octave}) async {
     selectedOctave = octave;
+    saveSettings();
     notifyListeners();
   }
 
   void updateSelectedScale({required String newscale}) async {
     selectedScale = newscale;
+    saveSettings();
     notifyListeners();
   }
 
   void updateChordFrequency({required String frequency}) async {
     chordFrequency = frequency;
+    saveSettings();
     notifyListeners();
   }
 
   void toggleDisplayChordNames() {
     displayChordNames = !displayChordNames;
+    saveSettings();
     notifyListeners();
   }
 
   void updateArpeggiateChordDelay({required int delay}) async {
     arpeggiateChordDelay = delay;
+    saveSettings();
     notifyListeners();
   }
 
   void updateArpeggiateChordOrder({required String order}) async {
     arpeggiateChordOrder = order;
+    saveSettings();
     notifyListeners();
   }
 
   void updateChordRange({required String newChordRange}) async {
     chordSetRange = newChordRange;
+    saveSettings();
     notifyListeners();
   }
 
   void updateChordSet({required String newChordSet}) async {
     chordSet = newChordSet;
+    saveSettings();
     notifyListeners();
   }
 
@@ -341,6 +363,7 @@ class GeneralProvider extends ChangeNotifier {
     } else {
       selectedChords[chord] = true;
     }
+    saveSettings();
     notifyListeners();
   }
 
@@ -351,6 +374,7 @@ class GeneralProvider extends ChangeNotifier {
     for (var chord in chords) {
       selectedChords[chord] = true;
     }
+    saveSettings();
     notifyListeners();
   }
 
@@ -420,6 +444,7 @@ class GeneralProvider extends ChangeNotifier {
 
   void toggleAllowRepeatedChords() {
     allowRepeatedChords = !allowRepeatedChords;
+    saveSettings();
     notifyListeners();
   }
 
@@ -542,6 +567,115 @@ class GeneralProvider extends ChangeNotifier {
         noteKeys.add(note);
       }
     }
+    notifyListeners();
+  }
+
+  // Call this after any setting changes
+  Future<void> saveSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    final settings = {
+      'darkModeBool': darkModeBool,
+      'selectedKey': selectedKey,
+      'numberOfNotes': numberOfNotes,
+      'maxDistance': maxDistance,
+      'allowRepeatedNotes': allowRepeatedNotes,
+      'selectedInstrument': selectedInstrument,
+      'timeBetweenNotes': timeBetweenNotes,
+      'truncateNotes': truncateNotes,
+      'startWithDo': startWithDo,
+      'endWithDo': endWithDo,
+      'startingDo': startingDo,
+      'endingDo': endingDo,
+      'selectedOctave': selectedOctave,
+      'selectedScale': selectedScale,
+      'chordFrequency': chordFrequency,
+      'displayChordNames': displayChordNames,
+      'arpeggiateChordDelay': arpeggiateChordDelay,
+      'arpeggiateChordOrder': arpeggiateChordOrder,
+      'allowRepeatedChords': allowRepeatedChords,
+      'chordSetRange': chordSetRange,
+      'chordSet': chordSet,
+      'noteSelection': jsonEncode(noteSelection),
+      'selectedChords': jsonEncode(selectedChords),
+    };
+
+    print(jsonEncode(noteSelection));
+    print(jsonEncode(selectedChords));
+    prefs.setString('general_settings', jsonEncode(settings));
+  }
+
+  Future<void> loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString('general_settings');
+    if (jsonString == null) return;
+    final settings = jsonDecode(jsonString);
+
+    darkModeBool = settings['darkModeBool'] ?? false;
+    selectedKey = settings['selectedKey'] ?? "C";
+    numberOfNotes = settings['numberOfNotes'] ?? 5;
+    maxDistance = settings['maxDistance'] ?? 7;
+    allowRepeatedNotes = settings['allowRepeatedNotes'] ?? false;
+    selectedInstrument = settings['selectedInstrument'] ?? "Piano";
+    timeBetweenNotes = settings['timeBetweenNotes'] ?? 900;
+    truncateNotes = settings['truncateNotes'] ?? "1200";
+    startWithDo = settings['startWithDo'] ?? true;
+    endWithDo = settings['endWithDo'] ?? true;
+    startingDo = settings['startingDo'] ?? "do";
+    endingDo = settings['endingDo'] ?? "do";
+    selectedOctave = settings['selectedOctave'] ?? "Lower and middle octave";
+    selectedScale = settings['selectedScale'] ?? "Diatonic major";
+    chordFrequency = settings['chordFrequency'] ?? "Every 4 notes";
+    displayChordNames = settings['displayChordNames'] ?? false;
+    arpeggiateChordDelay = settings['arpeggiateChordDelay'] ?? 50;
+    arpeggiateChordOrder = settings['arpeggiateChordOrder'] ?? "Ascending";
+    allowRepeatedChords = settings['allowRepeatedChords'] ?? false;
+    chordSetRange = settings['chordSetRange'] ?? "Middle";
+    chordSet = settings['chordSet'] ?? "I_IV_V";
+    noteSelection = Map<String, bool>.from(
+      jsonDecode(settings['noteSelection'] ?? '{}'),
+    );
+    selectedChords = Map<String, bool>.from(
+      jsonDecode(settings['selectedChords'] ?? '{}'),
+    );
+
+    notifyListeners();
+  }
+
+  // Call this in your provider constructor or app startup
+  void initializeSettings() {
+    loadSettings();
+  }
+
+  void resetAllSettings() {
+    // Set all settings to their default values
+    darkModeBool = false;
+    selectedKey = "C";
+    numberOfNotes = 5;
+    maxDistance = 7;
+    allowRepeatedNotes = false;
+    selectedInstrument = "Piano";
+    timeBetweenNotes = 900;
+    truncateNotes = "1200";
+    startWithDo = true;
+    endWithDo = true;
+    startingDo = "do";
+    endingDo = "do";
+    selectedOctave = "Lower and middle octave";
+    selectedScale = "Diatonic major";
+    chordFrequency = "Every 4 notes";
+    displayChordNames = true;
+    arpeggiateChordDelay = 50;
+    arpeggiateChordOrder = "Ascending";
+    allowRepeatedChords = false;
+    chordSetRange = "Middle";
+    chordSet = "I_IV_V";
+    noteSelection = {for (var key in defaultNoteKeys) key: true};
+    selectedChords = {
+      for (var key in "I_M_R,IV_M_R,V_M_R".split(','))
+        key: true, // Initialize all chords as not selected
+    };
+
+    saveSettings();
     notifyListeners();
   }
 }
