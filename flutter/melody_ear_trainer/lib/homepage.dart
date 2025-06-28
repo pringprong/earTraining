@@ -598,7 +598,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final selectedChords = generalProvider.getSelectedChords();
     final chordFrequency = generalProvider.chordFrequency;
     final chordMap = generalProvider.getChordMap;
-    if (chordFrequency == "Never" || selectedChords.isEmpty) {
+    if (chordFrequency == "Never") {
       return Padding(padding: const EdgeInsets.all(0.0));
     }
     return Wrap(

@@ -9,6 +9,7 @@ class GeneralProvider extends ChangeNotifier {
   ThemeData get getThemeData {
     return _themeData;
   }
+
   bool darkModeBool = false;
   void setDarkMode(bool value) {
     darkModeBool = value;
@@ -301,7 +302,9 @@ class GeneralProvider extends ChangeNotifier {
     // Clear all previous selections
     selectedChords.clear();
     for (var chord in chords) {
-      selectedChords[chord] = true;
+      if (chord.isNotEmpty) {
+        selectedChords[chord] = true;
+      }
     }
     saveSettings();
     notifyListeners();
@@ -309,8 +312,9 @@ class GeneralProvider extends ChangeNotifier {
 
   /// Get all selected chords as a list of strings
   List<String> getSelectedChords() {
+    //print ("Selected Chords: $selectedChords");
     if (selectedChords.isEmpty) {
-      return [];
+      return ["No chords selected"];
     }
     return selectedChords.entries
         .where((entry) => entry.value == true)
@@ -536,7 +540,10 @@ class GeneralProvider extends ChangeNotifier {
   Future<void> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString('general_settings');
-    if (jsonString == null) return;
+    if (jsonString == null) {
+      resetAllSettings();
+      return;
+    }
     final settings = jsonDecode(jsonString);
 
     darkModeBool = settings['darkModeBool'] ?? false;
@@ -561,11 +568,16 @@ class GeneralProvider extends ChangeNotifier {
     chordSetRange = settings['chordSetRange'] ?? "Middle";
     chordSet = settings['chordSet'] ?? "I_IV_V";
     noteSelection = Map<String, bool>.from(
-      jsonDecode(settings['noteSelection'] ?? 
-      '{"do":true,"re":true,"mi":true,"fa":true,"so":true,"la":true,"ti":true,"do1":true}'),
+      jsonDecode(
+        settings['noteSelection'] ??
+            '{"do":true,"re":true,"mi":true,"fa":true,"so":true,"la":true,"ti":true,"do1":true}',
+      ),
     );
     selectedChords = Map<String, bool>.from(
-      jsonDecode(settings['selectedChords'] ?? '{"I_M_R":true,"IV_M_R":true,"V_M_R":true}'),
+      jsonDecode(
+        settings['selectedChords'] ??
+            '{"I_M_R":true,"IV_M_R":true,"V_M_R":true}',
+      ),
     );
     if (darkModeBool) {
       _themeData = lightMode;
