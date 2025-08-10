@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'audio/audio_controller.dart';
+import 'utils/colors.dart';
 
 class TonicPage extends StatefulWidget {
   const TonicPage({super.key, required this.audioController});
@@ -136,7 +137,7 @@ class _TonicPageState extends State<TonicPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
+                        backgroundColor: getChordButtonColor(
                           "blah_M_2i",
                         ),
                         foregroundColor: Colors.black,
@@ -172,7 +173,7 @@ class _TonicPageState extends State<TonicPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
+                        backgroundColor: getChordButtonColor(
                           "blah_M_All",
                         ),
                         foregroundColor: Colors.black,
@@ -208,7 +209,7 @@ class _TonicPageState extends State<TonicPage> {
                   Expanded(
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
+                        backgroundColor: getChordButtonColor(
                           "blah_M_R",
                         ),
                         foregroundColor: Colors.black,

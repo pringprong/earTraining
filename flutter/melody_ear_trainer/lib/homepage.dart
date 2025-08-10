@@ -3,6 +3,9 @@ import 'audio/audio_controller.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
+import 'utils/colors.dart';
+import 'utils/helper.dart';
+import 'utils/chordMelody.dart';
 //import 'package:expandable/expandable.dart';
 //import 'package:auto_size_text/auto_size_text.dart';
 
@@ -32,6 +35,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   List<List<String>> chordMelodySolfege = [];
   List<String> writtenChordMelody = [];
   List<List<String>> writtenChordMelodySolfege = [];
+  ChordMelody generatedChordMelody = ChordMelody();
+  ChordMelody userWrittenChordMelody = ChordMelody();
 
   // Add this to your _MelodyHomePageState class:
   IconData comparisonIcon = Icons.help_outline;
@@ -129,9 +134,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
-                          "blah_M_1i",
-                        ),
+                        backgroundColor: getChordButtonColor("blah_M_1i"),
                         foregroundColor: Colors.black,
                         padding: const EdgeInsets.all(12.0),
                       ),
@@ -173,9 +176,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
-                          "blah_M_2i",
-                        ),
+                        backgroundColor: getChordButtonColor("blah_M_2i"),
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
@@ -195,9 +196,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
-                          "blah_M_All",
-                        ),
+                        backgroundColor: getChordButtonColor("blah_M_All"),
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
@@ -229,12 +228,11 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                GeneralProvider.getChordButtonColor("blah_H_R"),
+                            backgroundColor: getChordButtonColor("blah_H_R"),
                             foregroundColor: Colors.black,
                           ),
                           onPressed: () {
-                            showSolfege();
+                            solfegeText = chordMelody.join(' ');
                             setState(() {});
                           },
                           child: FittedBox(
@@ -248,8 +246,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                GeneralProvider.getChordButtonColor("blah_M_R"),
+                            backgroundColor: getChordButtonColor("blah_M_R"),
                             foregroundColor: Colors.black,
                           ),
                           onPressed:
@@ -313,11 +310,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             padding: const EdgeInsets.all(1.0),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    GeneralProvider.multiplyHexColor(
-                                      noteColors[note].toString(),
-                                      noteColorFactor[note] ?? 1.0,
-                                    ),
+                                backgroundColor: multiplyHexColor(
+                                  noteColors[note].toString(),
+                                  noteColorFactor[note] ?? 1.0,
+                                ),
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.all(0.0),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -520,9 +516,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
-                          "blah_M_2i",
-                        ),
+                        backgroundColor: getChordButtonColor("blah_M_2i"),
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
@@ -541,9 +535,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
-                          "blah_M_All",
-                        ),
+                        backgroundColor: getChordButtonColor("blah_M_All"),
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
@@ -562,9 +554,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
-                          "blah_M_R",
-                        ),
+                        backgroundColor: getChordButtonColor("blah_M_R"),
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
@@ -588,11 +578,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     );
   }
 
-  void showSolfege() {
-    solfegeText = chordMelody.join(' ');
-    setState(() {});
-  }
-
   // 1. Add chord buttons below notes section
   Widget buildSelectedChordButtons(GeneralProvider generalProvider) {
     final selectedChords = generalProvider.getSelectedChords();
@@ -606,7 +591,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       runSpacing: 4,
       children:
           selectedChords.map((chord) {
-            final color = GeneralProvider.getChordButtonColor(chord);
+            final color = getChordButtonColor(chord);
             final notes = chordMap[chord] ?? [];
             return Tooltip(
               message: notes.join(' '),
@@ -709,6 +694,22 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       await Future.delayed(Duration(milliseconds: timeBetween));
       i++;
     }
+  }
+
+  void newGenerateChordMelody(GeneralProvider generalProvider) {
+    userWrittenChordMelody.clear();
+    melodiesSame = false;
+
+    String result = generatedChordMelody.generateChordMelody(generalProvider);
+    if (result.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result),
+        ),
+      );
+      return;
+    }
+    setState(() {});
   }
 
   void generateChordMelody(GeneralProvider generalProvider) {
@@ -881,19 +882,4 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     }
     setState(() {});
   }
-}
-
-// Helper for list comparison
-bool listEquals<T>(List<T>? a, List<T>? b) {
-  if (a == null || b == null) return false;
-  if (a.length != b.length) return false;
-  for (int i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
-}
-
-// Add this utility function to your file (e.g., below the listEquals function or anywhere in your class/file):
-String chordMelodySolfegeToString(List<List<String>> data) {
-  return data.map((inner) => inner.join('-')).join(' ');
 }

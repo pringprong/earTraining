@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'utils/colors.dart';
 
 class ScalesPage extends StatefulWidget {
   const ScalesPage({super.key});
@@ -142,7 +143,7 @@ class _ScalesPageState extends State<ScalesPage> {
         final selected = noteSelection[note] ?? false;
         final String tempColor = noteColors[note].toString();
         final double tempFactor = noteColorFactor[note] ?? 1.0;
-        final buttonColor = GeneralProvider.multiplyHexColor(
+        final buttonColor = multiplyHexColor(
           tempColor,
           tempFactor,
         );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'utils/colors.dart';
 
 class ChordsPage extends StatefulWidget {
   const ChordsPage({super.key});
@@ -163,7 +164,7 @@ class _ChordsPageState extends State<ChordsPage> {
                     decoration: BoxDecoration(
                       color:
                           selected
-                              ? GeneralProvider.getChordButtonColor(chordName)
+                              ? getChordButtonColor(chordName)
                               : Colors.grey[400],
                       borderRadius: BorderRadius.circular(6),
                     ),

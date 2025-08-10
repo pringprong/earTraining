@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:provider/provider.dart';
+import 'utils/colors.dart';
 
 class GeneralPage extends StatefulWidget {
   const GeneralPage({super.key});
@@ -385,7 +386,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: GeneralProvider.getChordButtonColor(
+                        backgroundColor: getChordButtonColor(
                             "blah_M_R",
                           ),
                           foregroundColor: Colors.black,
