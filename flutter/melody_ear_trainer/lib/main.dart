@@ -12,6 +12,7 @@ import 'providers/general_provider.dart';
 import 'homepage.dart';
 import 'scales.dart';
 import 'chords.dart';
+import 'handsfree.dart';
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
@@ -46,7 +47,8 @@ void main() async {
           },
         ),
       ],
-    child: MelodyEarTrainerApp(audioController: audioController)),
+      child: MelodyEarTrainerApp(audioController: audioController),
+    ),
   );
 }
 
@@ -57,20 +59,20 @@ class MelodyEarTrainerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Melody Ear Trainer',
-        //theme: ThemeData.dark(),
-        theme: context.watch<GeneralProvider>().getThemeData,
-        home: MelodyHomePage(audioController: audioController),
-        routes: {
-          '/home':
-              (context) => MelodyHomePage(audioController: audioController),
-          '/general': (context) => GeneralPage(),
-          '/tonic': (context) => TonicPage(audioController: audioController),
-          '/scales': (context) => ScalesPage(),
-          '/chords': (context) => ChordsPage(),
-          // Add other routes here
-        },
-      );
- //   );
+      title: 'Melody Ear Trainer',
+      //theme: ThemeData.dark(),
+      theme: context.watch<GeneralProvider>().getThemeData,
+      home: MelodyHomePage(audioController: audioController),
+      routes: {
+        '/home': (context) => MelodyHomePage(audioController: audioController),
+        '/general': (context) => GeneralPage(),
+        '/tonic': (context) => TonicPage(audioController: audioController),
+        '/scales': (context) => ScalesPage(),
+        '/chords': (context) => ChordsPage(),
+        '/handsfree': (context) => HandsFree(audioController: audioController),
+        // Add other routes here
+      },
+    );
+    //   );
   } // Build method
 } // MelodyEarTrainerApp

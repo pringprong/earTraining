@@ -1,6 +1,7 @@
 //import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'dart:math';
+import 'helper.dart';
 
 class ChordMelody {
   List<String> chordMelody = [];
@@ -23,6 +24,29 @@ class ChordMelody {
 
   getChordMelodySolfege() {
     return chordMelodySolfege;
+  }
+
+  bool sameAs(ChordMelody other) {
+    return listEquals(this.chordMelody, other.getChordMelody());
+  }
+
+  addNote(String note) {
+    chordMelody.add(note);
+    chordMelodySolfege.add([note]);
+  }
+
+  addChord(String chord, List<String> notes) {
+    chordMelody.add(chord);
+    chordMelodySolfege.add(List<String>.from(notes));
+  }
+
+  removeLastNote() {
+    if (chordMelody.isNotEmpty) {
+      chordMelody.removeLast();
+    }
+    if (chordMelodySolfege.isNotEmpty) {
+      chordMelodySolfege.removeLast();
+    }
   }
 
   String generateChordMelody(GeneralProvider generalProvider) {
