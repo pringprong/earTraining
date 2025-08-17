@@ -407,6 +407,64 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /******** Handsfree listening settings  ********/
+
+  int numberOfRounds = 5;
+  int get getNumberOfRounds {
+    return numberOfRounds;
+  }
+
+  void setNumberOfRounds({required int rounds}) async {
+    numberOfRounds = rounds;
+    saveSettings();
+    notifyListeners();
+  }
+
+  int melodyRepeats = 3;
+  int get getMelodyRepeats {
+    return melodyRepeats;
+  }
+
+  void setMelodyRepeats({required int repeats}) async {
+    melodyRepeats = repeats;
+    saveSettings();
+    notifyListeners();
+  }
+
+  int solfegeRepeats = 2;
+  int get getSolfegeRepeats {
+    return solfegeRepeats;
+  }
+
+  void setSolfegeRepeats({required int repeats}) async {
+    solfegeRepeats = repeats;
+    saveSettings();
+    notifyListeners();
+  }
+
+  String handsfreeInstrument = "Guitar";
+  String get getHandsfreeInstrument {
+    return handsfreeInstrument;
+  }
+
+  void setHandsfreeInstrument({required String instrument}) async {
+    handsfreeInstrument = instrument;
+    saveSettings();
+    notifyListeners();
+  }
+
+  int timeDelayRepeat = 5;
+  int get getTimeDelayRepeat {
+    return timeDelayRepeat;
+  }
+  void setTimeDelayRepeat({required int delay}) async {
+    timeDelayRepeat = delay;
+    saveSettings();
+    notifyListeners();
+  }
+
+  /******** end Handsfree Listening settings */
+
   Future<void> get loadScalesJSON async {
     // Load Scales.json and populate scalesMapping
     final String jsonData = await rootBundle.loadString(
@@ -477,6 +535,11 @@ class GeneralProvider extends ChangeNotifier {
       'chordSet': chordSet,
       'noteSelection': jsonEncode(noteSelection),
       'selectedChords': jsonEncode(selectedChords),
+      'numberOfRounds': numberOfRounds,
+      'melodyRepeats': melodyRepeats,
+      'solfegeRepeats': solfegeRepeats,
+      'handsfreeInstrument': handsfreeInstrument,
+      'timeDelayRepeat': timeDelayRepeat,
     };
     prefs.setString('general_settings', jsonEncode(settings));
   }
@@ -528,6 +591,11 @@ class GeneralProvider extends ChangeNotifier {
     } else {
       _themeData = darkMode;
     }
+    numberOfRounds = settings['numberOfRounds'] ?? 5;
+    melodyRepeats = settings['melodyRepeats'] ?? 3;
+    solfegeRepeats = settings['solfegeRepeats'] ?? 2;
+    handsfreeInstrument = settings['handsfreeInstrument'] ?? "Guitar";
+    timeDelayRepeat = settings['timeDelayRepeat'] ?? 5;
     notifyListeners();
   }
 
@@ -564,6 +632,11 @@ class GeneralProvider extends ChangeNotifier {
     } else {
       _themeData = darkMode;
     }
+    numberOfRounds = 5;
+    melodyRepeats = 3;
+    solfegeRepeats = 2;
+    handsfreeInstrument = "Guitar";
+    timeDelayRepeat = 5;
     saveSettings();
     notifyListeners();
   }

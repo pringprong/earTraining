@@ -68,7 +68,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     value: context.watch<GeneralProvider>().maxDistance,
                     items:
                         List.generate(
-                          7,
+                          9,
                           (i) => i + 1,
                         ).map<DropdownMenuItem<int>>((int value) {
                           return DropdownMenuItem<int>(
