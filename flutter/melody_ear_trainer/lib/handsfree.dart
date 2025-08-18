@@ -19,6 +19,7 @@ class _HandsFreeState extends State<HandsFree> {
   bool notPaused = true;
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
+  String currentInstrument = "Piano";
   @override
   Widget build(BuildContext context) {
     // Get the nestedMapping from the provider (auto-updates on notifyListeners)
@@ -64,7 +65,7 @@ class _HandsFreeState extends State<HandsFree> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Melody repeats:'),
+                    child: Text('Instrument repeats:'),
                   ),
                   DropdownButton<int>(
                     value: context.watch<GeneralProvider>().melodyRepeats,
@@ -150,9 +151,7 @@ class _HandsFreeState extends State<HandsFree> {
                     hint: Text('Select Instrument'),
                     value: context.watch<GeneralProvider>().handsfreeInstrument,
                     items:
-                        context
-                            .watch<GeneralProvider>()
-                            .instruments
+                        ["Guitar", "Piano", "Alternate"]
                             .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -166,7 +165,7 @@ class _HandsFreeState extends State<HandsFree> {
                           instrument: newValue,
                         );
                       }               },
-                   ),
+                  ),
                 ],
               ),
               SizedBox(height: 8),
@@ -311,6 +310,21 @@ class _HandsFreeState extends State<HandsFree> {
     }
   }
 
+  String getInstrument(String userChoice) {
+    if (userChoice == "Alternate") {
+        if (currentInstrument == "Guitar") {
+          currentInstrument = "Piano"; // Alternate to Piano
+          return "Piano"; // Alternate to Piano
+        } else if (currentInstrument == "Piano") {
+          currentInstrument = "Guitar"; // Alternate to Guitar
+          return "Guitar"; // Alternate to Guitar
+      }
+    } else if (userChoice.isNotEmpty) {
+      return userChoice;
+  }
+    return "Guitar"; // Default to Guitar if no valid choice
+  }
+
   playFunction(
     GeneralProvider generalProvider,
     Map<String, Map<String, Map<String, String>>> nestedMapping,
@@ -338,7 +352,7 @@ class _HandsFreeState extends State<HandsFree> {
       }
       for (int i = 0; i < context.read<GeneralProvider>().getMelodyRepeats && notPaused; i++) {
         await playChordMelody(
-          context.read<GeneralProvider>().handsfreeInstrument,
+          getInstrument(context.read<GeneralProvider>().handsfreeInstrument),
           generalProvider,
           chordMelody.getChordMelodySolfege(),
         );
@@ -389,7 +403,7 @@ class _HandsFreeState extends State<HandsFree> {
     }
     for (int i = 0; i < context.read<GeneralProvider>().getMelodyRepeats && notPaused; i++) {
       await playChordMelody(
-        context.read<GeneralProvider>().handsfreeInstrument,
+        getInstrument(context.read<GeneralProvider>().handsfreeInstrument),
         generalProvider,
         chordMelody.getChordMelodySolfege(),
       );
