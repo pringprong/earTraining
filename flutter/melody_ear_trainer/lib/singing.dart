@@ -221,7 +221,7 @@ class _SingingState extends State<Singing> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Listen to the melody",
+                    "Listen to the melody:",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],

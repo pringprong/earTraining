@@ -25,7 +25,7 @@ class _HandsFreeState extends State<HandsFree> {
     // Get the nestedMapping from the provider (auto-updates on notifyListeners)
     final nestedMapping = context.watch<GeneralProvider>().getNestedMapping;
     return Scaffold(
-      appBar: AppBar(title: Text('Hands-free listening')),
+      appBar: AppBar(title: Text('Hands-free melody ID')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(

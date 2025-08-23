@@ -450,6 +450,17 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int spokenRepeats = 3;
+  int get getSpokenRepeats {
+    return spokenRepeats;
+  }
+
+  void setSpokenRepeats({required int repeats}) async {
+    spokenRepeats = repeats;
+    saveSettings();
+    notifyListeners();
+  }
+
   int solfegeRepeats = 2;
   int get getSolfegeRepeats {
     return solfegeRepeats;
@@ -556,6 +567,7 @@ class GeneralProvider extends ChangeNotifier {
       'selectedChords': jsonEncode(selectedChords),
       'numberOfRounds': numberOfRounds,
       'melodyRepeats': melodyRepeats,
+      'spokenRepeats': spokenRepeats,
       'solfegeRepeats': solfegeRepeats,
       'handsfreeInstrument': handsfreeInstrument,
       'timeDelayRepeat': timeDelayRepeat,
@@ -612,6 +624,7 @@ class GeneralProvider extends ChangeNotifier {
     }
     numberOfRounds = settings['numberOfRounds'] ?? 5;
     melodyRepeats = settings['melodyRepeats'] ?? 3;
+    spokenRepeats = settings['spokenRepeats'] ?? 3;
     solfegeRepeats = settings['solfegeRepeats'] ?? 2;
     handsfreeInstrument = settings['handsfreeInstrument'] ?? "Guitar";
     timeDelayRepeat = settings['timeDelayRepeat'] ?? 5;
@@ -653,6 +666,7 @@ class GeneralProvider extends ChangeNotifier {
     }
     numberOfRounds = 5;
     melodyRepeats = 3;
+    spokenRepeats = 3;
     solfegeRepeats = 2;
     handsfreeInstrument = "Guitar";
     timeDelayRepeat = 5;

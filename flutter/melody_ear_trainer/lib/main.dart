@@ -14,6 +14,7 @@ import 'scales.dart';
 import 'chords.dart';
 import 'handsfree.dart';
 import 'singing.dart';
+import 'handsfreesinging.dart';
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
@@ -72,6 +73,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
         '/chords': (context) => ChordsPage(),
         '/handsfree': (context) => HandsFree(audioController: audioController),
         '/singing': (context) => Singing(audioController: audioController),
+        '/handsfreesinging': (context) => HandsFreeSinging(audioController: audioController),
         // Add other routes here
       },
     );

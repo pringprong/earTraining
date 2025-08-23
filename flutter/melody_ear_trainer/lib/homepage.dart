@@ -109,7 +109,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 },
               ),
               ListTile(
-                title: Text('Hands-Free Melody ID'),
+                title: Text('Hands-free melody ID'),
                 onTap: () {
                   // Update the state of the app
                   // Then close the drawer
@@ -124,6 +124,15 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   // Then close the drawer
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/singing');
+                },
+              ),
+              ListTile(
+                title: Text('Hands-free singing'),
+                onTap: () {
+                  // Update the state of the app
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/handsfreesinging');
                 },
               ),
             ],
