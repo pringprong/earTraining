@@ -109,12 +109,21 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 },
               ),
               ListTile(
-                title: Text('Hands-Free'),
+                title: Text('Hands-Free Melody ID'),
                 onTap: () {
                   // Update the state of the app
                   // Then close the drawer
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/handsfree');
+                },
+              ),
+              ListTile(
+                title: Text('Singing'),
+                onTap: () {
+                  // Update the state of the app
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/singing');
                 },
               ),
             ],
@@ -740,13 +749,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     List<List<String>> melodyList,
   ) async {
     await widget.audioController.refresh();
-    //final key = generalProvider.selectedKey;
     final timeBetween = generalProvider.timeBetweenNotes;
-    //final truncate = generalProvider.truncateNotes;
     final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
-    //final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
-    //final nestedMapping = generalProvider.getNestedMapping;
     final spokenMapping = generalProvider.getSpokenMapping;
     int i = 0;
     for (var notes in melodyList) {

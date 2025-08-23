@@ -49,6 +49,13 @@ class ChordMelody {
     }
   }
 
+  getFirstNoteOrChord() {
+    if (chordMelody.isNotEmpty) {
+      return [chordMelodySolfege.first];
+    }
+    return null;
+  }
+
   String generateChordMelody(GeneralProvider generalProvider) {
     final chordMap = generalProvider.getChordMap;
     chordMelody.clear();
