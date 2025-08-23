@@ -51,6 +51,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     context.read<GeneralProvider>().loadChordSetsJSON;
     context.read<GeneralProvider>().loadScalesJSON;
     context.read<GeneralProvider>().loadNotesJSON;
+    context.read<GeneralProvider>().loadSpokenJSON;
     final nestedMapping = generalProvider.getNestedMapping;
     final noteKeys = generalProvider.getNoteKeys;
     // Notes grid: group notes by row
@@ -252,12 +253,34 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 8),
+                      SizedBox(width: 4),
                       // Play Solfege Melody Button
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: getChordButtonColor("blah_M_R"),
+                            foregroundColor: Colors.black,
+                          ),
+                          onPressed:
+                              () => playSpoken(
+                                generalProvider,
+                                generatedChordMelody.getChordMelodySolfege(),
+                              ),
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Text(
+                              "Say",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                      // Play Solfege Melody Button
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: getChordButtonColor("blah_L_R"),
                             foregroundColor: Colors.black,
                           ),
                           onPressed:
@@ -434,7 +457,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
 
                       onPressed: () {
                         setState(() {
-                          if (userWrittenChordMelody.getChordMelody().isNotEmpty) {
+                          if (userWrittenChordMelody
+                              .getChordMelody()
+                              .isNotEmpty) {
                             userWrittenChordMelody.removeLastNote();
                             //.removeLast();
                             //writtenChordMelodySolfege.removeLast();
@@ -699,6 +724,47 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 500,
               );
             }
+          }
+          if (arpeggiate) {
+            await Future.delayed(Duration(milliseconds: arpeggiateDelay));
+          }
+        }
+      }
+      await Future.delayed(Duration(milliseconds: timeBetween));
+      i++;
+    }
+  }
+
+  Future<void> playSpoken(
+    GeneralProvider generalProvider,
+    List<List<String>> melodyList,
+  ) async {
+    await widget.audioController.refresh();
+    //final key = generalProvider.selectedKey;
+    final timeBetween = generalProvider.timeBetweenNotes;
+    //final truncate = generalProvider.truncateNotes;
+    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
+    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
+    //final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
+    //final nestedMapping = generalProvider.getNestedMapping;
+    final spokenMapping = generalProvider.getSpokenMapping;
+    int i = 0;
+    for (var notes in melodyList) {
+      if (notes.length == 1) {
+        final note = notes[0];
+        final filename = spokenMapping[note] ?? '';
+        if (filename.isNotEmpty) {
+          widget.audioController.playSound("assets/audio/$filename");
+        }
+      } else if (notes.length > 1) {
+        if (i % 7 == 0) {
+          await widget.audioController.refresh();
+        }
+        List<String> chordNotes = List<String>.from(notes);
+        for (var note in chordNotes) {
+          final filename = spokenMapping[note] ?? '';
+          if (filename.isNotEmpty) {
+            widget.audioController.playSound("assets/audio/$filename");
           }
           if (arpeggiate) {
             await Future.delayed(Duration(milliseconds: arpeggiateDelay));

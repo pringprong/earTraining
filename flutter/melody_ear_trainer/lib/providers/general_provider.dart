@@ -56,6 +56,12 @@ class GeneralProvider extends ChangeNotifier {
     return nestedMapping;
   }
 
+  Map<String, String> spokenMapping = {};
+  Map<String, String> get getSpokenMapping {
+    return spokenMapping;
+  }
+
+
   List<String> get getMappingKeys {
     return mappingKeys;
   }
@@ -348,6 +354,19 @@ class GeneralProvider extends ChangeNotifier {
       if (instrument.length > 1 && !instruments.contains(instrument)) {
         instruments.add(instrument);
       }
+    }
+    notifyListeners();
+  }
+
+  Future<void> get loadSpokenJSON async {
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Spoken.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
+    for (var item in items) {
+      String note = item['Note'];
+      String filename = item['File'];
+      spokenMapping[note] = filename;
     }
     notifyListeners();
   }
