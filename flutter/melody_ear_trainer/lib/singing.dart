@@ -101,7 +101,7 @@ class _SingingState extends State<Singing> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          "Say the melody",
+                          "Say the solfege",
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
