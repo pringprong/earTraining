@@ -39,7 +39,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Number of notes in melody:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().numberOfNotes,
+                    value: context.watch<MelodyIDSettings>().numberOfNotes,
                     items:
                         List.generate(
                           18,
@@ -52,7 +52,7 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateNumberOfNotes(
+                        context.read<MelodyIDSettings>().updateNumberOfNotes(
                           count: newValue,
                         );
                       }
@@ -67,7 +67,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Max distance between adjacent notes:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().maxDistance,
+                    value: context.watch<MelodyIDSettings>().maxDistance,
                     items:
                         List.generate(
                           9,
@@ -80,7 +80,7 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateMaxDistance(
+                        context.read<MelodyIDSettings>().updateMaxDistance(
                           distance: newValue,
                         );
                       }
@@ -95,10 +95,10 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Allow repeated notes:'),
                   ),
                   Checkbox(
-                    value: context.watch<GeneralProvider>().allowRepeatedNotes,
+                    value: context.watch<MelodyIDSettings>().allowRepeatedNotes,
                     onChanged: (bool? newValue) {
                       context
-                          .read<GeneralProvider>()
+                          .read<MelodyIDSettings>()
                           .toggleAllowRepeatedNotes();
                     },
                   ),
@@ -111,7 +111,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Chord frequency:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<GeneralProvider>().chordFrequency,
+                    value: context.watch<MelodyIDSettings>().chordFrequency,
                     items:
                         [
                           "Never",
@@ -127,7 +127,7 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateChordFrequency(
+                        context.read<MelodyIDSettings>().updateChordFrequency(
                           frequency: newValue,
                         );
                       }
@@ -142,10 +142,10 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Allow repeated chords:'),
                   ),
                   Checkbox(
-                    value: context.watch<GeneralProvider>().allowRepeatedChords,
+                    value: context.watch<MelodyIDSettings>().allowRepeatedChords,
                     onChanged: (bool? newValue) {
                       context
-                          .read<GeneralProvider>()
+                          .read<MelodyIDSettings>()
                           .toggleAllowRepeatedChords();
                     },
                   ),
@@ -170,7 +170,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Select Key'),
-                    value: context.watch<GeneralProvider>().selectedKey,
+                    value: context.watch<MelodyIDSettings>().selectedKey,
                     items:
                         mappingKeys.map<DropdownMenuItem<String>>((
                           String value,
@@ -182,7 +182,7 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateSelectedKey(
+                        context.read<MelodyIDSettings>().updateSelectedKey(
                           newkey: newValue,
                         );
                       }
@@ -198,7 +198,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Select Instrument'),
-                    value: context.watch<GeneralProvider>().selectedInstrument,
+                    value: context.watch<MelodyIDSettings>().selectedInstrument,
                     items:
                         instruments.map<DropdownMenuItem<String>>((
                           String value,
@@ -211,7 +211,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context
-                            .read<GeneralProvider>()
+                            .read<MelodyIDSettings>()
                             .updateSelectedInstrument(instrument: newValue);
                       }
                     },
@@ -225,7 +225,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Time between notes in melody (ms):'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().timeBetweenNotes,
+                    value: context.watch<MelodyIDSettings>().timeBetweenNotes,
                     items:
                         [300, 600, 900, 1200].map<DropdownMenuItem<int>>((
                           int value,
@@ -237,7 +237,7 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateTimeBetweenNotes(
+                        context.read<MelodyIDSettings>().updateTimeBetweenNotes(
                           time: newValue,
                         );
                       }
@@ -252,7 +252,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Truncate notes in melody (ms):'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<GeneralProvider>().truncateNotes,
+                    value: context.watch<MelodyIDSettings>().truncateNotes,
                     items:
                         [
                           "None",
@@ -269,7 +269,7 @@ class _GeneralPageState extends State<GeneralPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateTruncateNotes(
+                        context.read<MelodyIDSettings>().updateTruncateNotes(
                           time: newValue,
                         );
                       }
@@ -285,7 +285,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<GeneralProvider>().arpeggiateChordDelay,
+                        context.watch<MelodyIDSettings>().arpeggiateChordDelay,
                     items:
                         [
                           0,
@@ -304,7 +304,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     onChanged: (int? newValue) {
                       if (newValue != null) {
                         context
-                            .read<GeneralProvider>()
+                            .read<MelodyIDSettings>()
                             .updateArpeggiateChordDelay(delay: newValue);
                       }
                     },
@@ -319,7 +319,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   ),
                   DropdownButton<String>(
                     value:
-                        context.watch<GeneralProvider>().arpeggiateChordOrder,
+                        context.watch<MelodyIDSettings>().arpeggiateChordOrder,
                     items:
                         [
                           "Ascending",
@@ -334,7 +334,7 @@ class _GeneralPageState extends State<GeneralPage> {
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context
-                            .read<GeneralProvider>()
+                            .read<MelodyIDSettings>()
                             .updateArpeggiateChordOrder(order: newValue);
                       }
                     },
@@ -375,9 +375,9 @@ class _GeneralPageState extends State<GeneralPage> {
               //         child: Text('Display chord names:'),
               //       ),
               //       Checkbox(
-              //         value: context.watch<GeneralProvider>().displayChordNames,
+              //         value: context.watch<MelodyIDSettings>().displayChordNames,
               //         onChanged: (bool? newValue) {
-              //           context.read<GeneralProvider>().toggleDisplayChordNames();
+              //           context.read<MelodyIDSettings>().toggleDisplayChordNames();
               //         },
               //       ),
               //     ],
@@ -394,7 +394,7 @@ class _GeneralPageState extends State<GeneralPage> {
                           foregroundColor: Colors.black,
                         ),
                       onPressed: () {
-                        context.read<GeneralProvider>().resetAllSettings();
+                        context.read<MelodyIDSettings>().resetAllSettings();
                         context.read<ThemeProvider>().resetAllSettings();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

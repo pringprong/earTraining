@@ -5,7 +5,6 @@ import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 //import 'dart:math';
 import 'utils/colors.dart';
-//import 'utils/helper.dart';
 import 'utils/chordMelody.dart';
 //import 'package:expandable/expandable.dart';
 //import 'package:auto_size_text/auto_size_text.dart';
@@ -29,13 +28,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   String solfegeText = "";
 
   // --- Write Melody Section ---
-  //List<String> writtenMelody = [];
   bool melodiesSame = false;
-
-  //List<String> chordMelody = [];
-  //  List<List<String>> chordMelodySolfege = [];
-  //List<String> writtenChordMelody = [];
-  // List<List<String>> writtenChordMelodySolfege = [];
   ChordMelody generatedChordMelody = ChordMelody();
   ChordMelody userWrittenChordMelody = ChordMelody();
 
@@ -47,7 +40,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final generalProvider = Provider.of<GeneralProvider>(context);
     final mappingProvider = Provider.of<MappingProvider>(context);
     context.read<MappingProvider>().loadMappingJSON;
     context.read<MappingProvider>().loadChordSetsJSON;
@@ -63,7 +55,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       noteKeys.where((n) => n.contains('1')).toList(),
       noteKeys.where((n) => n.contains('2')).toList(),
     ];
-    final selectedNotes = generalProvider.getSelectedNotes();
+    final selectedNotes = context.read<MelodyIDSettings>().getSelectedNotes();
     final noteColors = mappingProvider.getNoteColors;
     final noteColorFactor = mappingProvider.getNoteColorFactors;
     return Scaffold(
@@ -169,8 +161,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-                        //generateMelody(generalProvider);
-                        newGenerateChordMelody(generalProvider, mappingProvider);
+                        newGenerateChordMelody(context.read<MelodyIDSettings>(), mappingProvider);
                         setState(() {
                           solfegeText = ""; // Clear solfege area
                           comparisonIcon = Icons.help_outline;
@@ -212,7 +203,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       onPressed:
                           () => playChordMelody(
                             "Guitar",
-                            generalProvider,
+                            context.read<MelodyIDSettings>(),
                             mappingProvider,
                             generatedChordMelody.getChordMelodySolfege(),
                           ),
@@ -233,7 +224,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       onPressed:
                           () => playChordMelody(
                             "Piano",
-                            generalProvider,
+                            context.read<MelodyIDSettings>(),
                             mappingProvider,
                             generatedChordMelody.getChordMelodySolfege(),
                           ),
@@ -285,7 +276,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           ),
                           onPressed:
                               () => playSpoken(
-                                generalProvider,
+                                context.read<MelodyIDSettings>(),
                                 mappingProvider,
                                 generatedChordMelody.getChordMelodySolfege(),
                               ),
@@ -306,7 +297,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           onPressed:
                               () => playChordMelody(
                                 "Solfege",
-                                generalProvider,
+                                context.read<MelodyIDSettings>(),
                                 mappingProvider,
                                 generatedChordMelody.getChordMelodySolfege(),
                               ),
@@ -377,9 +368,9 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 ),
                               ),
                               onPressed: () async {
-                                final key = generalProvider.selectedKey;
+                                final key = context.read<MelodyIDSettings>().getSelectedKey;
                                 final instrument =
-                                    generalProvider.selectedInstrument;
+                                    context.read<MelodyIDSettings>().getSelectedInstrument;
                                 final filename =
                                     nestedMapping[key]?[instrument]?[note] ??
                                     '';
@@ -423,7 +414,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               }),
               SizedBox(height: 8),
               // Chord buttons section
-              buildSelectedChordButtons(generalProvider, mappingProvider),
+              buildSelectedChordButtons(context.read<MelodyIDSettings>(), mappingProvider),
               SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -581,7 +572,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       onPressed:
                           () => playChordMelody(
                             "Guitar",
-                            generalProvider,
+                            context.read<MelodyIDSettings>(),
                             mappingProvider,
                             userWrittenChordMelody.getChordMelodySolfege(),
                           ),
@@ -601,7 +592,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       onPressed:
                           () => playChordMelody(
                             "Piano",
-                            generalProvider,
+                            context.read<MelodyIDSettings>(),
                             mappingProvider,
                             userWrittenChordMelody.getChordMelodySolfege(),
                           ),
@@ -621,7 +612,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       onPressed:
                           () => playChordMelody(
                             "Solfege",
-                            generalProvider,
+                            context.read<MelodyIDSettings>(),
                             mappingProvider,
                             userWrittenChordMelody.getChordMelodySolfege(),
                           ),
@@ -679,8 +670,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     comparisonIconColor = Colors.grey;
                     comparisonColor = Colors.grey.shade300;
                     playChordMelody(
-                      generalProvider.selectedInstrument,
-                      generalProvider,
+                      context.read<MelodyIDSettings>().getSelectedInstrument,
+                      context.read<MelodyIDSettings>(),
                       mappingProvider,
                       [notes],
                     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class GeneralProvider extends ChangeNotifier {
+abstract class GeneralProvider extends ChangeNotifier {
 
   String selectedKey = "C";
   int numberOfNotes = 5;
@@ -41,28 +41,43 @@ class GeneralProvider extends ChangeNotifier {
   ];
   
   static const List<String> noteKeys = [
-    "do0",
-    "re0",
-    "mi0",
-    "fa0",
-    "so0",
-    "la0",
-    "ti0",
-    "do",
-    "re",
-    "mi",
-    "fa",
-    "so",
-    "la",
-    "ti",
-    "do1",
-    "re1",
-    "mi1",
-    "fa1",
-    "so1",
-    "la1",
-    "ti1",
-    "do2",
+  "do0",
+  "ga0",
+  "re0",
+  "nu0",
+  "mi0",
+  "fa0",
+  "jur0",
+  "so0",
+  "ki0",
+  "la0",
+  "pe0",
+  "ti0",
+  "do",
+  "ga",
+  "re",
+  "nu",
+  "mi",
+  "fa",
+  "jur",
+  "so",
+  "ki",
+  "la",
+  "pe",
+  "ti",
+  "do1",
+  "ga1",
+  "re1",
+  "nu1",
+  "mi1",
+  "fa1",
+  "jur1",
+  "so1",
+  "ki1",
+  "la1",
+  "pe1",
+  "ti1",
+  "do2",
   ];
 
   Map<String, bool> noteSelection = {};
@@ -78,6 +93,14 @@ class GeneralProvider extends ChangeNotifier {
 
   GeneralProvider() {
     loadSettings();
+  }
+
+  String get getSelectedKey {
+    return selectedKey;
+  }
+
+  String get getSelectedInstrument {
+    return selectedInstrument;
   }
 
   // Add methods to update the state
@@ -452,3 +475,6 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class MelodyIDSettings extends GeneralProvider {}
+class MelodySingingSettings extends GeneralProvider {}

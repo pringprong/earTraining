@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 //import 'package:melody_ear_trainer/theme/theme.dart';
 import 'package:provider/provider.dart';
+
 // import 'package:logging/logging.dart';
 //import 'dart:convert';
 import 'audio/audio_controller.dart';
@@ -18,9 +19,6 @@ import 'handsfree.dart';
 import 'singing.dart';
 import 'handsfreesinging.dart';
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-class melodyIDSettings {}
-class melodySingingSettings {}
 
 void main() async {
   // The `flutter_soloud` package logs everything
@@ -59,10 +57,18 @@ void main() async {
             return mappingProvider;
           },
         ),
-        ChangeNotifierProvider<GeneralProvider>(
+        ChangeNotifierProvider<MelodyIDSettings>(
           create: (context) {
-            final generalProvider = GeneralProvider();
-            return generalProvider;
+            final melodyIDSettingsProvider =
+                MelodyIDSettings();
+            return melodyIDSettingsProvider;
+          },
+        ),
+        ChangeNotifierProvider<MelodySingingSettings>(
+          create: (context) {
+            final melodySingingSettingsProvider =
+                MelodySingingSettings();
+            return melodySingingSettingsProvider;
           },
         ),
       ],

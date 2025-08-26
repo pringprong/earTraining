@@ -41,9 +41,9 @@ class _TonicPageState extends State<TonicPage> {
               Row(
                 children: [
                   Checkbox(
-                    value: context.watch<GeneralProvider>().startWithDo,
+                    value: context.watch<MelodyIDSettings>().startWithDo,
                     onChanged: (bool? value) {
-                      context.read<GeneralProvider>().toggleStartWithDo();
+                      context.read<MelodyIDSettings>().toggleStartWithDo();
                     },
                   ),
                   // Starting note dropdown
@@ -52,7 +52,7 @@ class _TonicPageState extends State<TonicPage> {
                     child: Text('Tonic Note:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<GeneralProvider>().startingDo,
+                    value: context.watch<MelodyIDSettings>().startingDo,
                     items:
                         [
                           "do0",
@@ -70,7 +70,7 @@ class _TonicPageState extends State<TonicPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateStartingDo(
+                        context.read<MelodyIDSettings>().updateStartingDo(
                           newStartingDo: newValue,
                         );
                       }
@@ -94,9 +94,9 @@ class _TonicPageState extends State<TonicPage> {
               Row(
                 children: [
                   Checkbox(
-                    value: context.watch<GeneralProvider>().endWithDo,
+                    value: context.watch<MelodyIDSettings>().endWithDo,
                     onChanged: (bool? value) {
-                      context.read<GeneralProvider>().toggleEndWithDo();
+                      context.read<MelodyIDSettings>().toggleEndWithDo();
                     },
                   ),
                   // Ending note dropdown
@@ -105,7 +105,7 @@ class _TonicPageState extends State<TonicPage> {
                     child: Text('Ending Note:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<GeneralProvider>().endingDo,
+                    value: context.watch<MelodyIDSettings>().endingDo,
                     items:
                         [
                           "do0",
@@ -123,7 +123,7 @@ class _TonicPageState extends State<TonicPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().updateEndingDo(
+                        context.read<MelodyIDSettings>().updateEndingDo(
                           newEndingDo: newValue,
                         );
                       }
@@ -146,9 +146,9 @@ class _TonicPageState extends State<TonicPage> {
                       onPressed: () {
                         String filename =
                             nestedMapping[context
-                                .read<GeneralProvider>()
+                                .read<MelodyIDSettings>()
                                 .selectedKey]!['Guitar']![context
-                                .read<GeneralProvider>()
+                                .read<MelodyIDSettings>()
                                 .startingDo] ??
                             '';
                         filename = "assets/audio/$filename";
@@ -182,9 +182,9 @@ class _TonicPageState extends State<TonicPage> {
                       onPressed: () {
                         String filename =
                             nestedMapping[context
-                                .read<GeneralProvider>()
+                                .read<MelodyIDSettings>()
                                 .selectedKey]!['Piano']![context
-                                .read<GeneralProvider>()
+                                .read<MelodyIDSettings>()
                                 .startingDo] ??
                             '';
                         filename = "assets/audio/$filename";
@@ -218,9 +218,9 @@ class _TonicPageState extends State<TonicPage> {
                       onPressed: () {
                         String filename =
                             nestedMapping[context
-                                .read<GeneralProvider>()
+                                .read<MelodyIDSettings>()
                                 .selectedKey]!['Solfege']![context
-                                .read<GeneralProvider>()
+                                .read<MelodyIDSettings>()
                                 .startingDo] ??
                             '';
                         filename = "assets/audio/$filename";

@@ -13,7 +13,7 @@ class ScalesPage extends StatefulWidget {
 class _ScalesPageState extends State<ScalesPage> {
   @override
   Widget build(BuildContext context) {
-    final generalProvider = Provider.of<GeneralProvider>(context);
+    final generalProvider = Provider.of<MelodyIDSettings>(context);
     final scalesMapping = context.watch<MappingProvider>().getScalesMapping;
     final octavekeys = context.watch<MappingProvider>().getOctaveKeys;
     final scalekeys = context.watch<MappingProvider>().getScaleKeys;
@@ -42,7 +42,7 @@ class _ScalesPageState extends State<ScalesPage> {
                         child: Text('Octave:'),
                       ),
                       DropdownButton<String>(
-                        value: context.watch<GeneralProvider>().selectedOctave,
+                        value: context.watch<MelodyIDSettings>().selectedOctave,
                         hint: Text('Select Octave'),
                         items:
                             octavekeys
@@ -57,7 +57,7 @@ class _ScalesPageState extends State<ScalesPage> {
                           setState(() {
                             selectedOctave = octave;
                             context
-                                .read<GeneralProvider>()
+                                .read<MelodyIDSettings>()
                                 .updateSelectedOctave(
                                   octave: selectedOctave ?? '',
                                 );
@@ -85,7 +85,7 @@ class _ScalesPageState extends State<ScalesPage> {
                         child: Text('Scale:'),
                       ),
                       DropdownButton<String>(
-                        value: context.watch<GeneralProvider>().selectedScale,
+                        value: context.watch<MelodyIDSettings>().selectedScale,
                         hint: Text('Select Scale'),
                         items:
                             scalekeys
@@ -99,7 +99,7 @@ class _ScalesPageState extends State<ScalesPage> {
                         onChanged: (scale) {
                           setState(() {
                             selectedScale = scale;
-                            context.read<GeneralProvider>().updateSelectedScale(
+                            context.read<MelodyIDSettings>().updateSelectedScale(
                               newscale: selectedScale ?? '',
                             );
                             if (selectedOctave != null &&
@@ -120,7 +120,7 @@ class _ScalesPageState extends State<ScalesPage> {
               ),
             ),
             // Notes grid
-            Expanded(child: _buildNotesGrid(context.read<GeneralProvider>(), 
+            Expanded(child: _buildNotesGrid(context.read<MelodyIDSettings>(), 
               context.read<MappingProvider>())),
           ],
         ),

@@ -40,7 +40,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                     child: Text('Number of rounds:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().numberOfRounds,
+                    value: context.watch<MelodySingingSettings>().numberOfRounds,
                     items:
                         [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
                           int value,
@@ -52,7 +52,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().setNumberOfRounds(
+                        context.read<MelodySingingSettings>().setNumberOfRounds(
                           rounds: newValue,
                         );
                       }
@@ -69,7 +69,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                     child: Text('Spoken plus first note repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().spokenRepeats,
+                    value: context.watch<MelodySingingSettings>().spokenRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -81,7 +81,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().setSpokenRepeats(
+                        context.read<MelodySingingSettings>().setSpokenRepeats(
                           repeats: newValue,
                         );
                       }
@@ -98,7 +98,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                     child: Text('Solfege repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().solfegeRepeats,
+                    value: context.watch<MelodySingingSettings>().solfegeRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -110,7 +110,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().setSolfegeRepeats(
+                        context.read<MelodySingingSettings>().setSolfegeRepeats(
                           repeats: newValue,
                         );
                       }
@@ -126,7 +126,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                     child: Text('Instrument repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().melodyRepeats,
+                    value: context.watch<MelodySingingSettings>().melodyRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -138,7 +138,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().setMelodyRepeats(
+                        context.read<MelodySingingSettings>().setMelodyRepeats(
                           repeats: newValue,
                         );
                       }
@@ -155,7 +155,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                     child: Text('Time between repeats (s):'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<GeneralProvider>().getTimeDelayRepeat,
+                    value: context.watch<MelodySingingSettings>().getTimeDelayRepeat,
                     items:
                         [1, 2, 3, 4, 5, 6, 7, 8].map<DropdownMenuItem<int>>((
                           int value,
@@ -167,7 +167,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().setTimeDelayRepeat(
+                        context.read<MelodySingingSettings>().setTimeDelayRepeat(
                           delay: newValue,
                         );
                       }
@@ -185,7 +185,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Select Instrument'),
-                    value: context.watch<GeneralProvider>().handsfreeInstrument,
+                    value: context.watch<MelodySingingSettings>().handsfreeInstrument,
                     items:
                         [
                           "Guitar",
@@ -199,7 +199,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().setHandsfreeInstrument(
+                        context.read<MelodySingingSettings>().setHandsfreeInstrument(
                           instrument: newValue,
                         );
                       }
@@ -224,9 +224,8 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
 
                         currentRound = 0;
                         chordMelody = ChordMelody();
-                        //playFunction(generalProvider, nestedMapping);
                         playFunction(
-                          context.read<GeneralProvider>(),
+                          context.read<MelodySingingSettings>(),
                           context.read<MappingProvider>(),
                           nestedMapping,
                         );
@@ -275,7 +274,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
               //         ),
               //         onPressed: () {
               //           //resumeFunction(
-              //           //  context.read<GeneralProvider>(),
+              //           //  context.read<MelodySingingSettings>(),
               //           //  nestedMapping,
               //           //);
               //         },
@@ -324,11 +323,11 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                   Text(
                     (min(
                           currentRound + 1,
-                          context.read<GeneralProvider>().getNumberOfRounds,
+                          context.read<MelodySingingSettings>().getNumberOfRounds,
                         )).toString() +
                         " / " +
                         context
-                            .read<GeneralProvider>()
+                            .read<MelodySingingSettings>()
                             .getNumberOfRounds
                             .toString(),
                     style: TextStyle(fontSize: 18),
@@ -386,7 +385,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    while (currentRound < context.read<GeneralProvider>().getNumberOfRounds &&
+    while (currentRound < context.read<MelodySingingSettings>().getNumberOfRounds &&
         notPaused) {
       solfegeText = "";
       setState(() {});
@@ -401,7 +400,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
       setState(() {});
       for (
         int n = 0;
-        n < context.read<GeneralProvider>().getSpokenRepeats && notPaused;
+        n < context.read<MelodySingingSettings>().getSpokenRepeats && notPaused;
         n++
       ) {
         await playSpoken(generalProvider,
@@ -418,12 +417,12 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(seconds: context.read<GeneralProvider>().getTimeDelayRepeat),
+          Duration(seconds: context.read<MelodySingingSettings>().getTimeDelayRepeat),
         );
       }
       for (
         int j = 0;
-        j < context.read<GeneralProvider>().getSolfegeRepeats && notPaused;
+        j < context.read<MelodySingingSettings>().getSolfegeRepeats && notPaused;
         j++
       ) {
         await playChordMelody(
@@ -436,16 +435,16 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(seconds: context.read<GeneralProvider>().getTimeDelayRepeat),
+          Duration(seconds: context.read<MelodySingingSettings>().getTimeDelayRepeat),
         );
       }
       for (
         int i = 0;
-        i < context.read<GeneralProvider>().getMelodyRepeats && notPaused;
+        i < context.read<MelodySingingSettings>().getMelodyRepeats && notPaused;
         i++
       ) {
         await playChordMelody(
-          getInstrument(context.read<GeneralProvider>().handsfreeInstrument),
+          getInstrument(context.read<MelodySingingSettings>().handsfreeInstrument),
           generalProvider,
           mappingProvider,
           chordMelody.getChordMelodySolfege(),
@@ -454,7 +453,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(seconds: context.read<GeneralProvider>().getTimeDelayRepeat),
+          Duration(seconds: context.read<MelodySingingSettings>().getTimeDelayRepeat),
         );
       }
       if (!notPaused) {

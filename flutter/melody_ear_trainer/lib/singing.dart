@@ -40,8 +40,7 @@ class _SingingState extends State<Singing> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-                        //generateMelody(generalProvider);
-                        newGenerateChordMelody(context.read<GeneralProvider>(),
+                        newGenerateChordMelody(context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>());
                       },
                       child: FittedBox(
@@ -96,7 +95,7 @@ class _SingingState extends State<Singing> {
                       ),
                       onPressed: () {
                         playSpoken(
-                          context.read<GeneralProvider>(),
+                          context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
                           generatedChordMelody.getChordMelodySolfege(),
                         );
@@ -134,7 +133,7 @@ class _SingingState extends State<Singing> {
                       onPressed: () {
                         playChordMelody(
                           "Guitar",
-                          context.read<GeneralProvider>(),
+                          context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
                           generatedChordMelody.getFirstNoteOrChord(),                        );
                       },
@@ -162,7 +161,7 @@ class _SingingState extends State<Singing> {
                       onPressed: () {
                         playChordMelody(
                           "Piano",
-                          context.read<GeneralProvider>(),
+                          context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
                           generatedChordMelody.getFirstNoteOrChord(),                        );
                       },
@@ -190,7 +189,7 @@ class _SingingState extends State<Singing> {
                       onPressed: () {
                         playChordMelody(
                           "Solfege",
-                          context.read<GeneralProvider>(),
+                          context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
                           generatedChordMelody.getFirstNoteOrChord(),                        );
                       },
@@ -244,7 +243,7 @@ class _SingingState extends State<Singing> {
                       onPressed: () {
                         playChordMelody(
                           "Guitar",
-                          context.read<GeneralProvider>(),
+                          context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
                           generatedChordMelody.getChordMelodySolfege(),                        );
                       },
@@ -272,7 +271,7 @@ class _SingingState extends State<Singing> {
                       onPressed: () {
                         playChordMelody(
                           "Piano",
-                          context.read<GeneralProvider>(),
+                          context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
                           generatedChordMelody.getChordMelodySolfege(),                        );
                       },
@@ -300,7 +299,7 @@ class _SingingState extends State<Singing> {
                       onPressed: () {
                         playChordMelody(
                           "Solfege",
-                          context.read<GeneralProvider>(),
+                          context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
                           generatedChordMelody.getChordMelodySolfege(),                        );
                       },

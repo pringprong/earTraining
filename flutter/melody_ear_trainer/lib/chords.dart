@@ -13,7 +13,7 @@ class ChordsPage extends StatefulWidget {
 class _ChordsPageState extends State<ChordsPage> {
   @override
   Widget build(BuildContext context) {
-    final generalProvider = Provider.of<GeneralProvider>(context);
+    final generalProvider = Provider.of<MelodyIDSettings>(context);
     final chordsMapping = context.watch<MappingProvider>().getChordsMapping;
     final chordSetsMapping =
         context.watch<MappingProvider>().getChordSetsMapping;
@@ -46,7 +46,7 @@ class _ChordsPageState extends State<ChordsPage> {
                           child: Text('Range:'),
                         ),
                         DropdownButton<String>(
-                          value: context.watch<GeneralProvider>().chordSetRange,
+                          value: context.watch<MelodyIDSettings>().chordSetRange,
                           hint: Text('Select Range'),
                           items:
                               rangesList
@@ -60,7 +60,7 @@ class _ChordsPageState extends State<ChordsPage> {
                           onChanged: (range) {
                             setState(() {
                               selectedRange = range;
-                              context.read<GeneralProvider>().updateChordRange(
+                              context.read<MelodyIDSettings>().updateChordRange(
                                 newChordRange: selectedRange ?? '',
                               );
                               if (selectedRange != null &&
@@ -69,7 +69,7 @@ class _ChordsPageState extends State<ChordsPage> {
                                     chordSetsMapping[selectedRange!]?[selectedChordSet!] ??
                                     [];
                                 context
-                                    .read<GeneralProvider>()
+                                    .read<MelodyIDSettings>()
                                     .setSelectedChords(chords);
                               }
                             });
@@ -86,7 +86,7 @@ class _ChordsPageState extends State<ChordsPage> {
                           child: Text('Set:'),
                         ),
                         DropdownButton<String>(
-                          value: context.watch<GeneralProvider>().chordSet,
+                          value: context.watch<MelodyIDSettings>().chordSet,
                           hint: Text('Select Set'),
                           items:
                               chordSetsList
@@ -100,7 +100,7 @@ class _ChordsPageState extends State<ChordsPage> {
                           onChanged: (set) {
                             setState(() {
                               selectedChordSet = set;
-                              context.read<GeneralProvider>().updateChordSet(
+                              context.read<MelodyIDSettings>().updateChordSet(
                                 newChordSet: selectedChordSet ?? '',
                               );
                               if (selectedRange != null &&
@@ -109,7 +109,7 @@ class _ChordsPageState extends State<ChordsPage> {
                                     chordSetsMapping[selectedRange!]?[selectedChordSet!] ??
                                     [];
                                 context
-                                    .read<GeneralProvider>()
+                                    .read<MelodyIDSettings>()
                                     .setSelectedChords(chords);
                               }
                             });
@@ -121,7 +121,6 @@ class _ChordsPageState extends State<ChordsPage> {
                 ),
               ),
               // Notes grid
-              //Expanded(child: _buildNotesGrid(generalProvider)),
               buildChordButtons(chordsMapping, generalProvider),
             ],
           ),
