@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'package:melody_ear_trainer/providers/theme_provider.dart';
+import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import 'utils/colors.dart';
 
@@ -12,8 +14,8 @@ class GeneralPage extends StatefulWidget {
 class _GeneralPageState extends State<GeneralPage> {
   @override
   Widget build(BuildContext context) {
-    final mappingKeys = context.watch<GeneralProvider>().mappingKeys;
-    final instruments = context.watch<GeneralProvider>().instruments;
+    final mappingKeys = context.watch<MappingProvider>().getMappingKeys;
+    final instruments = context.watch<MappingProvider>().getInstruments;
     return Scaffold(
       appBar: AppBar(title: Text('General Settings')),
       body: Padding(
@@ -357,10 +359,10 @@ class _GeneralPageState extends State<GeneralPage> {
                     child: Text('Light mode:'),
                   ),
                   Checkbox(
-                    value: context.watch<GeneralProvider>().darkModeBool,
+                    value: context.watch<ThemeProvider>().darkModeBool,
                     onChanged: (bool? newValue) {
                       if (newValue != null) {
-                        context.read<GeneralProvider>().setDarkMode(newValue);
+                        context.read<ThemeProvider>().setDarkMode(newValue);
                       }
                     },
                   ),
@@ -393,6 +395,7 @@ class _GeneralPageState extends State<GeneralPage> {
                         ),
                       onPressed: () {
                         context.read<GeneralProvider>().resetAllSettings();
+                        context.read<ThemeProvider>().resetAllSettings();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('All settings reset to default!'),

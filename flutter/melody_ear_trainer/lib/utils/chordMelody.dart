@@ -1,5 +1,6 @@
 //import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'dart:math';
 import 'helper.dart';
 
@@ -56,8 +57,9 @@ class ChordMelody {
     return null;
   }
 
-  String generateChordMelody(GeneralProvider generalProvider) {
-    final chordMap = generalProvider.getChordMap;
+  String generateChordMelody(GeneralProvider generalProvider,
+    MappingProvider mappingProvider) {
+    final chordMap = mappingProvider.getChordMap;
     chordMelody.clear();
     chordMelodySolfege.clear();
 

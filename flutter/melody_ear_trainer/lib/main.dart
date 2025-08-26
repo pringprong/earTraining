@@ -9,6 +9,8 @@ import 'audio/audio_controller.dart';
 import 'general.dart';
 import 'tonic.dart';
 import 'providers/general_provider.dart';
+import 'providers/theme_provider.dart';
+import 'providers/mapping_provider.dart';
 import 'homepage.dart';
 import 'scales.dart';
 import 'chords.dart';
@@ -16,6 +18,9 @@ import 'handsfree.dart';
 import 'singing.dart';
 import 'handsfreesinging.dart';
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class melodyIDSettings {}
+class melodySingingSettings {}
 
 void main() async {
   // The `flutter_soloud` package logs everything
@@ -42,10 +47,22 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (context) {
+            final themeProvider = ThemeProvider();
+            return themeProvider;
+          },
+        ),
+        ChangeNotifierProvider<MappingProvider>(
+          create: (context) {
+            final mappingProvider = MappingProvider();
+            return mappingProvider;
+          },
+        ),
         ChangeNotifierProvider<GeneralProvider>(
           create: (context) {
-            final provider = GeneralProvider();
-            return provider;
+            final generalProvider = GeneralProvider();
+            return generalProvider;
           },
         ),
       ],
@@ -63,7 +80,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Melody Ear Trainer',
       //theme: ThemeData.dark(),
-      theme: context.watch<GeneralProvider>().getThemeData,
+      theme: context.watch<ThemeProvider>().getThemeData,
       home: MelodyHomePage(audioController: audioController),
       routes: {
         '/home': (context) => MelodyHomePage(audioController: audioController),
@@ -73,7 +90,8 @@ class MelodyEarTrainerApp extends StatelessWidget {
         '/chords': (context) => ChordsPage(),
         '/handsfree': (context) => HandsFree(audioController: audioController),
         '/singing': (context) => Singing(audioController: audioController),
-        '/handsfreesinging': (context) => HandsFreeSinging(audioController: audioController),
+        '/handsfreesinging':
+            (context) => HandsFreeSinging(audioController: audioController),
         // Add other routes here
       },
     );

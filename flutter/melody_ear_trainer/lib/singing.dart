@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import 'audio/audio_controller.dart';
 import 'utils/colors.dart';
@@ -40,7 +41,8 @@ class _SingingState extends State<Singing> {
                       ),
                       onPressed: () {
                         //generateMelody(generalProvider);
-                        newGenerateChordMelody(context.read<GeneralProvider>());
+                        newGenerateChordMelody(context.read<GeneralProvider>(),
+                          context.read<MappingProvider>());
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -95,6 +97,7 @@ class _SingingState extends State<Singing> {
                       onPressed: () {
                         playSpoken(
                           context.read<GeneralProvider>(),
+                          context.read<MappingProvider>(),
                           generatedChordMelody.getChordMelodySolfege(),
                         );
                       },
@@ -132,6 +135,7 @@ class _SingingState extends State<Singing> {
                         playChordMelody(
                           "Guitar",
                           context.read<GeneralProvider>(),
+                          context.read<MappingProvider>(),
                           generatedChordMelody.getFirstNoteOrChord(),                        );
                       },
                       child: FittedBox(
@@ -159,6 +163,7 @@ class _SingingState extends State<Singing> {
                         playChordMelody(
                           "Piano",
                           context.read<GeneralProvider>(),
+                          context.read<MappingProvider>(),
                           generatedChordMelody.getFirstNoteOrChord(),                        );
                       },
                       child: FittedBox(
@@ -186,6 +191,7 @@ class _SingingState extends State<Singing> {
                         playChordMelody(
                           "Solfege",
                           context.read<GeneralProvider>(),
+                          context.read<MappingProvider>(),
                           generatedChordMelody.getFirstNoteOrChord(),                        );
                       },
                       child: FittedBox(
@@ -239,6 +245,7 @@ class _SingingState extends State<Singing> {
                         playChordMelody(
                           "Guitar",
                           context.read<GeneralProvider>(),
+                          context.read<MappingProvider>(),
                           generatedChordMelody.getChordMelodySolfege(),                        );
                       },
                       child: FittedBox(
@@ -266,6 +273,7 @@ class _SingingState extends State<Singing> {
                         playChordMelody(
                           "Piano",
                           context.read<GeneralProvider>(),
+                          context.read<MappingProvider>(),
                           generatedChordMelody.getChordMelodySolfege(),                        );
                       },
                       child: FittedBox(
@@ -293,6 +301,7 @@ class _SingingState extends State<Singing> {
                         playChordMelody(
                           "Solfege",
                           context.read<GeneralProvider>(),
+                          context.read<MappingProvider>(),
                           generatedChordMelody.getChordMelodySolfege(),                        );
                       },
                       child: FittedBox(
@@ -323,8 +332,9 @@ class _SingingState extends State<Singing> {
     );
   }
 
-  void newGenerateChordMelody(GeneralProvider generalProvider) {
-    String result = generatedChordMelody.generateChordMelody(generalProvider);
+  void newGenerateChordMelody(GeneralProvider generalProvider, 
+    MappingProvider mappingProvider) {
+    String result = generatedChordMelody.generateChordMelody(generalProvider, mappingProvider);
     if (result.isNotEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -337,13 +347,14 @@ class _SingingState extends State<Singing> {
 
   Future<void> playSpoken(
     GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
     List<List<String>> melodyList,
   ) async {
     await widget.audioController.refresh();
     final timeBetween = generalProvider.timeBetweenNotes;
     final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
-    final spokenMapping = generalProvider.getSpokenMapping;
+    final spokenMapping = mappingProvider.getSpokenMapping;
     int i = 0;
     for (var notes in melodyList) {
       if (notes.length == 1) {
@@ -375,6 +386,7 @@ class _SingingState extends State<Singing> {
   Future<void> playChordMelody(
     String instrument,
     GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
     List<List<String>> melodyList,
   ) async {
     await widget.audioController.refresh();
@@ -384,7 +396,7 @@ class _SingingState extends State<Singing> {
     final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
     final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
-    final nestedMapping = generalProvider.getNestedMapping;
+    final nestedMapping = mappingProvider.getNestedMapping;
     int i = 0;
     for (var notes in melodyList) {
       if (notes.length == 1) {

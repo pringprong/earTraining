@@ -1,34 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../theme/theme.dart';
 
 class GeneralProvider extends ChangeNotifier {
-  ThemeData _themeData = darkMode;
-  ThemeData get getThemeData {
-    return _themeData;
-  }
 
-  bool darkModeBool = false;
-  void setDarkMode(bool value) {
-    darkModeBool = value;
-    if (darkModeBool) {
-      _themeData = lightMode;
-    } else {
-      _themeData = darkMode;
-    }
-    notifyListeners();
-    saveSettings();
-  }
-
-  // Define your provider variables here
   String selectedKey = "C";
   int numberOfNotes = 5;
-  int maxDistance = 7; // Maximum distance between notes
+  int maxDistance = 7; 
   bool allowRepeatedNotes = false;
   String selectedInstrument = "Piano";
-
   int timeBetweenNotes = 900; // Time in milliseconds between notes
   String truncateNotes = "1200"; // Truncate notes to 1200 milliseconds
 
@@ -49,87 +29,6 @@ class GeneralProvider extends ChangeNotifier {
   String chordSetRange = "Middle"; // Default chord set range
   String chordSet = "I_IV_V"; // Default chord set
 
-  List<String> mappingKeys = [];
-  List<String> instruments = [];
-  Map<String, Map<String, Map<String, String>>> nestedMapping = {};
-  Map<String, Map<String, Map<String, String>>> get getNestedMapping {
-    return nestedMapping;
-  }
-
-  Map<String, String> spokenMapping = {};
-  Map<String, String> get getSpokenMapping {
-    return spokenMapping;
-  }
-
-
-  List<String> get getMappingKeys {
-    return mappingKeys;
-  }
-
-  List<String> get getInstruments {
-    return instruments;
-  }
-
-  Map<String, Map<String, Map<String, List<String>>>> chordsMapping = {};
-  List<String> chordList = [];
-  Map<String, Map<String, List<String>>> chordSetsMapping = {};
-  List<String> rangesList = [];
-  List<String> chordSetsList = [];
-  Map<String, List<String>> chordMap = {};
-  List<String> get getChordList {
-    return chordList;
-  }
-
-  List<String> get getRangesList {
-    return rangesList;
-  }
-
-  List<String> get getChordSetsList {
-    return chordSetsList;
-  }
-
-  Map<String, List<String>> get getChordMap {
-    return chordMap;
-  }
-
-  Map<String, Map<String, List<String>>> get getChordSetsMapping {
-    return chordSetsMapping;
-  }
-
-  Map<String, Map<String, Map<String, List<String>>>> get getChordsMapping {
-    return chordsMapping;
-  }
-
-  Map<String, Map<String, List<String>>> scalesMapping = {};
-  List<String> octavekeys = [];
-  List<String> scalekeys = [];
-  List<String> get getOctaveKeys {
-    return octavekeys;
-  }
-
-  List<String> get getScaleKeys {
-    return scalekeys;
-  }
-
-  Map<String, Map<String, List<String>>> get getScalesMapping {
-    return scalesMapping;
-  }
-
-  List<String> noteKeys = [];
-  Map<String, String> noteColors = {};
-  Map<String, double> noteColorFactors = {};
-  List<String> get getNoteKeys {
-    return noteKeys;
-  }
-
-  Map<String, String> get getNoteColors {
-    return noteColors;
-  }
-
-  Map<String, double> get getNoteColorFactors {
-    return noteColorFactors;
-  }
-
   static const List<String> defaultNoteKeys = [
     "do",
     "re",
@@ -139,6 +38,31 @@ class GeneralProvider extends ChangeNotifier {
     "la",
     "ti",
     "do1",
+  ];
+  
+  static const List<String> noteKeys = [
+    "do0",
+    "re0",
+    "mi0",
+    "fa0",
+    "so0",
+    "la0",
+    "ti0",
+    "do",
+    "re",
+    "mi",
+    "fa",
+    "so",
+    "la",
+    "ti",
+    "do1",
+    "re1",
+    "mi1",
+    "fa1",
+    "so1",
+    "la1",
+    "ti1",
+    "do2",
   ];
 
   Map<String, bool> noteSelection = {};
@@ -334,97 +258,6 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> get loadMappingJSON async {
-    final String jsonData = await rootBundle.loadString(
-      'assets/mapping/Mapping.json',
-    );
-    final List<dynamic> items = await json.decode(jsonData);
-    for (var item in items) {
-      String key = item['Key'];
-      String instrument = item['Instrument'];
-      String note = item['Note'];
-      String filename = item['File'];
-      nestedMapping[key] ??= {};
-      nestedMapping[key]![instrument] ??= {};
-      nestedMapping[key]![instrument]![note] = filename;
-
-      if (key.isNotEmpty && !mappingKeys.contains(key)) {
-        mappingKeys.add(key);
-      }
-      if (instrument.length > 1 && !instruments.contains(instrument)) {
-        instruments.add(instrument);
-      }
-    }
-    notifyListeners();
-  }
-
-  Future<void> get loadSpokenJSON async {
-    final String jsonData = await rootBundle.loadString(
-      'assets/mapping/Spoken.json',
-    );
-    final List<dynamic> items = await json.decode(jsonData);
-    for (var item in items) {
-      String note = item['Note'];
-      String filename = item['File'];
-      spokenMapping[note] = filename;
-    }
-    notifyListeners();
-  }
-
-  Future<void> get loadChordSetsJSON async {
-    // Load Chords.json and populate chordsMapping
-    final String jsonData = await rootBundle.loadString(
-      'assets/mapping/Chords.json',
-    );
-    final List<dynamic> items = await json.decode(jsonData);
-    for (var item in items) {
-      String category = item['Category'];
-      String degree = item['Degree'];
-      String chordSet = item['Chord Set'];
-      String notesStr = item['Notes'];
-      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
-
-      if (chordSet.isNotEmpty && !chordList.contains(chordSet)) {
-        chordList.add(chordSet);
-      }
-      if (chordSet.isNotEmpty && !chordMap.containsKey(chordSet)) {
-        chordMap[chordSet] = notes;
-      }
-      chordsMapping[category] ??= {};
-      chordsMapping[category]![degree] ??= {};
-      chordsMapping[category]![degree]![chordSet] = notes;
-    }
-    // Load Chords.json and populate chordsSetMapping
-    final String jsonData2 = await rootBundle.loadString(
-      'assets/mapping/ChordSets.json',
-    );
-    final List<dynamic> items2 = await json.decode(jsonData2);
-    for (var item in items2) {
-      String rangeValue = item['Range'];
-      String set = item['Set'];
-      String chordSet = item['Chords'];
-      List<String> chordSets =
-          chordSet.split(',').map((s) => s.trim()).toList();
-
-      chordSetsMapping[rangeValue] ??= {};
-      chordSetsMapping[rangeValue]![set] = chordSets;
-
-      if (rangeValue.isNotEmpty && !rangesList.contains(rangeValue)) {
-        rangesList.add(rangeValue);
-      }
-      if (set.isNotEmpty && !chordSetsList.contains(set)) {
-        chordSetsList.add(set);
-      }
-    }
-
-    // Add "Select all" set for each rangeValue
-    for (var rangeValue in rangesList) {
-      chordSetsMapping[rangeValue]?["Select all"] = List<String>.from(
-        chordList,
-      );
-    }
-    notifyListeners();
-  }
 
   /******** Handsfree listening settings  ********/
 
@@ -495,54 +328,11 @@ class GeneralProvider extends ChangeNotifier {
 
   /******** end Handsfree Listening settings */
 
-  Future<void> get loadScalesJSON async {
-    // Load Scales.json and populate scalesMapping
-    final String jsonData = await rootBundle.loadString(
-      'assets/mapping/Scales.json',
-    );
-    final List<dynamic> items = await json.decode(jsonData);
-    for (var item in items) {
-      String octave = item['Octave'];
-      String set = item['Set'];
-      String notesStr = item['Notes'];
-      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
-
-      scalesMapping[octave] ??= {};
-      scalesMapping[octave]![set] = notes;
-
-      if (octave.isNotEmpty && !octavekeys.contains(octave)) {
-        octavekeys.add(octave);
-      }
-      if (set.isNotEmpty && !scalekeys.contains(set)) {
-        scalekeys.add(set);
-      }
-    }
-    notifyListeners();
-  }
-
-  Future<void> get loadNotesJSON async {
-    final String jsonData = await rootBundle.loadString(
-      'assets/mapping/Notes.json',
-    );
-    final List<dynamic> items = await json.decode(jsonData);
-    for (var item in items) {
-      String note = item['Note'];
-      String color = item['Color'];
-      double factor = double.parse(item['Factor']);
-      noteColors[note] = color;
-      noteColorFactors[note] = factor;
-      if (note.isNotEmpty && !noteKeys.contains(note)) {
-        noteKeys.add(note);
-      }
-    }
-    notifyListeners();
-  }
 
   // Call this after any setting changes
   Future<void> saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
     final settings = {
-      'darkModeBool': darkModeBool,
       'selectedKey': selectedKey,
       'numberOfNotes': numberOfNotes,
       'maxDistance': maxDistance,
@@ -584,7 +374,6 @@ class GeneralProvider extends ChangeNotifier {
     }
     final settings = jsonDecode(jsonString);
 
-    darkModeBool = settings['darkModeBool'] ?? false;
     selectedKey = settings['selectedKey'] ?? "C";
     numberOfNotes = settings['numberOfNotes'] ?? 5;
     maxDistance = settings['maxDistance'] ?? 7;
@@ -617,11 +406,6 @@ class GeneralProvider extends ChangeNotifier {
             '{"I_M_R":true,"IV_M_R":true,"V_M_R":true}',
       ),
     );
-    if (darkModeBool) {
-      _themeData = lightMode;
-    } else {
-      _themeData = darkMode;
-    }
     numberOfRounds = settings['numberOfRounds'] ?? 5;
     melodyRepeats = settings['melodyRepeats'] ?? 3;
     spokenRepeats = settings['spokenRepeats'] ?? 3;
@@ -633,7 +417,6 @@ class GeneralProvider extends ChangeNotifier {
 
   void resetAllSettings() {
     // Set all settings to their default values
-    darkModeBool = false;
     selectedKey = "C";
     numberOfNotes = 5;
     maxDistance = 7;
@@ -659,11 +442,6 @@ class GeneralProvider extends ChangeNotifier {
       for (var key in "I_M_R,IV_M_R,V_M_R".split(','))
         key: true, // Initialize all chords as not selected
     };
-    if (darkModeBool) {
-      _themeData = lightMode;
-    } else {
-      _themeData = darkMode;
-    }
     numberOfRounds = 5;
     melodyRepeats = 3;
     spokenRepeats = 3;

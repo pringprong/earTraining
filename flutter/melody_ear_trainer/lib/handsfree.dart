@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import 'audio/audio_controller.dart';
 import 'utils/colors.dart';
@@ -23,7 +24,7 @@ class _HandsFreeState extends State<HandsFree> {
   @override
   Widget build(BuildContext context) {
     // Get the nestedMapping from the provider (auto-updates on notifyListeners)
-    final nestedMapping = context.watch<GeneralProvider>().getNestedMapping;
+    final nestedMapping = context.watch<MappingProvider>().getNestedMapping;
     return Scaffold(
       appBar: AppBar(title: Text('Hands-free melody ID')),
       body: Padding(
@@ -188,6 +189,7 @@ class _HandsFreeState extends State<HandsFree> {
                         //playFunction(generalProvider, nestedMapping);
                         playFunction(
                           context.read<GeneralProvider>(),
+                          context.read<MappingProvider>(),
                           nestedMapping,
                         );
                       },
@@ -327,6 +329,7 @@ class _HandsFreeState extends State<HandsFree> {
 
   playFunction(
     GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
     Map<String, Map<String, Map<String, String>>> nestedMapping,
   ) async {
     // while currentRound < numberOfRounds and notPaused = true
@@ -343,7 +346,7 @@ class _HandsFreeState extends State<HandsFree> {
         notPaused) {
       solfegeText = "";
       setState(() {});
-      String result = chordMelody.generateChordMelody(generalProvider);
+      String result = chordMelody.generateChordMelody(generalProvider, mappingProvider);
       if (result.isNotEmpty) {
         ScaffoldMessenger.of(
           context,
@@ -354,6 +357,7 @@ class _HandsFreeState extends State<HandsFree> {
         await playChordMelody(
           getInstrument(context.read<GeneralProvider>().handsfreeInstrument),
           generalProvider,
+          mappingProvider,
           chordMelody.getChordMelodySolfege(),
         );
         if (!notPaused) {
@@ -367,6 +371,7 @@ class _HandsFreeState extends State<HandsFree> {
         await playChordMelody(
           "Solfege",
           generalProvider,
+          mappingProvider,
           chordMelody.getChordMelodySolfege(),
         );
         if (!notPaused) {
@@ -384,6 +389,7 @@ class _HandsFreeState extends State<HandsFree> {
 
   resumeFunction(
     GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
     Map<String, Map<String, Map<String, String>>> nestedMapping,
   ) async {
     // do not generate a melody
@@ -405,6 +411,7 @@ class _HandsFreeState extends State<HandsFree> {
       await playChordMelody(
         getInstrument(context.read<GeneralProvider>().handsfreeInstrument),
         generalProvider,
+        mappingProvider,
         chordMelody.getChordMelodySolfege(),
       );
       await Future.delayed(Duration(seconds: context.read<GeneralProvider>().getTimeDelayRepeat));
@@ -415,6 +422,7 @@ class _HandsFreeState extends State<HandsFree> {
       await playChordMelody(
         "Solfege",
         generalProvider,
+        mappingProvider,
         chordMelody.getChordMelodySolfege(),
       );
       await Future.delayed(Duration(seconds: context.read<GeneralProvider>().getTimeDelayRepeat));
@@ -424,12 +432,13 @@ class _HandsFreeState extends State<HandsFree> {
     }
     currentRound++;
     setState(() {});
-    playFunction(generalProvider, nestedMapping);
+    playFunction(generalProvider, mappingProvider, nestedMapping);
   }
 
   Future<void> playChordMelody(
     String instrument,
     GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
     List<List<String>> chordMelodySolfege,
   ) async {
     await widget.audioController.refresh();
@@ -439,7 +448,7 @@ class _HandsFreeState extends State<HandsFree> {
     final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
     final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
-    final nestedMapping = generalProvider.getNestedMapping;
+    final nestedMapping = mappingProvider.getNestedMapping;
     int i = 0;
     for (var notes in chordMelodySolfege) {
       if (!notPaused) {

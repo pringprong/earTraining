@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import 'audio/audio_controller.dart';
 import 'utils/colors.dart';
@@ -16,7 +17,7 @@ class _TonicPageState extends State<TonicPage> {
   @override
   Widget build(BuildContext context) {
     // Get the nestedMapping from the provider (auto-updates on notifyListeners)
-    final nestedMapping = context.watch<GeneralProvider>().getNestedMapping;
+    final nestedMapping = context.watch<MappingProvider>().getNestedMapping;
     return Scaffold(
       appBar: AppBar(title: Text('Tonic')),
       body: Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'utils/colors.dart';
 
 class ChordsPage extends StatefulWidget {
@@ -13,11 +14,11 @@ class _ChordsPageState extends State<ChordsPage> {
   @override
   Widget build(BuildContext context) {
     final generalProvider = Provider.of<GeneralProvider>(context);
-    final chordsMapping = context.watch<GeneralProvider>().getChordsMapping;
+    final chordsMapping = context.watch<MappingProvider>().getChordsMapping;
     final chordSetsMapping =
-        context.watch<GeneralProvider>().getChordSetsMapping;
-    final rangesList = context.watch<GeneralProvider>().getRangesList;
-    final chordSetsList = context.watch<GeneralProvider>().getChordSetsList;
+        context.watch<MappingProvider>().getChordSetsMapping;
+    final rangesList = context.watch<MappingProvider>().getRangesList;
+    final chordSetsList = context.watch<MappingProvider>().getChordSetsList;
     String? selectedRange =
         generalProvider.chordSetRange; // Default range selection
     String? selectedChordSet =

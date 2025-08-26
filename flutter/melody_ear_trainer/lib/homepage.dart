@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'audio/audio_controller.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 //import 'dart:math';
 import 'utils/colors.dart';
@@ -47,13 +48,14 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   @override
   Widget build(BuildContext context) {
     final generalProvider = Provider.of<GeneralProvider>(context);
-    context.read<GeneralProvider>().loadMappingJSON;
-    context.read<GeneralProvider>().loadChordSetsJSON;
-    context.read<GeneralProvider>().loadScalesJSON;
-    context.read<GeneralProvider>().loadNotesJSON;
-    context.read<GeneralProvider>().loadSpokenJSON;
-    final nestedMapping = generalProvider.getNestedMapping;
-    final noteKeys = generalProvider.getNoteKeys;
+    final mappingProvider = Provider.of<MappingProvider>(context);
+    context.read<MappingProvider>().loadMappingJSON;
+    context.read<MappingProvider>().loadChordSetsJSON;
+    context.read<MappingProvider>().loadScalesJSON;
+    context.read<MappingProvider>().loadNotesJSON;
+    context.read<MappingProvider>().loadSpokenJSON;
+    final nestedMapping = mappingProvider.getNestedMapping;
+    final noteKeys = mappingProvider.getNoteKeys;
     // Notes grid: group notes by row
     final noteRows = [
       noteKeys.where((n) => n.contains('0')).toList(),
@@ -62,8 +64,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
       noteKeys.where((n) => n.contains('2')).toList(),
     ];
     final selectedNotes = generalProvider.getSelectedNotes();
-    final noteColors = generalProvider.getNoteColors;
-    final noteColorFactor = generalProvider.getNoteColorFactors;
+    final noteColors = mappingProvider.getNoteColors;
+    final noteColorFactor = mappingProvider.getNoteColorFactors;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody Ear Trainer')),
@@ -168,7 +170,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       ),
                       onPressed: () {
                         //generateMelody(generalProvider);
-                        newGenerateChordMelody(generalProvider);
+                        newGenerateChordMelody(generalProvider, mappingProvider);
                         setState(() {
                           solfegeText = ""; // Clear solfege area
                           comparisonIcon = Icons.help_outline;
@@ -211,6 +213,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           () => playChordMelody(
                             "Guitar",
                             generalProvider,
+                            mappingProvider,
                             generatedChordMelody.getChordMelodySolfege(),
                           ),
                       child: FittedBox(
@@ -231,6 +234,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           () => playChordMelody(
                             "Piano",
                             generalProvider,
+                            mappingProvider,
                             generatedChordMelody.getChordMelodySolfege(),
                           ),
                       child: FittedBox(
@@ -282,14 +286,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           onPressed:
                               () => playSpoken(
                                 generalProvider,
+                                mappingProvider,
                                 generatedChordMelody.getChordMelodySolfege(),
                               ),
                           child: FittedBox(
                             fit: BoxFit.fill,
-                            child: Text(
-                              "Say",
-                              style: TextStyle(fontSize: 20),
-                            ),
+                            child: Text("Say", style: TextStyle(fontSize: 20)),
                           ),
                         ),
                       ),
@@ -305,6 +307,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               () => playChordMelody(
                                 "Solfege",
                                 generalProvider,
+                                mappingProvider,
                                 generatedChordMelody.getChordMelodySolfege(),
                               ),
                           child: FittedBox(
@@ -420,7 +423,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               }),
               SizedBox(height: 8),
               // Chord buttons section
-              buildSelectedChordButtons(generalProvider),
+              buildSelectedChordButtons(generalProvider, mappingProvider),
               SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -579,6 +582,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           () => playChordMelody(
                             "Guitar",
                             generalProvider,
+                            mappingProvider,
                             userWrittenChordMelody.getChordMelodySolfege(),
                           ),
                       child: FittedBox(
@@ -598,6 +602,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           () => playChordMelody(
                             "Piano",
                             generalProvider,
+                            mappingProvider,
                             userWrittenChordMelody.getChordMelodySolfege(),
                           ),
                       child: FittedBox(
@@ -617,6 +622,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                           () => playChordMelody(
                             "Solfege",
                             generalProvider,
+                            mappingProvider,
                             userWrittenChordMelody.getChordMelodySolfege(),
                           ),
                       child: FittedBox(
@@ -635,10 +641,11 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   }
 
   // 1. Add chord buttons below notes section
-  Widget buildSelectedChordButtons(GeneralProvider generalProvider) {
+  Widget buildSelectedChordButtons(GeneralProvider generalProvider,
+                                  MappingProvider mappingProvider) {
     final selectedChords = generalProvider.getSelectedChords();
     final chordFrequency = generalProvider.chordFrequency;
-    final chordMap = generalProvider.getChordMap;
+    final chordMap = mappingProvider.getChordMap;
     if (chordFrequency == "Never") {
       return Padding(padding: const EdgeInsets.all(0.0));
     }
@@ -674,6 +681,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     playChordMelody(
                       generalProvider.selectedInstrument,
                       generalProvider,
+                      mappingProvider,
                       [notes],
                     );
                   });
@@ -694,6 +702,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   Future<void> playChordMelody(
     String instrument,
     GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
     List<List<String>> melodyList,
   ) async {
     await widget.audioController.refresh();
@@ -703,7 +712,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
     final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
-    final nestedMapping = generalProvider.getNestedMapping;
+    final nestedMapping = mappingProvider.getNestedMapping;
     int i = 0;
     for (var notes in melodyList) {
       if (notes.length == 1) {
@@ -755,13 +764,14 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
 
   Future<void> playSpoken(
     GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
     List<List<String>> melodyList,
   ) async {
     await widget.audioController.refresh();
     final timeBetween = generalProvider.timeBetweenNotes;
     final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
-    final spokenMapping = generalProvider.getSpokenMapping;
+    final spokenMapping = mappingProvider.getSpokenMapping;
     int i = 0;
     for (var notes in melodyList) {
       if (notes.length == 1) {
@@ -790,11 +800,12 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     }
   }
 
-  void newGenerateChordMelody(GeneralProvider generalProvider) {
+  void newGenerateChordMelody(GeneralProvider generalProvider,
+    MappingProvider mappingProvider) {
     userWrittenChordMelody.clear();
     melodiesSame = false;
 
-    String result = generatedChordMelody.generateChordMelody(generalProvider);
+    String result = generatedChordMelody.generateChordMelody(generalProvider, mappingProvider);
     if (result.isNotEmpty) {
       ScaffoldMessenger.of(
         context,

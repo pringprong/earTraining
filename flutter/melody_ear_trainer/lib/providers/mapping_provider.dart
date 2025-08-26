@@ -1,0 +1,225 @@
+import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+
+class MappingProvider extends ChangeNotifier {
+
+  MappingProvider() {
+    // loadMappingJSON;
+    // loadSpokenJSON;
+    // loadChordSetsJSON;
+    // loadScalesJSON;
+    // loadNotesJSON;
+  }
+
+  // These are from Mapping.json
+  List<String> mappingKeys = [];
+  List<String> instruments = [];
+  Map<String, Map<String, Map<String, String>>> nestedMapping = {};
+
+  // These are from Spoken.json
+  Map<String, String> spokenMapping = {};
+
+  // These are from Chords.json 
+  Map<String, Map<String, Map<String, List<String>>>> chordsMapping = {};
+  Map<String, List<String>> chordMap = {};
+  // From ChordSets.json
+  List<String> chordList = [];
+  Map<String, Map<String, List<String>>> chordSetsMapping = {};
+  List<String> rangesList = [];
+  List<String> chordSetsList = [];
+
+  // These are from Scales.json
+  Map<String, Map<String, List<String>>> scalesMapping = {};
+  List<String> octavekeys = [];
+  List<String> scalekeys = [];
+
+  // These are from Notes.json
+  List<String> noteKeys = [];
+  Map<String, String> noteColors = {};
+  Map<String, double> noteColorFactors = {};
+
+  // Getters
+  List<String> get getMappingKeys {
+    return mappingKeys;
+  }
+  List<String> get getInstruments {
+    return instruments;
+  }
+  Map<String, Map<String, Map<String, String>>> get getNestedMapping {
+    return nestedMapping;
+  }
+  Map<String, String> get getSpokenMapping {
+    return spokenMapping;
+  }
+  Map<String, Map<String, Map<String, List<String>>>> get getChordsMapping {
+    return chordsMapping;
+  }
+  Map<String, List<String>> get getChordMap {
+    return chordMap;
+  }
+  List<String> get getChordList {
+    return chordList;
+  }
+  Map<String, Map<String, List<String>>> get getChordSetsMapping {
+    return chordSetsMapping;
+  }
+  List<String> get getRangesList {
+    return rangesList;
+  }
+  List<String> get getChordSetsList {
+    return chordSetsList;
+  }
+  Map<String, Map<String, List<String>>> get getScalesMapping {
+    return scalesMapping;
+  }
+  List<String> get getOctaveKeys {
+    return octavekeys;
+  }
+  List<String> get getScaleKeys {
+    return scalekeys;
+  }
+  List<String> get getNoteKeys {
+    return noteKeys;
+  }
+  Map<String, String> get getNoteColors {
+    return noteColors;
+  }
+  Map<String, double> get getNoteColorFactors {
+    return noteColorFactors;
+  }
+
+  Future<void> get loadMappingJSON async {
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Mapping.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
+    for (var item in items) {
+      String key = item['Key'];
+      String instrument = item['Instrument'];
+      String note = item['Note'];
+      String filename = item['File'];
+      nestedMapping[key] ??= {};
+      nestedMapping[key]![instrument] ??= {};
+      nestedMapping[key]![instrument]![note] = filename;
+
+      if (key.isNotEmpty && !mappingKeys.contains(key)) {
+        mappingKeys.add(key);
+      }
+      if (instrument.length > 1 && !instruments.contains(instrument)) {
+        instruments.add(instrument);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> get loadSpokenJSON async {
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Spoken.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
+    for (var item in items) {
+      String note = item['Note'];
+      String filename = item['File'];
+      spokenMapping[note] = filename;
+    }
+    notifyListeners();
+  }
+
+  Future<void> get loadChordSetsJSON async {
+    // Load Chords.json and populate chordsMapping
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Chords.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
+    for (var item in items) {
+      String category = item['Category'];
+      String degree = item['Degree'];
+      String chordSet = item['Chord Set'];
+      String notesStr = item['Notes'];
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+
+      if (chordSet.isNotEmpty && !chordList.contains(chordSet)) {
+        chordList.add(chordSet);
+      }
+      if (chordSet.isNotEmpty && !chordMap.containsKey(chordSet)) {
+        chordMap[chordSet] = notes;
+      }
+      chordsMapping[category] ??= {};
+      chordsMapping[category]![degree] ??= {};
+      chordsMapping[category]![degree]![chordSet] = notes;
+    }
+    // Load Chords.json and populate chordsSetMapping
+    final String jsonData2 = await rootBundle.loadString(
+      'assets/mapping/ChordSets.json',
+    );
+    final List<dynamic> items2 = await json.decode(jsonData2);
+    for (var item in items2) {
+      String rangeValue = item['Range'];
+      String set = item['Set'];
+      String chordSet = item['Chords'];
+      List<String> chordSets =
+          chordSet.split(',').map((s) => s.trim()).toList();
+
+      chordSetsMapping[rangeValue] ??= {};
+      chordSetsMapping[rangeValue]![set] = chordSets;
+
+      if (rangeValue.isNotEmpty && !rangesList.contains(rangeValue)) {
+        rangesList.add(rangeValue);
+      }
+      if (set.isNotEmpty && !chordSetsList.contains(set)) {
+        chordSetsList.add(set);
+      }
+    }
+
+    // Add "Select all" set for each rangeValue
+    for (var rangeValue in rangesList) {
+      chordSetsMapping[rangeValue]?["Select all"] 
+        = List<String>.from(chordList,);
+    }
+    notifyListeners();
+  }
+
+  Future<void> get loadScalesJSON async {
+    // Load Scales.json and populate scalesMapping
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Scales.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
+    for (var item in items) {
+      String octave = item['Octave'];
+      String set = item['Set'];
+      String notesStr = item['Notes'];
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+
+      scalesMapping[octave] ??= {};
+      scalesMapping[octave]![set] = notes;
+
+      if (octave.isNotEmpty && !octavekeys.contains(octave)) {
+        octavekeys.add(octave);
+      }
+      if (set.isNotEmpty && !scalekeys.contains(set)) {
+        scalekeys.add(set);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> get loadNotesJSON async {
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Notes.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
+    for (var item in items) {
+      String note = item['Note'];
+      String color = item['Color'];
+      double factor = double.parse(item['Factor']);
+      noteColors[note] = color;
+      noteColorFactors[note] = factor;
+      if (note.isNotEmpty && !noteKeys.contains(note)) {
+        noteKeys.add(note);
+      }
+    }
+    notifyListeners();
+  }
+}

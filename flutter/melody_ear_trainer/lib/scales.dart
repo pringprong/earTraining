@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
+import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'utils/colors.dart';
 
 class ScalesPage extends StatefulWidget {
@@ -13,9 +14,9 @@ class _ScalesPageState extends State<ScalesPage> {
   @override
   Widget build(BuildContext context) {
     final generalProvider = Provider.of<GeneralProvider>(context);
-    final scalesMapping = context.watch<GeneralProvider>().getScalesMapping;
-    final octavekeys = context.watch<GeneralProvider>().getOctaveKeys;
-    final scalekeys = context.watch<GeneralProvider>().getScaleKeys;
+    final scalesMapping = context.watch<MappingProvider>().getScalesMapping;
+    final octavekeys = context.watch<MappingProvider>().getOctaveKeys;
+    final scalekeys = context.watch<MappingProvider>().getScaleKeys;
     String? selectedOctave =
         generalProvider.selectedOctave; // Default octave selection
     String? selectedScale =
@@ -119,17 +120,19 @@ class _ScalesPageState extends State<ScalesPage> {
               ),
             ),
             // Notes grid
-            Expanded(child: _buildNotesGrid(generalProvider)),
+            Expanded(child: _buildNotesGrid(context.read<GeneralProvider>(), 
+              context.read<MappingProvider>())),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNotesGrid(GeneralProvider generalProvider) {
-    final noteKeys = generalProvider.getNoteKeys;
-    final noteColors = generalProvider.getNoteColors;
-    final noteColorFactor = generalProvider.getNoteColorFactors;
+  Widget _buildNotesGrid(GeneralProvider generalProvider,
+    MappingProvider mappingProvider) {
+    final noteKeys = mappingProvider.getNoteKeys;
+    final noteColors = mappingProvider.getNoteColors;
+    final noteColorFactor = mappingProvider.getNoteColorFactors;
     final noteSelection = generalProvider.getNoteSelection;
     //print(noteSelection);
     List<Widget> rows = [];
