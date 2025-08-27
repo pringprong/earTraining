@@ -71,7 +71,9 @@ class _HandsFreeState extends State<HandsFree> {
                   DropdownButton<int>(
                     value: context.watch<MelodyIDSettings>().melodyRepeats,
                     items:
-                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((int value) {
+                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
+                          int value,
+                        ) {
                           return DropdownMenuItem<int>(
                             value: value,
                             child: Text(value.toString()),
@@ -82,7 +84,8 @@ class _HandsFreeState extends State<HandsFree> {
                         context.read<MelodyIDSettings>().setMelodyRepeats(
                           repeats: newValue,
                         );
-                      }               },
+                      }
+                    },
                     //               },
                   ),
                 ],
@@ -97,7 +100,9 @@ class _HandsFreeState extends State<HandsFree> {
                   DropdownButton<int>(
                     value: context.watch<MelodyIDSettings>().solfegeRepeats,
                     items:
-                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((int value) {
+                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
+                          int value,
+                        ) {
                           return DropdownMenuItem<int>(
                             value: value,
                             child: Text(value.toString()),
@@ -108,7 +113,8 @@ class _HandsFreeState extends State<HandsFree> {
                         context.read<MelodyIDSettings>().setSolfegeRepeats(
                           repeats: newValue,
                         );
-                      }               },
+                      }
+                    },
                   ),
                 ],
               ),
@@ -150,22 +156,26 @@ class _HandsFreeState extends State<HandsFree> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Select Instrument'),
-                    value: context.watch<MelodyIDSettings>().handsfreeInstrument,
+                    value:
+                        context.watch<MelodyIDSettings>().handsfreeInstrument,
                     items:
-                        ["Guitar", "Piano", "Alternate"]
-                            .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            })
-                            .toList(),
+                        [
+                          "Guitar",
+                          "Piano",
+                          "Alternate",
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context.read<MelodyIDSettings>().setHandsfreeInstrument(
                           instrument: newValue,
                         );
-                      }               },
+                      }
+                    },
                   ),
                 ],
               ),
@@ -284,9 +294,15 @@ class _HandsFreeState extends State<HandsFree> {
                 // Current Round Display
                 children: [
                   Text(
-                    (min(currentRound + 1, context.read<MelodyIDSettings>().getNumberOfRounds)).toString() 
-                    +  " / " 
-                    + context.read<MelodyIDSettings>().getNumberOfRounds.toString(),
+                    (min(
+                          currentRound + 1,
+                          context.read<MelodyIDSettings>().getNumberOfRounds,
+                        )).toString() +
+                        " / " +
+                        context
+                            .read<MelodyIDSettings>()
+                            .getNumberOfRounds
+                            .toString(),
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
@@ -314,16 +330,16 @@ class _HandsFreeState extends State<HandsFree> {
 
   String getInstrument(String userChoice) {
     if (userChoice == "Alternate") {
-        if (currentInstrument == "Guitar") {
-          currentInstrument = "Piano"; // Alternate to Piano
-          return "Piano"; // Alternate to Piano
-        } else if (currentInstrument == "Piano") {
-          currentInstrument = "Guitar"; // Alternate to Guitar
-          return "Guitar"; // Alternate to Guitar
+      if (currentInstrument == "Guitar") {
+        currentInstrument = "Piano"; // Alternate to Piano
+        return "Piano"; // Alternate to Piano
+      } else if (currentInstrument == "Piano") {
+        currentInstrument = "Guitar"; // Alternate to Guitar
+        return "Guitar"; // Alternate to Guitar
       }
     } else if (userChoice.isNotEmpty) {
       return userChoice;
-  }
+    }
     return "Guitar"; // Default to Guitar if no valid choice
   }
 
@@ -342,42 +358,74 @@ class _HandsFreeState extends State<HandsFree> {
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    while (currentRound < context.read<MelodyIDSettings>().getNumberOfRounds &&
-        notPaused) {
+     while (currentRound < context.read<MelodyIDSettings>().getNumberOfRounds &&
+         notPaused) {
+
       solfegeText = "";
       setState(() {});
-      String result = chordMelody.generateChordMelody(generalProvider, mappingProvider);
+      String result = chordMelody.generateChordMelody(
+        generalProvider,
+        mappingProvider,
+      );
       if (result.isNotEmpty) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(result)));
         return;
       }
-      for (int i = 0; i < context.read<MelodyIDSettings>().getMelodyRepeats && notPaused; i++) {
-        await playChordMelody(
+      for (
+        int i = 0;
+        i < context.read<MelodyIDSettings>().getMelodyRepeats && notPaused;
+        i++
+      ) {
+        // await playChordMelody(
+        //   getInstrument(context.read<MelodyIDSettings>().handsfreeInstrument),
+        //   generalProvider,
+        //   mappingProvider,
+        //   chordMelody.getChordMelodySolfege(),
+        // );
+        await chordMelody.playChordMelody(
           getInstrument(context.read<MelodyIDSettings>().handsfreeInstrument),
           generalProvider,
           mappingProvider,
-          chordMelody.getChordMelodySolfege(),
+          widget,
         );
         if (!notPaused) {
           return; // Exit if paused
         }
-        await Future.delayed(Duration(seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat));
+        await Future.delayed(
+          Duration(
+            seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat,
+          ),
+        );
       }
       solfegeText = chordMelody.getChordMelody().join(' ');
       setState(() {});
-      for (int j = 0; j < context.read<MelodyIDSettings>().getSolfegeRepeats && notPaused; j++) {
-        await playChordMelody(
+      for (
+        int j = 0;
+        j < context.read<MelodyIDSettings>().getSolfegeRepeats && notPaused;
+        j++
+      ) {
+        // await playChordMelody(
+        //   "Solfege",
+        //   generalProvider,
+        //   mappingProvider,
+        //   chordMelody.getChordMelodySolfege(),
+        // );
+        await chordMelody.playChordMelody(
           "Solfege",
           generalProvider,
           mappingProvider,
-          chordMelody.getChordMelodySolfege(),
+          widget,
         );
         if (!notPaused) {
           return; // Exit if paused
         }
-        await Future.delayed(Duration(seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat));
+        await Future.delayed(
+          Duration(
+            seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat,
+          ),
+        );
       }
       if (!notPaused) {
         return; // Exit if paused
@@ -407,25 +455,49 @@ class _HandsFreeState extends State<HandsFree> {
     if (currentRound >= context.read<MelodyIDSettings>().getNumberOfRounds) {
       return; // Exit if all rounds are completed
     }
-    for (int i = 0; i < context.read<MelodyIDSettings>().getMelodyRepeats && notPaused; i++) {
-      await playChordMelody(
+    for (
+      int i = 0;
+      i < context.read<MelodyIDSettings>().getMelodyRepeats && notPaused;
+      i++
+    ) {
+      // await playChordMelody(
+      //   getInstrument(context.read<MelodyIDSettings>().handsfreeInstrument),
+      //   generalProvider,
+      //   mappingProvider,
+      //   chordMelody.getChordMelodySolfege(),
+      // );
+      await chordMelody.playChordMelody(
         getInstrument(context.read<MelodyIDSettings>().handsfreeInstrument),
         generalProvider,
         mappingProvider,
-        chordMelody.getChordMelodySolfege(),
+        widget,
       );
-      await Future.delayed(Duration(seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat));
+      await Future.delayed(
+        Duration(seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat),
+      );
     }
     solfegeText = chordMelody.getChordMelody().join(' ');
     setState(() {});
-    for (int j = 0; j < context.read<MelodyIDSettings>().getSolfegeRepeats && notPaused; j++) {
-      await playChordMelody(
+    for (
+      int j = 0;
+      j < context.read<MelodyIDSettings>().getSolfegeRepeats && notPaused;
+      j++
+    ) {
+      // await playChordMelody(
+      //   "Solfege",
+      //   generalProvider,
+      //   mappingProvider,
+      //   chordMelody.getChordMelodySolfege(),
+      // );
+      await chordMelody.playChordMelody(
         "Solfege",
         generalProvider,
         mappingProvider,
-        chordMelody.getChordMelodySolfege(),
+        widget,
       );
-      await Future.delayed(Duration(seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat));
+      await Future.delayed(
+        Duration(seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat),
+      );
     }
     if (!notPaused) {
       return; // Exit if paused
@@ -435,72 +507,72 @@ class _HandsFreeState extends State<HandsFree> {
     playFunction(generalProvider, mappingProvider, nestedMapping);
   }
 
-  Future<void> playChordMelody(
-    String instrument,
-    GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
-    List<List<String>> chordMelodySolfege,
-  ) async {
-    await widget.audioController.refresh();
-    final key = generalProvider.selectedKey;
-    final timeBetween = generalProvider.timeBetweenNotes;
-    final truncate = generalProvider.truncateNotes;
-    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
-    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
-    final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
-    final nestedMapping = mappingProvider.getNestedMapping;
-    int i = 0;
-    for (var notes in chordMelodySolfege) {
-      if (!notPaused) {
-        return; // Exit if paused
-      }
-      if (notes.length == 1) {
-        final note = notes[0];
-        final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-        if (filename.isNotEmpty) {
-          if (truncate == "None" || truncate == "Never") {
-            widget.audioController.playSound("assets/audio/$filename");
-          } else {
-            widget.audioController.playSoundFade(
-              "assets/audio/$filename",
-              int.parse(truncate),
-              500,
-            );
-          }
-        }
-      } else if (notes.length > 1) {
-        if (i % 7 == 0) {
-          await widget.audioController.refresh();
-        }
-        List<String> chordNotes = List<String>.from(notes);
-        if (arpeggiateOrder == "Descending") {
-          chordNotes = chordNotes.reversed.toList();
-        } else if (arpeggiateOrder == "Random") {
-          chordNotes.shuffle();
-        }
-        for (var note in chordNotes) {
-          if (!notPaused) {
-            return; // Exit if paused
-          }
-          final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-          if (filename.isNotEmpty) {
-            if (truncate == "None" || truncate == "Never") {
-              widget.audioController.playSound("assets/audio/$filename");
-            } else {
-              widget.audioController.playSoundFade(
-                "assets/audio/$filename",
-                int.parse(truncate),
-                500,
-              );
-            }
-          }
-          if (arpeggiate) {
-            await Future.delayed(Duration(milliseconds: arpeggiateDelay));
-          }
-        }
-      }
-      await Future.delayed(Duration(milliseconds: timeBetween));
-      i++;
-    }
-  }
+  // Future<void> playChordMelody(
+  //   String instrument,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   List<List<String>> chordMelodySolfege,
+  // ) async {
+  //   await widget.audioController.refresh();
+  //   final key = generalProvider.selectedKey;
+  //   final timeBetween = generalProvider.timeBetweenNotes;
+  //   final truncate = generalProvider.truncateNotes;
+  //   final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
+  //   final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
+  //   final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
+  //   final nestedMapping = mappingProvider.getNestedMapping;
+  //   int i = 0;
+  //   for (var notes in chordMelodySolfege) {
+  //     if (!notPaused) {
+  //       return; // Exit if paused
+  //     }
+  //     if (notes.length == 1) {
+  //       final note = notes[0];
+  //       final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+  //       if (filename.isNotEmpty) {
+  //         if (truncate == "None" || truncate == "Never") {
+  //           widget.audioController.playSound("assets/audio/$filename");
+  //         } else {
+  //           widget.audioController.playSoundFade(
+  //             "assets/audio/$filename",
+  //             int.parse(truncate),
+  //             500,
+  //           );
+  //         }
+  //       }
+  //     } else if (notes.length > 1) {
+  //       if (i % 7 == 0) {
+  //         await widget.audioController.refresh();
+  //       }
+  //       List<String> chordNotes = List<String>.from(notes);
+  //       if (arpeggiateOrder == "Descending") {
+  //         chordNotes = chordNotes.reversed.toList();
+  //       } else if (arpeggiateOrder == "Random") {
+  //         chordNotes.shuffle();
+  //       }
+  //       for (var note in chordNotes) {
+  //         if (!notPaused) {
+  //           return; // Exit if paused
+  //         }
+  //         final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+  //         if (filename.isNotEmpty) {
+  //           if (truncate == "None" || truncate == "Never") {
+  //             widget.audioController.playSound("assets/audio/$filename");
+  //           } else {
+  //             widget.audioController.playSoundFade(
+  //               "assets/audio/$filename",
+  //               int.parse(truncate),
+  //               500,
+  //             );
+  //           }
+  //         }
+  //         if (arpeggiate) {
+  //           await Future.delayed(Duration(milliseconds: arpeggiateDelay));
+  //         }
+  //       }
+  //     }
+  //     await Future.delayed(Duration(milliseconds: timeBetween));
+  //     i++;
+  //   }
+  // }
 }

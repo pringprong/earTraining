@@ -143,7 +143,7 @@ class _TonicPageState extends State<TonicPage> {
                         ),
                         foregroundColor: Colors.black,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         String filename =
                             nestedMapping[context
                                 .read<MelodyIDSettings>()
@@ -158,6 +158,7 @@ class _TonicPageState extends State<TonicPage> {
                           );
                           return;
                         }
+                        await widget.audioController.refresh();
                         widget.audioController.playSound(filename);
                       },
                       child: FittedBox(
@@ -179,7 +180,7 @@ class _TonicPageState extends State<TonicPage> {
                         ),
                         foregroundColor: Colors.black,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         String filename =
                             nestedMapping[context
                                 .read<MelodyIDSettings>()
@@ -194,6 +195,7 @@ class _TonicPageState extends State<TonicPage> {
                           );
                           return;
                         }
+                        await widget.audioController.refresh();
                         widget.audioController.playSound(filename);
                       },
                       child: FittedBox(
@@ -215,7 +217,7 @@ class _TonicPageState extends State<TonicPage> {
                         ),
                         foregroundColor: Colors.black,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         String filename =
                             nestedMapping[context
                                 .read<MelodyIDSettings>()
@@ -230,6 +232,7 @@ class _TonicPageState extends State<TonicPage> {
                           );
                           return;
                         }
+                        await widget.audioController.refresh();
                         widget.audioController.playSound(filename);
                       },
                       child: FittedBox(

@@ -94,11 +94,15 @@ class _SingingState extends State<Singing> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-                        playSpoken(
-                          context.read<MelodyIDSettings>(),
+                        // playSpoken(
+                        //   context.read<MelodyIDSettings>(),
+                        //   context.read<MappingProvider>(),
+                        //   generatedChordMelody.getChordMelodySolfege(),
+                        // );
+                        generatedChordMelody.playSpoken(context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
-                          generatedChordMelody.getChordMelodySolfege(),
-                        );
+                          widget,
+                          );
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -131,11 +135,22 @@ class _SingingState extends State<Singing> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        playChordMelody(
+                        // playChordMelody(
+                        //   "Guitar",
+                        //   context.read<MelodyIDSettings>(),
+                        //   context.read<MappingProvider>(),
+                        //   generatedChordMelody.getFirstNoteOrChord(),
+                        //   );
+                        ChordMelody fn = ChordMelody.singleChord(
+                          generatedChordMelody.getFirstNoteOrChord_Melody(),
+                          generatedChordMelody.getFirstNoteOrChord_Solfege(),
+                        );
+                        fn.playChordMelody(
                           "Guitar",
                           context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
-                          generatedChordMelody.getFirstNoteOrChord(),                        );
+                          widget,
+                        );
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -159,11 +174,22 @@ class _SingingState extends State<Singing> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        playChordMelody(
+                      //   playChordMelody(
+                      //     "Piano",
+                      //     context.read<MelodyIDSettings>(),
+                      //     context.read<MappingProvider>(),
+                      //     generatedChordMelody.getFirstNoteOrChord(),                        );
+                      // },
+                        ChordMelody fn = ChordMelody.singleChord(
+                          generatedChordMelody.getFirstNoteOrChord_Melody(),
+                          generatedChordMelody.getFirstNoteOrChord_Solfege(),
+                        );
+                        fn.playChordMelody(
                           "Piano",
                           context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
-                          generatedChordMelody.getFirstNoteOrChord(),                        );
+                          widget,
+                        );
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -187,11 +213,22 @@ class _SingingState extends State<Singing> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        playChordMelody(
+                      //   playChordMelody(
+                      //     "Solfege",
+                      //     context.read<MelodyIDSettings>(),
+                      //     context.read<MappingProvider>(),
+                      //     generatedChordMelody.getFirstNoteOrChord(),                        );
+                      // },
+                      ChordMelody fn = ChordMelody.singleChord(
+                          generatedChordMelody.getFirstNoteOrChord_Melody(),
+                          generatedChordMelody.getFirstNoteOrChord_Solfege(),
+                        );
+                        fn.playChordMelody(
                           "Solfege",
                           context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
-                          generatedChordMelody.getFirstNoteOrChord(),                        );
+                          widget,
+                        );
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -241,11 +278,18 @@ class _SingingState extends State<Singing> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        playChordMelody(
+                      //   playChordMelody(
+                      //     "Guitar",
+                      //     context.read<MelodyIDSettings>(),
+                      //     context.read<MappingProvider>(),
+                      //     generatedChordMelody.getChordMelodySolfege(),                        );
+                      // },
+                      generatedChordMelody.playChordMelody(
                           "Guitar",
                           context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
-                          generatedChordMelody.getChordMelodySolfege(),                        );
+                          widget,
+                        );
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -269,11 +313,18 @@ class _SingingState extends State<Singing> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        playChordMelody(
+                      //   playChordMelody(
+                      //     "Piano",
+                      //     context.read<MelodyIDSettings>(),
+                      //     context.read<MappingProvider>(),
+                      //     generatedChordMelody.getChordMelodySolfege(),                        );
+                      // },
+                      generatedChordMelody.playChordMelody(
                           "Piano",
                           context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
-                          generatedChordMelody.getChordMelodySolfege(),                        );
+                          widget,
+                        );
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -297,11 +348,18 @@ class _SingingState extends State<Singing> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        playChordMelody(
+                      //   playChordMelody(
+                      //     "Solfege",
+                      //     context.read<MelodyIDSettings>(),
+                      //     context.read<MappingProvider>(),
+                      //     generatedChordMelody.getChordMelodySolfege(),                        );
+                      // },
+                      generatedChordMelody.playChordMelody(
                           "Solfege",
                           context.read<MelodyIDSettings>(),
                           context.read<MappingProvider>(),
-                          generatedChordMelody.getChordMelodySolfege(),                        );
+                          widget,
+                        );
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -344,104 +402,104 @@ class _SingingState extends State<Singing> {
     setState(() {});
   }
 
-  Future<void> playSpoken(
-    GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
-    List<List<String>> melodyList,
-  ) async {
-    await widget.audioController.refresh();
-    final timeBetween = generalProvider.timeBetweenNotes;
-    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
-    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
-    final spokenMapping = mappingProvider.getSpokenMapping;
-    int i = 0;
-    for (var notes in melodyList) {
-      if (notes.length == 1) {
-        final note = notes[0];
-        final filename = spokenMapping[note] ?? '';
-        if (filename.isNotEmpty) {
-          widget.audioController.playSound("assets/audio/$filename");
-        }
-      } else if (notes.length > 1) {
-        if (i % 7 == 0) {
-          await widget.audioController.refresh();
-        }
-        List<String> chordNotes = List<String>.from(notes);
-        for (var note in chordNotes) {
-          final filename = spokenMapping[note] ?? '';
-          if (filename.isNotEmpty) {
-            widget.audioController.playSound("assets/audio/$filename");
-          }
-          if (arpeggiate) {
-            await Future.delayed(Duration(milliseconds: arpeggiateDelay));
-          }
-        }
-      }
-      await Future.delayed(Duration(milliseconds: timeBetween));
-      i++;
-    }
-  }
+  // Future<void> playSpoken(
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   List<List<String>> melodyList,
+  // ) async {
+  //   await widget.audioController.refresh();
+  //   final timeBetween = generalProvider.timeBetweenNotes;
+  //   final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
+  //   final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
+  //   final spokenMapping = mappingProvider.getSpokenMapping;
+  //   int i = 0;
+  //   for (var notes in melodyList) {
+  //     if (notes.length == 1) {
+  //       final note = notes[0];
+  //       final filename = spokenMapping[note] ?? '';
+  //       if (filename.isNotEmpty) {
+  //         widget.audioController.playSound("assets/audio/$filename");
+  //       }
+  //     } else if (notes.length > 1) {
+  //       if (i % 7 == 0) {
+  //         await widget.audioController.refresh();
+  //       }
+  //       List<String> chordNotes = List<String>.from(notes);
+  //       for (var note in chordNotes) {
+  //         final filename = spokenMapping[note] ?? '';
+  //         if (filename.isNotEmpty) {
+  //           widget.audioController.playSound("assets/audio/$filename");
+  //         }
+  //         if (arpeggiate) {
+  //           await Future.delayed(Duration(milliseconds: arpeggiateDelay));
+  //         }
+  //       }
+  //     }
+  //     await Future.delayed(Duration(milliseconds: timeBetween));
+  //     i++;
+  //   }
+  // }
 
-  Future<void> playChordMelody(
-    String instrument,
-    GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
-    List<List<String>> melodyList,
-  ) async {
-    await widget.audioController.refresh();
-    final key = generalProvider.selectedKey;
-    final timeBetween = generalProvider.timeBetweenNotes;
-    final truncate = generalProvider.truncateNotes;
-    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
-    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
-    final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
-    final nestedMapping = mappingProvider.getNestedMapping;
-    int i = 0;
-    for (var notes in melodyList) {
-      if (notes.length == 1) {
-        final note = notes[0];
-        final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-        if (filename.isNotEmpty) {
-          if (truncate == "None" || truncate == "Never") {
-            widget.audioController.playSound("assets/audio/$filename");
-          } else {
-            widget.audioController.playSoundFade(
-              "assets/audio/$filename",
-              int.parse(truncate),
-              500,
-            );
-          }
-        }
-      } else if (notes.length > 1) {
-        if (i % 7 == 0) {
-          await widget.audioController.refresh();
-        }
-        List<String> chordNotes = List<String>.from(notes);
-        if (arpeggiateOrder == "Descending") {
-          chordNotes = chordNotes.reversed.toList();
-        } else if (arpeggiateOrder == "Random") {
-          chordNotes.shuffle();
-        }
-        for (var note in chordNotes) {
-          final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-          if (filename.isNotEmpty) {
-            if (truncate == "None" || truncate == "Never") {
-              widget.audioController.playSound("assets/audio/$filename");
-            } else {
-              widget.audioController.playSoundFade(
-                "assets/audio/$filename",
-                int.parse(truncate),
-                500,
-              );
-            }
-          }
-          if (arpeggiate) {
-            await Future.delayed(Duration(milliseconds: arpeggiateDelay));
-          }
-        }
-      }
-      await Future.delayed(Duration(milliseconds: timeBetween));
-      i++;
-    }
-  }
+  // Future<void> playChordMelody(
+  //   String instrument,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   List<List<String>> melodyList,
+  // ) async {
+  //   await widget.audioController.refresh();
+  //   final key = generalProvider.selectedKey;
+  //   final timeBetween = generalProvider.timeBetweenNotes;
+  //   final truncate = generalProvider.truncateNotes;
+  //   final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
+  //   final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
+  //   final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
+  //   final nestedMapping = mappingProvider.getNestedMapping;
+  //   int i = 0;
+  //   for (var notes in melodyList) {
+  //     if (notes.length == 1) {
+  //       final note = notes[0];
+  //       final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+  //       if (filename.isNotEmpty) {
+  //         if (truncate == "None" || truncate == "Never") {
+  //           widget.audioController.playSound("assets/audio/$filename");
+  //         } else {
+  //           widget.audioController.playSoundFade(
+  //             "assets/audio/$filename",
+  //             int.parse(truncate),
+  //             500,
+  //           );
+  //         }
+  //       }
+  //     } else if (notes.length > 1) {
+  //       if (i % 7 == 0) {
+  //         await widget.audioController.refresh();
+  //       }
+  //       List<String> chordNotes = List<String>.from(notes);
+  //       if (arpeggiateOrder == "Descending") {
+  //         chordNotes = chordNotes.reversed.toList();
+  //       } else if (arpeggiateOrder == "Random") {
+  //         chordNotes.shuffle();
+  //       }
+  //       for (var note in chordNotes) {
+  //         final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+  //         if (filename.isNotEmpty) {
+  //           if (truncate == "None" || truncate == "Never") {
+  //             widget.audioController.playSound("assets/audio/$filename");
+  //           } else {
+  //             widget.audioController.playSoundFade(
+  //               "assets/audio/$filename",
+  //               int.parse(truncate),
+  //               500,
+  //             );
+  //           }
+  //         }
+  //         if (arpeggiate) {
+  //           await Future.delayed(Duration(milliseconds: arpeggiateDelay));
+  //         }
+  //       }
+  //     }
+  //     await Future.delayed(Duration(milliseconds: timeBetween));
+  //     i++;
+  //   }
+  // }
 }

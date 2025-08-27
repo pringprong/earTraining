@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class GeneralProvider extends ChangeNotifier {
+  /// Name used to save settings in SharedPreferences
+  /// Override in subclasses for different settings
+  String saveName = "general_settings";
 
   String selectedKey = "C";
   int numberOfNotes = 5;
-  int maxDistance = 7; 
+  int maxDistance = 7;
   bool allowRepeatedNotes = false;
   String selectedInstrument = "Piano";
   int timeBetweenNotes = 900; // Time in milliseconds between notes
@@ -39,45 +42,45 @@ abstract class GeneralProvider extends ChangeNotifier {
     "ti",
     "do1",
   ];
-  
+
   static const List<String> noteKeys = [
-  "do0",
-  "ga0",
-  "re0",
-  "nu0",
-  "mi0",
-  "fa0",
-  "jur0",
-  "so0",
-  "ki0",
-  "la0",
-  "pe0",
-  "ti0",
-  "do",
-  "ga",
-  "re",
-  "nu",
-  "mi",
-  "fa",
-  "jur",
-  "so",
-  "ki",
-  "la",
-  "pe",
-  "ti",
-  "do1",
-  "ga1",
-  "re1",
-  "nu1",
-  "mi1",
-  "fa1",
-  "jur1",
-  "so1",
-  "ki1",
-  "la1",
-  "pe1",
-  "ti1",
-  "do2",
+    "do0",
+    "ga0",
+    "re0",
+    "nu0",
+    "mi0",
+    "fa0",
+    "jur0",
+    "so0",
+    "ki0",
+    "la0",
+    "pe0",
+    "ti0",
+    "do",
+    "ga",
+    "re",
+    "nu",
+    "mi",
+    "fa",
+    "jur",
+    "so",
+    "ki",
+    "la",
+    "pe",
+    "ti",
+    "do1",
+    "ga1",
+    "re1",
+    "nu1",
+    "mi1",
+    "fa1",
+    "jur1",
+    "so1",
+    "ki1",
+    "la1",
+    "pe1",
+    "ti1",
+    "do2",
   ];
 
   Map<String, bool> noteSelection = {};
@@ -281,7 +284,6 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   /******** Handsfree listening settings  ********/
 
   int numberOfRounds = 5;
@@ -343,6 +345,7 @@ abstract class GeneralProvider extends ChangeNotifier {
   int get getTimeDelayRepeat {
     return timeDelayRepeat;
   }
+
   void setTimeDelayRepeat({required int delay}) async {
     timeDelayRepeat = delay;
     saveSettings();
@@ -350,7 +353,6 @@ abstract class GeneralProvider extends ChangeNotifier {
   }
 
   /******** end Handsfree Listening settings */
-
 
   // Call this after any setting changes
   Future<void> saveSettings() async {
@@ -385,12 +387,12 @@ abstract class GeneralProvider extends ChangeNotifier {
       'handsfreeInstrument': handsfreeInstrument,
       'timeDelayRepeat': timeDelayRepeat,
     };
-    prefs.setString('general_settings', jsonEncode(settings));
+    prefs.setString(saveName, jsonEncode(settings));
   }
 
   Future<void> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    final jsonString = prefs.getString('general_settings');
+    final jsonString = prefs.getString(saveName);
     if (jsonString == null) {
       resetAllSettings();
       return;
@@ -476,5 +478,12 @@ abstract class GeneralProvider extends ChangeNotifier {
   }
 }
 
-class MelodyIDSettings extends GeneralProvider {}
-class MelodySingingSettings extends GeneralProvider {}
+class MelodyIDSettings extends GeneralProvider {
+  @override
+  String saveName = "melody_id_settings";
+}
+
+class MelodySingingSettings extends GeneralProvider {
+  @override
+  String saveName = "melody_singing_settings";
+}

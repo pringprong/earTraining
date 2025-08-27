@@ -14,6 +14,11 @@ class ChordMelody {
     chordMelodySolfege = [];
   }
 
+  ChordMelody.singleChord(String chordName, List<String> chord) {
+    chordMelody = [chordName];
+    chordMelodySolfege = [chord];
+  }
+
   void clear() {
     chordMelody.clear();
     chordMelodySolfege.clear();
@@ -50,15 +55,24 @@ class ChordMelody {
     }
   }
 
-  getFirstNoteOrChord() {
+  getFirstNoteOrChord_Melody() {
     if (chordMelody.isNotEmpty) {
-      return [chordMelodySolfege.first];
+      return chordMelody.first;
     }
     return null;
   }
 
-  String generateChordMelody(GeneralProvider generalProvider,
-    MappingProvider mappingProvider) {
+  getFirstNoteOrChord_Solfege() {
+    if (chordMelodySolfege.isNotEmpty) {
+      return chordMelodySolfege.first;
+    }
+    return null;
+  }
+
+  String generateChordMelody(
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+  ) {
     final chordMap = mappingProvider.getChordMap;
     chordMelody.clear();
     chordMelodySolfege.clear();
@@ -196,5 +210,106 @@ class ChordMelody {
       }
     }
     return "";
+  }
+
+  Future<void> playChordMelody(
+    String instrument,
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    dynamic widget,
+  ) async {
+    await widget.audioController.refresh();
+    final key = generalProvider.selectedKey;
+    final timeBetween = generalProvider.timeBetweenNotes;
+    final truncate = generalProvider.truncateNotes;
+    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
+    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
+    final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
+    final nestedMapping = mappingProvider.getNestedMapping;
+    int i = 0;
+    for (var notes in chordMelodySolfege) {
+      if (notes.length == 1) {
+        final note = notes[0];
+        final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+        if (filename.isNotEmpty) {
+          if (truncate == "None" || truncate == "Never") {
+            widget.audioController.playSound("assets/audio/$filename");
+          } else {
+            widget.audioController.playSoundFade(
+              "assets/audio/$filename",
+              int.parse(truncate),
+              500,
+            );
+          }
+        }
+      } else if (notes.length > 1) {
+        if (i % 7 == 0) {
+          await widget.audioController.refresh();
+        }
+        List<String> chordNotes = List<String>.from(notes);
+        if (arpeggiateOrder == "Descending") {
+          chordNotes = chordNotes.reversed.toList();
+        } else if (arpeggiateOrder == "Random") {
+          chordNotes.shuffle();
+        }
+        for (var note in chordNotes) {
+          final filename = nestedMapping[key]?[instrument]?[note] ?? '';
+          if (filename.isNotEmpty) {
+            if (truncate == "None" || truncate == "Never") {
+              widget.audioController.playSound("assets/audio/$filename");
+            } else {
+              widget.audioController.playSoundFade(
+                "assets/audio/$filename",
+                int.parse(truncate),
+                500,
+              );
+            }
+          }
+          if (arpeggiate) {
+            await Future.delayed(Duration(milliseconds: arpeggiateDelay));
+          }
+        }
+      }
+      await Future.delayed(Duration(milliseconds: timeBetween));
+      i++;
+    }
+  }
+
+  Future<void> playSpoken(
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    dynamic widget,
+  ) async {
+    await widget.audioController.refresh();
+    final timeBetween = generalProvider.timeBetweenNotes;
+    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
+    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
+    final spokenMapping = mappingProvider.getSpokenMapping;
+    int i = 0;
+    for (var notes in chordMelodySolfege) {
+      if (notes.length == 1) {
+        final note = notes[0];
+        final filename = spokenMapping[note] ?? '';
+        if (filename.isNotEmpty) {
+          widget.audioController.playSound("assets/audio/$filename");
+        }
+      } else if (notes.length > 1) {
+        if (i % 7 == 0) {
+          await widget.audioController.refresh();
+        }
+        List<String> chordNotes = List<String>.from(notes);
+        for (var note in chordNotes) {
+          final filename = spokenMapping[note] ?? '';
+          if (filename.isNotEmpty) {
+            widget.audioController.playSound("assets/audio/$filename");
+          }
+          if (arpeggiate) {
+            await Future.delayed(Duration(milliseconds: arpeggiateDelay));
+          }
+        }
+      }
+      await Future.delayed(Duration(milliseconds: timeBetween));
+      i++;
+    }
   }
 }
