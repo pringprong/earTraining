@@ -261,6 +261,7 @@ class _HandsFreeSingingState extends State<HandsFreeSinging> {
                           notPaused = false;
                           solfegeText = "";
                           currentRound = 0;
+                          widget.audioController.refresh();
                         });
                       },
                       child: FittedBox(

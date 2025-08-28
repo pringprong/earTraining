@@ -226,6 +226,7 @@ class _HandsFreeState extends State<HandsFree> {
                           notPaused = false;
                           solfegeText = "";
                           currentRound = 0;
+                          widget.audioController.refresh();
                         });
                       },
                       child: FittedBox(

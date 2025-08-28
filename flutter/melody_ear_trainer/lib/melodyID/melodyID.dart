@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'audio/audio_controller.dart';
-import 'package:melody_ear_trainer/providers/general_provider.dart';
-import 'package:melody_ear_trainer/providers/mapping_provider.dart';
+import '../audio/audio_controller.dart';
+import '../providers/general_provider.dart';
+import '../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
-//import 'dart:math';
-import 'utils/colors.dart';
-import 'utils/chordMelody.dart';
+import '../utils/colors.dart';
+import '../utils/chordMelody.dart';
 //import 'package:expandable/expandable.dart';
 //import 'package:auto_size_text/auto_size_text.dart';
 
-class MelodyHomePage extends StatefulWidget {
-  const MelodyHomePage({super.key, required this.audioController});
+class MelodyID extends StatefulWidget {
+  const MelodyID({super.key, required this.audioController});
   final AudioController audioController;
   @override
-  State<MelodyHomePage> createState() => _MelodyHomePageState();
+  State<MelodyID> createState() => _MelodyIDState();
 }
 
-class _MelodyHomePageState extends State<MelodyHomePage> {
+class _MelodyIDState extends State<MelodyID> {
   String selectedKey = "";
   String selectedInstrument = "";
   int numberOfNotes = 5;
@@ -32,7 +31,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   ChordMelody generatedChordMelody = ChordMelody();
   ChordMelody userWrittenChordMelody = ChordMelody();
 
-  // Add this to your _MelodyHomePageState class:
+  // Add this to your _MelodyIDState class:
   IconData comparisonIcon = Icons.help_outline;
   Color comparisonIconColor = Colors.grey;
   Color comparisonColor = Colors.grey.shade300;
@@ -41,11 +40,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   @override
   Widget build(BuildContext context) {
     final mappingProvider = Provider.of<MappingProvider>(context);
-    context.read<MappingProvider>().loadMappingJSON;
-    context.read<MappingProvider>().loadChordSetsJSON;
-    context.read<MappingProvider>().loadScalesJSON;
-    context.read<MappingProvider>().loadNotesJSON;
-    context.read<MappingProvider>().loadSpokenJSON;
     final nestedMapping = mappingProvider.getNestedMapping;
     final noteKeys = mappingProvider.getNoteKeys;
     // Notes grid: group notes by row
@@ -60,46 +54,19 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     final noteColorFactor = mappingProvider.getNoteColorFactors;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Melody Ear Trainer')),
+      appBar: AppBar(title: Text('Melody ID')),
       drawer: SafeArea(
         child: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               ListTile(
-                title: Text('General'),
+                title: Text('Difficulty'),
                 onTap: () {
                   // Update the state of the app
                   // Then close the drawer
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/general');
-                },
-              ),
-              ListTile(
-                title: Text('Tonic'),
-                onTap: () {
-                  // Update the state of the app
-                  // Then close the drawer
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/tonic');
-                },
-              ),
-              ListTile(
-                title: Text('Scales'),
-                onTap: () {
-                  // Update the state of the app
-                  // Then close the drawer
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/scales');
-                },
-              ),
-              ListTile(
-                title: Text('Chords'),
-                onTap: () {
-                  // Update the state of the app
-                  // Then close the drawer
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/chords');
+                  Navigator.pushNamed(context, '/melodyIDsettings');
                 },
               ),
               ListTile(
@@ -112,30 +79,13 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 },
               ),
               ListTile(
-                title: Text('Singing'),
+                title: Text('Home'),
                 onTap: () {
                   // Update the state of the app
                   // Then close the drawer
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/singing');
-                },
-              ),
-              ListTile(
-                title: Text('Hands-free singing'),
-                onTap: () {
-                  // Update the state of the app
-                  // Then close the drawer
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/handsfreesinging');
-                },
-              ),
-              ListTile(
-                title: Text('Front'),
-                onTap: () {
-                  // Update the state of the app
-                  // Then close the drawer
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/front');
+                  //Navigator.pushNamed(context, '/handsfree');
                 },
               ),
             ],
@@ -148,17 +98,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Generate Melody Button
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     Text(
-              //       "Generate melody:",
-              //       style: TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -213,12 +152,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
-                          // () => playChordMelody(
-                          //   "Guitar",
-                          //   context.read<MelodyIDSettings>(),
-                          //   mappingProvider,
-                          //   generatedChordMelody.getChordMelodySolfege(),
-                          // ),
                           () => generatedChordMelody.playChordMelody(
                             "Guitar",
                             context.read<MelodyIDSettings>(),
@@ -240,12 +173,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
-                          // () => playChordMelody(
-                          //   "Piano",
-                          //   context.read<MelodyIDSettings>(),
-                          //   mappingProvider,
-                          //   generatedChordMelody.getChordMelodySolfege(),
-                          // ),
                           () => generatedChordMelody.playChordMelody(
                             "Piano",
                             context.read<MelodyIDSettings>(),
@@ -299,11 +226,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             foregroundColor: Colors.black,
                           ),
                           onPressed:
-                              // () => playSpoken(
-                              //   context.read<MelodyIDSettings>(),
-                              //   mappingProvider,
-                              //   generatedChordMelody.getChordMelodySolfege(),
-                              // ),
                               () => generatedChordMelody.playSpoken(
                                 context.read<MelodyIDSettings>(),
                                 mappingProvider,
@@ -324,12 +246,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             foregroundColor: Colors.black,
                           ),
                           onPressed:
-                              // () => playChordMelody(
-                              //   "Solfege",
-                              //   context.read<MelodyIDSettings>(),
-                              //   mappingProvider,
-                              //   generatedChordMelody.getChordMelodySolfege(),
-                              // ),
                               () => generatedChordMelody.playChordMelody(
                                 "Solfege",
                                 context.read<MelodyIDSettings>(),
@@ -386,7 +302,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                   children:
                       rowNotes.map((note) {
                         return Expanded(
-                          //padding: const EdgeInsets.all(2.0),
                           child: Padding(
                             padding: const EdgeInsets.all(1.0),
                             child: ElevatedButton(
@@ -430,10 +345,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 );
                                 // Add to writtenMelody
                                 setState(() {
-                                  //writtenMelody.add(note);
                                   userWrittenChordMelody.addNote(note);
-                                  //writtenChordMelody.add(note);
-                                  //writtenChordMelodySolfege.add([note]);
                                 });
                               },
                               child: FittedBox(
@@ -454,10 +366,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
               }),
               SizedBox(height: 8),
               // Chord buttons section
-              buildSelectedChordButtons(
-                context.read<MelodyIDSettings>(),
-                mappingProvider,
-              ),
+              // buildSelectedChordButtons(
+              //   context.read<MelodyIDSettings>(),
+              //   mappingProvider,
+              // ),
               SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -469,7 +381,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    //chordMelodySolfegeToString(writtenChordMelodySolfege),
                     userWrittenChordMelody.getChordMelody().join(' '),
                     style: TextStyle(fontSize: 18),
                   ),
@@ -487,8 +398,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                       ),
                       onPressed: () {
                         setState(() {
-                          //writtenChordMelody.clear();
-                          //writtenChordMelodySolfege.clear();
                           userWrittenChordMelody.clear();
                           melodiesSame = false;
                           comparisonIcon = Icons.help_outline;
@@ -516,8 +425,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               .getChordMelody()
                               .isNotEmpty) {
                             userWrittenChordMelody.removeLastNote();
-                            //.removeLast();
-                            //writtenChordMelodySolfege.removeLast();
                             melodiesSame = false;
                             comparisonIcon = Icons.help_outline;
                             comparisonIconColor = Colors.grey;
@@ -573,9 +480,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               220,
                               158,
                             );
-                            // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: Colors.lightGreenAccent,
-                            // );
                           } else {
                             comparisonIcon = Icons.cancel;
                             comparisonIconColor = Colors.red;
@@ -613,12 +517,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
-                          // () => playChordMelody(
-                          //   "Guitar",
-                          //   context.read<MelodyIDSettings>(),
-                          //   mappingProvider,
-                          //   userWrittenChordMelody.getChordMelodySolfege(),
-                          // ),
                           () => userWrittenChordMelody.playChordMelody(
                             "Guitar",
                             context.read<MelodyIDSettings>(),
@@ -639,12 +537,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
-                          // () => playChordMelody(
-                          //   "Piano",
-                          //   context.read<MelodyIDSettings>(),
-                          //   mappingProvider,
-                          //   userWrittenChordMelody.getChordMelodySolfege(),
-                          // ),
                           () => userWrittenChordMelody.playChordMelody(
                             "Piano",
                             context.read<MelodyIDSettings>(),
@@ -665,12 +557,6 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed:
-                          // () => playChordMelody(
-                          //   "Solfege",
-                          //   context.read<MelodyIDSettings>(),
-                          //   mappingProvider,
-                          //   userWrittenChordMelody.getChordMelodySolfege(),
-                          // ),
                           () => userWrittenChordMelody.playChordMelody(
                             "Solfege",
                             context.read<MelodyIDSettings>(),
@@ -692,173 +578,64 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     );
   }
 
-  // 1. Add chord buttons below notes section
-  Widget buildSelectedChordButtons(
-    GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
-  ) {
-    final selectedChords = generalProvider.getSelectedChords();
-    final chordFrequency = generalProvider.chordFrequency;
-    final chordMap = mappingProvider.getChordMap;
-    if (chordFrequency == "Never") {
-      return Padding(padding: const EdgeInsets.all(0.0));
-    }
-    return Wrap(
-      spacing: 4,
-      runSpacing: 4,
-      children:
-          selectedChords.map((chord) {
-            final color = getChordButtonColor(chord);
-            final notes = chordMap[chord] ?? [];
-            return Tooltip(
-              message: notes.join(' '),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: color,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 6,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                ),
-                onPressed: () {
-                  setState(() {
-                    // 2b. Append chord as a list of notes to writtenChordMelody
-                    userWrittenChordMelody.addChord(chord, notes);
-                    //writtenChordMelody.add(chord);
-                    //writtenChordMelodySolfege.add(List<String>.from(notes));
-                    comparisonIcon = Icons.help_outline;
-                    comparisonIconColor = Colors.grey;
-                    comparisonColor = Colors.grey.shade300;
-                    ChordMelody cm = ChordMelody.singleChord(chord, notes);
-                    cm.playChordMelody(
-                      context.read<MelodyIDSettings>().getSelectedInstrument,
-                      context.read<MelodyIDSettings>(),
-                      mappingProvider,
-                      widget,
-                    );
-                    // playChordMelody(
-                    //   context.read<MelodyIDSettings>().getSelectedInstrument,
-                    //   context.read<MelodyIDSettings>(),
-                    //   mappingProvider,
-                    //   [notes],
-                    // );
-                  });
-                },
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: Text(
-                    chord,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-    );
-  }
-
-  // Future<void> playChordMelody(
-  //   String instrument,
+  // // 1. Add chord buttons below notes section
+  // Widget buildSelectedChordButtons(
   //   GeneralProvider generalProvider,
   //   MappingProvider mappingProvider,
-  //   List<List<String>> melodyList,
-  // ) async {
-  //   await widget.audioController.refresh();
-  //   final key = generalProvider.selectedKey;
-  //   final timeBetween = generalProvider.timeBetweenNotes;
-  //   final truncate = generalProvider.truncateNotes;
-  //   final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
-  //   final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
-  //   final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
-  //   final nestedMapping = mappingProvider.getNestedMapping;
-  //   int i = 0;
-  //   for (var notes in melodyList) {
-  //     if (notes.length == 1) {
-  //       final note = notes[0];
-  //       final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-  //       if (filename.isNotEmpty) {
-  //         if (truncate == "None" || truncate == "Never") {
-  //           widget.audioController.playSound("assets/audio/$filename");
-  //         } else {
-  //           widget.audioController.playSoundFade(
-  //             "assets/audio/$filename",
-  //             int.parse(truncate),
-  //             500,
+  // ) {
+  //   final selectedChords = generalProvider.getSelectedChords();
+  //   final chordFrequency = generalProvider.chordFrequency;
+  //   final chordMap = mappingProvider.getChordMap;
+  //   if (chordFrequency == "Never") {
+  //     return Padding(padding: const EdgeInsets.all(0.0));
+  //   }
+  //   return Wrap(
+  //     spacing: 4,
+  //     runSpacing: 4,
+  //     children:
+  //         selectedChords.map((chord) {
+  //           final color = getChordButtonColor(chord);
+  //           final notes = chordMap[chord] ?? [];
+  //           return Tooltip(
+  //             message: notes.join(' '),
+  //             child: ElevatedButton(
+  //               style: ElevatedButton.styleFrom(
+  //                 backgroundColor: color,
+  //                 padding: const EdgeInsets.symmetric(
+  //                   horizontal: 8,
+  //                   vertical: 6,
+  //                 ),
+  //                 shape: RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(6),
+  //                 ),
+  //               ),
+  //               onPressed: () {
+  //                 setState(() {
+  //                   userWrittenChordMelody.addChord(chord, notes);
+  //                   comparisonIcon = Icons.help_outline;
+  //                   comparisonIconColor = Colors.grey;
+  //                   comparisonColor = Colors.grey.shade300;
+  //                   ChordMelody cm = ChordMelody.singleChord(chord, notes);
+  //                   cm.playChordMelody(
+  //                     context.read<MelodyIDSettings>().getSelectedInstrument,
+  //                     context.read<MelodyIDSettings>(),
+  //                     mappingProvider,
+  //                     widget,
+  //                   );
+  //                 }
+  //               );
+  //               },
+  //               child: FittedBox(
+  //                 fit: BoxFit.fill,
+  //                 child: Text(
+  //                   chord,
+  //                   style: TextStyle(fontSize: 20, color: Colors.white),
+  //                 ),
+  //               ),
+  //             ),
   //           );
-  //         }
-  //       }
-  //     } else if (notes.length > 1) {
-  //       if (i % 7 == 0) {
-  //         await widget.audioController.refresh();
-  //       }
-  //       List<String> chordNotes = List<String>.from(notes);
-  //       if (arpeggiateOrder == "Descending") {
-  //         chordNotes = chordNotes.reversed.toList();
-  //       } else if (arpeggiateOrder == "Random") {
-  //         chordNotes.shuffle();
-  //       }
-  //       for (var note in chordNotes) {
-  //         final filename = nestedMapping[key]?[instrument]?[note] ?? '';
-  //         if (filename.isNotEmpty) {
-  //           if (truncate == "None" || truncate == "Never") {
-  //             widget.audioController.playSound("assets/audio/$filename");
-  //           } else {
-  //             widget.audioController.playSoundFade(
-  //               "assets/audio/$filename",
-  //               int.parse(truncate),
-  //               500,
-  //             );
-  //           }
-  //         }
-  //         if (arpeggiate) {
-  //           await Future.delayed(Duration(milliseconds: arpeggiateDelay));
-  //         }
-  //       }
-  //     }
-  //     await Future.delayed(Duration(milliseconds: timeBetween));
-  //     i++;
-  //   }
-  // }
-
-  // Future<void> playSpoken(
-  //   GeneralProvider generalProvider,
-  //   MappingProvider mappingProvider,
-  //   List<List<String>> melodyList,
-  // ) async {
-  //   await widget.audioController.refresh();
-  //   final timeBetween = generalProvider.timeBetweenNotes;
-  //   final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
-  //   final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
-  //   final spokenMapping = mappingProvider.getSpokenMapping;
-  //   int i = 0;
-  //   for (var notes in melodyList) {
-  //     if (notes.length == 1) {
-  //       final note = notes[0];
-  //       final filename = spokenMapping[note] ?? '';
-  //       if (filename.isNotEmpty) {
-  //         widget.audioController.playSound("assets/audio/$filename");
-  //       }
-  //     } else if (notes.length > 1) {
-  //       if (i % 7 == 0) {
-  //         await widget.audioController.refresh();
-  //       }
-  //       List<String> chordNotes = List<String>.from(notes);
-  //       for (var note in chordNotes) {
-  //         final filename = spokenMapping[note] ?? '';
-  //         if (filename.isNotEmpty) {
-  //           widget.audioController.playSound("assets/audio/$filename");
-  //         }
-  //         if (arpeggiate) {
-  //           await Future.delayed(Duration(milliseconds: arpeggiateDelay));
-  //         }
-  //       }
-  //     }
-  //     await Future.delayed(Duration(milliseconds: timeBetween));
-  //     i++;
-  //   }
+  //         }).toList(),
+  //   );
   // }
 
   void newGenerateChordMelody(

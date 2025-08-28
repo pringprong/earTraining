@@ -18,6 +18,9 @@ import 'chords.dart';
 import 'handsfree.dart';
 import 'singing.dart';
 import 'handsfreesinging.dart';
+import 'frontpage.dart';
+import 'melodyID/melodyID.dart';
+import 'melodyID/melodyIDsettings.dart';
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
@@ -94,6 +97,9 @@ class MelodyEarTrainerApp extends StatelessWidget {
         '/tonic': (context) => TonicPage(audioController: audioController),
         '/scales': (context) => ScalesPage(),
         '/chords': (context) => ChordsPage(),
+        '/front': (context) => MelodyFrontPage(),
+        '/melodyID': (context) => MelodyID(audioController: audioController),
+        '/melodyIDsettings': (context) => melodyIDSettings(audioController: audioController),
         '/handsfree': (context) => HandsFree(audioController: audioController),
         '/singing': (context) => Singing(audioController: audioController),
         '/handsfreesinging':
