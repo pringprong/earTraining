@@ -1,5 +1,45 @@
 import 'package:flutter/material.dart';
 
+  SizedBox verticalSpacer() {
+    return SizedBox(height: 8);
+  }
+
+  SizedBox horizontalSpacer() {
+    return SizedBox(width: 8);
+  }
+
+Row TextRow (String myText) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    myText,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              );
+}
+
+IconData waitingForGuessIcon = Icons.help_outline;
+Color waitingForGuessIconColor = Colors.grey;
+Color waitingForGuessButtonColor = Colors.grey.shade300;
+Color buttonForegroundColor = Colors.black;
+Color waitingForGuessForegroundColor = buttonForegroundColor;
+
+IconData correctGuessIcon = Icons.check_circle;
+Color correctGuessIconColor = Colors.green;
+Color correctGuessButtonColor = const Color.fromARGB(255, 191, 220, 158);
+Color correctGuessForegroundColor = buttonForegroundColor;
+
+IconData incorrectGuessIcon = Icons.cancel;
+Color incorrectGuessIconColor = Colors.red;
+Color incorrectGuessButtonColor = const Color.fromARGB(255, 240, 128, 128);
+Color incorrectGuessForegroundColor = buttonForegroundColor;
+
+Color borderColor = Colors.grey;
+Color yetAnotherGrey = Color.fromARGB(255, 181, 196, 212);
+Color noteButtonForegroundColor = Colors.white;
+
 Color multiplyHexColor(String hexColor, double factor) {
   hexColor = hexColor.replaceAll('#', '');
   if (hexColor.length == 6) {
