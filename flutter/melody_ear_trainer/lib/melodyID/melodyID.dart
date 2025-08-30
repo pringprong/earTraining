@@ -38,18 +38,7 @@ class _MelodyIDState extends State<MelodyID> {
   @override
   Widget build(BuildContext context) {
     final mappingProvider = Provider.of<MappingProvider>(context);
-    final nestedMapping = mappingProvider.getNestedMapping;
-    final noteKeys = mappingProvider.getNoteKeys;
-    // Notes grid: group notes by row
-    final noteRows = [
-      noteKeys.where((n) => n.contains('0')).toList(),
-      noteKeys.where((n) => !RegExp(r'\d').hasMatch(n)).toList(),
-      noteKeys.where((n) => n.contains('1')).toList(),
-      noteKeys.where((n) => n.contains('2')).toList(),
-    ];
-    final selectedNotes = context.read<MelodyIDSettings>().getSelectedNotes();
-    final noteColors = mappingProvider.getNoteColors;
-    final noteColorFactor = mappingProvider.getNoteColorFactors;
+    final generalProvider = Provider.of<MelodyIDSettings>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ID')),
@@ -289,79 +278,7 @@ class _MelodyIDState extends State<MelodyID> {
                   ),
                 ],
               ),
-              ...List.generate(noteRows.length, (rowIdx) {
-                final rowNotes =
-                    noteRows[rowIdx]
-                        .where((n) => selectedNotes.contains(n))
-                        .toList();
-                if (rowNotes.isEmpty) return SizedBox.shrink();
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children:
-                      rowNotes.map((note) {
-                        return Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(1.0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: multiplyHexColor(
-                                  noteColors[note].toString(),
-                                  noteColorFactor[note] ?? 1.0,
-                                ),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.all(0.0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              onPressed: () async {
-                                final key =
-                                    context
-                                        .read<MelodyIDSettings>()
-                                        .getSelectedKey;
-                                final instrument =
-                                    context
-                                        .read<MelodyIDSettings>()
-                                        .getSelectedInstrument;
-                                final filename =
-                                    nestedMapping[key]?[instrument]?[note] ??
-                                    '';
-                                comparisonIcon = Icons.help_outline;
-                                comparisonIconColor = Colors.grey;
-                                comparisonColor = Colors.grey.shade300;
-                                if (filename.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('No audio file for $note'),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                widget.audioController.playSound(
-                                  "assets/audio/$filename",
-                                );
-                                // Add to writtenMelody
-                                setState(() {
-                                  userWrittenChordMelody.addNote(note);
-                                });
-                              },
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Text(
-                                  note,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                );
-              }),
+              ...noteButtons(mappingProvider, generalProvider),
               SizedBox(height: 8),
               // Chord buttons section
               // buildSelectedChordButtons(
@@ -574,6 +491,95 @@ class _MelodyIDState extends State<MelodyID> {
         ),
       ),
     );
+  }
+
+  List<Widget> noteButtons(MappingProvider mappingProvider, GeneralProvider generalProvider) {
+    final nestedMapping = mappingProvider.getNestedMapping;
+    final noteKeys = mappingProvider.getNoteKeys;
+    // Notes grid: group notes by row
+    final noteRows = [
+      noteKeys.where((n) => n.contains('0')).toList(),
+      noteKeys.where((n) => !RegExp(r'\d').hasMatch(n)).toList(),
+      noteKeys.where((n) => n.contains('1')).toList(),
+      noteKeys.where((n) => n.contains('2')).toList(),
+    ];
+    final selectedNotes = generalProvider.getSelectedNotes();
+    final noteColors = mappingProvider.getNoteColors;
+    final noteColorFactor = mappingProvider.getNoteColorFactors;
+    return List.generate(noteRows.length, (rowIdx) {
+              final rowNotes =
+                  noteRows[rowIdx]
+                      .where((n) => selectedNotes.contains(n))
+                      .toList();
+              if (rowNotes.isEmpty) return SizedBox.shrink();
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:
+                    rowNotes.map((note) {
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: multiplyHexColor(
+                                noteColors[note].toString(),
+                                noteColorFactor[note] ?? 1.0,
+                              ),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.all(0.0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                            onPressed: () async {
+                              final key =
+                                  context
+                                      .read<MelodyIDSettings>()
+                                      .getSelectedKey;
+                              final instrument =
+                                  context
+                                      .read<MelodyIDSettings>()
+                                      .getSelectedInstrument;
+                              final filename =
+                                  nestedMapping[key]?[instrument]?[note] ??
+                                  '';
+                              comparisonIcon = Icons.help_outline;
+                              comparisonIconColor = Colors.grey;
+                              comparisonColor = Colors.grey.shade300;
+                              if (filename.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('No audio file for $note'),
+                                  ),
+                                );
+                                return;
+                              }
+                              widget.audioController.playSound(
+                                "assets/audio/$filename",
+                              );
+                              // Add to writtenMelody
+                              setState(() {
+                                userWrittenChordMelody.addNote(note);
+                              });
+                            },
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: Text(
+                                note,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  ).toList(),
+              );
+            });
   }
 
   void newGenerateChordMelody(
