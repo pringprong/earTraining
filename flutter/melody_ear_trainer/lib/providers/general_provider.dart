@@ -7,7 +7,9 @@ abstract class GeneralProvider extends ChangeNotifier {
   /// Override in subclasses for different settings
   String saveName = "general_settings";
 
+  String defaultKey = "C";
   String selectedKey = "C";
+
   int numberOfNotes = 5;
   int maxDistance = 7;
   bool allowRepeatedNotes = false;
@@ -399,7 +401,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     }
     final settings = jsonDecode(jsonString);
 
-    selectedKey = settings['selectedKey'] ?? "C";
+    selectedKey = settings['selectedKey'] ?? defaultKey;
     numberOfNotes = settings['numberOfNotes'] ?? 5;
     maxDistance = settings['maxDistance'] ?? 7;
     allowRepeatedNotes = settings['allowRepeatedNotes'] ?? false;
@@ -442,7 +444,7 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   void resetAllSettings() {
     // Set all settings to their default values
-    selectedKey = "C";
+    selectedKey = defaultKey;
     numberOfNotes = 5;
     maxDistance = 7;
     allowRepeatedNotes = false;
@@ -481,9 +483,15 @@ abstract class GeneralProvider extends ChangeNotifier {
 class MelodyIDSettings extends GeneralProvider {
   @override
   String saveName = "melody_id_settings";
+
+  @override
+  String defaultKey = "E";
 }
 
 class MelodySingingSettings extends GeneralProvider {
   @override
   String saveName = "melody_singing_settings";
+
+  @override
+  String defaultKey = "D";
 }

@@ -5,8 +5,6 @@ import '../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../utils/chordMelody.dart';
-//import 'package:expandable/expandable.dart';
-//import 'package:auto_size_text/auto_size_text.dart';
 
 class MelodyID extends StatefulWidget {
   const MelodyID({super.key, required this.audioController});
@@ -75,7 +73,7 @@ class _MelodyIDState extends State<MelodyID> {
                   // Update the state of the app
                   // Then close the drawer
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/handsfree');
+                  Navigator.pushNamed(context, '/melodyIDhandsfree');
                 },
               ),
               ListTile(
@@ -577,66 +575,6 @@ class _MelodyIDState extends State<MelodyID> {
       ),
     );
   }
-
-  // // 1. Add chord buttons below notes section
-  // Widget buildSelectedChordButtons(
-  //   GeneralProvider generalProvider,
-  //   MappingProvider mappingProvider,
-  // ) {
-  //   final selectedChords = generalProvider.getSelectedChords();
-  //   final chordFrequency = generalProvider.chordFrequency;
-  //   final chordMap = mappingProvider.getChordMap;
-  //   if (chordFrequency == "Never") {
-  //     return Padding(padding: const EdgeInsets.all(0.0));
-  //   }
-  //   return Wrap(
-  //     spacing: 4,
-  //     runSpacing: 4,
-  //     children:
-  //         selectedChords.map((chord) {
-  //           final color = getChordButtonColor(chord);
-  //           final notes = chordMap[chord] ?? [];
-  //           return Tooltip(
-  //             message: notes.join(' '),
-  //             child: ElevatedButton(
-  //               style: ElevatedButton.styleFrom(
-  //                 backgroundColor: color,
-  //                 padding: const EdgeInsets.symmetric(
-  //                   horizontal: 8,
-  //                   vertical: 6,
-  //                 ),
-  //                 shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.circular(6),
-  //                 ),
-  //               ),
-  //               onPressed: () {
-  //                 setState(() {
-  //                   userWrittenChordMelody.addChord(chord, notes);
-  //                   comparisonIcon = Icons.help_outline;
-  //                   comparisonIconColor = Colors.grey;
-  //                   comparisonColor = Colors.grey.shade300;
-  //                   ChordMelody cm = ChordMelody.singleChord(chord, notes);
-  //                   cm.playChordMelody(
-  //                     context.read<MelodyIDSettings>().getSelectedInstrument,
-  //                     context.read<MelodyIDSettings>(),
-  //                     mappingProvider,
-  //                     widget,
-  //                   );
-  //                 }
-  //               );
-  //               },
-  //               child: FittedBox(
-  //                 fit: BoxFit.fill,
-  //                 child: Text(
-  //                   chord,
-  //                   style: TextStyle(fontSize: 20, color: Colors.white),
-  //                 ),
-  //               ),
-  //             ),
-  //           );
-  //         }).toList(),
-  //   );
-  // }
 
   void newGenerateChordMelody(
     GeneralProvider generalProvider,
