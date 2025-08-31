@@ -123,16 +123,23 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                   ),
                   SizedBox(width: 16),
                   Expanded(
-                    child: Card(
-                      child: SizedBox(
-                        height: 120,
-                        child: Center(
-                          child: Text(
-                            "Chord melody singing",
-                            style: TextStyle(fontSize: 20),
+                    child: GestureDetector(
+                      child: Card(
+                        color:getChordButtonColor("blah_M_2i"),
+                        child: SizedBox(
+                          height: 120,
+                          child: Center(
+                            child: const Text(
+                              "Chord melody singing",
+                              style: TextStyle(fontSize: 20,
+                                  color: Colors.black),
+                            ),
                           ),
                         ),
                       ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/chordMelodySinging');
+                      },
                     ),
                   ),
                 ],
