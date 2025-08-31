@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'audio/audio_controller.dart';
-import 'general.dart';
-import 'tonic.dart';
+import 'help.dart';
+//import 'general.dart';
+//import 'tonic.dart';
 import 'providers/general_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/mapping_provider.dart';
-import 'homepage.dart';
-import 'scales.dart';
-import 'chords.dart';
-import 'handsfree.dart';
-import 'singing.dart';
-import 'handsfreesinging.dart';
+//import 'homepage.dart';
+// import 'scales.dart';
+// import 'chords.dart';
+// import 'handsfree.dart';
+// import 'singing.dart';
+// import 'handsfreesinging.dart';
 import 'frontpage.dart';
 import 'melodyID/melodyID.dart';
 import 'melodyID/melodyIDsettings.dart';
@@ -31,8 +32,6 @@ import 'chordMelodyID/chordMelodyIDhandsfree.dart';
 import 'chordMelodySinging/chordMelodySinging.dart';
 import 'chordMelodySinging/chordMelodySingingHandsfree.dart';
 import 'chordMelodySinging/chordMelodySingingSettings.dart';
-
-
 
 // import 'package:logging/logging.dart';
 
@@ -75,36 +74,31 @@ void main() async {
         ),
         ChangeNotifierProvider<MelodyIDSettings>(
           create: (context) {
-            final melodyIDSettingsProvider =
-                MelodyIDSettings();
+            final melodyIDSettingsProvider = MelodyIDSettings();
             return melodyIDSettingsProvider;
           },
         ),
         ChangeNotifierProvider<MelodySingingSettings>(
           create: (context) {
-            final melodySingingSettingsProvider =
-                MelodySingingSettings();
+            final melodySingingSettingsProvider = MelodySingingSettings();
             return melodySingingSettingsProvider;
           },
         ),
         ChangeNotifierProvider<chordIDSettings>(
           create: (context) {
-            final chordIDSettingsProvider =
-                chordIDSettings();
+            final chordIDSettingsProvider = chordIDSettings();
             return chordIDSettingsProvider;
           },
         ),
         ChangeNotifierProvider<chordSingingSettings>(
           create: (context) {
-            final chordSingingSettingsProvider =
-                chordSingingSettings();
+            final chordSingingSettingsProvider = chordSingingSettings();
             return chordSingingSettingsProvider;
           },
         ),
         ChangeNotifierProvider<chordMelodyIDSettings>(
           create: (context) {
-            final chordMelodyIDSettingsProvider =
-                chordMelodyIDSettings();
+            final chordMelodyIDSettingsProvider = chordMelodyIDSettings();
             return chordMelodyIDSettingsProvider;
           },
         ),
@@ -115,7 +109,6 @@ void main() async {
             return chordMelodySingingSettingsProvider;
           },
         ),
-
       ],
       child: MelodyEarTrainerApp(audioController: audioController),
     ),
@@ -132,36 +125,62 @@ class MelodyEarTrainerApp extends StatelessWidget {
       title: 'Melody Ear Trainer',
       //theme: ThemeData.dark(),
       theme: context.watch<ThemeProvider>().getThemeData,
-      home: MelodyHomePage(audioController: audioController),
+      home: MelodyFrontPage(),
       routes: {
-        '/home': (context) => MelodyHomePage(audioController: audioController),
-        '/general': (context) => GeneralPage(),
-        '/tonic': (context) => TonicPage(audioController: audioController),
-        '/scales': (context) => ScalesPage(),
-        '/chords': (context) => ChordsPage(),
-        '/front': (context) => MelodyFrontPage(),
-        '/handsfree': (context) => HandsFree(audioController: audioController),
-        '/singing': (context) => Singing(audioController: audioController),
-        '/handsfreesinging':
-            (context) => HandsFreeSinging(audioController: audioController),
+       // '/home': (context) => MelodyHomePage(audioController: audioController),
+       // '/general': (context) => GeneralPage(),
+       // '/tonic': (context) => TonicPage(audioController: audioController),
+       // '/scales': (context) => ScalesPage(),
+       // '/chords': (context) => ChordsPage(),
+        '/help': (context) => HelpPage(),
+        '/home': (context) => MelodyFrontPage(),
+        //'/handsfree': (context) => HandsFree(audioController: audioController),
+       // '/singing': (context) => Singing(audioController: audioController),
+       // '/handsfreesinging':
+        //    (context) => HandsFreeSinging(audioController: audioController),
         '/melodyID': (context) => MelodyID(audioController: audioController),
-        '/melodyIDsettings': (context) => MelodyIDSettingsPage(audioController: audioController),
-        '/melodyIDhandsfree': (context) => MelodyIDHandsFree(audioController: audioController),
-        '/melodySinging': (context) => MelodySinging(audioController: audioController),
-        '/melodySingingSettings': (context) => MelodySingingSettingsPage(audioController: audioController),
-        '/melodySingingHandsfree': (context) => MelodySingingHandsFree(audioController: audioController),
+        '/melodyIDsettings':
+            (context) => MelodyIDSettingsPage(audioController: audioController),
+        '/melodyIDhandsfree':
+            (context) => MelodyIDHandsFree(audioController: audioController),
+        '/melodySinging':
+            (context) => MelodySinging(audioController: audioController),
+        '/melodySingingSettings':
+            (context) =>
+                MelodySingingSettingsPage(audioController: audioController),
+        '/melodySingingHandsfree':
+            (context) =>
+                MelodySingingHandsFree(audioController: audioController),
         '/chordID': (context) => chordID(audioController: audioController),
-        '/chordIDsettings': (context) => chordIDSettingsPage(audioController: audioController),
-        '/chordIDhandsfree': (context) => chordIDHandsFree(audioController: audioController),
-        '/chordSinging': (context) => chordSinging(audioController: audioController),
-        '/chordSingingSettings': (context) => chordSingingSettingsPage(audioController: audioController),
-        '/chordSinginghandsfree': (context) => chordSingingHandsFree(audioController: audioController),
-        '/chordMelodyID': (context) => chordMelodyID(audioController: audioController),
-        '/chordMelodyIDsettings': (context) => chordMelodyIDSettingsPage(audioController: audioController),
-        '/chordMelodyIDhandsfree': (context) => chordMelodyIDHandsFree(audioController: audioController),
-        '/chordMelodySinging': (context) => chordMelodySinging(audioController: audioController),
-        '/chordMelodySingingSettings': (context) => chordMelodySingingSettingsPage(audioController: audioController),
-        '/chordMelodySingingHandsfree': (context) => chordMelodySingingHandsFree(audioController: audioController),
+        '/chordIDsettings':
+            (context) => chordIDSettingsPage(audioController: audioController),
+        '/chordIDhandsfree':
+            (context) => chordIDHandsFree(audioController: audioController),
+        '/chordSinging':
+            (context) => chordSinging(audioController: audioController),
+        '/chordSingingSettings':
+            (context) =>
+                chordSingingSettingsPage(audioController: audioController),
+        '/chordSinginghandsfree':
+            (context) =>
+                chordSingingHandsFree(audioController: audioController),
+        '/chordMelodyID':
+            (context) => chordMelodyID(audioController: audioController),
+        '/chordMelodyIDsettings':
+            (context) =>
+                chordMelodyIDSettingsPage(audioController: audioController),
+        '/chordMelodyIDhandsfree':
+            (context) =>
+                chordMelodyIDHandsFree(audioController: audioController),
+        '/chordMelodySinging':
+            (context) => chordMelodySinging(audioController: audioController),
+        '/chordMelodySingingSettings':
+            (context) => chordMelodySingingSettingsPage(
+              audioController: audioController,
+            ),
+        '/chordMelodySingingHandsfree':
+            (context) =>
+                chordMelodySingingHandsFree(audioController: audioController),
         // Add other routes here
       },
     );

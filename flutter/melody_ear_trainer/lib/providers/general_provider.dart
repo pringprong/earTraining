@@ -10,7 +10,9 @@ abstract class GeneralProvider extends ChangeNotifier {
   String defaultKey = "C";
   String selectedKey = "C";
 
+  int numberOfNotesDefault = 5;
   int numberOfNotes = 5;
+
   int maxDistance = 7;
   bool allowRepeatedNotes = false;
   String selectedInstrument = "Piano";
@@ -31,7 +33,10 @@ abstract class GeneralProvider extends ChangeNotifier {
   String chordFrequencyDefault = "Every 4 notes";
   String chordFrequency = "Every 4 notes"; // Default chord frequency
   bool displayChordNames = false; // Whether to display chord names
+
+  int arpeggiateChordDelayDefault = 50;
   int arpeggiateChordDelay = 50; // Default chord arpeggiation speed
+  
   String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
   bool allowRepeatedChords = false; // Allow repeated chords
 
@@ -417,7 +422,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     final settings = jsonDecode(jsonString);
 
     selectedKey = settings['selectedKey'] ?? defaultKey;
-    numberOfNotes = settings['numberOfNotes'] ?? 5;
+    numberOfNotes = settings['numberOfNotes'] ?? numberOfNotesDefault;
     maxDistance = settings['maxDistance'] ?? 7;
     allowRepeatedNotes = settings['allowRepeatedNotes'] ?? false;
     selectedInstrument = settings['selectedInstrument'] ?? "Piano";
@@ -432,7 +437,8 @@ abstract class GeneralProvider extends ChangeNotifier {
     selectedScale = settings['selectedScale'] ?? "Diatonic major";
     chordFrequency = settings['chordFrequency'] ?? chordFrequencyDefault;
     displayChordNames = settings['displayChordNames'] ?? false;
-    arpeggiateChordDelay = settings['arpeggiateChordDelay'] ?? 50;
+    arpeggiateChordDelay =
+        settings['arpeggiateChordDelay'] ?? arpeggiateChordDelayDefault;
     arpeggiateChordOrder = settings['arpeggiateChordOrder'] ?? "Ascending";
     allowRepeatedChords = settings['allowRepeatedChords'] ?? false;
     chordSetRange = settings['chordSetRange'] ?? "Middle";
@@ -461,7 +467,7 @@ abstract class GeneralProvider extends ChangeNotifier {
   void resetAllSettings() {
     // Set all settings to their default values
     selectedKey = defaultKey;
-    numberOfNotes = 5;
+    numberOfNotes = numberOfNotesDefault;
     maxDistance = 7;
     allowRepeatedNotes = false;
     selectedInstrument = "Piano";
@@ -476,7 +482,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     selectedScale = "Diatonic major";
     chordFrequency = chordFrequencyDefault;
     displayChordNames = true;
-    arpeggiateChordDelay = 50;
+    arpeggiateChordDelay = arpeggiateChordDelayDefault;
     arpeggiateChordOrder = "Ascending";
     allowRepeatedChords = false;
     chordSetRange = "Middle";
@@ -502,10 +508,13 @@ class MelodyIDSettings extends GeneralProvider {
   String saveName = "melody_id_settings";
 
   @override
-  String defaultKey = "E";
+  int numberOfNotesDefault = 5;
 
   @override
   String chordFrequencyDefault = "Never";
+
+  @override
+  int arpeggiateChordDelayDefault = 50;
 }
 
 class MelodySingingSettings extends GeneralProvider {
@@ -513,33 +522,39 @@ class MelodySingingSettings extends GeneralProvider {
   String saveName = "melody_singing_settings";
 
   @override
-  String defaultKey = "D";
+  int numberOfNotesDefault = 4;
 
   @override
   String chordFrequencyDefault = "Never";
-}
+
+  @override
+  int arpeggiateChordDelayDefault = 50;
+  }
 
 class chordIDSettings extends GeneralProvider {
   @override
   String saveName = "chord_id_settings";
 
   @override
-  String defaultKey = "C";
+  int numberOfNotesDefault = 3;
 
   @override
   String chordFrequencyDefault = "Every note";
+  
+  @override
+  int arpeggiateChordDelayDefault = 200;
 
   @override
   String startingDoDefault = "I_M_R";
-  
+
   @override
   String endingDoDefault = "I_M_R";
 
   @override
-  String startingDo =  "I_M_R";
+  String startingDo = "I_M_R";
 
   @override
-  String endingDo =  "I_M_R";
+  String endingDo = "I_M_R";
 }
 
 class chordSingingSettings extends GeneralProvider {
@@ -547,22 +562,25 @@ class chordSingingSettings extends GeneralProvider {
   String saveName = "chord_singing_settings";
 
   @override
-  String defaultKey = "C";
+  int numberOfNotesDefault = 3;
 
   @override
   String chordFrequencyDefault = "Every note";
+  
+  @override
+  int arpeggiateChordDelayDefault = 200;
 
   @override
   String startingDoDefault = "I_M_R";
-  
+
   @override
   String endingDoDefault = "I_M_R";
 
   @override
-  String startingDo =  "I_M_R";
+  String startingDo = "I_M_R";
 
   @override
-  String endingDo =  "I_M_R";
+  String endingDo = "I_M_R";
 }
 
 class chordMelodyIDSettings extends GeneralProvider {
@@ -570,7 +588,10 @@ class chordMelodyIDSettings extends GeneralProvider {
   String saveName = "chord_melody_id_settings";
 
   @override
-  String defaultKey = "C";
+  int numberOfNotesDefault = 5;
+  
+  @override
+  int arpeggiateChordDelayDefault = 100;
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
@@ -581,7 +602,10 @@ class chordMelodySingingSettings extends GeneralProvider {
   String saveName = "chord_melody_singing_settings";
 
   @override
-  String defaultKey = "C";
+  int numberOfNotesDefault = 5;
+  
+  @override
+  int arpeggiateChordDelayDefault = 100;
 
   @override
   String chordFrequencyDefault = "Every 4 notes";

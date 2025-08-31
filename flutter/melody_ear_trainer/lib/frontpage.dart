@@ -97,7 +97,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                           height: 120,
                           child: Center(
                             child: const Text(
-                              "Chord Singing",
+                              "Chord singing",
                               style: TextStyle(fontSize: 20,
                                   color: Colors.black),
                             ),
@@ -159,35 +159,45 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
               ),
               SizedBox(height: 16),
               // Fourth row: double-width, half-height
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      child: SizedBox(
-                        height: 60,
-                        child: Center(
-                          child: Text(
-                            "Progress report",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Card(
+              //         child: SizedBox(
+              //           height: 60,
+              //           child: Center(
+              //             child: Text(
+              //               "Progress report",
+              //               style: TextStyle(fontSize: 20),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              //SizedBox(height: 16),
               // Fifth row: double-width, half-height
               Row(
                 children: [
                   Expanded(
-                    child: Card(
-                      child: SizedBox(
-                        height: 60,
-                        child: Center(
-                          child: Text("Help", style: TextStyle(fontSize: 20)),
+                    child: GestureDetector(
+                      child: Card(
+                        color:getChordButtonColor("blah_VL_R"),
+                        child: SizedBox(
+                          height: 120,
+                          child: Center(
+                            child: const Text(
+                              "Help",
+                              style: TextStyle(fontSize: 20,
+                                  color: Colors.black),
+                            ),
+                          ),
                         ),
                       ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/help');
+                      },
                     ),
                   ),
                 ],
