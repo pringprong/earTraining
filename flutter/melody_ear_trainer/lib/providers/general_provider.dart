@@ -20,8 +20,10 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   bool startWithDo = true;
   bool endWithDo = true;
-  String startingDo = "do"; // Default starting note
-  String endingDo = "do"; // Default ending note
+  String startingDoDefault = "";
+  String endingDoDefault = "";
+  String startingDo = ""; // Default starting note
+  String endingDo = ""; // Default ending note
 
   String selectedOctave = "Middle octave"; // Default octave selection
   String selectedScale = "Diatonic major"; // Default scale selection
@@ -382,8 +384,8 @@ abstract class GeneralProvider extends ChangeNotifier {
       'playbackSpeed': playbackSpeed,
       'startWithDo': startWithDo,
       'endWithDo': endWithDo,
-      'startingDo': startingDo,
-      'endingDo': endingDo,
+      'startingDo': startingDoDefault,
+      'endingDo': endingDoDefault,
       'selectedOctave': selectedOctave,
       'selectedScale': selectedScale,
       'chordFrequency': chordFrequencyDefault,
@@ -424,8 +426,8 @@ abstract class GeneralProvider extends ChangeNotifier {
     playbackSpeed = settings['playbackSpeed'] ?? "Normal";
     startWithDo = settings['startWithDo'] ?? true;
     endWithDo = settings['endWithDo'] ?? true;
-    startingDo = settings['startingDo'] ?? "do";
-    endingDo = settings['endingDo'] ?? "do";
+    startingDo = settings['startingDo'] ?? startingDoDefault;
+    endingDo = settings['endingDo'] ?? endingDoDefault;
     selectedOctave = settings['selectedOctave'] ?? "Middle octave";
     selectedScale = settings['selectedScale'] ?? "Diatonic major";
     chordFrequency = settings['chordFrequency'] ?? chordFrequencyDefault;
@@ -468,8 +470,8 @@ abstract class GeneralProvider extends ChangeNotifier {
     playbackSpeed = "Normal";
     startWithDo = true;
     endWithDo = true;
-    startingDo = "do";
-    endingDo = "do";
+    startingDo = startingDoDefault;
+    endingDo = endingDoDefault;
     selectedOctave = "Middle octave";
     selectedScale = "Diatonic major";
     chordFrequency = chordFrequencyDefault;
@@ -537,4 +539,50 @@ class chordMelodySingingSettings extends GeneralProvider {
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
+}
+
+class chordIDSettings extends GeneralProvider {
+  @override
+  String saveName = "chord_id_settings2";
+
+  @override
+  String defaultKey = "C";
+
+  @override
+  String chordFrequencyDefault = "Every note";
+
+  @override
+  String startingDoDefault = "I_M_R";
+  
+  @override
+  String endingDoDefault = "I_M_R";
+
+  @override
+  String startingDo =  "I_M_R";
+
+  @override
+  String endingDo =  "I_M_R";
+}
+
+class chordIDSingingSettings extends GeneralProvider {
+  @override
+  String saveName = "chord_id_singing_settings";
+
+  @override
+  String defaultKey = "C";
+
+  @override
+  String chordFrequencyDefault = "Every note";
+
+  @override
+  String startingDoDefault = "I_M_R";
+  
+  @override
+  String endingDoDefault = "I_M_R";
+
+  @override
+  String startingDo =  "I_M_R";
+
+  @override
+  String endingDo =  "I_M_R";
 }
