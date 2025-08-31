@@ -83,3 +83,73 @@ Widget buildNotesGrid(
   }
   return Column(children: rows);
 }
+ Widget buildChordButtons(
+    MappingProvider mappingProvider,
+    GeneralProvider generalProvider,
+  ) {
+    List<Widget> sections = [];
+    mappingProvider.getChordsMapping.forEach((category, degreesMap) {
+      // Section title
+      sections.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            category,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ),
+      );
+      degreesMap.forEach((degree, chordSetMap) {
+        // Row for each degree
+        List<Widget> chordButtons = [];
+        chordSetMap.forEach((chordName, notes) {
+          final selected = generalProvider.selectedChords[chordName] == true;
+          chordButtons.add(
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Tooltip(
+                message: notes.join(' '),
+                child: GestureDetector(
+                  onTap: () {
+                    generalProvider.toggleSelectedChord(chordName);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color:
+                          selected
+                              ? getChordButtonColor(chordName)
+                              : Colors.grey[400],
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Text(
+                        chordName,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight:
+                              selected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+        sections.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Wrap(spacing: 4, runSpacing: 4, children: chordButtons),
+          ),
+        );
+      });
+    });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: sections,
+    );
+  }

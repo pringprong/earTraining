@@ -19,6 +19,11 @@ import 'melodyID/melodyIDhandsfree.dart';
 import 'melodySinging/melodySinging.dart';
 import 'melodySinging/melodySingingHandsfree.dart';
 import 'melodySinging/melodySingingSettings.dart';
+import 'chordMelodyID/chordMelody.dart';
+import 'chordMelodyID/chordMelodyIDsettings.dart';
+import 'chordMelodyID/chordMelodyIDhandsfree.dart';
+
+
 // import 'package:logging/logging.dart';
 
 void main() async {
@@ -72,6 +77,14 @@ void main() async {
             return melodySingingSettingsProvider;
           },
         ),
+        ChangeNotifierProvider<chordMelodyIDSettings>(
+          create: (context) {
+            final chordMelodyIDSettingsProvider =
+                chordMelodyIDSettings();
+            return chordMelodyIDSettingsProvider;
+          },
+        ),
+
       ],
       child: MelodyEarTrainerApp(audioController: audioController),
     ),
@@ -106,6 +119,9 @@ class MelodyEarTrainerApp extends StatelessWidget {
         '/melodySinging': (context) => MelodySinging(audioController: audioController),
         '/melodySingingSettings': (context) => MelodySingingSettingsPage(audioController: audioController),
         '/melodySingingHandsfree': (context) => MelodySingingHandsFree(audioController: audioController),
+        '/chordMelodyID': (context) => chordMelodyID(audioController: audioController),
+        '/chordMelodyIDsettings': (context) => chordMelodyIDSettingsPage(audioController: audioController),
+        '/chordMelodyIDhandsfree': (context) => chordMelodyIDHandsFree(audioController: audioController),
         // Add other routes here
       },
     );

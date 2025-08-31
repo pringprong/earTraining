@@ -516,3 +516,14 @@ class MelodySingingSettings extends GeneralProvider {
   @override
   String chordFrequencyDefault = "Never";
 }
+
+class chordMelodyIDSettings extends GeneralProvider {
+  @override
+  String saveName = "chord_melody_id_settings";
+
+  @override
+  String defaultKey = "C";
+
+  @override
+  String chordFrequencyDefault = "Every 4 notes";
+}
