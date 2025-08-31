@@ -8,19 +8,18 @@ import '../utils/colors.dart';
 import '../utils/helper.dart';
 import '../utils/chordMelody.dart';
 
-class chordIDSettingsPage extends StatefulWidget {
-  const chordIDSettingsPage({super.key, required this.audioController});
+class chordSingingSettingsPage extends StatefulWidget {
+  const chordSingingSettingsPage({super.key, required this.audioController});
   final AudioController audioController;
   @override
-  State<chordIDSettingsPage> createState() =>
-      _chordIDSettingsPageState();
+  State<chordSingingSettingsPage> createState() => _chordSingingSettingsPageState();
 }
 
-class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
+class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
   @override
   Widget build(BuildContext context) {
     final mappingProvider = Provider.of<MappingProvider>(context);
-    final generalProvider = Provider.of<chordIDSettings>(context);
+    final generalProvider = Provider.of<chordSingingSettings>(context);
     // String? selectedOctave =
     //     generalProvider.selectedOctave; // Default octave selection
     // String? selectedScale =
@@ -30,7 +29,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
     String? selectedChordSet =
         generalProvider.chordSet; // Default set selection
     return Scaffold(
-      appBar: AppBar(title: Text('Chord ID settings')),
+      appBar: AppBar(title: Text('Chord singing settings')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -45,7 +44,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //     ),
               //     DropdownButton<String>(
               //       value:
-              //           context.watch<chordIDSettings>().selectedOctave,
+              //           context.watch<chordSingingSettings>().selectedOctave,
               //       hint: Text('Select Octave'),
               //       items:
               //           mappingProvider.getOctaveKeys
@@ -60,7 +59,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //         setState(() {
               //           selectedOctave = octave;
               //           context
-              //               .read<chordIDSettings>()
+              //               .read<chordSingingSettings>()
               //               .updateSelectedOctave(octave: selectedOctave ?? '');
               //           if (selectedOctave != null && selectedScale != null) {
               //             final notes =
@@ -81,7 +80,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //       child: Text('Scale:'),
               //     ),
               //     DropdownButton<String>(
-              //       value: context.watch<chordIDSettings>().selectedScale,
+              //       value: context.watch<chordSingingSettings>().selectedScale,
               //       hint: Text('Select Scale'),
               //       items:
               //           mappingProvider.getScaleKeys
@@ -96,7 +95,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //         setState(() {
               //           selectedScale = scale;
               //           context
-              //               .read<chordIDSettings>()
+              //               .read<chordSingingSettings>()
               //               .updateSelectedScale(newscale: selectedScale ?? '');
               //           if (selectedOctave != null && selectedScale != null) {
               //             final notes =
@@ -115,7 +114,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //   children: [
               //     Expanded(
               //       child: buildNotesGrid(
-              //         context.read<chordIDSettings>(),
+              //         context.read<chordSingingSettings>(),
               //         context.read<MappingProvider>(),
               //       ),
               //     ),
@@ -130,7 +129,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     child: Text('Number of notes in melody:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<chordIDSettings>().numberOfNotes,
+                    value: context.watch<chordSingingSettings>().numberOfNotes,
                     items:
                         List.generate(
                           18,
@@ -143,9 +142,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordIDSettings>()
-                            .updateNumberOfNotes(count: newValue);
+                        context.read<chordSingingSettings>().updateNumberOfNotes(
+                          count: newValue,
+                        );
                       }
                     },
                   ),
@@ -158,7 +157,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //       child: Text('Max distance between adjacent notes:'),
               //     ),
               //     DropdownButton<int>(
-              //       value: context.watch<chordIDSettings>().maxDistance,
+              //       value: context.watch<chordSingingSettings>().maxDistance,
               //       items:
               //           List.generate(
               //             9,
@@ -171,7 +170,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //           }).toList(),
               //       onChanged: (int? newValue) {
               //         if (newValue != null) {
-              //           context.read<chordIDSettings>().updateMaxDistance(
+              //           context.read<chordSingingSettings>().updateMaxDistance(
               //             distance: newValue,
               //           );
               //         }
@@ -186,13 +185,10 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //       child: Text('Allow repeated notes:'),
               //     ),
               //     Checkbox(
-              //       value:
-              //           context
-              //               .watch<chordIDSettings>()
-              //               .allowRepeatedNotes,
+              //       value: context.watch<chordSingingSettings>().allowRepeatedNotes,
               //       onChanged: (bool? newValue) {
               //         context
-              //             .read<chordIDSettings>()
+              //             .read<chordSingingSettings>()
               //             .toggleAllowRepeatedNotes();
               //       },
               //     ),
@@ -205,8 +201,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //       child: Text('Chord frequency:'),
               //     ),
               //     DropdownButton<String>(
-              //       value:
-              //           context.watch<chordIDSettings>().chordFrequency,
+              //       value: context.watch<chordSingingSettings>().chordFrequency,
               //       items:
               //           [
               //             "Never",
@@ -222,9 +217,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //           }).toList(),
               //       onChanged: (String? newValue) {
               //         if (newValue != null) {
-              //           context
-              //               .read<chordIDSettings>()
-              //               .updateChordFrequency(frequency: newValue);
+              //           context.read<chordSingingSettings>().updateChordFrequency(
+              //             frequency: newValue,
+              //           );
               //         }
               //       },
               //     ),
@@ -237,13 +232,10 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     child: Text('Allow repeated chords:'),
                   ),
                   Checkbox(
-                    value:
-                        context
-                            .watch<chordIDSettings>()
-                            .allowRepeatedChords,
+                    value: context.watch<chordSingingSettings>().allowRepeatedChords,
                     onChanged: (bool? newValue) {
                       context
-                          .read<chordIDSettings>()
+                          .read<chordSingingSettings>()
                           .toggleAllowRepeatedChords();
                     },
                   ),
@@ -259,7 +251,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback key'),
-                    value: context.watch<chordIDSettings>().selectedKey,
+                    value: context.watch<chordSingingSettings>().selectedKey,
                     items:
                         mappingProvider.getMappingKeys
                             .map<DropdownMenuItem<String>>((String value) {
@@ -271,7 +263,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                             .toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<chordIDSettings>().updateSelectedKey(
+                        context.read<chordSingingSettings>().updateSelectedKey(
                           newkey: newValue,
                         );
                       }
@@ -287,10 +279,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback instrument'),
-                    value:
-                        context
-                            .watch<chordIDSettings>()
-                            .selectedInstrument,
+                    value: context.watch<chordSingingSettings>().selectedInstrument,
                     items:
                         mappingProvider.getInstruments
                             .map<DropdownMenuItem<String>>((String value) {
@@ -303,7 +292,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context
-                            .read<chordIDSettings>()
+                            .read<chordSingingSettings>()
                             .updateSelectedInstrument(instrument: newValue);
                       }
                     },
@@ -317,7 +306,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     child: Text('Playback speed:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<chordIDSettings>().playbackSpeed,
+                    value: context.watch<chordSingingSettings>().playbackSpeed,
                     items:
                         [
                           "Very fast",
@@ -332,37 +321,37 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordIDSettings>()
-                            .updatePlaybackSpeed(speed: newValue);
+                        context.read<chordSingingSettings>().updatePlaybackSpeed(
+                          speed: newValue,
+                        );
                         if (newValue == "Very fast") {
                           context
-                              .read<chordIDSettings>()
+                              .read<chordSingingSettings>()
                               .updateTimeBetweenNotes(time: 300);
-                          context
-                              .read<chordIDSettings>()
-                              .updateTruncateNotes(time: "600");
+                          context.read<chordSingingSettings>().updateTruncateNotes(
+                            time: "600",
+                          );
                         } else if (newValue == "Fast") {
                           context
-                              .read<chordIDSettings>()
+                              .read<chordSingingSettings>()
                               .updateTimeBetweenNotes(time: 600);
-                          context
-                              .read<chordIDSettings>()
-                              .updateTruncateNotes(time: "900");
+                          context.read<chordSingingSettings>().updateTruncateNotes(
+                            time: "900",
+                          );
                         } else if (newValue == "Normal") {
                           context
-                              .read<chordIDSettings>()
+                              .read<chordSingingSettings>()
                               .updateTimeBetweenNotes(time: 900);
-                          context
-                              .read<chordIDSettings>()
-                              .updateTruncateNotes(time: "1200");
+                          context.read<chordSingingSettings>().updateTruncateNotes(
+                            time: "1200",
+                          );
                         } else if (newValue == "Slow") {
                           context
-                              .read<chordIDSettings>()
+                              .read<chordSingingSettings>()
                               .updateTimeBetweenNotes(time: 1200);
-                          context
-                              .read<chordIDSettings>()
-                              .updateTruncateNotes(time: "1500");
+                          context.read<chordSingingSettings>().updateTruncateNotes(
+                            time: "1500",
+                          );
                         }
                       }
                     },
@@ -377,9 +366,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<int>(
                     value:
-                        context
-                            .watch<chordIDSettings>()
-                            .arpeggiateChordDelay,
+                        context.watch<chordSingingSettings>().arpeggiateChordDelay,
                     items:
                         [
                           0,
@@ -398,7 +385,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     onChanged: (int? newValue) {
                       if (newValue != null) {
                         context
-                            .read<chordIDSettings>()
+                            .read<chordSingingSettings>()
                             .updateArpeggiateChordDelay(delay: newValue);
                       }
                     },
@@ -413,9 +400,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value:
-                        context
-                            .watch<chordIDSettings>()
-                            .arpeggiateChordOrder,
+                        context.watch<chordSingingSettings>().arpeggiateChordOrder,
                     items:
                         [
                           "Ascending",
@@ -430,7 +415,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context
-                            .read<chordIDSettings>()
+                            .read<chordSingingSettings>()
                             .updateArpeggiateChordOrder(order: newValue);
                       }
                     },
@@ -452,9 +437,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               Row(
                 children: [
                   Checkbox(
-                    value: context.watch<chordIDSettings>().startWithDo,
+                    value: context.watch<chordSingingSettings>().startWithDo,
                     onChanged: (bool? value) {
-                      context.read<chordIDSettings>().toggleStartWithDo();
+                      context.read<chordSingingSettings>().toggleStartWithDo();
                     },
                   ),
                   // Starting note dropdown
@@ -463,7 +448,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     child: Text('Tonic Note:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<chordIDSettings>().startingDo,
+                    value: context.watch<chordSingingSettings>().startingDo,
                     items:
                         [
                           "I_M_R",
@@ -477,7 +462,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<chordIDSettings>().updateStartingDo(
+                        context.read<chordSingingSettings>().updateStartingDo(
                           newStartingDo: newValue,
                         );
                       }
@@ -498,9 +483,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               Row(
                 children: [
                   Checkbox(
-                    value: context.watch<chordIDSettings>().endWithDo,
+                    value: context.watch<chordSingingSettings>().endWithDo,
                     onChanged: (bool? value) {
-                      context.read<chordIDSettings>().toggleEndWithDo();
+                      context.read<chordSingingSettings>().toggleEndWithDo();
                     },
                   ),
                   // Ending note dropdown
@@ -509,7 +494,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     child: Text('Ending Note:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<chordIDSettings>().endingDo,
+                    value: context.watch<chordSingingSettings>().endingDo,
                     items:
                         [
                           "I_M_R",
@@ -523,7 +508,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<chordIDSettings>().updateEndingDo(
+                        context.read<chordSingingSettings>().updateEndingDo(
                           newEndingDo: newValue,
                         );
                       }
@@ -543,13 +528,13 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                       onPressed: () async {
                         // startingDo is a note
                         if (mappingProvider.getNoteKeys.contains(
-                          context.read<chordIDSettings>().startingDo,
+                          context.read<chordSingingSettings>().startingDo,
                         )) {
                           String filename =
                               mappingProvider.getNestedMapping[context
-                                  .read<chordIDSettings>()
+                                  .read<chordSingingSettings>()
                                   .selectedKey]!['Guitar']![context
-                                  .read<chordIDSettings>()
+                                  .read<chordSingingSettings>()
                                   .startingDo] ??
                               '';
                           filename = "assets/audio/$filename";
@@ -564,12 +549,12 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }
                         // startingDo is a chord
                         else if (mappingProvider.getChordMap.keys.contains(
-                          context.read<chordIDSettings>().startingDo,
+                          context.read<chordSingingSettings>().startingDo,
                         )) {
                           ChordMelody cm = ChordMelody.singleChord(
-                            context.read<chordIDSettings>().startingDo,
+                            context.read<chordSingingSettings>().startingDo,
                             mappingProvider.getChordMap[context
-                                    .read<chordIDSettings>()
+                                    .read<chordSingingSettings>()
                                     .startingDo] ??
                                 [],
                           );
@@ -604,13 +589,13 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                       onPressed: () async {
                         // startingDo is a note
                         if (mappingProvider.getNoteKeys.contains(
-                          context.read<chordIDSettings>().startingDo,
+                          context.read<chordSingingSettings>().startingDo,
                         )) {
                           String filename =
                               mappingProvider.getNestedMapping[context
-                                  .read<chordIDSettings>()
+                                  .read<chordSingingSettings>()
                                   .selectedKey]!['Piano']![context
-                                  .read<chordIDSettings>()
+                                  .read<chordSingingSettings>()
                                   .startingDo] ??
                               '';
                           filename = "assets/audio/$filename";
@@ -625,12 +610,12 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }
                         // startingDo is a chord
                         else if (mappingProvider.getChordMap.keys.contains(
-                          context.read<chordIDSettings>().startingDo,
+                          context.read<chordSingingSettings>().startingDo,
                         )) {
                           ChordMelody cm = ChordMelody.singleChord(
-                            context.read<chordIDSettings>().startingDo,
+                            context.read<chordSingingSettings>().startingDo,
                             mappingProvider.getChordMap[context
-                                    .read<chordIDSettings>()
+                                    .read<chordSingingSettings>()
                                     .startingDo] ??
                                 [],
                           );
@@ -665,13 +650,13 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                       onPressed: () async {
                         // startingDo is a note
                         if (mappingProvider.getNoteKeys.contains(
-                          context.read<chordIDSettings>().startingDo,
+                          context.read<chordSingingSettings>().startingDo,
                         )) {
                           String filename =
                               mappingProvider.getNestedMapping[context
-                                  .read<chordIDSettings>()
+                                  .read<chordSingingSettings>()
                                   .selectedKey]!['Solfege']![context
-                                  .read<chordIDSettings>()
+                                  .read<chordSingingSettings>()
                                   .startingDo] ??
                               '';
                           filename = "assets/audio/$filename";
@@ -686,12 +671,12 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }
                         // startingDo is a chord
                         else if (mappingProvider.getChordMap.keys.contains(
-                          context.read<chordIDSettings>().startingDo,
+                          context.read<chordSingingSettings>().startingDo,
                         )) {
                           ChordMelody cm = ChordMelody.singleChord(
-                            context.read<chordIDSettings>().startingDo,
+                            context.read<chordSingingSettings>().startingDo,
                             mappingProvider.getChordMap[context
-                                    .read<chordIDSettings>()
+                                    .read<chordSingingSettings>()
                                     .startingDo] ??
                                 [],
                           );
@@ -723,7 +708,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     child: Text('Range:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<chordIDSettings>().chordSetRange,
+                    value: context.watch<chordSingingSettings>().chordSetRange,
                     hint: Text('Select Range'),
                     items:
                         mappingProvider.getRangesList
@@ -737,7 +722,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     onChanged: (range) {
                       setState(() {
                         selectedRange = range;
-                        context.read<chordIDSettings>().updateChordRange(
+                        context.read<chordSingingSettings>().updateChordRange(
                           newChordRange: selectedRange ?? '',
                         );
                         if (selectedRange != null && selectedChordSet != null) {
@@ -745,9 +730,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                               mappingProvider
                                   .getChordSetsMapping[selectedRange!]?[selectedChordSet!] ??
                               [];
-                          context
-                              .read<chordIDSettings>()
-                              .setSelectedChords(chords);
+                          context.read<chordSingingSettings>().setSelectedChords(
+                            chords,
+                          );
                         }
                       });
                     },
@@ -761,7 +746,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     child: Text('Set:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<chordIDSettings>().chordSet,
+                    value: context.watch<chordSingingSettings>().chordSet,
                     hint: Text('Select Set'),
                     items:
                         mappingProvider.getChordSetsList
@@ -775,7 +760,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     onChanged: (set) {
                       setState(() {
                         selectedChordSet = set;
-                        context.read<chordIDSettings>().updateChordSet(
+                        context.read<chordSingingSettings>().updateChordSet(
                           newChordSet: selectedChordSet ?? '',
                         );
                         if (selectedRange != null && selectedChordSet != null) {
@@ -783,9 +768,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                               mappingProvider
                                   .getChordSetsMapping[selectedRange!]?[selectedChordSet!] ??
                               [];
-                          context
-                              .read<chordIDSettings>()
-                              .setSelectedChords(chords);
+                          context.read<chordSingingSettings>().setSelectedChords(
+                            chords,
+                          );
                         }
                       });
                     },
@@ -803,9 +788,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        context
-                            .read<chordIDSettings>()
-                            .resetAllSettings();
+                        context.read<chordSingingSettings>().resetAllSettings();
                         context.read<ThemeProvider>().resetAllSettings();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

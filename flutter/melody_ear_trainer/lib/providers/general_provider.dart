@@ -519,6 +519,52 @@ class MelodySingingSettings extends GeneralProvider {
   String chordFrequencyDefault = "Never";
 }
 
+class chordIDSettings extends GeneralProvider {
+  @override
+  String saveName = "chord_id_settings";
+
+  @override
+  String defaultKey = "C";
+
+  @override
+  String chordFrequencyDefault = "Every note";
+
+  @override
+  String startingDoDefault = "I_M_R";
+  
+  @override
+  String endingDoDefault = "I_M_R";
+
+  @override
+  String startingDo =  "I_M_R";
+
+  @override
+  String endingDo =  "I_M_R";
+}
+
+class chordSingingSettings extends GeneralProvider {
+  @override
+  String saveName = "chord_singing_settings";
+
+  @override
+  String defaultKey = "C";
+
+  @override
+  String chordFrequencyDefault = "Every note";
+
+  @override
+  String startingDoDefault = "I_M_R";
+  
+  @override
+  String endingDoDefault = "I_M_R";
+
+  @override
+  String startingDo =  "I_M_R";
+
+  @override
+  String endingDo =  "I_M_R";
+}
+
 class chordMelodyIDSettings extends GeneralProvider {
   @override
   String saveName = "chord_melody_id_settings";
@@ -539,50 +585,4 @@ class chordMelodySingingSettings extends GeneralProvider {
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
-}
-
-class chordIDSettings extends GeneralProvider {
-  @override
-  String saveName = "chord_id_settings2";
-
-  @override
-  String defaultKey = "C";
-
-  @override
-  String chordFrequencyDefault = "Every note";
-
-  @override
-  String startingDoDefault = "I_M_R";
-  
-  @override
-  String endingDoDefault = "I_M_R";
-
-  @override
-  String startingDo =  "I_M_R";
-
-  @override
-  String endingDo =  "I_M_R";
-}
-
-class chordIDSingingSettings extends GeneralProvider {
-  @override
-  String saveName = "chord_id_singing_settings";
-
-  @override
-  String defaultKey = "C";
-
-  @override
-  String chordFrequencyDefault = "Every note";
-
-  @override
-  String startingDoDefault = "I_M_R";
-  
-  @override
-  String endingDoDefault = "I_M_R";
-
-  @override
-  String startingDo =  "I_M_R";
-
-  @override
-  String endingDo =  "I_M_R";
 }

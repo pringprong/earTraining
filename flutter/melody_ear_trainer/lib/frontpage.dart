@@ -87,21 +87,28 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                         Navigator.pushNamed(context, '/chordID');
                       },
                     ),
-                  ),                  SizedBox(width: 16),
+                  ),
+                  SizedBox(width: 16),
                   Expanded(
-                    child: Card(
-                      child: SizedBox(
-                        height: 120,
-                        child: Center(
-                          child: Text(
-                            "Chords singing",
-                            style: TextStyle(fontSize: 20),
+                    child: GestureDetector(
+                      child: Card(
+                        color:getChordButtonColor("blah_M_3i"),
+                        child: SizedBox(
+                          height: 120,
+                          child: Center(
+                            child: const Text(
+                              "Chord Singing",
+                              style: TextStyle(fontSize: 20,
+                                  color: Colors.black),
+                            ),
                           ),
                         ),
                       ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/chordSinging');
+                      },
                     ),
-                  ),
-                ],
+                  ),                ],
               ),
               SizedBox(height: 16),
               // Third row

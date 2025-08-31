@@ -19,12 +19,15 @@ import 'melodyID/melodyIDhandsfree.dart';
 import 'melodySinging/melodySinging.dart';
 import 'melodySinging/melodySingingHandsfree.dart';
 import 'melodySinging/melodySingingSettings.dart';
-import 'chordMelodyID/chordMelody.dart';
-import 'chordMelodyID/chordMelodyIDsettings.dart';
-import 'chordMelodyID/chordMelodyIDhandsfree.dart';
 import 'chordID/chordID.dart';
 import 'chordID/chordIDsettings.dart';
 import 'chordID/chordIDhandsfree.dart';
+import 'chordSinging/chordSinging.dart';
+import 'chordSinging/chordSingingsettings.dart';
+import 'chordSinging/chordSinginghandsfree.dart';
+import 'chordMelodyID/chordMelody.dart';
+import 'chordMelodyID/chordMelodyIDsettings.dart';
+import 'chordMelodyID/chordMelodyIDhandsfree.dart';
 import 'chordMelodySinging/chordMelodySinging.dart';
 import 'chordMelodySinging/chordMelodySingingHandsfree.dart';
 import 'chordMelodySinging/chordMelodySingingSettings.dart';
@@ -91,6 +94,13 @@ void main() async {
             return chordIDSettingsProvider;
           },
         ),
+        ChangeNotifierProvider<chordSingingSettings>(
+          create: (context) {
+            final chordSingingSettingsProvider =
+                chordSingingSettings();
+            return chordSingingSettingsProvider;
+          },
+        ),
         ChangeNotifierProvider<chordMelodyIDSettings>(
           create: (context) {
             final chordMelodyIDSettingsProvider =
@@ -143,6 +153,9 @@ class MelodyEarTrainerApp extends StatelessWidget {
         '/chordID': (context) => chordID(audioController: audioController),
         '/chordIDsettings': (context) => chordIDSettingsPage(audioController: audioController),
         '/chordIDhandsfree': (context) => chordIDHandsFree(audioController: audioController),
+        '/chordSinging': (context) => chordSinging(audioController: audioController),
+        '/chordSingingSettings': (context) => chordSingingSettingsPage(audioController: audioController),
+        '/chordSinginghandsfree': (context) => chordSingingHandsFree(audioController: audioController),
         '/chordMelodyID': (context) => chordMelodyID(audioController: audioController),
         '/chordMelodyIDsettings': (context) => chordMelodyIDSettingsPage(audioController: audioController),
         '/chordMelodyIDhandsfree': (context) => chordMelodyIDHandsFree(audioController: audioController),
