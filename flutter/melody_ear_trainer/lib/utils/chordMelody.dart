@@ -120,12 +120,29 @@ class ChordMelody {
     Random random = Random();
 
     for (int i = 1; i <= numNotes; i++) {
-      if (i == 1 && startWithDo) {
+
+    if (i == 1 && startWithDo) {
+      // Check if startingDo is a note or a chord
+      if (mappingProvider.getNoteKeys.contains(startingDo)) {
         chordMelody.add(startingDo);
         chordMelodySolfege.add([startingDo]);
-      } else if (i == numNotes && endWithDo) {
+      } else if (mappingProvider.getChordMap.keys.contains(startingDo)) {
+        chordMelody.add(startingDo);
+        chordMelodySolfege.add(mappingProvider.getChordMap[startingDo] ?? []);
+      } else {
+        return "Starting note/chord \"$startingDo\" not found in notes or chords.";
+      }
+    } else if (i == numNotes && endWithDo) {
+      // Check if endingDo is a note or a chord
+      if (mappingProvider.getNoteKeys.contains(endingDo)) {
         chordMelody.add(endingDo);
         chordMelodySolfege.add([endingDo]);
+      } else if (mappingProvider.getChordMap.keys.contains(endingDo)) {
+        chordMelody.add(endingDo);
+        chordMelodySolfege.add(mappingProvider.getChordMap[endingDo] ?? []);
+      } else {
+        return "Ending note/chord \"$endingDo\" not found in notes or chords.";
+      }
       } else if (chordFrequency != "Never" &&
           ((i + chordStartOffset) %
                   {
