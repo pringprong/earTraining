@@ -16,6 +16,9 @@ import 'frontpage.dart';
 import 'melodyID/melodyID.dart';
 import 'melodyID/melodyIDsettings.dart';
 import 'melodyID/melodyIDhandsfree.dart';
+import 'melodySinging/melodySinging.dart';
+import 'melodySinging/melodySingingHandsfree.dart';
+import 'melodySinging/melodySingingSettings.dart';
 // import 'package:logging/logging.dart';
 
 void main() async {
@@ -100,6 +103,9 @@ class MelodyEarTrainerApp extends StatelessWidget {
         '/melodyID': (context) => MelodyID(audioController: audioController),
         '/melodyIDsettings': (context) => MelodyIDSettingsPage(audioController: audioController),
         '/melodyIDhandsfree': (context) => MelodyIDHandsFree(audioController: audioController),
+        '/melodySinging': (context) => MelodySinging(audioController: audioController),
+        '/melodySingingSettings': (context) => MelodySingingSettingsPage(audioController: audioController),
+        '/melodySingingHandsfree': (context) => MelodySingingHandsFree(audioController: audioController),
         // Add other routes here
       },
     );

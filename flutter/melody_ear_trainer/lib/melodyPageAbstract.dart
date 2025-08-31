@@ -47,6 +47,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   Row generateMelodyButton(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    bool setSolfegeText,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -59,9 +60,13 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              newGenerateChordMelody(generalProvider, mappingProvider);
+              newGenerateChordMelody(
+                generalProvider,
+                mappingProvider,
+                setSolfegeText,
+              );
               setState(() {
-                solfegeText = ""; // Clear solfege area
+                //solfegeText = ""; // Clear solfege area
                 setToWaitingForGuess();
               });
             },
@@ -78,6 +83,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   Row playMelodyButtons(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    bool includeSolfege,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -119,6 +125,114 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             child: FittedBox(
               fit: BoxFit.fill,
               child: Text("Piano", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+        ),
+        if (includeSolfege) ...[
+          horizontalSpacer(),
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: getChordButtonColor("blah_M_R"),
+                foregroundColor: buttonForegroundColor,
+              ),
+              onPressed:
+                  () => generatedChordMelody.playChordMelody(
+                    "Solfege",
+                    generalProvider,
+                    mappingProvider,
+                    widget,
+                  ),
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Text("Solfege", style: TextStyle(fontSize: 20)),
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Row playFirstNoteButtons(
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: getChordButtonColor("blah_M_2i"),
+              foregroundColor: buttonForegroundColor,
+            ),
+            onPressed: () {
+              ChordMelody fn = ChordMelody.singleChord(
+                generatedChordMelody.getFirstNoteOrChord_Melody(),
+                generatedChordMelody.getFirstNoteOrChord_Solfege(),
+              );
+              fn.playChordMelody(
+                "Guitar",
+                generalProvider,
+                mappingProvider,
+                widget,
+              );
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Guitar", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+        ),
+        horizontalSpacer(),
+        // Play Piano Melody Button
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: getChordButtonColor("blah_M_All"),
+              foregroundColor: buttonForegroundColor,
+            ),
+            onPressed: () {
+              ChordMelody fn = ChordMelody.singleChord(
+                generatedChordMelody.getFirstNoteOrChord_Melody(),
+                generatedChordMelody.getFirstNoteOrChord_Solfege(),
+              );
+              fn.playChordMelody(
+                "Piano",
+                generalProvider,
+                mappingProvider,
+                widget,
+              );
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Piano", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+        ),
+        horizontalSpacer(),
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: getChordButtonColor("blah_M_R"),
+              foregroundColor: buttonForegroundColor,
+            ),
+            onPressed: () {
+              ChordMelody fn = ChordMelody.singleChord(
+                generatedChordMelody.getFirstNoteOrChord_Melody(),
+                generatedChordMelody.getFirstNoteOrChord_Solfege(),
+              );
+              fn.playChordMelody(
+                "Solfege",
+                generalProvider,
+                mappingProvider,
+                widget,
+              );
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Solfege", style: TextStyle(fontSize: 20)),
             ),
           ),
         ),
@@ -211,6 +325,57 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(solfegeText, style: TextStyle(fontSize: 18)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row solfegeTextArea() {
+    return Row(
+      // Solfege Text Area
+      children: [
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(solfegeText, style: TextStyle(fontSize: 18)),
+        ),
+      ],
+    );
+  }
+
+  Row sayTheSolfegeButton(
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: getChordButtonColor("blah_M_R"),
+              foregroundColor: Colors.black,
+              padding: const EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              generatedChordMelody.playSpoken(
+                generalProvider,
+                mappingProvider,
+                widget,
+              );
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Say the solfege", style: TextStyle(fontSize: 20)),
+            ),
           ),
         ),
       ],
@@ -487,6 +652,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   void newGenerateChordMelody(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    bool setSolfegeText,
   ) {
     userWrittenChordMelody.clear();
     melodiesSame = false;
@@ -501,7 +667,31 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
       ).showSnackBar(SnackBar(content: Text(result)));
       return;
     }
+    if (setSolfegeText) {
+      solfegeText = generatedChordMelody.getChordMelody().join(' ');
+    } else {
+      solfegeText = "";
+    }
     setState(() {});
+  }
+
+  Row bigTextRow(String myText) {
+    return Row(
+      children: [
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          color: getChordButtonColor("blah_H_1i"),
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          child: Text(
+            myText, 
+            style: TextStyle(fontSize: 22, color: buttonForegroundColor),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget buildSelectedChordButtons(

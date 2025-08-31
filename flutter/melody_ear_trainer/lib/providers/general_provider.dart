@@ -16,6 +16,7 @@ abstract class GeneralProvider extends ChangeNotifier {
   String selectedInstrument = "Piano";
   int timeBetweenNotes = 900; // Time in milliseconds between notes
   String truncateNotes = "1200"; // Truncate notes to 1200 milliseconds
+  String playbackSpeed = "Normal"; // Playback speed
 
   bool startWithDo = true;
   bool endWithDo = true;
@@ -25,8 +26,9 @@ abstract class GeneralProvider extends ChangeNotifier {
   String selectedOctave = "Middle octave"; // Default octave selection
   String selectedScale = "Diatonic major"; // Default scale selection
 
+  String chordFrequencyDefault = "Every 4 notes";
   String chordFrequency = "Every 4 notes"; // Default chord frequency
-  bool displayChordNames = true; // Default display chord notes setting
+  bool displayChordNames = false; // Whether to display chord names
   int arpeggiateChordDelay = 50; // Default chord arpeggiation speed
   String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
   bool allowRepeatedChords = false; // Allow repeated chords
@@ -173,6 +175,16 @@ abstract class GeneralProvider extends ChangeNotifier {
     truncateNotes = time;
     saveSettings();
     notifyListeners();
+  }
+
+  void updatePlaybackSpeed({required String speed}) async {
+    playbackSpeed = speed;
+    saveSettings();
+    notifyListeners();
+  }
+
+  String get getPlaybackSpeed {
+    return playbackSpeed;
   }
 
   /// 1. Set all values of the map at once
@@ -367,13 +379,14 @@ abstract class GeneralProvider extends ChangeNotifier {
       'selectedInstrument': selectedInstrument,
       'timeBetweenNotes': timeBetweenNotes,
       'truncateNotes': truncateNotes,
+      'playbackSpeed': playbackSpeed,
       'startWithDo': startWithDo,
       'endWithDo': endWithDo,
       'startingDo': startingDo,
       'endingDo': endingDo,
       'selectedOctave': selectedOctave,
       'selectedScale': selectedScale,
-      'chordFrequency': chordFrequency,
+      'chordFrequency': chordFrequencyDefault,
       'displayChordNames': displayChordNames,
       'arpeggiateChordDelay': arpeggiateChordDelay,
       'arpeggiateChordOrder': arpeggiateChordOrder,
@@ -408,13 +421,14 @@ abstract class GeneralProvider extends ChangeNotifier {
     selectedInstrument = settings['selectedInstrument'] ?? "Piano";
     timeBetweenNotes = settings['timeBetweenNotes'] ?? 900;
     truncateNotes = settings['truncateNotes'] ?? "1200";
+    playbackSpeed = settings['playbackSpeed'] ?? "Normal";
     startWithDo = settings['startWithDo'] ?? true;
     endWithDo = settings['endWithDo'] ?? true;
     startingDo = settings['startingDo'] ?? "do";
     endingDo = settings['endingDo'] ?? "do";
     selectedOctave = settings['selectedOctave'] ?? "Middle octave";
     selectedScale = settings['selectedScale'] ?? "Diatonic major";
-    chordFrequency = settings['chordFrequency'] ?? "Every 4 notes";
+    chordFrequency = settings['chordFrequency'] ?? chordFrequencyDefault;
     displayChordNames = settings['displayChordNames'] ?? false;
     arpeggiateChordDelay = settings['arpeggiateChordDelay'] ?? 50;
     arpeggiateChordOrder = settings['arpeggiateChordOrder'] ?? "Ascending";
@@ -451,13 +465,14 @@ abstract class GeneralProvider extends ChangeNotifier {
     selectedInstrument = "Piano";
     timeBetweenNotes = 900;
     truncateNotes = "1200";
+    playbackSpeed = "Normal";
     startWithDo = true;
     endWithDo = true;
     startingDo = "do";
     endingDo = "do";
     selectedOctave = "Middle octave";
     selectedScale = "Diatonic major";
-    chordFrequency = "Every 4 notes";
+    chordFrequency = chordFrequencyDefault;
     displayChordNames = true;
     arpeggiateChordDelay = 50;
     arpeggiateChordOrder = "Ascending";
@@ -486,6 +501,9 @@ class MelodyIDSettings extends GeneralProvider {
 
   @override
   String defaultKey = "E";
+
+  @override
+  String chordFrequencyDefault = "Never";
 }
 
 class MelodySingingSettings extends GeneralProvider {
@@ -494,4 +512,7 @@ class MelodySingingSettings extends GeneralProvider {
 
   @override
   String defaultKey = "D";
+
+  @override
+  String chordFrequencyDefault = "Never";
 }

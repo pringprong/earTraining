@@ -7,15 +7,15 @@ import '../utils/colors.dart';
 import '../utils/chordMelody.dart';
 import 'dart:math';
 
-class MelodyIDHandsFree extends StatefulWidget {
-  const MelodyIDHandsFree({super.key, required this.audioController});
+class MelodySingingHandsFree extends StatefulWidget {
+  const MelodySingingHandsFree({super.key, required this.audioController});
   final AudioController audioController;
 
   @override
-  State<MelodyIDHandsFree> createState() => _MelodyIDHandsFreeState();
+  State<MelodySingingHandsFree> createState() => _MelodySingingHandsFreeState();
 }
 
-class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
+class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
   int currentRound = 0;
   bool notPaused = true;
   String solfegeText = "";
@@ -25,7 +25,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
   Widget build(BuildContext context) {
     final nestedMapping = context.read<MappingProvider>().getNestedMapping;
     return Scaffold(
-      appBar: AppBar(title: Text('Hands-free melody ID')),
+      appBar: AppBar(title: Text('Hands-free melody singing')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -40,7 +40,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                     child: Text('Number of rounds:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<MelodyIDSettings>().numberOfRounds,
+                    value: context.watch<MelodySingingSettings>().numberOfRounds,
                     items:
                         [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
                           int value,
@@ -52,8 +52,64 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<MelodyIDSettings>().setNumberOfRounds(
+                        context.read<MelodySingingSettings>().setNumberOfRounds(
                           rounds: newValue,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Spoken plus first note repeats:'),
+                  ),
+                  DropdownButton<int>(
+                    value: context.watch<MelodySingingSettings>().spokenRepeats,
+                    items:
+                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
+                          int value,
+                        ) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context.read<MelodySingingSettings>().setSpokenRepeats(
+                          repeats: newValue,
+                        );
+                      }
+                    },
+                    //               },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Solfege repeats:'),
+                  ),
+                  DropdownButton<int>(
+                    value:
+                        context.watch<MelodySingingSettings>().solfegeRepeats,
+                    items:
+                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
+                          int value,
+                        ) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context.read<MelodySingingSettings>().setSolfegeRepeats(
+                          repeats: newValue,
                         );
                       }
                     },
@@ -67,7 +123,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                     child: Text('Instrument repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<MelodyIDSettings>().melodyRepeats,
+                    value: context.watch<MelodySingingSettings>().melodyRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -79,66 +135,11 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<MelodyIDSettings>().setMelodyRepeats(
+                        context.read<MelodySingingSettings>().setMelodyRepeats(
                           repeats: newValue,
                         );
                       }
                     },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Solfege repeats:'),
-                  ),
-                  DropdownButton<int>(
-                    value: context.watch<MelodyIDSettings>().solfegeRepeats,
-                    items:
-                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
-                          int value,
-                        ) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context.read<MelodyIDSettings>().setSolfegeRepeats(
-                          repeats: newValue,
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Spoken repeats:'),
-                  ),
-                  DropdownButton<int>(
-                    value: context.watch<MelodyIDSettings>().spokenRepeats,
-                    items:
-                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
-                          int value,
-                        ) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context.read<MelodyIDSettings>().setSpokenRepeats(
-                          repeats: newValue,
-                        );
-                      }
-                    },
-                    //               },
                   ),
                 ],
               ),
@@ -149,7 +150,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                     child: Text('Time between repeats (s):'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<MelodyIDSettings>().getTimeDelayRepeat,
+                    value: context.watch<MelodySingingSettings>().getTimeDelayRepeat,
                     items:
                         [1, 2, 3, 4, 5, 6, 7, 8].map<DropdownMenuItem<int>>((
                           int value,
@@ -161,7 +162,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<MelodyIDSettings>().setTimeDelayRepeat(
+                        context.read<MelodySingingSettings>().setTimeDelayRepeat(
                           delay: newValue,
                         );
                       }
@@ -179,7 +180,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                   DropdownButton<String>(
                     hint: Text('Select Instrument'),
                     value:
-                        context.watch<MelodyIDSettings>().handsfreeInstrument,
+                        context.watch<MelodySingingSettings>().handsfreeInstrument,
                     items:
                         [
                           "Guitar",
@@ -193,7 +194,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<MelodyIDSettings>().setHandsfreeInstrument(
+                        context.read<MelodySingingSettings>().setHandsfreeInstrument(
                           instrument: newValue,
                         );
                       }
@@ -220,9 +221,9 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
 
                         currentRound = 0;
                         chordMelody = ChordMelody();
-                        //playFunction(MelodyIDSettings, nestedMapping);
+                        //playFunction(MelodySingingSettings, nestedMapping);
                         playFunction(
-                          context.read<MelodyIDSettings>(),
+                          context.read<MelodySingingSettings>(),
                           context.read<MappingProvider>(),
                           nestedMapping,
                         );
@@ -289,11 +290,11 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                   Text(
                     (min(
                           currentRound + 1,
-                          context.read<MelodyIDSettings>().getNumberOfRounds,
+                          context.read<MelodySingingSettings>().getNumberOfRounds,
                         )).toString() +
                         " / " +
                         context
-                            .read<MelodyIDSettings>()
+                            .read<MelodySingingSettings>()
                             .getNumberOfRounds
                             .toString(),
                     style: TextStyle(fontSize: 18),
@@ -351,7 +352,8 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    while (currentRound < context.read<MelodyIDSettings>().getNumberOfRounds &&
+    while (currentRound <
+            generalProvider.getNumberOfRounds &&
         notPaused) {
       solfegeText = "";
       setState(() {});
@@ -365,13 +367,21 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
         ).showSnackBar(SnackBar(content: Text(result)));
         return;
       }
+      solfegeText = chordMelody.getChordMelody().join(' ');
+      setState(() {});
       for (
-        int i = 0;
-        i < context.read<MelodyIDSettings>().getMelodyRepeats && notPaused;
-        i++
+        int n = 0;
+        n < generalProvider.getSpokenRepeats && notPaused;
+        n++
       ) {
-        await chordMelody.playChordMelody(
-          getInstrument(context.read<MelodyIDSettings>().handsfreeInstrument),
+        await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
+        await Future.delayed(Duration(seconds: 1));
+        ChordMelody firstNote = ChordMelody.singleChord(
+          chordMelody.getFirstNoteOrChord_Melody(),
+          chordMelody.getFirstNoteOrChord_Solfege(),
+        );
+        await firstNote.playChordMelody(
+          "Solfege",
           generalProvider,
           mappingProvider,
           widget,
@@ -381,15 +391,14 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
         }
         await Future.delayed(
           Duration(
-            seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat,
+            seconds: generalProvider.getTimeDelayRepeat,
           ),
         );
       }
-      solfegeText = chordMelody.getChordMelody().join(' ');
-      setState(() {});
       for (
         int j = 0;
-        j < context.read<MelodyIDSettings>().getSolfegeRepeats && notPaused;
+        j < generalProvider.getSolfegeRepeats &&
+            notPaused;
         j++
       ) {
         await chordMelody.playChordMelody(
@@ -403,16 +412,19 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
         }
         await Future.delayed(
           Duration(
-            seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat,
+            seconds: generalProvider.getTimeDelayRepeat,
           ),
         );
       }
       for (
-        int k = 0;
-        k < context.read<MelodyIDSettings>().getSpokenRepeats && notPaused;
-        k++
+        int i = 0;
+        i < generalProvider.getMelodyRepeats && notPaused;
+        i++
       ) {
-        await chordMelody.playSpoken(
+        await chordMelody.playChordMelody(
+          getInstrument(
+            generalProvider.handsfreeInstrument,
+          ),
           generalProvider,
           mappingProvider,
           widget,
@@ -422,7 +434,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
         }
         await Future.delayed(
           Duration(
-            seconds: context.read<MelodyIDSettings>().getTimeDelayRepeat,
+            seconds: generalProvider.getTimeDelayRepeat,
           ),
         );
       }

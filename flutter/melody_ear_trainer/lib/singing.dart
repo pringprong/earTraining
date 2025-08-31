@@ -135,12 +135,6 @@ class _SingingState extends State<Singing> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        // playChordMelody(
-                        //   "Guitar",
-                        //   context.read<MelodyIDSettings>(),
-                        //   context.read<MappingProvider>(),
-                        //   generatedChordMelody.getFirstNoteOrChord(),
-                        //   );
                         ChordMelody fn = ChordMelody.singleChord(
                           generatedChordMelody.getFirstNoteOrChord_Melody(),
                           generatedChordMelody.getFirstNoteOrChord_Solfege(),

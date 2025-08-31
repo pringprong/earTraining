@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 
-  SizedBox verticalSpacer() {
-    return SizedBox(height: 8);
-  }
-
-  SizedBox horizontalSpacer() {
-    return SizedBox(width: 8);
-  }
-
-Row TextRow (String myText) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    myText,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              );
+SizedBox verticalSpacer() {
+  return SizedBox(height: 8);
 }
+
+SizedBox horizontalSpacer() {
+  return SizedBox(width: 8);
+}
+
+Row TextRow(String myText) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [Text(myText, style: TextStyle(fontWeight: FontWeight.bold))],
+  );
+}
+
 
 IconData waitingForGuessIcon = Icons.help_outline;
 Color waitingForGuessIconColor = Colors.grey;

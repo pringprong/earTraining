@@ -5,20 +5,20 @@ import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../melodyPageAbstract.dart';
 
-class MelodyID extends MelodyPageAbstract {
-  const MelodyID({super.key, required super.audioController}) : super();
+class MelodySinging extends MelodyPageAbstract {
+  const MelodySinging({super.key, required super.audioController}) : super();
   @override
-  MelodyIDState createState() => MelodyIDState();
+  MelodySingingState createState() => MelodySingingState();
 }
 
-class MelodyIDState extends MelodyPageAbstractState {
+class MelodySingingState extends MelodyPageAbstractState {
   @override
   Widget build(BuildContext context) {
     final mappingProvider = Provider.of<MappingProvider>(context);
-    final generalProvider = Provider.of<MelodyIDSettings>(context);
+    final generalProvider = Provider.of<MelodySingingSettings>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Melody ID')),
+      appBar: AppBar(title: Text('Melody Singing')),
       drawer: SafeArea(
         child: Drawer(
           child: ListView(
@@ -28,14 +28,14 @@ class MelodyIDState extends MelodyPageAbstractState {
                 title: Text('Settings'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/melodyIDsettings');
+                  Navigator.pushNamed(context, '/melodySingingSettings');
                 },
               ),
               ListTile(
-                title: Text('Hands-free melody ID'),
+                title: Text('Hands-free melody singing'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/melodyIDhandsfree');
+                  Navigator.pushNamed(context, '/melodySingingHandsfree');
                 },
               ),
               ListTile(
@@ -55,32 +55,31 @@ class MelodyIDState extends MelodyPageAbstractState {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              generateMelodyButton(generalProvider, mappingProvider, false),
+              generateMelodyButton(generalProvider, mappingProvider, true),
               verticalSpacer(),
-              TextRow("Listen to generated melody:"),
+              TextRow("Generated melody:"),
               verticalSpacer(),
-              playMelodyButtons(generalProvider, mappingProvider, false),
+              solfegeTextArea(),
               verticalSpacer(),
-              solfegeExpansionTile(generalProvider, mappingProvider),
+              sayTheSolfegeButton(generalProvider, mappingProvider),
               verticalSpacer(),
-              TextRow("Play the melody back:"),
+              TextRow("Listen to first note:"),
+              verticalSpacer(),
+              playFirstNoteButtons(generalProvider, mappingProvider),
+              verticalSpacer(),
+              bigTextRow("Now try to sing the melody out loud..."),
+              verticalSpacer(),
+              TextRow("Listen to the melody for comparison:"),
+              verticalSpacer(),
+              playMelodyButtons(generalProvider, mappingProvider, true),
+              verticalSpacer(),
+              bigTextRow("Did you sing it correctly?"),
+              verticalSpacer(),
+              TextRow("Notes for reference"),
+              verticalSpacer(),
+              TextRow("Make sure all of these are in your range..."),
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
-              // verticalSpacer(),
-              // buildSelectedChordButtons(
-              //   generalProvider,
-              //   mappingProvider,
-              // ),
-              verticalSpacer(),
-              userWrittenSolfegeArea(),
-              verticalSpacer(),
-              clearAndBackspaceButtons(),
-              verticalSpacer(),
-              compareButton(),
-              verticalSpacer(),
-              TextRow("Listen to your melody:"),
-              verticalSpacer(),
-              userWrittenMelodyButtons(generalProvider, mappingProvider)
             ],
           ),
         ),

@@ -58,7 +58,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, '/melodyID');
+                        Navigator.pushNamed(context, '/melodySinging');
                       },
                     ),
                   ),
