@@ -12,8 +12,7 @@ class chordIDSettingsPage extends StatefulWidget {
   const chordIDSettingsPage({super.key, required this.audioController});
   final AudioController audioController;
   @override
-  State<chordIDSettingsPage> createState() =>
-      _chordIDSettingsPageState();
+  State<chordIDSettingsPage> createState() => _chordIDSettingsPageState();
 }
 
 class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
@@ -36,7 +35,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // TextRow("Melody Notes:"),
+              // TextRow("Melody notes:"),
               // Row(
               //   children: [
               //     Padding(
@@ -46,7 +45,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //     DropdownButton<String>(
               //       value:
               //           context.watch<chordIDSettings>().selectedOctave,
-              //       hint: Text('Select Octave'),
+              //       hint: Text('Select octave'),
               //       items:
               //           mappingProvider.getOctaveKeys
               //               .map(
@@ -82,7 +81,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //     ),
               //     DropdownButton<String>(
               //       value: context.watch<chordIDSettings>().selectedScale,
-              //       hint: Text('Select Scale'),
+              //       hint: Text('Select scale'),
               //       items:
               //           mappingProvider.getScaleKeys
               //               .map(
@@ -122,7 +121,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
               //   ],
               // ),
               // verticalSpacer(),
-              TextRow("Melody Settings:"),
+              TextRow("Melody settings:"),
               Row(
                 children: [
                   Padding(
@@ -143,9 +142,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordIDSettings>()
-                            .updateNumberOfNotes(count: newValue);
+                        context.read<chordIDSettings>().updateNumberOfNotes(
+                          count: newValue,
+                        );
                       }
                     },
                   ),
@@ -237,10 +236,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     child: Text('Allow repeated chords:'),
                   ),
                   Checkbox(
-                    value:
-                        context
-                            .watch<chordIDSettings>()
-                            .allowRepeatedChords,
+                    value: context.watch<chordIDSettings>().allowRepeatedChords,
                     onChanged: (bool? newValue) {
                       context
                           .read<chordIDSettings>()
@@ -250,7 +246,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Playback Settings:"),
+              TextRow("Playback settings:"),
               Row(
                 children: [
                   Padding(
@@ -287,10 +283,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback instrument'),
-                    value:
-                        context
-                            .watch<chordIDSettings>()
-                            .selectedInstrument,
+                    value: context.watch<chordIDSettings>().selectedInstrument,
                     items:
                         mappingProvider.getInstruments
                             .map<DropdownMenuItem<String>>((String value) {
@@ -332,37 +325,37 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordIDSettings>()
-                            .updatePlaybackSpeed(speed: newValue);
+                        context.read<chordIDSettings>().updatePlaybackSpeed(
+                          speed: newValue,
+                        );
                         if (newValue == "Very fast") {
                           context
                               .read<chordIDSettings>()
                               .updateTimeBetweenNotes(time: 300);
-                          context
-                              .read<chordIDSettings>()
-                              .updateTruncateNotes(time: "600");
+                          context.read<chordIDSettings>().updateTruncateNotes(
+                            time: "600",
+                          );
                         } else if (newValue == "Fast") {
                           context
                               .read<chordIDSettings>()
                               .updateTimeBetweenNotes(time: 600);
-                          context
-                              .read<chordIDSettings>()
-                              .updateTruncateNotes(time: "900");
+                          context.read<chordIDSettings>().updateTruncateNotes(
+                            time: "900",
+                          );
                         } else if (newValue == "Normal") {
                           context
                               .read<chordIDSettings>()
                               .updateTimeBetweenNotes(time: 900);
-                          context
-                              .read<chordIDSettings>()
-                              .updateTruncateNotes(time: "1200");
+                          context.read<chordIDSettings>().updateTruncateNotes(
+                            time: "1200",
+                          );
                         } else if (newValue == "Slow") {
                           context
                               .read<chordIDSettings>()
                               .updateTimeBetweenNotes(time: 1200);
-                          context
-                              .read<chordIDSettings>()
-                              .updateTruncateNotes(time: "1500");
+                          context.read<chordIDSettings>().updateTruncateNotes(
+                            time: "1500",
+                          );
                         }
                       }
                     },
@@ -377,9 +370,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<int>(
                     value:
-                        context
-                            .watch<chordIDSettings>()
-                            .arpeggiateChordDelay,
+                        context.watch<chordIDSettings>().arpeggiateChordDelay,
                     items:
                         [
                           0,
@@ -413,9 +404,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value:
-                        context
-                            .watch<chordIDSettings>()
-                            .arpeggiateChordOrder,
+                        context.watch<chordIDSettings>().arpeggiateChordOrder,
                     items:
                         [
                           "Ascending",
@@ -444,7 +433,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Starting note (tonic): Always start with'),
+                      child: Text('Starting note (tonic): always start with'),
                     ),
                   ),
                 ],
@@ -460,7 +449,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   // Starting note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Tonic Note:'),
+                    child: Text('Tonic note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordIDSettings>().startingDo,
@@ -490,7 +479,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Ending note: Always end with'),
+                      child: Text('Ending note: always end with'),
                     ),
                   ),
                 ],
@@ -506,7 +495,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   // Ending note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Ending Note:'),
+                    child: Text('Ending note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordIDSettings>().endingDo,
@@ -584,7 +573,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Guitar Tonic',
+                          'Play guitar tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -645,7 +634,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Piano Tonic',
+                          'Play piano tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -706,7 +695,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Solfege Tonic',
+                          'Play solfege tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -715,7 +704,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Chord Settings:"),
+              TextRow("Chord settings:"),
               Row(
                 children: [
                   Padding(
@@ -724,7 +713,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordIDSettings>().chordSetRange,
-                    hint: Text('Select Range'),
+                    hint: Text('Select range'),
                     items:
                         mappingProvider.getRangesList
                             .map(
@@ -745,9 +734,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                               mappingProvider
                                   .getChordSetsMapping[selectedRange!]?[selectedChordSet!] ??
                               [];
-                          context
-                              .read<chordIDSettings>()
-                              .setSelectedChords(chords);
+                          context.read<chordIDSettings>().setSelectedChords(
+                            chords,
+                          );
                         }
                       });
                     },
@@ -762,7 +751,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordIDSettings>().chordSet,
-                    hint: Text('Select Set'),
+                    hint: Text('Select set'),
                     items:
                         mappingProvider.getChordSetsList
                             .map(
@@ -783,9 +772,9 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                               mappingProvider
                                   .getChordSetsMapping[selectedRange!]?[selectedChordSet!] ??
                               [];
-                          context
-                              .read<chordIDSettings>()
-                              .setSelectedChords(chords);
+                          context.read<chordIDSettings>().setSelectedChords(
+                            chords,
+                          );
                         }
                       });
                     },
@@ -803,9 +792,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        context
-                            .read<chordIDSettings>()
-                            .resetAllSettings();
+                        context.read<chordIDSettings>().resetAllSettings();
                         context.read<ThemeProvider>().resetAllSettings();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

@@ -24,13 +24,13 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
     String? selectedScale =
         generalProvider.selectedScale; // Default scale selection
     return Scaffold(
-      appBar: AppBar(title: Text('Melody ID Settings')),
+      appBar: AppBar(title: Text('Melody ID settings')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextRow("Melody Notes:"),
+              TextRow("Melody notes:"),
               Row(
                 children: [
                   Padding(
@@ -38,9 +38,8 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                     child: Text('Octave:'),
                   ),
                   DropdownButton<String>(
-                    value:
-                        context.watch<MelodyIDSettings>().selectedOctave,
-                    hint: Text('Select Octave'),
+                    value: context.watch<MelodyIDSettings>().selectedOctave,
+                    hint: Text('Select octave'),
                     items:
                         mappingProvider.getOctaveKeys
                             .map(
@@ -53,25 +52,21 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                     onChanged: (octave) {
                       setState(() {
                         selectedOctave = octave;
-                        context
-                            .read<MelodyIDSettings>()
-                            .updateSelectedOctave(
-                              octave: selectedOctave ?? '',
-                            );
-                        if (selectedOctave != null &&
-                            selectedScale != null) {
+                        context.read<MelodyIDSettings>().updateSelectedOctave(
+                          octave: selectedOctave ?? '',
+                        );
+                        if (selectedOctave != null && selectedScale != null) {
                           final notes =
-                              mappingProvider.getScalesMapping[selectedOctave!]![selectedScale!] ??
+                              mappingProvider
+                                  .getScalesMapping[selectedOctave!]![selectedScale!] ??
                               [];
-                          generalProvider.setNoteSelection(
-                            selectedKeys: notes,
-                          );
+                          generalProvider.setNoteSelection(selectedKeys: notes);
                         }
                       });
                     },
                   ),
                 ],
-              ),                            
+              ),
               Row(
                 children: [
                   Padding(
@@ -79,9 +74,8 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                     child: Text('Scale:'),
                   ),
                   DropdownButton<String>(
-                    value:
-                        context.watch<MelodyIDSettings>().selectedScale,
-                    hint: Text('Select Scale'),
+                    value: context.watch<MelodyIDSettings>().selectedScale,
+                    hint: Text('Select scale'),
                     items:
                         mappingProvider.getScaleKeys
                             .map(
@@ -94,19 +88,15 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                     onChanged: (scale) {
                       setState(() {
                         selectedScale = scale;
-                        context
-                            .read<MelodyIDSettings>()
-                            .updateSelectedScale(
-                              newscale: selectedScale ?? '',
-                            );
-                        if (selectedOctave != null &&
-                            selectedScale != null) {
+                        context.read<MelodyIDSettings>().updateSelectedScale(
+                          newscale: selectedScale ?? '',
+                        );
+                        if (selectedOctave != null && selectedScale != null) {
                           final notes =
-                              mappingProvider.getScalesMapping[selectedOctave!]![selectedScale!] ??
+                              mappingProvider
+                                  .getScalesMapping[selectedOctave!]![selectedScale!] ??
                               [];
-                          generalProvider.setNoteSelection(
-                            selectedKeys: notes,
-                          );
+                          generalProvider.setNoteSelection(selectedKeys: notes);
                         }
                       });
                     },
@@ -117,15 +107,15 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
               Row(
                 children: [
                   Expanded(
-                  child: buildNotesGrid(
-                    context.read<MelodyIDSettings>(),
-                    context.read<MappingProvider>(),
+                    child: buildNotesGrid(
+                      context.read<MelodyIDSettings>(),
+                      context.read<MappingProvider>(),
+                    ),
                   ),
-                ),
                 ],
               ),
               verticalSpacer(),
-              TextRow("Melody Settings:"),
+              TextRow("Melody settings:"),
               Row(
                 children: [
                   Padding(
@@ -199,7 +189,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Playback Settings:"),
+              TextRow("Playback settings:"),
               Row(
                 children: [
                   Padding(
@@ -210,14 +200,14 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                     hint: Text('Playback key'),
                     value: context.watch<MelodyIDSettings>().selectedKey,
                     items:
-                        mappingProvider.getMappingKeys.map<DropdownMenuItem<String>>((
-                          String value,
-                        ) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                        mappingProvider.getMappingKeys
+                            .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            })
+                            .toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context.read<MelodyIDSettings>().updateSelectedKey(
@@ -238,14 +228,14 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                     hint: Text('Playback instrument'),
                     value: context.watch<MelodyIDSettings>().selectedInstrument,
                     items:
-                        mappingProvider.getInstruments.map<DropdownMenuItem<String>>((
-                          String value,
-                        ) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                        mappingProvider.getInstruments
+                            .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            })
+                            .toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context
@@ -265,9 +255,12 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   DropdownButton<String>(
                     value: context.watch<MelodyIDSettings>().playbackSpeed,
                     items:
-                        ["Very fast", "Fast", "Normal", "Slow"].map<DropdownMenuItem<String>>((
-                          String value,
-                        ) {
+                        [
+                          "Very fast",
+                          "Fast",
+                          "Normal",
+                          "Slow",
+                        ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -279,23 +272,39 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                           speed: newValue,
                         );
                         if (newValue == "Very fast") {
-                          context.read<MelodyIDSettings>().updateTimeBetweenNotes(time: 300);
-                          context.read<MelodyIDSettings>().updateTruncateNotes(time: "600");
+                          context
+                              .read<MelodyIDSettings>()
+                              .updateTimeBetweenNotes(time: 300);
+                          context.read<MelodyIDSettings>().updateTruncateNotes(
+                            time: "600",
+                          );
                         } else if (newValue == "Fast") {
-                          context.read<MelodyIDSettings>().updateTimeBetweenNotes(time: 600);
-                          context.read<MelodyIDSettings>().updateTruncateNotes(time: "900");
+                          context
+                              .read<MelodyIDSettings>()
+                              .updateTimeBetweenNotes(time: 600);
+                          context.read<MelodyIDSettings>().updateTruncateNotes(
+                            time: "900",
+                          );
                         } else if (newValue == "Normal") {
-                          context.read<MelodyIDSettings>().updateTimeBetweenNotes(time: 900);
-                          context.read<MelodyIDSettings>().updateTruncateNotes(time: "1200");
+                          context
+                              .read<MelodyIDSettings>()
+                              .updateTimeBetweenNotes(time: 900);
+                          context.read<MelodyIDSettings>().updateTruncateNotes(
+                            time: "1200",
+                          );
                         } else if (newValue == "Slow") {
-                          context.read<MelodyIDSettings>().updateTimeBetweenNotes(time: 1200);
-                          context.read<MelodyIDSettings>().updateTruncateNotes(time: "1500");
+                          context
+                              .read<MelodyIDSettings>()
+                              .updateTimeBetweenNotes(time: 1200);
+                          context.read<MelodyIDSettings>().updateTruncateNotes(
+                            time: "1500",
+                          );
                         }
                       }
                     },
                   ),
                 ],
-              ),              
+              ),
               // Row(
               //   children: [
               //     Padding(
@@ -362,7 +371,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Starting note (tonic): Always start with'),
+                      child: Text('Starting note (tonic): always start with'),
                     ),
                   ),
                 ],
@@ -378,7 +387,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   // Starting note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Tonic Note:'),
+                    child: Text('Tonic note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodyIDSettings>().startingDo,
@@ -412,7 +421,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Ending note: Always end with'),
+                      child: Text('Ending note: always end with'),
                     ),
                   ),
                 ],
@@ -428,7 +437,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   // Ending note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Ending Note:'),
+                    child: Text('Ending note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodyIDSettings>().endingDo,
@@ -463,9 +472,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor(
-                          "blah_M_2i",
-                        ),
+                        backgroundColor: getChordButtonColor("blah_M_2i"),
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () async {
@@ -488,7 +495,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
-                        child: Text('Play Guitar Tonic', style: TextStyle(fontSize: 20))),
+                        child: Text(
+                          'Play guitar tonic',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -499,9 +510,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor(
-                          "blah_M_All",
-                        ),
+                        backgroundColor: getChordButtonColor("blah_M_All"),
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () async {
@@ -524,7 +533,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
-                        child: Text('Play Piano Tonic', style: TextStyle(fontSize: 20))),
+                        child: Text(
+                          'Play piano tonic',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -534,10 +547,8 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor(
-                          "blah_M_R",
-                        ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: getChordButtonColor("blah_M_R"),
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () async {
@@ -560,7 +571,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
-                        child: Text('Play Solfege Tonic', style: TextStyle(fontSize: 20))),
+                        child: Text(
+                          'Play solfege tonic',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
                     ),
                   ),
                 ],

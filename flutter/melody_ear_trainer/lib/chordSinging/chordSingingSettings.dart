@@ -12,7 +12,8 @@ class chordSingingSettingsPage extends StatefulWidget {
   const chordSingingSettingsPage({super.key, required this.audioController});
   final AudioController audioController;
   @override
-  State<chordSingingSettingsPage> createState() => _chordSingingSettingsPageState();
+  State<chordSingingSettingsPage> createState() =>
+      _chordSingingSettingsPageState();
 }
 
 class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
@@ -35,7 +36,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // TextRow("Melody Notes:"),
+              // TextRow("Melody notes:"),
               // Row(
               //   children: [
               //     Padding(
@@ -45,7 +46,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
               //     DropdownButton<String>(
               //       value:
               //           context.watch<chordSingingSettings>().selectedOctave,
-              //       hint: Text('Select Octave'),
+              //       hint: Text('Select octave'),
               //       items:
               //           mappingProvider.getOctaveKeys
               //               .map(
@@ -81,7 +82,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
               //     ),
               //     DropdownButton<String>(
               //       value: context.watch<chordSingingSettings>().selectedScale,
-              //       hint: Text('Select Scale'),
+              //       hint: Text('Select scale'),
               //       items:
               //           mappingProvider.getScaleKeys
               //               .map(
@@ -121,7 +122,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
               //   ],
               // ),
               // verticalSpacer(),
-              TextRow("Melody Settings:"),
+              TextRow("Melody settings:"),
               Row(
                 children: [
                   Padding(
@@ -142,9 +143,9 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<chordSingingSettings>().updateNumberOfNotes(
-                          count: newValue,
-                        );
+                        context
+                            .read<chordSingingSettings>()
+                            .updateNumberOfNotes(count: newValue);
                       }
                     },
                   ),
@@ -232,7 +233,10 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                     child: Text('Allow repeated chords:'),
                   ),
                   Checkbox(
-                    value: context.watch<chordSingingSettings>().allowRepeatedChords,
+                    value:
+                        context
+                            .watch<chordSingingSettings>()
+                            .allowRepeatedChords,
                     onChanged: (bool? newValue) {
                       context
                           .read<chordSingingSettings>()
@@ -242,7 +246,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Playback Settings:"),
+              TextRow("Playback settings:"),
               Row(
                 children: [
                   Padding(
@@ -279,7 +283,10 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback instrument'),
-                    value: context.watch<chordSingingSettings>().selectedInstrument,
+                    value:
+                        context
+                            .watch<chordSingingSettings>()
+                            .selectedInstrument,
                     items:
                         mappingProvider.getInstruments
                             .map<DropdownMenuItem<String>>((String value) {
@@ -321,37 +328,37 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<chordSingingSettings>().updatePlaybackSpeed(
-                          speed: newValue,
-                        );
+                        context
+                            .read<chordSingingSettings>()
+                            .updatePlaybackSpeed(speed: newValue);
                         if (newValue == "Very fast") {
                           context
                               .read<chordSingingSettings>()
                               .updateTimeBetweenNotes(time: 300);
-                          context.read<chordSingingSettings>().updateTruncateNotes(
-                            time: "600",
-                          );
+                          context
+                              .read<chordSingingSettings>()
+                              .updateTruncateNotes(time: "600");
                         } else if (newValue == "Fast") {
                           context
                               .read<chordSingingSettings>()
                               .updateTimeBetweenNotes(time: 600);
-                          context.read<chordSingingSettings>().updateTruncateNotes(
-                            time: "900",
-                          );
+                          context
+                              .read<chordSingingSettings>()
+                              .updateTruncateNotes(time: "900");
                         } else if (newValue == "Normal") {
                           context
                               .read<chordSingingSettings>()
                               .updateTimeBetweenNotes(time: 900);
-                          context.read<chordSingingSettings>().updateTruncateNotes(
-                            time: "1200",
-                          );
+                          context
+                              .read<chordSingingSettings>()
+                              .updateTruncateNotes(time: "1200");
                         } else if (newValue == "Slow") {
                           context
                               .read<chordSingingSettings>()
                               .updateTimeBetweenNotes(time: 1200);
-                          context.read<chordSingingSettings>().updateTruncateNotes(
-                            time: "1500",
-                          );
+                          context
+                              .read<chordSingingSettings>()
+                              .updateTruncateNotes(time: "1500");
                         }
                       }
                     },
@@ -366,7 +373,9 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordSingingSettings>().arpeggiateChordDelay,
+                        context
+                            .watch<chordSingingSettings>()
+                            .arpeggiateChordDelay,
                     items:
                         [
                           0,
@@ -400,7 +409,9 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value:
-                        context.watch<chordSingingSettings>().arpeggiateChordOrder,
+                        context
+                            .watch<chordSingingSettings>()
+                            .arpeggiateChordOrder,
                     items:
                         [
                           "Ascending",
@@ -429,7 +440,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Starting note (tonic): Always start with'),
+                      child: Text('Starting note (tonic): always start with'),
                     ),
                   ),
                 ],
@@ -445,7 +456,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   // Starting note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Tonic Note:'),
+                    child: Text('Tonic note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordSingingSettings>().startingDo,
@@ -475,7 +486,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Ending note: Always end with'),
+                      child: Text('Ending note: always end with'),
                     ),
                   ),
                 ],
@@ -491,7 +502,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   // Ending note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Ending Note:'),
+                    child: Text('Ending note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordSingingSettings>().endingDo,
@@ -569,7 +580,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Guitar Tonic',
+                          'Play guitar tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -630,7 +641,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Piano Tonic',
+                          'Play piano tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -691,7 +702,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Solfege Tonic',
+                          'Play solfege tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -700,7 +711,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Chord Settings:"),
+              TextRow("Chord settings:"),
               Row(
                 children: [
                   Padding(
@@ -709,7 +720,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordSingingSettings>().chordSetRange,
-                    hint: Text('Select Range'),
+                    hint: Text('Select range'),
                     items:
                         mappingProvider.getRangesList
                             .map(
@@ -730,9 +741,9 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                               mappingProvider
                                   .getChordSetsMapping[selectedRange!]?[selectedChordSet!] ??
                               [];
-                          context.read<chordSingingSettings>().setSelectedChords(
-                            chords,
-                          );
+                          context
+                              .read<chordSingingSettings>()
+                              .setSelectedChords(chords);
                         }
                       });
                     },
@@ -747,7 +758,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordSingingSettings>().chordSet,
-                    hint: Text('Select Set'),
+                    hint: Text('Select set'),
                     items:
                         mappingProvider.getChordSetsList
                             .map(
@@ -768,9 +779,9 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                               mappingProvider
                                   .getChordSetsMapping[selectedRange!]?[selectedChordSet!] ??
                               [];
-                          context.read<chordSingingSettings>().setSelectedChords(
-                            chords,
-                          );
+                          context
+                              .read<chordSingingSettings>()
+                              .setSelectedChords(chords);
                         }
                       });
                     },

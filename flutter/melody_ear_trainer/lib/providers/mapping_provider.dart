@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 class MappingProvider extends ChangeNotifier {
 
   MappingProvider() {
-    // loadMappingJSON;
-    // loadSpokenJSON;
-    // loadChordSetsJSON;
-    // loadScalesJSON;
-    // loadNotesJSON;
+    loadMappingJSON;
+    loadSpokenJSON;
+    loadChordSetsJSON;
+    loadScalesJSON;
+    loadNotesJSON;
   }
 
   // These are from Mapping.json

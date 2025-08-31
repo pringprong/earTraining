@@ -40,7 +40,7 @@ class _chordMelodySingingSettingsPageState
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextRow("Melody Notes:"),
+              TextRow("Melody notes:"),
               Row(
                 children: [
                   Padding(
@@ -52,7 +52,7 @@ class _chordMelodySingingSettingsPageState
                         context
                             .watch<chordMelodySingingSettings>()
                             .selectedOctave,
-                    hint: Text('Select Octave'),
+                    hint: Text('Select octave'),
                     items:
                         mappingProvider.getOctaveKeys
                             .map(
@@ -91,7 +91,7 @@ class _chordMelodySingingSettingsPageState
                         context
                             .watch<chordMelodySingingSettings>()
                             .selectedScale,
-                    hint: Text('Select Scale'),
+                    hint: Text('Select scale'),
                     items:
                         mappingProvider.getScaleKeys
                             .map(
@@ -131,7 +131,7 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Melody Settings:"),
+              TextRow("Melody settings:"),
               Row(
                 children: [
                   Padding(
@@ -265,7 +265,7 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Playback Settings:"),
+              TextRow("Playback settings:"),
               Row(
                 children: [
                   Padding(
@@ -463,7 +463,7 @@ class _chordMelodySingingSettingsPageState
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Starting note (tonic): Always start with'),
+                      child: Text('Starting note (tonic): always start with'),
                     ),
                   ),
                 ],
@@ -482,7 +482,7 @@ class _chordMelodySingingSettingsPageState
                   // Starting note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Tonic Note:'),
+                    child: Text('Tonic note:'),
                   ),
                   DropdownButton<String>(
                     value:
@@ -518,7 +518,7 @@ class _chordMelodySingingSettingsPageState
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Ending note: Always end with'),
+                      child: Text('Ending note: always end with'),
                     ),
                   ),
                 ],
@@ -537,7 +537,7 @@ class _chordMelodySingingSettingsPageState
                   // Ending note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Ending Note:'),
+                    child: Text('Ending note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodySingingSettings>().endingDo,
@@ -603,7 +603,9 @@ class _chordMelodySingingSettingsPageState
                           context.read<chordMelodySingingSettings>().startingDo,
                         )) {
                           ChordMelody cm = ChordMelody.singleChord(
-                            context.read<chordMelodySingingSettings>().startingDo,
+                            context
+                                .read<chordMelodySingingSettings>()
+                                .startingDo,
                             mappingProvider.getChordMap[context
                                     .read<chordMelodySingingSettings>()
                                     .startingDo] ??
@@ -620,7 +622,7 @@ class _chordMelodySingingSettingsPageState
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Guitar Tonic',
+                          'Play guitar tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -664,7 +666,9 @@ class _chordMelodySingingSettingsPageState
                           context.read<chordMelodySingingSettings>().startingDo,
                         )) {
                           ChordMelody cm = ChordMelody.singleChord(
-                            context.read<chordMelodySingingSettings>().startingDo,
+                            context
+                                .read<chordMelodySingingSettings>()
+                                .startingDo,
                             mappingProvider.getChordMap[context
                                     .read<chordMelodySingingSettings>()
                                     .startingDo] ??
@@ -681,7 +685,7 @@ class _chordMelodySingingSettingsPageState
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Piano Tonic',
+                          'Play piano tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -725,7 +729,9 @@ class _chordMelodySingingSettingsPageState
                           context.read<chordMelodySingingSettings>().startingDo,
                         )) {
                           ChordMelody cm = ChordMelody.singleChord(
-                            context.read<chordMelodySingingSettings>().startingDo,
+                            context
+                                .read<chordMelodySingingSettings>()
+                                .startingDo,
                             mappingProvider.getChordMap[context
                                     .read<chordMelodySingingSettings>()
                                     .startingDo] ??
@@ -742,7 +748,7 @@ class _chordMelodySingingSettingsPageState
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Solfege Tonic',
+                          'Play solfege tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -751,7 +757,7 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Chord Settings:"),
+              TextRow("Chord settings:"),
               Row(
                 children: [
                   Padding(
@@ -763,7 +769,7 @@ class _chordMelodySingingSettingsPageState
                         context
                             .watch<chordMelodySingingSettings>()
                             .chordSetRange,
-                    hint: Text('Select Range'),
+                    hint: Text('Select range'),
                     items:
                         mappingProvider.getRangesList
                             .map(
@@ -803,7 +809,7 @@ class _chordMelodySingingSettingsPageState
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodySingingSettings>().chordSet,
-                    hint: Text('Select Set'),
+                    hint: Text('Select set'),
                     items:
                         mappingProvider.getChordSetsList
                             .map(

@@ -178,7 +178,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                     child: Text('Instrument:'),
                   ),
                   DropdownButton<String>(
-                    hint: Text('Select Instrument'),
+                    hint: Text('Select instrument'),
                     value:
                         context.watch<MelodySingingSettings>().handsfreeInstrument,
                     items:

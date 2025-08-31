@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'utils/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -37,10 +38,35 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ],
               ),
+              Row(
+      children: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: getChordButtonColor("blah_M_1i"),
+            foregroundColor: buttonForegroundColor,
+            padding: const EdgeInsets.all(12.0),
+          ),
+          onPressed: () {
+            deleteAllPreferences();
+            setState(() {
+            });
+          },
+          child: FittedBox(
+            fit: BoxFit.fill,
+            child: Text("Reset all settings to default", style: TextStyle(fontSize: 20)),
+          ),
+        ),
+      ],
+    ),
             ], // Children of Column
           ),
         ),
       ),
     );
   }
+
+      Future<void> deleteAllPreferences() async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+    }
 }

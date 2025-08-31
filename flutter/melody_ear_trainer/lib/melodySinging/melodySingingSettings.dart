@@ -11,7 +11,8 @@ class MelodySingingSettingsPage extends StatefulWidget {
   const MelodySingingSettingsPage({super.key, required this.audioController});
   final AudioController audioController;
   @override
-  State<MelodySingingSettingsPage> createState() => _MelodySingingSettingsPageState();
+  State<MelodySingingSettingsPage> createState() =>
+      _MelodySingingSettingsPageState();
 }
 
 class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
@@ -24,13 +25,13 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
     String? selectedScale =
         generalProvider.selectedScale; // Default scale selection
     return Scaffold(
-      appBar: AppBar(title: Text('Melody Singing Settings')),
+      appBar: AppBar(title: Text('Melody singing settings')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextRow("Melody Notes:"),
+              TextRow("Melody notes:"),
               Row(
                 children: [
                   Padding(
@@ -38,8 +39,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                     child: Text('Octave:'),
                   ),
                   DropdownButton<String>(
-                    value: context.watch<MelodySingingSettings>().selectedOctave,
-                    hint: Text('Select Octave'),
+                    value:
+                        context.watch<MelodySingingSettings>().selectedOctave,
+                    hint: Text('Select octave'),
                     items:
                         mappingProvider.getOctaveKeys
                             .map(
@@ -52,9 +54,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                     onChanged: (octave) {
                       setState(() {
                         selectedOctave = octave;
-                        context.read<MelodySingingSettings>().updateSelectedOctave(
-                          octave: selectedOctave ?? '',
-                        );
+                        context
+                            .read<MelodySingingSettings>()
+                            .updateSelectedOctave(octave: selectedOctave ?? '');
                         if (selectedOctave != null && selectedScale != null) {
                           final notes =
                               mappingProvider
@@ -75,7 +77,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodySingingSettings>().selectedScale,
-                    hint: Text('Select Scale'),
+                    hint: Text('Select scale'),
                     items:
                         mappingProvider.getScaleKeys
                             .map(
@@ -88,9 +90,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                     onChanged: (scale) {
                       setState(() {
                         selectedScale = scale;
-                        context.read<MelodySingingSettings>().updateSelectedScale(
-                          newscale: selectedScale ?? '',
-                        );
+                        context
+                            .read<MelodySingingSettings>()
+                            .updateSelectedScale(newscale: selectedScale ?? '');
                         if (selectedOctave != null && selectedScale != null) {
                           final notes =
                               mappingProvider
@@ -115,7 +117,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Melody Settings:"),
+              TextRow("Melody settings:"),
               Row(
                 children: [
                   Padding(
@@ -136,9 +138,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<MelodySingingSettings>().updateNumberOfNotes(
-                          count: newValue,
-                        );
+                        context
+                            .read<MelodySingingSettings>()
+                            .updateNumberOfNotes(count: newValue);
                       }
                     },
                   ),
@@ -179,7 +181,10 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                     child: Text('Allow repeated notes:'),
                   ),
                   Checkbox(
-                    value: context.watch<MelodySingingSettings>().allowRepeatedNotes,
+                    value:
+                        context
+                            .watch<MelodySingingSettings>()
+                            .allowRepeatedNotes,
                     onChanged: (bool? newValue) {
                       context
                           .read<MelodySingingSettings>()
@@ -189,7 +194,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Playback Settings:"),
+              TextRow("Playback settings:"),
               Row(
                 children: [
                   Padding(
@@ -226,7 +231,10 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback instrument'),
-                    value: context.watch<MelodySingingSettings>().selectedInstrument,
+                    value:
+                        context
+                            .watch<MelodySingingSettings>()
+                            .selectedInstrument,
                     items:
                         mappingProvider.getInstruments
                             .map<DropdownMenuItem<String>>((String value) {
@@ -268,37 +276,37 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<MelodySingingSettings>().updatePlaybackSpeed(
-                          speed: newValue,
-                        );
+                        context
+                            .read<MelodySingingSettings>()
+                            .updatePlaybackSpeed(speed: newValue);
                         if (newValue == "Very fast") {
                           context
                               .read<MelodySingingSettings>()
                               .updateTimeBetweenNotes(time: 300);
-                          context.read<MelodySingingSettings>().updateTruncateNotes(
-                            time: "600",
-                          );
+                          context
+                              .read<MelodySingingSettings>()
+                              .updateTruncateNotes(time: "600");
                         } else if (newValue == "Fast") {
                           context
                               .read<MelodySingingSettings>()
                               .updateTimeBetweenNotes(time: 600);
-                          context.read<MelodySingingSettings>().updateTruncateNotes(
-                            time: "900",
-                          );
+                          context
+                              .read<MelodySingingSettings>()
+                              .updateTruncateNotes(time: "900");
                         } else if (newValue == "Normal") {
                           context
                               .read<MelodySingingSettings>()
                               .updateTimeBetweenNotes(time: 900);
-                          context.read<MelodySingingSettings>().updateTruncateNotes(
-                            time: "1200",
-                          );
+                          context
+                              .read<MelodySingingSettings>()
+                              .updateTruncateNotes(time: "1200");
                         } else if (newValue == "Slow") {
                           context
                               .read<MelodySingingSettings>()
                               .updateTimeBetweenNotes(time: 1200);
-                          context.read<MelodySingingSettings>().updateTruncateNotes(
-                            time: "1500",
-                          );
+                          context
+                              .read<MelodySingingSettings>()
+                              .updateTruncateNotes(time: "1500");
                         }
                       }
                     },
@@ -371,7 +379,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Starting note (tonic): Always start with'),
+                      child: Text('Starting note (tonic): always start with'),
                     ),
                   ),
                 ],
@@ -387,7 +395,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   // Starting note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Tonic Note:'),
+                    child: Text('Tonic note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodySingingSettings>().startingDo,
@@ -421,7 +429,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Ending note: Always end with'),
+                      child: Text('Ending note: always end with'),
                     ),
                   ),
                 ],
@@ -437,7 +445,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   // Ending note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Ending Note:'),
+                    child: Text('Ending note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodySingingSettings>().endingDo,
@@ -496,7 +504,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Guitar Tonic',
+                          'Play guitar tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -534,7 +542,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Piano Tonic',
+                          'Play piano tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -572,7 +580,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Solfege Tonic',
+                          'Play solfege tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -591,7 +599,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                         foregroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        context.read<MelodySingingSettings>().resetAllSettings();
+                        context
+                            .read<MelodySingingSettings>()
+                            .resetAllSettings();
                         context.read<ThemeProvider>().resetAllSettings();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

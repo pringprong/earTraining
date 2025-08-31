@@ -36,7 +36,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextRow("Melody Notes:"),
+              TextRow("Melody notes:"),
               Row(
                 children: [
                   Padding(
@@ -46,7 +46,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   DropdownButton<String>(
                     value:
                         context.watch<chordMelodyIDSettings>().selectedOctave,
-                    hint: Text('Select Octave'),
+                    hint: Text('Select octave'),
                     items:
                         mappingProvider.getOctaveKeys
                             .map(
@@ -82,7 +82,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().selectedScale,
-                    hint: Text('Select Scale'),
+                    hint: Text('Select scale'),
                     items:
                         mappingProvider.getScaleKeys
                             .map(
@@ -122,7 +122,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Melody Settings:"),
+              TextRow("Melody settings:"),
               Row(
                 children: [
                   Padding(
@@ -250,7 +250,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Playback Settings:"),
+              TextRow("Playback settings:"),
               Row(
                 children: [
                   Padding(
@@ -444,7 +444,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Starting note (tonic): Always start with'),
+                      child: Text('Starting note (tonic): always start with'),
                     ),
                   ),
                 ],
@@ -460,7 +460,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   // Starting note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Tonic Note:'),
+                    child: Text('Tonic note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().startingDo,
@@ -495,7 +495,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Ending note: Always end with'),
+                      child: Text('Ending note: always end with'),
                     ),
                   ),
                 ],
@@ -511,7 +511,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   // Ending note dropdown
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Ending Note:'),
+                    child: Text('Ending note:'),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().endingDo,
@@ -594,7 +594,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Guitar Tonic',
+                          'Play guitar tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -655,7 +655,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Piano Tonic',
+                          'Play piano tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -716,7 +716,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          'Play Solfege Tonic',
+                          'Play solfege tonic',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -725,7 +725,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Chord Settings:"),
+              TextRow("Chord settings:"),
               Row(
                 children: [
                   Padding(
@@ -734,7 +734,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().chordSetRange,
-                    hint: Text('Select Range'),
+                    hint: Text('Select range'),
                     items:
                         mappingProvider.getRangesList
                             .map(
@@ -772,7 +772,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().chordSet,
-                    hint: Text('Select Set'),
+                    hint: Text('Select set'),
                     items:
                         mappingProvider.getChordSetsList
                             .map(

@@ -18,7 +18,7 @@ class MelodySingingState extends MelodyPageAbstractState {
     final generalProvider = Provider.of<MelodySingingSettings>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Melody Singing')),
+      appBar: AppBar(title: Text('Melody singing')),
       drawer: SafeArea(
         child: Drawer(
           child: ListView(

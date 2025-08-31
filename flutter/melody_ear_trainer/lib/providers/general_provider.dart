@@ -36,7 +36,7 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   int arpeggiateChordDelayDefault = 50;
   int arpeggiateChordDelay = 50; // Default chord arpeggiation speed
-  
+
   String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
   bool allowRepeatedChords = false; // Allow repeated chords
 
@@ -289,7 +289,6 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   /// Get all selected chords as a list of strings
   List<String> getSelectedChords() {
-    //print ("Selected Chords: $selectedChords");
     if (selectedChords.isEmpty) {
       return ["No chords selected"];
     }
@@ -318,6 +317,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int melodyRepeatsDefault = 3;
   int melodyRepeats = 3;
   int get getMelodyRepeats {
     return melodyRepeats;
@@ -329,7 +329,8 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int spokenRepeats = 3;
+  int spokenRepeatsDefault = 1;
+  int spokenRepeats = 1;
   int get getSpokenRepeats {
     return spokenRepeats;
   }
@@ -340,7 +341,8 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int solfegeRepeats = 2;
+  int solfegeRepeatsDefault = 1;
+  int solfegeRepeats = 1;
   int get getSolfegeRepeats {
     return solfegeRepeats;
   }
@@ -351,7 +353,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String handsfreeInstrument = "Guitar";
+  String handsfreeInstrument = "Alternate";
   String get getHandsfreeInstrument {
     return handsfreeInstrument;
   }
@@ -456,10 +458,10 @@ abstract class GeneralProvider extends ChangeNotifier {
       ),
     );
     numberOfRounds = settings['numberOfRounds'] ?? 5;
-    melodyRepeats = settings['melodyRepeats'] ?? 3;
-    spokenRepeats = settings['spokenRepeats'] ?? 3;
-    solfegeRepeats = settings['solfegeRepeats'] ?? 2;
-    handsfreeInstrument = settings['handsfreeInstrument'] ?? "Guitar";
+    melodyRepeats = settings['melodyRepeats'] ?? melodyRepeatsDefault;
+    spokenRepeats = settings['spokenRepeats'] ?? spokenRepeatsDefault;
+    solfegeRepeats = settings['solfegeRepeats'] ?? solfegeRepeatsDefault;
+    handsfreeInstrument = settings['handsfreeInstrument'] ?? "Alternate";
     timeDelayRepeat = settings['timeDelayRepeat'] ?? 5;
     notifyListeners();
   }
@@ -493,10 +495,10 @@ abstract class GeneralProvider extends ChangeNotifier {
         key: true, // Initialize all chords as not selected
     };
     numberOfRounds = 5;
-    melodyRepeats = 3;
-    spokenRepeats = 3;
-    solfegeRepeats = 2;
-    handsfreeInstrument = "Guitar";
+    melodyRepeats = melodyRepeatsDefault;
+    spokenRepeats = spokenRepeatsDefault;
+    solfegeRepeats = solfegeRepeatsDefault;
+    handsfreeInstrument = "Alternate";
     timeDelayRepeat = 5;
     saveSettings();
     notifyListeners();
@@ -511,10 +513,31 @@ class MelodyIDSettings extends GeneralProvider {
   int numberOfNotesDefault = 5;
 
   @override
+  String startingDoDefault = "do";
+
+  @override
+  String endingDoDefault = "do";
+
+  @override
+  String startingDo = "do";
+
+  @override
+  String endingDo = "do";
+
+  @override
   String chordFrequencyDefault = "Never";
 
   @override
   int arpeggiateChordDelayDefault = 50;
+
+  @override
+  int melodyRepeatsDefault = 3;
+
+  @override
+  int spokenRepeatsDefault = 1;
+  
+  @override
+  int solfegeRepeatsDefault = 2;
 }
 
 class MelodySingingSettings extends GeneralProvider {
@@ -525,11 +548,32 @@ class MelodySingingSettings extends GeneralProvider {
   int numberOfNotesDefault = 4;
 
   @override
+  String startingDoDefault = "do";
+
+  @override
+  String endingDoDefault = "do";
+
+  @override
+  String startingDo = "do";
+
+  @override
+  String endingDo = "do";
+
+  @override
   String chordFrequencyDefault = "Never";
 
   @override
   int arpeggiateChordDelayDefault = 50;
-  }
+
+  @override
+  int melodyRepeatsDefault = 0;
+
+  @override
+  int spokenRepeatsDefault = 1;
+  
+  @override
+  int solfegeRepeatsDefault = 1;
+}
 
 class chordIDSettings extends GeneralProvider {
   @override
@@ -540,7 +584,7 @@ class chordIDSettings extends GeneralProvider {
 
   @override
   String chordFrequencyDefault = "Every note";
-  
+
   @override
   int arpeggiateChordDelayDefault = 200;
 
@@ -555,6 +599,15 @@ class chordIDSettings extends GeneralProvider {
 
   @override
   String endingDo = "I_M_R";
+
+  @override
+  int melodyRepeatsDefault = 3;
+
+  @override
+  int spokenRepeatsDefault = 0;
+  
+  @override
+  int solfegeRepeatsDefault = 2;
 }
 
 class chordSingingSettings extends GeneralProvider {
@@ -566,7 +619,7 @@ class chordSingingSettings extends GeneralProvider {
 
   @override
   String chordFrequencyDefault = "Every note";
-  
+
   @override
   int arpeggiateChordDelayDefault = 200;
 
@@ -581,6 +634,15 @@ class chordSingingSettings extends GeneralProvider {
 
   @override
   String endingDo = "I_M_R";
+
+  @override
+  int melodyRepeatsDefault = 0;
+
+  @override
+  int spokenRepeatsDefault = 1;
+  
+  @override
+  int solfegeRepeatsDefault = 1;
 }
 
 class chordMelodyIDSettings extends GeneralProvider {
@@ -589,12 +651,33 @@ class chordMelodyIDSettings extends GeneralProvider {
 
   @override
   int numberOfNotesDefault = 5;
-  
+
+  @override
+  String startingDoDefault = "do";
+
+  @override
+  String endingDoDefault = "do";
+
+  @override
+  String startingDo = "do";
+
+  @override
+  String endingDo = "do";
+
   @override
   int arpeggiateChordDelayDefault = 100;
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
+
+  @override
+  int melodyRepeatsDefault = 3;
+
+  @override
+  int spokenRepeatsDefault = 0;
+  
+  @override
+  int solfegeRepeatsDefault = 2;
 }
 
 class chordMelodySingingSettings extends GeneralProvider {
@@ -603,10 +686,31 @@ class chordMelodySingingSettings extends GeneralProvider {
 
   @override
   int numberOfNotesDefault = 5;
-  
+
+  @override
+  String startingDoDefault = "do";
+
+  @override
+  String endingDoDefault = "do";
+
+  @override
+  String startingDo = "do";
+
+  @override
+  String endingDo = "do";
+
   @override
   int arpeggiateChordDelayDefault = 100;
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
+
+  @override
+  int melodyRepeatsDefault = 0;
+
+  @override
+  int spokenRepeatsDefault = 1;
+
+  @override
+  int solfegeRepeatsDefault = 1;
 }
