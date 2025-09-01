@@ -36,7 +36,7 @@ class chordSingingState extends MelodyPageAbstractState {
                 title: Text('Hands-free chord singing'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/chordSingingHandsfree');
+                  Navigator.pushNamed(context, '/chordSinginghandsfree');
                 },
               ),
               ListTile(
