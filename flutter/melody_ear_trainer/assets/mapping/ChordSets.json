@@ -1,77 +1,107 @@
 [
-	{
-		"Range": "Lower",
-		"Set": "I_IV_V",
-		"Chords": "I_L_R,IV_L_R,V_L_R"
-	},
-	{
-		"Range": "Middle",
-		"Set": "I_IV_V",
-		"Chords": "I_M_R,IV_M_R,V_M_R"
-	},
-	{
-		"Range": "All_Root",
-		"Set": "I_IV_V",
-		"Chords": "I_L_R,IV_L_R,V_L_R,I_M_R,IV_M_R,V_M_R"
-	},
-	{
-		"Range": "Lower",
-		"Set": "I_IV_V_vi",
-		"Chords": "I_L_R,IV_L_R,V_L_R,vi_L_R"
-	},
-	{
-		"Range": "Middle",
-		"Set": "I_IV_V_vi",
-		"Chords": "I_M_R,IV_M_R,V_M_R,vi_M_R"
-	},
-	{
-		"Range": "All_Root",
-		"Set": "I_IV_V_vi",
-		"Chords": "I_L_R,IV_L_R,V_L_R,I_M_R,IV_M_R,V_M_R,vi_L_R,vi_M_R"
-	},
-	{
-		"Range": "Lower",
-		"Set": "I_IV_V_V7_vi",
-		"Chords": "I_L_R,IV_L_R,V_L_R,vi_L_R,V7_L_R"
-	},
-	{
-		"Range": "Middle",
-		"Set": "I_IV_V_V7_vi",
-		"Chords": "I_IV_V,I_M_R,IV_M_R,V_M_R,V7_M_R"
-	},
-	{
-		"Range": "All_Root",
-		"Set": "I_IV_V_V7_vi",
-		"Chords": "I_L_R,IV_L_R,V_L_R,I_M_R,IV_M_R,V_M_R,vi_L_R,vi_M_R,V7_L_R,V7_M_R"
-	},
-	{
-		"Range": "Lower",
-		"Set": "Select all",
-		"Chords": "d"
-	},
-	{
-		"Range": "Middle",
-		"Set": "Select all",
-		"Chords": "d"
-	},
-	{
-		"Range": "All_Root",
-		"Set": "Select all",
-		"Chords": "d"
-	},
-	{
-		"Range": "Lower",
-		"Set": "Select none",
-		"Chords": ""
-	},
-	{
-		"Range": "Middle",
-		"Set": "Select none",
-		"Chords": ""
-	},
-	{
-		"Range": "All_Root",
-		"Set": "Select none",
-		"Chords": ""
-	}
+  {
+    "Range": "Lower",
+    "Set": "I_IV_V",
+    "Chords": "I0_Rt,IV0_Rt,V0_Rt"
+  },
+  {
+    "Range": "Middle",
+    "Set": "I_IV_V",
+    "Chords": "I_Rt,IV_Rt,V_Rt"
+  },
+  {
+    "Range": "All_Root",
+    "Set": "I_IV_V",
+    "Chords": "I0_Rt,IV0_Rt,V0_Rt,I_Rt,IV_Rt,V_Rt"
+  },
+  {
+    "Range": "Lower",
+    "Set": "I_IV_V_vi",
+    "Chords": "I0_Rt,IV0_Rt,V0_Rt,vi0_Rt"
+  },
+  {
+    "Range": "Middle",
+    "Set": "I_IV_V_vi",
+    "Chords": "I_Rt,IV_Rt,V_Rt,vi_Rt"
+  },
+  {
+    "Range": "All_Root",
+    "Set": "I_IV_V_vi",
+    "Chords": "I0_Rt,IV0_Rt,V0_Rt,I_Rt,IV_Rt,V_Rt,vi0_Rt,vi_Rt"
+  },
+  {
+    "Range": "Lower",
+    "Set": "I_IV_V_V7_vi",
+    "Chords": "I0_Rt,IV0_Rt,V0_Rt,vi0_Rt,V70_Rt"
+  },
+  {
+    "Range": "Middle",
+    "Set": "I_IV_V_V7_vi",
+    "Chords": "I_Rt,IV_Rt,V_Rt,vi_Rt,V7_Rt"
+  },
+  {
+    "Range": "All_Root",
+    "Set": "I_IV_V_V7_vi",
+    "Chords": "I0_Rt,IV0_Rt,V0_Rt,I_Rt,IV_Rt,V_Rt,vi0_Rt,vi_Rt,V70_Rt,V7_Rt"
+  },
+  {
+    "Range": "Lower",
+    "Set": "I",
+    "Chords": "I0_Rt,I0_Fir,I0_Sec"
+  },
+  {
+    "Range": "Middle",
+    "Set": "I",
+    "Chords": "I_Rt,I_Fir,I_Sec"
+  },
+  {
+    "Range": "All_Root",
+    "Set": "I",
+    "Chords": "I0_Fir,I0_Sec,I_Rt,I_Fir,I_Sec"
+  },
+  {
+    "Range": "Lower",
+    "Set": "i",
+    "Chords": "i0_Rt,i0_Fir,i0_Sec"
+  },
+  {
+    "Range": "Middle",
+    "Set": "i",
+    "Chords": "i_Rt,i_Fir,i_Sec"
+  },
+  {
+    "Range": "All_Root",
+    "Set": "i",
+    "Chords": "i0_Fir,i0_Sec,i_Rt,i_Fir,i_Sec"
+  },
+  {
+    "Range": "Lower",
+    "Set": "Select all",
+    "Chords": ""
+  },
+  {
+    "Range": "Middle",
+    "Set": "Select all",
+    "Chords": ""
+  },
+  {
+    "Range": "All_Root",
+    "Set": "Select all",
+    "Chords": ""
+  },
+  {
+    "Range": "Lower",
+    "Set": "Select none",
+    "Chords": ""
+  },
+  {
+    "Range": "Middle",
+    "Set": "Select none",
+    "Chords": ""
+  },
+  {
+    "Range": "All_Root",
+    "Set": "Select none",
+    "Chords": ""
+  }
 ]

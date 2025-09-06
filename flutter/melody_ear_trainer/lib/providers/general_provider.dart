@@ -101,7 +101,7 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   // --- Selected Chords Map ---
   Map<String, bool> selectedChords = {
-    for (var key in "I_M_R,IV_M_R,V_M_R".split(','))
+    for (var key in "I_Rt,IV_Rt,V_Rt".split(','))
       key: true, // Initialize all chords as not selected
   };
 
@@ -454,7 +454,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     selectedChords = Map<String, bool>.from(
       jsonDecode(
         settings['selectedChords'] ??
-            '{"I_M_R":true,"IV_M_R":true,"V_M_R":true}',
+            '{"I_Rt":true,"IV_Rt":true,"V_Rt":true}',
       ),
     );
     numberOfRounds = settings['numberOfRounds'] ?? 5;
@@ -491,7 +491,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     chordSet = "I_IV_V";
     noteSelection = {for (var key in defaultNoteKeys) key: true};
     selectedChords = {
-      for (var key in "I_M_R,IV_M_R,V_M_R".split(','))
+      for (var key in "I_Rt,IV_Rt,V_Rt".split(','))
         key: true, // Initialize all chords as not selected
     };
     numberOfRounds = 5;
@@ -583,16 +583,16 @@ class chordIDSettings extends GeneralProvider {
   int arpeggiateChordDelayDefault = 400;
 
   @override
-  String startingDoDefault = "I_M_R";
+  String startingDoDefault = "I_Rt";
 
   @override
-  String endingDoDefault = "I_M_R";
+  String endingDoDefault = "I_Rt";
 
   @override
-  String startingDo = "I_M_R";
+  String startingDo = "I_Rt";
 
   @override
-  String endingDo = "I_M_R";
+  String endingDo = "I_Rt";
 
   @override
   int melodyRepeatsDefault = 3;
@@ -618,16 +618,16 @@ class chordSingingSettings extends GeneralProvider {
   int arpeggiateChordDelayDefault = 400;
 
   @override
-  String startingDoDefault = "I_M_R";
+  String startingDoDefault = "I_Rt";
 
   @override
-  String endingDoDefault = "I_M_R";
+  String endingDoDefault = "I_Rt";
 
   @override
-  String startingDo = "I_M_R";
+  String startingDo = "I_Rt";
 
   @override
-  String endingDo = "I_M_R";
+  String endingDo = "I_Rt";
 
   @override
   int melodyRepeatsDefault = 1;

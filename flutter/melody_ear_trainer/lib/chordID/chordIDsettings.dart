@@ -288,9 +288,12 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     value: context.watch<chordIDSettings>().startingDo,
                     items:
                         [
-                          "I_M_R",
-                          "I_L_R",
-                          "I_H_R",
+                          "I0_Rt",
+                          "I_Rt",
+                          "I1_Rt",
+                          "i0_Rt",
+                          "i_Rt",
+                          "i1_Rt",
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -334,9 +337,12 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                     value: context.watch<chordIDSettings>().endingDo,
                     items:
                         [
-                          "I_M_R",
-                          "I_L_R",
-                          "I_H_R",
+                          "I0_Rt",
+                          "I_Rt",
+                          "I1_Rt",
+                          "i0_Rt",
+                          "i_Rt",
+                          "i1_Rt",
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,

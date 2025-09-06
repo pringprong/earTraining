@@ -101,25 +101,25 @@ Color c6f4 = multiplyHexColor(color6, factor4);
 
 Color getChordButtonColor(String chordName) {
   String c = chordName;
-  if (c.endsWith("_VL_R")) return c1f1;
-  if (c.endsWith("_L_R")) return c1f2;
-  if (c.endsWith("_M_R")) return c1f3;
-  if (c.endsWith("_H_R")) return c1f4;
+  if (c.endsWith("00_Rt")) return c1f1;
+  else if (c.endsWith("0_Rt")) return c1f2;
+  else if (c.endsWith("1_Rt")) return c1f4;
+  else if (c.endsWith("_Rt")) return c1f3;
 
-  if (c.endsWith("_VL_1i")) return c2f1;
-  if (c.endsWith("_L_1i")) return c2f2;
-  if (c.endsWith("_M_1i")) return c2f3;
-  if (c.endsWith("_H_1i")) return c2f4;
+  if (c.endsWith("00_Fir")) return c2f1;
+  if (c.endsWith("0_Fir")) return c2f2;
+  if (c.endsWith("1_Fir")) return c2f4;
+  if (c.endsWith("_Fir")) return c2f3;
 
-  if (c.endsWith("_VL_2i")) return c3f1;
-  if (c.endsWith("_L_2i")) return c3f2;
-  if (c.endsWith("_M_2i")) return c3f3;
-  if (c.endsWith("_H_2i")) return c3f4;
+  if (c.endsWith("00_Sec")) return c3f1;
+  if (c.endsWith("0_Sec")) return c3f2;
+  if (c.endsWith("1_Sec")) return c3f4;
+  if (c.endsWith("_Sec")) return c3f3;
 
-  if (c.endsWith("_VL_3i")) return c4f1;
-  if (c.endsWith("_L_3i")) return c4f2;
-  if (c.endsWith("_M_3i")) return c4f3;
-  if (c.endsWith("_H_3i")) return c4f4;
+  if (c.endsWith("00_Thr")) return c4f1;
+  if (c.endsWith("0_Thr")) return c4f2;
+  if (c.endsWith("1_Thr")) return c4f4;
+  if (c.endsWith("_Thr")) return c4f3;
 
   if (c.endsWith("_All")) return c5f2;
 

@@ -502,7 +502,12 @@ class _chordMelodySingingSettingsPageState
                           "do1",
                           "la1",
                           "do2",
-                          "I_M_R",
+                          "I0_Rt",
+                          "I_Rt",
+                          "I1_Rt",
+                          "i0_Rt",
+                          "i_Rt",
+                          "i1_Rt",
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -556,7 +561,12 @@ class _chordMelodySingingSettingsPageState
                           "do1",
                           "la1",
                           "do2",
-                          "I_M_R",
+                          "I0_Rt",
+                          "I_Rt",
+                          "I1_Rt",
+                          "i0_Rt",
+                          "i_Rt",
+                          "i1_Rt",
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
