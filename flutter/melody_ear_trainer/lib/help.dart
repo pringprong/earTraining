@@ -42,7 +42,7 @@ class _HelpPageState extends State<HelpPage> {
       children: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: getChordButtonColor("blah_M_1i"),
+            backgroundColor: c2f3,
             foregroundColor: buttonForegroundColor,
             padding: const EdgeInsets.all(12.0),
           ),

@@ -480,8 +480,8 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_2i"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c3f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () async {
                         String filename =
@@ -518,8 +518,8 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_All"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c5f2,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () async {
                         String filename =
@@ -556,8 +556,8 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_R"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c1f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () async {
                         String filename =
@@ -595,8 +595,8 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_R"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c1f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         context

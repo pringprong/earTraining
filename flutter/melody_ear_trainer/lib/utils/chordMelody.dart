@@ -120,29 +120,29 @@ class ChordMelody {
     Random random = Random();
 
     for (int i = 1; i <= numNotes; i++) {
-
-    if (i == 1 && startWithDo) {
-      // Check if startingDo is a note or a chord
-      if (mappingProvider.getNoteKeys.contains(startingDo)) {
-        chordMelody.add(startingDo);
-        chordMelodySolfege.add([startingDo]);
-      } else if (mappingProvider.getChordMap.keys.contains(startingDo)) {
-        chordMelody.add(startingDo);
-        chordMelodySolfege.add(mappingProvider.getChordMap[startingDo] ?? []);
-      } else {
-        return "Starting note/chord \"$startingDo\" not found in notes or chords.";
-      }
-    } else if (i == numNotes && endWithDo) {
-      // Check if endingDo is a note or a chord
-      if (mappingProvider.getNoteKeys.contains(endingDo)) {
-        chordMelody.add(endingDo);
-        chordMelodySolfege.add([endingDo]);
-      } else if (mappingProvider.getChordMap.keys.contains(endingDo)) {
-        chordMelody.add(endingDo);
-        chordMelodySolfege.add(mappingProvider.getChordMap[endingDo] ?? []);
-      } else {
-        return "Ending note/chord \"$endingDo\" not found in notes or chords.";
-      }
+      if (i == 1 && startWithDo) {
+        // Check if startingDo is a note or a chord
+        if (mappingProvider.getNoteKeys.contains(startingDo)) {
+          chordMelody.add(startingDo);
+          chordMelodySolfege.add([startingDo]);
+        } else if (mappingProvider.getChordMap.keys.contains(startingDo)) {
+          chordMelody.add(startingDo);
+          chordMelodySolfege.add(mappingProvider.getChordMap[startingDo] ?? []);
+          previousChord = startingDo;
+        } else {
+          return "Starting note/chord \"$startingDo\" not found in notes or chords.";
+        }
+      } else if (i == numNotes && endWithDo) {
+        // Check if endingDo is a note or a chord
+        if (mappingProvider.getNoteKeys.contains(endingDo)) {
+          chordMelody.add(endingDo);
+          chordMelodySolfege.add([endingDo]);
+        } else if (mappingProvider.getChordMap.keys.contains(endingDo)) {
+          chordMelody.add(endingDo);
+          chordMelodySolfege.add(mappingProvider.getChordMap[endingDo] ?? []);
+        } else {
+          return "Ending note/chord \"$endingDo\" not found in notes or chords.";
+        }
       } else if (chordFrequency != "Never" &&
           ((i + chordStartOffset) %
                   {
@@ -160,6 +160,14 @@ class ChordMelody {
         } else {
           List<String> unusedChords =
               availableChords.where((chord) => chord != previousChord).toList();
+          // if we're on the second-last item and endingDo is a chord and allowRepeatedChords
+          // is false (which it is in this Else) then we also need to remove endingDo from the list
+          // to avoid the situation where endingDo is a repeat  of the secondlast item
+          if (i == numNotes-1 
+            && endWithDo
+            && mappingProvider.getChordMap.keys.contains(endingDo)) {
+            unusedChords = unusedChords.where((chord) => chord != endingDo).toList();
+          }
           if (unusedChords.isEmpty) {
             return "Not enough unique chords available! Please select more chords or set Chord Frequency to Never.";
           }

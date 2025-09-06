@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'chordMelody.dart';
-//import 'package:provider/provider.dart';
 import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import 'colors.dart';
@@ -47,8 +45,7 @@ Widget buildNotesGrid(
             padding: const EdgeInsets.all(1.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                //backgroundColor: selected ? buttonColor : Colors.grey,
-                backgroundColor: selected ? buttonColor : Colors.grey,
+                backgroundColor: selected ? buttonColor :borderColor,
                 //minimumSize: Size(40, 40),
                 padding: EdgeInsets.zero,
                 textStyle: TextStyle(
@@ -68,7 +65,7 @@ Widget buildNotesGrid(
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                    color: Colors.white,
+                    color: noteButtonForegroundColor,
                   ),
                 ),
               ),
@@ -83,73 +80,74 @@ Widget buildNotesGrid(
   }
   return Column(children: rows);
 }
- Widget buildChordButtons(
-    MappingProvider mappingProvider,
-    GeneralProvider generalProvider,
-  ) {
-    List<Widget> sections = [];
-    mappingProvider.getChordsMapping.forEach((category, degreesMap) {
-      // Section title
-      sections.add(
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(
-            category,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
+
+Widget buildChordButtons(
+  MappingProvider mappingProvider,
+  GeneralProvider generalProvider,
+) {
+  List<Widget> sections = [];
+  mappingProvider.getChordsMapping.forEach((category, degreesMap) {
+    // Section title
+    sections.add(
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Text(
+          category,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-      );
-      degreesMap.forEach((degree, chordSetMap) {
-        // Row for each degree
-        List<Widget> chordButtons = [];
-        chordSetMap.forEach((chordName, notes) {
-          final selected = generalProvider.selectedChords[chordName] == true;
-          chordButtons.add(
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Tooltip(
-                message: notes.join(' '),
-                child: GestureDetector(
-                  onTap: () {
-                    generalProvider.toggleSelectedChord(chordName);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color:
-                          selected
-                              ? getChordButtonColor(chordName)
-                              : Colors.grey[400],
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Text(
-                        chordName,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight:
-                              selected ? FontWeight.bold : FontWeight.normal,
-                        ),
+      ),
+    );
+    degreesMap.forEach((degree, chordSetMap) {
+      // Row for each degree
+      List<Widget> chordButtons = [];
+      chordSetMap.forEach((chordName, notes) {
+        final selected = generalProvider.selectedChords[chordName] == true;
+        chordButtons.add(
+          Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Tooltip(
+              message: notes.join(' '),
+              child: GestureDetector(
+                onTap: () {
+                  generalProvider.toggleSelectedChord(chordName);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color:
+                        selected
+                            ? getChordButtonColor(chordName)
+                              : yetAnotherGrey,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Text(
+                      chordName,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: noteButtonForegroundColor,
+                        fontWeight:
+                            selected ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          );
-        });
-        sections.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0),
-            child: Wrap(spacing: 4, runSpacing: 4, children: chordButtons),
           ),
         );
       });
+      sections.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2.0),
+          child: Wrap(spacing: 4, runSpacing: 4, children: chordButtons),
+        ),
+      );
     });
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: sections,
-    );
-  }
+  });
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: sections,
+  );
+}

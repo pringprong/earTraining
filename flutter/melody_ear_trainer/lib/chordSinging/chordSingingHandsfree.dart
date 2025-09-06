@@ -12,12 +12,10 @@ class chordSingingHandsFree extends StatefulWidget {
   final AudioController audioController;
 
   @override
-  State<chordSingingHandsFree> createState() =>
-      _chordSingingHandsFreeState();
+  State<chordSingingHandsFree> createState() => _chordSingingHandsFreeState();
 }
 
-class _chordSingingHandsFreeState
-    extends State<chordSingingHandsFree> {
+class _chordSingingHandsFreeState extends State<chordSingingHandsFree> {
   int currentRound = 0;
   bool notPaused = true;
   String solfegeText = "";
@@ -42,10 +40,7 @@ class _chordSingingHandsFreeState
                     child: Text('Number of rounds:'),
                   ),
                   DropdownButton<int>(
-                    value:
-                        context
-                            .watch<chordSingingSettings>()
-                            .numberOfRounds,
+                    value: context.watch<chordSingingSettings>().numberOfRounds,
                     items:
                         [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
                           int value,
@@ -57,9 +52,9 @@ class _chordSingingHandsFreeState
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordSingingSettings>()
-                            .setNumberOfRounds(rounds: newValue);
+                        context.read<chordSingingSettings>().setNumberOfRounds(
+                          rounds: newValue,
+                        );
                       }
                     },
                   ),
@@ -72,10 +67,7 @@ class _chordSingingHandsFreeState
                     child: Text('Spoken plus first note repeats:'),
                   ),
                   DropdownButton<int>(
-                    value:
-                        context
-                            .watch<chordSingingSettings>()
-                            .spokenRepeats,
+                    value: context.watch<chordSingingSettings>().spokenRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -87,9 +79,9 @@ class _chordSingingHandsFreeState
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordSingingSettings>()
-                            .setSpokenRepeats(repeats: newValue);
+                        context.read<chordSingingSettings>().setSpokenRepeats(
+                          repeats: newValue,
+                        );
                       }
                     },
                     //               },
@@ -103,10 +95,7 @@ class _chordSingingHandsFreeState
                     child: Text('Solfege repeats:'),
                   ),
                   DropdownButton<int>(
-                    value:
-                        context
-                            .watch<chordSingingSettings>()
-                            .solfegeRepeats,
+                    value: context.watch<chordSingingSettings>().solfegeRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -118,9 +107,9 @@ class _chordSingingHandsFreeState
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordSingingSettings>()
-                            .setSolfegeRepeats(repeats: newValue);
+                        context.read<chordSingingSettings>().setSolfegeRepeats(
+                          repeats: newValue,
+                        );
                       }
                     },
                   ),
@@ -133,10 +122,7 @@ class _chordSingingHandsFreeState
                     child: Text('Instrument repeats:'),
                   ),
                   DropdownButton<int>(
-                    value:
-                        context
-                            .watch<chordSingingSettings>()
-                            .melodyRepeats,
+                    value: context.watch<chordSingingSettings>().melodyRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -148,9 +134,9 @@ class _chordSingingHandsFreeState
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordSingingSettings>()
-                            .setMelodyRepeats(repeats: newValue);
+                        context.read<chordSingingSettings>().setMelodyRepeats(
+                          repeats: newValue,
+                        );
                       }
                     },
                   ),
@@ -178,9 +164,9 @@ class _chordSingingHandsFreeState
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordSingingSettings>()
-                            .setTimeDelayRepeat(delay: newValue);
+                        context.read<chordSingingSettings>().setTimeDelayRepeat(
+                          delay: newValue,
+                        );
                       }
                     },
                     //               },
@@ -228,8 +214,8 @@ class _chordSingingHandsFreeState
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_2i"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c3f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -259,8 +245,8 @@ class _chordSingingHandsFreeState
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_All"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c5f2,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -291,7 +277,7 @@ class _chordSingingHandsFreeState
                     width: double.infinity,
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: borderColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(solfegeText, style: TextStyle(fontSize: 18)),

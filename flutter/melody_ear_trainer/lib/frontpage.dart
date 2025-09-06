@@ -24,14 +24,16 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color:getChordButtonColor("blah_VL_1i"),
+                        color: c2f1,
                         child: SizedBox(
                           height: 120,
                           child: Center(
                             child: const Text(
                               "Melody ID",
-                              style: TextStyle(fontSize: 20,
-                                  color: Colors.black),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: buttonForegroundColor,
+                              ),
                             ),
                           ),
                         ),
@@ -41,18 +43,20 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16),
+                  horizontalSpacer(),
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color:getChordButtonColor("blah_M_1i"),
+                        color: c2f3,
                         child: SizedBox(
                           height: 120,
                           child: Center(
                             child: const Text(
                               "Melody singing",
-                              style: TextStyle(fontSize: 20,
-                                  color: Colors.black),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: buttonForegroundColor,
+                              ),
                             ),
                           ),
                         ),
@@ -64,21 +68,23 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              verticalSpacer(),
               // Second row
               Row(
                 children: [
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color:getChordButtonColor("blah_VL_3i"),
+                        color: c4f1,
                         child: SizedBox(
                           height: 120,
                           child: Center(
                             child: const Text(
                               "Chord ID",
-                              style: TextStyle(fontSize: 20,
-                                  color: Colors.black),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: buttonForegroundColor,
+                              ),
                             ),
                           ),
                         ),
@@ -88,18 +94,20 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16),
+                  horizontalSpacer(),
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color:getChordButtonColor("blah_M_3i"),
+                        color: c4f3,
                         child: SizedBox(
                           height: 120,
                           child: Center(
                             child: const Text(
                               "Chord singing",
-                              style: TextStyle(fontSize: 20,
-                                  color: Colors.black),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: buttonForegroundColor,
+                              ),
                             ),
                           ),
                         ),
@@ -108,23 +116,27 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                         Navigator.pushNamed(context, '/chordSinging');
                       },
                     ),
-                  ),                ],
+                  ),
+                ],
               ),
-              SizedBox(height: 16),
+              verticalSpacer(),
               // Third row
               Row(
                 children: [
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color:getChordButtonColor("blah_VL_2i"),
+                        color: c3f1,
                         child: SizedBox(
                           height: 120,
                           child: Center(
                             child: const Text(
-                              "Chord melody ID",
-                              style: TextStyle(fontSize: 20,
-                                  color: Colors.black),
+                              "Chord melody\nID",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: buttonForegroundColor,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -134,18 +146,21 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16),
+                  horizontalSpacer(),
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color:getChordButtonColor("blah_M_2i"),
+                        color: c3f3,
                         child: SizedBox(
                           height: 120,
                           child: Center(
                             child: const Text(
-                              "Chord melody singing",
-                              style: TextStyle(fontSize: 20,
-                                  color: Colors.black),
+                              "Chord melody\nsinging",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: buttonForegroundColor,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -157,7 +172,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              verticalSpacer(),
               // Fourth row: double-width, half-height
               // Row(
               //   children: [
@@ -176,21 +191,22 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
               //     ),
               //   ],
               // ),
-              //SizedBox(height: 16),
-              // Fifth row: double-width, half-height
+              //verticalSpacer(),
               Row(
                 children: [
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color:getChordButtonColor("blah_VL_R"),
+                        color: c1f1,
                         child: SizedBox(
                           height: 120,
                           child: Center(
                             child: const Text(
                               "Help",
-                              style: TextStyle(fontSize: 20,
-                                  color: Colors.black),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: buttonForegroundColor,
+                              ),
                             ),
                           ),
                         ),

@@ -12,10 +12,12 @@ class chordMelodySingingHandsFree extends StatefulWidget {
   final AudioController audioController;
 
   @override
-  State<chordMelodySingingHandsFree> createState() => _chordMelodySingingHandsFreeState();
+  State<chordMelodySingingHandsFree> createState() =>
+      _chordMelodySingingHandsFreeState();
 }
 
-class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFree> {
+class _chordMelodySingingHandsFreeState
+    extends State<chordMelodySingingHandsFree> {
   int currentRound = 0;
   bool notPaused = true;
   String solfegeText = "";
@@ -41,7 +43,9 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodySingingSettings>().numberOfRounds,
+                        context
+                            .watch<chordMelodySingingSettings>()
+                            .numberOfRounds,
                     items:
                         [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
                           int value,
@@ -53,9 +57,9 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<chordMelodySingingSettings>().setNumberOfRounds(
-                          rounds: newValue,
-                        );
+                        context
+                            .read<chordMelodySingingSettings>()
+                            .setNumberOfRounds(rounds: newValue);
                       }
                     },
                   ),
@@ -68,7 +72,10 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                     child: Text('Spoken plus first note repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<chordMelodySingingSettings>().spokenRepeats,
+                    value:
+                        context
+                            .watch<chordMelodySingingSettings>()
+                            .spokenRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -80,9 +87,9 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<chordMelodySingingSettings>().setSpokenRepeats(
-                          repeats: newValue,
-                        );
+                        context
+                            .read<chordMelodySingingSettings>()
+                            .setSpokenRepeats(repeats: newValue);
                       }
                     },
                     //               },
@@ -97,7 +104,9 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodySingingSettings>().solfegeRepeats,
+                        context
+                            .watch<chordMelodySingingSettings>()
+                            .solfegeRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -109,9 +118,9 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<chordMelodySingingSettings>().setSolfegeRepeats(
-                          repeats: newValue,
-                        );
+                        context
+                            .read<chordMelodySingingSettings>()
+                            .setSolfegeRepeats(repeats: newValue);
                       }
                     },
                   ),
@@ -124,7 +133,10 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                     child: Text('Instrument repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<chordMelodySingingSettings>().melodyRepeats,
+                    value:
+                        context
+                            .watch<chordMelodySingingSettings>()
+                            .melodyRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -136,9 +148,9 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<chordMelodySingingSettings>().setMelodyRepeats(
-                          repeats: newValue,
-                        );
+                        context
+                            .read<chordMelodySingingSettings>()
+                            .setMelodyRepeats(repeats: newValue);
                       }
                     },
                   ),
@@ -216,8 +228,8 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_2i"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c3f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -247,8 +259,8 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_All"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c5f2,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -279,7 +291,7 @@ class _chordMelodySingingHandsFreeState extends State<chordMelodySingingHandsFre
                     width: double.infinity,
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: borderColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(solfegeText, style: TextStyle(fontSize: 18)),

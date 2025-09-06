@@ -526,8 +526,8 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_2i"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c3f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -587,8 +587,8 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_All"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c5f2,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -648,8 +648,8 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_R"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c1f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -788,8 +788,8 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_R"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c1f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         context.read<chordIDSettings>().resetAllSettings();

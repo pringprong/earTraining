@@ -209,8 +209,8 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_2i"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c3f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -241,8 +241,8 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_All"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c5f2,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -273,7 +273,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                     width: double.infinity,
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: borderColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(solfegeText, style: TextStyle(fontSize: 18)),
@@ -412,11 +412,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
         k < context.read<MelodyIDSettings>().getSpokenRepeats && notPaused;
         k++
       ) {
-        await chordMelody.playSpoken(
-          generalProvider,
-          mappingProvider,
-          widget,
-        );
+        await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
         if (!notPaused) {
           return; // Exit if paused
         }

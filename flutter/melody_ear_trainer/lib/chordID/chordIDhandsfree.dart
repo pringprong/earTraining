@@ -40,8 +40,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                     child: Text('Number of rounds:'),
                   ),
                   DropdownButton<int>(
-                    value:
-                        context.watch<chordIDSettings>().numberOfRounds,
+                    value: context.watch<chordIDSettings>().numberOfRounds,
                     items:
                         [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
                           int value,
@@ -95,8 +94,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                     child: Text('Solfege repeats:'),
                   ),
                   DropdownButton<int>(
-                    value:
-                        context.watch<chordIDSettings>().solfegeRepeats,
+                    value: context.watch<chordIDSettings>().solfegeRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -151,10 +149,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                     child: Text('Time between repeats (s):'),
                   ),
                   DropdownButton<int>(
-                    value:
-                        context
-                            .watch<chordIDSettings>()
-                            .getTimeDelayRepeat,
+                    value: context.watch<chordIDSettings>().getTimeDelayRepeat,
                     items:
                         [1, 2, 3, 4, 5, 6, 7, 8].map<DropdownMenuItem<int>>((
                           int value,
@@ -166,9 +161,9 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordIDSettings>()
-                            .setTimeDelayRepeat(delay: newValue);
+                        context.read<chordIDSettings>().setTimeDelayRepeat(
+                          delay: newValue,
+                        );
                       }
                     },
                     //               },
@@ -183,10 +178,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Select instrument'),
-                    value:
-                        context
-                            .watch<chordIDSettings>()
-                            .handsfreeInstrument,
+                    value: context.watch<chordIDSettings>().handsfreeInstrument,
                     items:
                         [
                           "Guitar",
@@ -200,9 +192,9 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<chordIDSettings>()
-                            .setHandsfreeInstrument(instrument: newValue);
+                        context.read<chordIDSettings>().setHandsfreeInstrument(
+                          instrument: newValue,
+                        );
                       }
                     },
                   ),
@@ -216,8 +208,8 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_2i"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c3f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -247,8 +239,8 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_All"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c5f2,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -279,7 +271,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                     width: double.infinity,
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: borderColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(solfegeText, style: TextStyle(fontSize: 18)),
@@ -295,9 +287,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                   Text(
                     (min(
                           currentRound + 1,
-                          context
-                              .read<chordIDSettings>()
-                              .getNumberOfRounds,
+                          context.read<chordIDSettings>().getNumberOfRounds,
                         )).toString() +
                         " / " +
                         context
@@ -359,8 +349,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    while (currentRound <
-            context.read<chordIDSettings>().getNumberOfRounds &&
+    while (currentRound < context.read<chordIDSettings>().getNumberOfRounds &&
         notPaused) {
       solfegeText = "";
       setState(() {});
@@ -380,9 +369,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
         i++
       ) {
         await chordMelody.playChordMelody(
-          getInstrument(
-            context.read<chordIDSettings>().handsfreeInstrument,
-          ),
+          getInstrument(context.read<chordIDSettings>().handsfreeInstrument),
           generalProvider,
           mappingProvider,
           widget,
@@ -391,17 +378,14 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(
-            seconds: context.read<chordIDSettings>().getTimeDelayRepeat,
-          ),
+          Duration(seconds: context.read<chordIDSettings>().getTimeDelayRepeat),
         );
       }
       solfegeText = chordMelody.getChordMelody().join(' ');
       setState(() {});
       for (
         int j = 0;
-        j < context.read<chordIDSettings>().getSolfegeRepeats &&
-            notPaused;
+        j < context.read<chordIDSettings>().getSolfegeRepeats && notPaused;
         j++
       ) {
         await chordMelody.playChordMelody(
@@ -414,9 +398,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(
-            seconds: context.read<chordIDSettings>().getTimeDelayRepeat,
-          ),
+          Duration(seconds: context.read<chordIDSettings>().getTimeDelayRepeat),
         );
       }
       for (
@@ -429,9 +411,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(
-            seconds: context.read<chordIDSettings>().getTimeDelayRepeat,
-          ),
+          Duration(seconds: context.read<chordIDSettings>().getTimeDelayRepeat),
         );
       }
       if (!notPaused) {

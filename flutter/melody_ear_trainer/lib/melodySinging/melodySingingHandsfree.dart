@@ -40,7 +40,8 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                     child: Text('Number of rounds:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<MelodySingingSettings>().numberOfRounds,
+                    value:
+                        context.watch<MelodySingingSettings>().numberOfRounds,
                     items:
                         [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
                           int value,
@@ -150,7 +151,10 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                     child: Text('Time between repeats (s):'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<MelodySingingSettings>().getTimeDelayRepeat,
+                    value:
+                        context
+                            .watch<MelodySingingSettings>()
+                            .getTimeDelayRepeat,
                     items:
                         [1, 2, 3, 4, 5, 6, 7, 8].map<DropdownMenuItem<int>>((
                           int value,
@@ -162,9 +166,9 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<MelodySingingSettings>().setTimeDelayRepeat(
-                          delay: newValue,
-                        );
+                        context
+                            .read<MelodySingingSettings>()
+                            .setTimeDelayRepeat(delay: newValue);
                       }
                     },
                     //               },
@@ -180,7 +184,9 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                   DropdownButton<String>(
                     hint: Text('Select instrument'),
                     value:
-                        context.watch<MelodySingingSettings>().handsfreeInstrument,
+                        context
+                            .watch<MelodySingingSettings>()
+                            .handsfreeInstrument,
                     items:
                         [
                           "Guitar",
@@ -194,9 +200,9 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<MelodySingingSettings>().setHandsfreeInstrument(
-                          instrument: newValue,
-                        );
+                        context
+                            .read<MelodySingingSettings>()
+                            .setHandsfreeInstrument(instrument: newValue);
                       }
                     },
                   ),
@@ -210,8 +216,8 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_2i"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c3f3,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -242,8 +248,8 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: getChordButtonColor("blah_M_All"),
-                        foregroundColor: Colors.black,
+                        backgroundColor: c5f2,
+                        foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -274,7 +280,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                     width: double.infinity,
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: borderColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(solfegeText, style: TextStyle(fontSize: 18)),
@@ -290,7 +296,9 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                   Text(
                     (min(
                           currentRound + 1,
-                          context.read<MelodySingingSettings>().getNumberOfRounds,
+                          context
+                              .read<MelodySingingSettings>()
+                              .getNumberOfRounds,
                         )).toString() +
                         " / " +
                         context
@@ -352,9 +360,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    while (currentRound <
-            generalProvider.getNumberOfRounds &&
-        notPaused) {
+    while (currentRound < generalProvider.getNumberOfRounds && notPaused) {
       solfegeText = "";
       setState(() {});
       String result = chordMelody.generateChordMelody(
@@ -369,11 +375,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
       }
       solfegeText = chordMelody.getChordMelody().join(' ');
       setState(() {});
-      for (
-        int n = 0;
-        n < generalProvider.getSpokenRepeats && notPaused;
-        n++
-      ) {
+      for (int n = 0; n < generalProvider.getSpokenRepeats && notPaused; n++) {
         await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
         await Future.delayed(Duration(seconds: 1));
         ChordMelody firstNote = ChordMelody.singleChord(
@@ -390,17 +392,10 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(
-            seconds: generalProvider.getTimeDelayRepeat,
-          ),
+          Duration(seconds: generalProvider.getTimeDelayRepeat),
         );
       }
-      for (
-        int j = 0;
-        j < generalProvider.getSolfegeRepeats &&
-            notPaused;
-        j++
-      ) {
+      for (int j = 0; j < generalProvider.getSolfegeRepeats && notPaused; j++) {
         await chordMelody.playChordMelody(
           "Solfege",
           generalProvider,
@@ -411,20 +406,12 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(
-            seconds: generalProvider.getTimeDelayRepeat,
-          ),
+          Duration(seconds: generalProvider.getTimeDelayRepeat),
         );
       }
-      for (
-        int i = 0;
-        i < generalProvider.getMelodyRepeats && notPaused;
-        i++
-      ) {
+      for (int i = 0; i < generalProvider.getMelodyRepeats && notPaused; i++) {
         await chordMelody.playChordMelody(
-          getInstrument(
-            generalProvider.handsfreeInstrument,
-          ),
+          getInstrument(generalProvider.handsfreeInstrument),
           generalProvider,
           mappingProvider,
           widget,
@@ -433,9 +420,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(
-            seconds: generalProvider.getTimeDelayRepeat,
-          ),
+          Duration(seconds: generalProvider.getTimeDelayRepeat),
         );
       }
       if (!notPaused) {

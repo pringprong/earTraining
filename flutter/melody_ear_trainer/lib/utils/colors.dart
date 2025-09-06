@@ -15,27 +15,6 @@ Row TextRow(String myText) {
   );
 }
 
-
-IconData waitingForGuessIcon = Icons.help_outline;
-Color waitingForGuessIconColor = Colors.grey;
-Color waitingForGuessButtonColor = Colors.grey.shade300;
-Color buttonForegroundColor = Colors.black;
-Color waitingForGuessForegroundColor = buttonForegroundColor;
-
-IconData correctGuessIcon = Icons.check_circle;
-Color correctGuessIconColor = Colors.green;
-Color correctGuessButtonColor = const Color.fromARGB(255, 191, 220, 158);
-Color correctGuessForegroundColor = buttonForegroundColor;
-
-IconData incorrectGuessIcon = Icons.cancel;
-Color incorrectGuessIconColor = Colors.red;
-Color incorrectGuessButtonColor = const Color.fromARGB(255, 240, 128, 128);
-Color incorrectGuessForegroundColor = buttonForegroundColor;
-
-Color borderColor = Colors.grey;
-Color yetAnotherGrey = Color.fromARGB(255, 181, 196, 212);
-Color noteButtonForegroundColor = Colors.white;
-
 Color multiplyHexColor(String hexColor, double factor) {
   hexColor = hexColor.replaceAll('#', '');
   if (hexColor.length == 6) {
@@ -52,41 +31,85 @@ Color multiplyHexColor(String hexColor, double factor) {
   return Colors.grey;
 }
 
+IconData waitingForGuessIcon = Icons.help_outline;
+Color waitingForGuessIconColor = Colors.grey;
+Color waitingForGuessButtonColor = Colors.grey.shade300;
+const Color buttonForegroundColor = Colors.black;
+Color waitingForGuessForegroundColor = buttonForegroundColor;
+
+IconData correctGuessIcon = Icons.check_circle;
+Color correctGuessIconColor = Colors.green;
+Color correctGuessButtonColor = const Color.fromARGB(255, 191, 220, 158);
+Color correctGuessForegroundColor = buttonForegroundColor;
+
+IconData incorrectGuessIcon = Icons.cancel;
+Color incorrectGuessIconColor = Colors.red;
+Color incorrectGuessButtonColor = const Color.fromARGB(255, 240, 128, 128);
+Color incorrectGuessForegroundColor = buttonForegroundColor;
+
+const Color borderColor = Colors.grey;
+const Color yetAnotherGrey = Color.fromARGB(255, 181, 196, 212);
+const Color noteButtonForegroundColor = Colors.white;
+
+const color1 = "#8189d3"; // mauvey blue _R
+const color2 = "#89afaa"; // green _1i
+const color3 = "#bcae9a"; // greeny beige, tan khaki _2i
+const color4 = "#c3b2b7"; // pinky beige _3i
+const color5 = "#d0a89b"; // reddish brown _All
+const color6 = "#84b6d4"; // grey blue
+const factor1 = 0.85;
+const factor2 = 1.0;
+const factor3 = 1.15;
+const factor4 = 1.3;
+
+Color c1f1 = multiplyHexColor(color1, factor1);
+Color c1f2 = multiplyHexColor(color1, factor2);
+Color c1f3 = multiplyHexColor(color1, factor3);
+Color c1f4 = multiplyHexColor(color1, factor4);
+Color c2f1 = multiplyHexColor(color2, factor1);
+Color c2f2 = multiplyHexColor(color2, factor2);
+Color c2f3 = multiplyHexColor(color2, factor3);
+Color c2f4 = multiplyHexColor(color2, factor4);
+Color c3f1 = multiplyHexColor(color3, factor1);
+Color c3f2 = multiplyHexColor(color3, factor2);
+Color c3f3 = multiplyHexColor(color3, factor3);
+Color c3f4 = multiplyHexColor(color3, factor4);
+Color c4f1 = multiplyHexColor(color4, factor1);
+Color c4f2 = multiplyHexColor(color4, factor2);
+Color c4f3 = multiplyHexColor(color4, factor3);
+Color c4f4 = multiplyHexColor(color4, factor4);
+Color c5f1 = multiplyHexColor(color5, factor1);
+Color c5f2 = multiplyHexColor(color5, factor2);
+Color c5f3 = multiplyHexColor(color5, factor3);
+Color c5f4 = multiplyHexColor(color5, factor4);
+Color c6f1 = multiplyHexColor(color6, factor1);
+Color c6f2 = multiplyHexColor(color6, factor2);
+Color c6f3 = multiplyHexColor(color6, factor3);
+Color c6f4 = multiplyHexColor(color6, factor4);
+
 Color getChordButtonColor(String chordName) {
-  const color1 = "#8189d3";
-  const color2 = "#89afaa";
-  const color3 = "#bcae9a";
-  const color4 = "#c3b2b7";
-  const color5 = "#d0a89b";
-  const buttonColor = "#84b6d4";
-  const factor1 = 0.85;
-  const factor2 = 1.0;
-  const factor3 = 1.15;
-  const factor4 = 1.3;
-  //const FACTOR5 = 1.45;
-
   String c = chordName;
-  if (c.endsWith("_VL_R")) return multiplyHexColor(color1, factor1);
-  if (c.endsWith("_L_R")) return multiplyHexColor(color1, factor2);
-  if (c.endsWith("_M_R")) return multiplyHexColor(color1, factor3);
-  if (c.endsWith("_H_R")) return multiplyHexColor(color1, factor4);
+  if (c.endsWith("_VL_R")) return c1f1;
+  if (c.endsWith("_L_R")) return c1f2;
+  if (c.endsWith("_M_R")) return c1f3;
+  if (c.endsWith("_H_R")) return c1f4;
 
-  if (c.endsWith("_VL_1i")) return multiplyHexColor(color2, factor1);
-  if (c.endsWith("_L_1i")) return multiplyHexColor(color2, factor2);
-  if (c.endsWith("_M_1i")) return multiplyHexColor(color2, factor3);
-  if (c.endsWith("_H_1i")) return multiplyHexColor(color2, factor4);
+  if (c.endsWith("_VL_1i")) return c2f1;
+  if (c.endsWith("_L_1i")) return c2f2;
+  if (c.endsWith("_M_1i")) return c2f3;
+  if (c.endsWith("_H_1i")) return c2f4;
 
-  if (c.endsWith("_VL_2i")) return multiplyHexColor(color3, factor1);
-  if (c.endsWith("_L_2i")) return multiplyHexColor(color3, factor2);
-  if (c.endsWith("_M_2i")) return multiplyHexColor(color3, factor3);
-  if (c.endsWith("_H_2i")) return multiplyHexColor(color3, factor4);
+  if (c.endsWith("_VL_2i")) return c3f1;
+  if (c.endsWith("_L_2i")) return c3f2;
+  if (c.endsWith("_M_2i")) return c3f3;
+  if (c.endsWith("_H_2i")) return c3f4;
 
-  if (c.endsWith("_VL_3i")) return multiplyHexColor(color4, factor1);
-  if (c.endsWith("_L_3i")) return multiplyHexColor(color4, factor2);
-  if (c.endsWith("_M_3i")) return multiplyHexColor(color4, factor3);
-  if (c.endsWith("_H_3i")) return multiplyHexColor(color4, factor4);
+  if (c.endsWith("_VL_3i")) return c4f1;
+  if (c.endsWith("_L_3i")) return c4f2;
+  if (c.endsWith("_M_3i")) return c4f3;
+  if (c.endsWith("_H_3i")) return c4f4;
 
-  if (c.endsWith("_All")) return multiplyHexColor(color5, factor2);
+  if (c.endsWith("_All")) return c5f2;
 
-  return multiplyHexColor(buttonColor, 1.0);
+  return c6f2;
 }
