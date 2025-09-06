@@ -11,7 +11,19 @@ SizedBox horizontalSpacer() {
 Row TextRow(String myText) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
-    children: [Text(myText, style: TextStyle(fontWeight: FontWeight.bold))],
+    children: [
+      Expanded(
+        child: Wrap(
+          children: [
+            Text(
+              myText,
+              style: TextStyle(fontWeight: FontWeight.bold),
+              softWrap: true,
+            ),
+          ],
+        ),
+      ),
+    ],
   );
 }
 

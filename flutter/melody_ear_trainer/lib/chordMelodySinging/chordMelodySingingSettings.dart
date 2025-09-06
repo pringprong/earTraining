@@ -120,6 +120,10 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
+              TextRow("Select notes to include in melody:"),
+              verticalSpacer(),
+              TextRow("Be sure to include starting and ending notes if selected below"),
+              verticalSpacer(),
               Row(
                 children: [
                   Expanded(
@@ -458,6 +462,8 @@ class _chordMelodySingingSettingsPageState
               ),
               verticalSpacer(),
               TextRow("Tonic:"),
+              verticalSpacer(),
+              TextRow("Note: make sure these are selected in the notes above and/or chords below"),
               Row(
                 children: [
                   Flexible(
@@ -841,6 +847,11 @@ class _chordMelodySingingSettingsPageState
                   ),
                 ],
               ),
+              verticalSpacer(),
+              TextRow("Select chords to include in melody:"),
+              verticalSpacer(),
+              TextRow("Be sure to include starting and ending chords if selected above"),
+              verticalSpacer(),
               buildChordButtons(mappingProvider, generalProvider),
               TextRow("Reset:"),
               Row(

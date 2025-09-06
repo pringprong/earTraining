@@ -106,6 +106,10 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                 ],
               ),
               verticalSpacer(),
+              TextRow("Select notes to include in melody:"),
+              verticalSpacer(),
+              TextRow("Be sure to include starting and ending notes if selected below"),
+              verticalSpacer(),
               Row(
                 children: [
                   Expanded(
@@ -313,67 +317,10 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   ),
                 ],
               ),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Text('Time between notes in melody (ms):'),
-              //     ),
-              //     DropdownButton<int>(
-              //       value: context.watch<MelodySingingSettings>().timeBetweenNotes,
-              //       items:
-              //           [300, 600, 900, 1200].map<DropdownMenuItem<int>>((
-              //             int value,
-              //           ) {
-              //             return DropdownMenuItem<int>(
-              //               value: value,
-              //               child: Text(value.toString()),
-              //             );
-              //           }).toList(),
-              //       onChanged: (int? newValue) {
-              //         if (newValue != null) {
-              //           context.read<MelodySingingSettings>().updateTimeBetweenNotes(
-              //             time: newValue,
-              //           );
-              //         }
-              //       },
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Text('Truncate notes in melody (ms):'),
-              //     ),
-              //     DropdownButton<String>(
-              //       value: context.watch<MelodySingingSettings>().truncateNotes,
-              //       items:
-              //           [
-              //             "None",
-              //             "600",
-              //             "900",
-              //             "1200",
-              //             "1500",
-              //             "1800",
-              //           ].map<DropdownMenuItem<String>>((String value) {
-              //             return DropdownMenuItem<String>(
-              //               value: value,
-              //               child: Text(value),
-              //             );
-              //           }).toList(),
-              //       onChanged: (String? newValue) {
-              //         if (newValue != null) {
-              //           context.read<MelodySingingSettings>().updateTruncateNotes(
-              //             time: newValue,
-              //           );
-              //         }
-              //       },
-              //     ),
-              //   ],
-              // ),
               verticalSpacer(),
               TextRow("Tonic:"),
+              verticalSpacer(),
+              TextRow("Note: make sure these are selected in the melody notes above"),
               Row(
                 children: [
                   Flexible(

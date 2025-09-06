@@ -21,10 +21,6 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
   Widget build(BuildContext context) {
     final mappingProvider = Provider.of<MappingProvider>(context);
     final generalProvider = Provider.of<chordSingingSettings>(context);
-    // String? selectedOctave =
-    //     generalProvider.selectedOctave; // Default octave selection
-    // String? selectedScale =
-    //     generalProvider.selectedScale; // Default scale selection
     String? selectedRange =
         generalProvider.chordSetRange; // Default range selection
     String? selectedChordSet =
@@ -36,92 +32,6 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // TextRow("Melody notes:"),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Text('Octave:'),
-              //     ),
-              //     DropdownButton<String>(
-              //       value:
-              //           context.watch<chordSingingSettings>().selectedOctave,
-              //       hint: Text('Select octave'),
-              //       items:
-              //           mappingProvider.getOctaveKeys
-              //               .map(
-              //                 (octave) => DropdownMenuItem(
-              //                   value: octave,
-              //                   child: Text(octave),
-              //                 ),
-              //               )
-              //               .toList(),
-              //       onChanged: (octave) {
-              //         setState(() {
-              //           selectedOctave = octave;
-              //           context
-              //               .read<chordSingingSettings>()
-              //               .updateSelectedOctave(octave: selectedOctave ?? '');
-              //           if (selectedOctave != null && selectedScale != null) {
-              //             final notes =
-              //                 mappingProvider
-              //                     .getScalesMapping[selectedOctave!]![selectedScale!] ??
-              //                 [];
-              //             generalProvider.setNoteSelection(selectedKeys: notes);
-              //           }
-              //         });
-              //       },
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Text('Scale:'),
-              //     ),
-              //     DropdownButton<String>(
-              //       value: context.watch<chordSingingSettings>().selectedScale,
-              //       hint: Text('Select scale'),
-              //       items:
-              //           mappingProvider.getScaleKeys
-              //               .map(
-              //                 (scale) => DropdownMenuItem(
-              //                   value: scale,
-              //                   child: Text(scale),
-              //                 ),
-              //               )
-              //               .toList(),
-              //       onChanged: (scale) {
-              //         setState(() {
-              //           selectedScale = scale;
-              //           context
-              //               .read<chordSingingSettings>()
-              //               .updateSelectedScale(newscale: selectedScale ?? '');
-              //           if (selectedOctave != null && selectedScale != null) {
-              //             final notes =
-              //                 mappingProvider
-              //                     .getScalesMapping[selectedOctave!]![selectedScale!] ??
-              //                 [];
-              //             generalProvider.setNoteSelection(selectedKeys: notes);
-              //           }
-              //         });
-              //       },
-              //     ),
-              //   ],
-              // ),
-              // verticalSpacer(),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: buildNotesGrid(
-              //         context.read<chordSingingSettings>(),
-              //         context.read<MappingProvider>(),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // verticalSpacer(),
               TextRow("Melody settings:"),
               Row(
                 children: [
@@ -151,81 +61,6 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   ),
                 ],
               ),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Text('Max distance between adjacent notes:'),
-              //     ),
-              //     DropdownButton<int>(
-              //       value: context.watch<chordSingingSettings>().maxDistance,
-              //       items:
-              //           List.generate(
-              //             9,
-              //             (i) => i + 1,
-              //           ).map<DropdownMenuItem<int>>((int value) {
-              //             return DropdownMenuItem<int>(
-              //               value: value,
-              //               child: Text(value.toString()),
-              //             );
-              //           }).toList(),
-              //       onChanged: (int? newValue) {
-              //         if (newValue != null) {
-              //           context.read<chordSingingSettings>().updateMaxDistance(
-              //             distance: newValue,
-              //           );
-              //         }
-              //       },
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Text('Allow repeated notes:'),
-              //     ),
-              //     Checkbox(
-              //       value: context.watch<chordSingingSettings>().allowRepeatedNotes,
-              //       onChanged: (bool? newValue) {
-              //         context
-              //             .read<chordSingingSettings>()
-              //             .toggleAllowRepeatedNotes();
-              //       },
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Text('Chord frequency:'),
-              //     ),
-              //     DropdownButton<String>(
-              //       value: context.watch<chordSingingSettings>().chordFrequency,
-              //       items:
-              //           [
-              //             "Never",
-              //             "Every 4 notes",
-              //             "Every 3 notes",
-              //             "Every 2 notes",
-              //             "Every note",
-              //           ].map<DropdownMenuItem<String>>((String value) {
-              //             return DropdownMenuItem<String>(
-              //               value: value,
-              //               child: Text(value),
-              //             );
-              //           }).toList(),
-              //       onChanged: (String? newValue) {
-              //         if (newValue != null) {
-              //           context.read<chordSingingSettings>().updateChordFrequency(
-              //             frequency: newValue,
-              //           );
-              //         }
-              //       },
-              //     ),
-              //   ],
-              // ),
               Row(
                 children: [
                   Padding(
@@ -435,6 +270,8 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
               ),
               verticalSpacer(),
               TextRow("Tonic:"),
+              verticalSpacer(),
+              TextRow("Note: make sure these are selected in the chords below"),
               Row(
                 children: [
                   Flexible(
@@ -788,6 +625,11 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                   ),
                 ],
               ),
+              verticalSpacer(),
+              TextRow("Select chords to include in melody:"),
+              verticalSpacer(),
+              TextRow("Be sure to include starting and ending chords if selected above"),
+              verticalSpacer(),
               buildChordButtons(mappingProvider, generalProvider),
               TextRow("Reset:"),
               Row(
