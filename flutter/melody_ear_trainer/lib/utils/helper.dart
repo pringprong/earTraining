@@ -45,7 +45,7 @@ Widget buildNotesGrid(
             padding: const EdgeInsets.all(1.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: selected ? buttonColor :borderColor,
+                backgroundColor: selected ? buttonColor : borderColor,
                 //minimumSize: Size(40, 40),
                 padding: EdgeInsets.zero,
                 textStyle: TextStyle(
@@ -116,7 +116,7 @@ Widget buildChordButtons(
                     color:
                         selected
                             ? getChordButtonColor(chordName)
-                              : yetAnotherGrey,
+                            : yetAnotherGrey,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -138,6 +138,7 @@ Widget buildChordButtons(
           ),
         );
       });
+      sections.add(TextRow(degree));
       sections.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0),

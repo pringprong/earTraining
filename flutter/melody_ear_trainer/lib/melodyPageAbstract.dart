@@ -91,7 +91,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c3f3,
+              backgroundColor: c3f4,
               foregroundColor: buttonForegroundColor,
             ),
             onPressed:
@@ -112,7 +112,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c5f2,
+              backgroundColor: c5f4,
               foregroundColor: buttonForegroundColor,
             ),
             onPressed:
@@ -133,7 +133,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: c1f3,
+                backgroundColor: c1f4,
                 foregroundColor: buttonForegroundColor,
               ),
               onPressed:
@@ -164,7 +164,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c3f3,
+              backgroundColor: c3f1,
               foregroundColor: buttonForegroundColor,
             ),
             onPressed: () {
@@ -190,7 +190,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c5f2,
+              backgroundColor: c5f1,
               foregroundColor: buttonForegroundColor,
             ),
             onPressed: () {
@@ -215,7 +215,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c1f3,
+              backgroundColor: c1f1,
               foregroundColor: buttonForegroundColor,
             ),
             onPressed: () {
@@ -407,7 +407,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 176, 204, 231),
+              backgroundColor: clearButtonColor,
               foregroundColor: buttonForegroundColor,
             ),
             onPressed: () {
@@ -518,7 +518,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c5f2,
+              backgroundColor: c5f3,
               foregroundColor: buttonForegroundColor,
             ),
             onPressed:
@@ -682,7 +682,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.9,
           ),
-          color: c2f4,
+          color: c6f3,
           width: double.infinity,
           padding: EdgeInsets.all(12),
           child: Text(

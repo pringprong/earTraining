@@ -66,11 +66,6 @@ class MelodyIDState extends MelodyPageAbstractState {
               TextRow("Play the melody back:"),
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
-              // verticalSpacer(),
-              // buildSelectedChordButtons(
-              //   generalProvider,
-              //   mappingProvider,
-              // ),
               verticalSpacer(),
               userWrittenSolfegeArea(),
               verticalSpacer(),

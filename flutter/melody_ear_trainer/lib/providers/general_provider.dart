@@ -101,7 +101,7 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   // --- Selected Chords Map ---
   Map<String, bool> selectedChords = {
-    for (var key in "I_Rt,IV_Rt,V_Rt".split(','))
+    for (var key in "I_Rt,IV0_Sec,V0_Fir".split(','))
       key: true, // Initialize all chords as not selected
   };
 
@@ -491,7 +491,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     chordSet = "I_IV_V";
     noteSelection = {for (var key in defaultNoteKeys) key: true};
     selectedChords = {
-      for (var key in "I_Rt,IV_Rt,V_Rt".split(','))
+      for (var key in "I_Rt,IV0_Sec,V0_Fir".split(','))
         key: true, // Initialize all chords as not selected
     };
     numberOfRounds = 5;

@@ -24,7 +24,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c2f1,
+                        color: c2f4,
                         child: SizedBox(
                           height: 120,
                           child: Center(
@@ -75,7 +75,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c4f1,
+                        color: c4f4,
                         child: SizedBox(
                           height: 120,
                           child: Center(
@@ -126,7 +126,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c3f1,
+                        color: c3f4,
                         child: SizedBox(
                           height: 120,
                           child: Center(
@@ -197,7 +197,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c1f1,
+                        color: c1f4,
                         child: SizedBox(
                           height: 120,
                           child: Center(

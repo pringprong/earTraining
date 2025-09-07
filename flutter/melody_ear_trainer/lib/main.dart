@@ -2,17 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'audio/audio_controller.dart';
 import 'help.dart';
-//import 'general.dart';
-//import 'tonic.dart';
 import 'providers/general_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/mapping_provider.dart';
-//import 'homepage.dart';
-// import 'scales.dart';
-// import 'chords.dart';
-// import 'handsfree.dart';
-// import 'singing.dart';
-// import 'handsfreesinging.dart';
 import 'frontpage.dart';
 import 'melodyID/melodyID.dart';
 import 'melodyID/melodyIDsettings.dart';
@@ -127,17 +119,8 @@ class MelodyEarTrainerApp extends StatelessWidget {
       theme: context.watch<ThemeProvider>().getThemeData,
       home: MelodyFrontPage(),
       routes: {
-       // '/home': (context) => MelodyHomePage(audioController: audioController),
-       // '/general': (context) => GeneralPage(),
-       // '/tonic': (context) => TonicPage(audioController: audioController),
-       // '/scales': (context) => ScalesPage(),
-       // '/chords': (context) => ChordsPage(),
         '/help': (context) => HelpPage(),
         '/home': (context) => MelodyFrontPage(),
-        //'/handsfree': (context) => HandsFree(audioController: audioController),
-       // '/singing': (context) => Singing(audioController: audioController),
-       // '/handsfreesinging':
-        //    (context) => HandsFreeSinging(audioController: audioController),
         '/melodyID': (context) => MelodyID(audioController: audioController),
         '/melodyIDsettings':
             (context) => MelodyIDSettingsPage(audioController: audioController),

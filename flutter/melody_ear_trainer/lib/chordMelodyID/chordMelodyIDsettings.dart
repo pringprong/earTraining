@@ -821,6 +821,8 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               verticalSpacer(),
               TextRow("Select chords to include in melody:"),
               verticalSpacer(),
+              TextRow("Long press to see the solfege"),
+              verticalSpacer(),
               TextRow("Be sure to include starting and ending chords if selected above"),
               verticalSpacer(),
               buildChordButtons(mappingProvider, generalProvider),

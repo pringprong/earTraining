@@ -81,6 +81,8 @@ class chordMelodySingingState extends MelodyPageAbstractState {
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
+              TextRow("Long press to see the solfege"),
+              verticalSpacer(),
               buildSelectedChordButtons(generalProvider, mappingProvider,),
             ],
           ),

@@ -2,12 +2,12 @@
   {
     "Range": "Lower",
     "Set": "I_IV_V",
-    "Chords": "I0_Rt,IV0_Rt,V0_Rt"
+    "Chords": "I0_Rt,IV00_Sec,V00_Sec"
   },
   {
     "Range": "Middle",
     "Set": "I_IV_V",
-    "Chords": "I_Rt,IV_Rt,V_Rt"
+    "Chords": "I_Rt,IV0_Sec,V0_Fir"
   },
   {
     "Range": "All_Root",
@@ -17,12 +17,12 @@
   {
     "Range": "Lower",
     "Set": "I_IV_V_vi",
-    "Chords": "I0_Rt,IV0_Rt,V0_Rt,vi0_Rt"
+    "Chords": "I0_Rt,IV00_Sec,V00_Sec,vi00_Fir"
   },
   {
     "Range": "Middle",
     "Set": "I_IV_V_vi",
-    "Chords": "I_Rt,IV_Rt,V_Rt,vi_Rt"
+    "Chords": "I_Rt,IV0_Sec,V0_Fir,vi0_Fir"
   },
   {
     "Range": "All_Root",
@@ -32,12 +32,12 @@
   {
     "Range": "Lower",
     "Set": "I_IV_V_V7_vi",
-    "Chords": "I0_Rt,IV0_Rt,V0_Rt,vi0_Rt,V70_Rt"
+    "Chords": "I0_Rt,IV00_Sec,V00_Sec,vi00_Fir,V700_Sec"
   },
   {
     "Range": "Middle",
     "Set": "I_IV_V_V7_vi",
-    "Chords": "I_Rt,IV_Rt,V_Rt,vi_Rt,V7_Rt"
+    "Chords": "I_Rt,IV0_Sec,V0_Fir,vi0_Fir,V70_Fir"
   },
   {
     "Range": "All_Root",
