@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/theme_provider.dart';
+import 'providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,12 @@ class HelpPage extends StatefulWidget {
 class _HelpPageState extends State<HelpPage> {
   @override
   Widget build(BuildContext context) {
+    final melodyIDProvider = Provider.of<MelodyIDSettings>(context);
+    final melodySingingProvider = Provider.of<MelodySingingSettings>(context);
+    final chordIDProvider = Provider.of<chordIDSettings>(context);
+    final chordSingingProvider = Provider.of<chordSingingSettings>(context);
+    final chordMelodyIDProvider = Provider.of<chordMelodyIDSettings>(context);
+    final chordMelodySingingProvider = Provider.of<chordMelodySingingSettings>(context);
     return Scaffold(
       appBar: AppBar(title: Text('Help')),
       body: Padding(
@@ -48,6 +55,12 @@ class _HelpPageState extends State<HelpPage> {
                     ),
                     onPressed: () {
                       deleteAllPreferences();
+                      melodyIDProvider.loadSettings();
+                      melodySingingProvider.loadSettings(); 
+                      chordIDProvider.loadSettings();
+                      chordSingingProvider.loadSettings();
+                      chordMelodyIDProvider.loadSettings();
+                      chordMelodySingingProvider.loadSettings();
                       setState(() {});
                     },
                     child: FittedBox(
@@ -60,7 +73,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ],
               ),
-              plainText("Close and restart the app after Reset."),
+              //plainText("Close and restart the app after Reset."),
               verticalSpacer(),
               headingRow("Melody Ear Trainer: Overview"),
               verticalSpacer(),
@@ -84,19 +97,33 @@ class _HelpPageState extends State<HelpPage> {
               verticalSpacer(),
               subHeadingRow("Octaves"),
               verticalSpacer(),
-              plainText('''Three octaves are supported in each key. The notes of the lowest octave are named "do0" to "ti0", the notes of the middle octave are named "do" to "ti", and the notes of the highest octave are named "do1" to "ti1". There is also one more do above "ti1" named "do2".'''),
+              plainText(
+                '''Three octaves are supported in each key. The notes of the lowest octave are named "do0" to "ti0", the notes of the middle octave are named "do" to "ti", and the notes of the highest octave are named "do1" to "ti1". There is also one more do above "ti1" named "do2".''',
+              ),
               verticalSpacer(),
               subHeadingRow("Chords"),
               verticalSpacer(),
-              plainText('''The chords have both names and associated solfege. The chord names have three sections:'''),
-              plainText('''Nashville number ("I", "IV", "vi", etc. with upper-case for major chords and lower-case for minor chords),'''),
+              plainText(
+                '''The chords have both names and associated solfege. The chord names have three sections:''',
+              ),
+              plainText(
+                '''Nashville number ("I", "IV", "vi", etc. with upper-case for major chords and lower-case for minor chords),''',
+              ),
               plainText('''octave "00", "0", nothing, or "1",'''),
-              plainText('''and chord type ("Rt" for root position, "Fir" for first inversion, "Sec" for second inversion, and "Thr" for third inversion of seventh chords).'''),
+              plainText(
+                '''and chord type ("Rt" for root position, "Fir" for first inversion, "Sec" for second inversion, and "Thr" for third inversion of seventh chords).''',
+              ),
               verticalSpacer(),
-              plainText('''For example, "I0_Rt" is the tonic major chord in root position in the lowest octave, with associated solfege "do0, mi0, so0".'''),
-              plainText('''"IV_Sec" is the major four chord in second inversion in the middle octave, with associated solfege "do1, fa1, la1".'''),
+              plainText(
+                '''For example, "I0_Rt" is the tonic major chord in root position in the lowest octave, with associated solfege "do0, mi0, so0".''',
+              ),
+              plainText(
+                '''"IV_Sec" is the major four chord in second inversion in the middle octave, with associated solfege "do1, fa1, la1".''',
+              ),
               verticalSpacer(),
-              plainText('''Long press any chord button to reveal the associated solfege of the chord.'''),
+              plainText(
+                '''Long press any chord button to reveal the associated solfege of the chord.''',
+              ),
               verticalSpacer(),
               TextRow("Modes"),
               verticalSpacer(),
@@ -126,13 +153,19 @@ class _HelpPageState extends State<HelpPage> {
               plainText(
                 '''After listening, play back the melody by pressing the corresponding solfege and/or chord buttons. Your guess will appear in the text area below the buttons.''',
               ),
-              plainText("Alternatively, you can play the melody on your instrument first and then input your guess using the buttons."),
+              plainText(
+                "Alternatively, you can play the melody on your instrument first and then input your guess using the buttons.",
+              ),
               verticalSpacer(),
               plainText(
-                '''Press "Compare with generated melody" to see if your written guess is correct. The button will turn green and show a checkmark if you are correct; it will turn red and show an "X" if you are incorrect.'''),
+                '''Press "Compare with generated melody" to see if your written guess is correct. The button will turn green and show a checkmark if you are correct; it will turn red and show an "X" if you are incorrect.''',
+              ),
               verticalSpacer(),
-              plainText('''If you are incorrect, you can listen as many times as you like until you get it right; use "Clear" and "Backspace" to update your guess.'''),
-              plainText('''Use the "Guitar", "Piano", and "Solfege" buttons at the bottom to listen to to the melody you wrote and compare it to the sound of the generated melody.''',
+              plainText(
+                '''If you are incorrect, you can listen as many times as you like until you get it right; use "Clear" and "Backspace" to update your guess.''',
+              ),
+              plainText(
+                '''Use the "Guitar", "Piano", and "Solfege" buttons at the bottom to listen to to the melody you wrote and compare it to the sound of the generated melody.''',
               ),
               verticalSpacer(),
               plainText(
@@ -147,38 +180,70 @@ class _HelpPageState extends State<HelpPage> {
               verticalSpacer(),
               subHeadingRow("Melody notes"),
               verticalSpacer(),
-              plainText('''For "Melody ID" and "Chord Melody ID" modes, you can select which notes are available to be included in the generated melody.'''),
-              plainText('''Using the "Scale" and "Octave" dropdowns, you can select some common sets of notes. Absolute beginners to ear training are suggested to set these to "Middle octave" and "Do-re-mi" to start with simple melodies.'''),
-              plainText('''You can also manually select or deselect individual notes by pressing the corresponding note buttons.'''),
+              plainText(
+                '''For "Melody ID" and "Chord Melody ID" modes, you can select which notes are available to be included in the generated melody.''',
+              ),
+              plainText(
+                '''Using the "Scale" and "Octave" dropdowns, you can select some common sets of notes. Absolute beginners to ear training are suggested to set these to "Middle octave" and "Do-re-mi" to start with simple melodies.''',
+              ),
+              plainText(
+                '''You can also manually select or deselect individual notes by pressing the corresponding note buttons.''',
+              ),
               verticalSpacer(),
               subHeadingRow("Melody settings"),
               verticalSpacer(),
-              plainText('''You can set the length and complexity of the melody.'''),
-              plainText('''For "Max distance between adjacent notes", if you set this to a low number, the generated melody will be relatively simple with only small changes in pitch from note to note (depending on which notes are selected). If you set it to a high number (and select more notes), the melody will contain larger leaps in pitch and be more complex.'''),
+              plainText(
+                '''You can set the length and complexity of the melody.''',
+              ),
+              plainText(
+                '''For "Max distance between adjacent notes", if you set this to a low number, the generated melody will be relatively simple with only small changes in pitch from note to note (depending on which notes are selected). If you set it to a high number (and select more notes), the melody will contain larger leaps in pitch and be more complex.''',
+              ),
               verticalSpacer(),
-              plainText('''"Chord melody ID" mode has additional settings for the frequency of chords in the generated melody.'''),
+              plainText(
+                '''"Chord melody ID" mode has additional settings for the frequency of chords in the generated melody.''',
+              ),
               verticalSpacer(),
               subHeadingRow("Playback settings"),
               verticalSpacer(),
-              plainText('''You can select the key, instrument, and playback speed of the melody.'''),
+              plainText(
+                '''You can select the key, instrument, and playback speed of the melody.''',
+              ),
               verticalSpacer(),
-              plainText('''"Chord ID" and "Chord melody ID" modes have additional settings regarding whether to arpeggiate the chords, and if so, how slowly, or alternatively play all the notes of the chord at once (Arpeggiate chord delay 0).'''),
+              plainText(
+                '''"Chord ID" and "Chord melody ID" modes have additional settings regarding whether to arpeggiate the chords, and if so, how slowly, or alternatively play all the notes of the chord at once (Arpeggiate chord delay 0).''',
+              ),
               verticalSpacer(),
               subHeadingRow("Tonic"),
               verticalSpacer(),
-              plainText('''In the "Tonic" section, you can select which note or chords will be automatically used as the first and last note of the melody. We strongly recommend keeping these checked as they will help you stay mindful of the current key.'''),
+              plainText(
+                '''In the "Tonic" section, you can select which note or chords will be automatically used as the first and last note of the melody. We strongly recommend keeping these checked as they will help you stay mindful of the current key.''',
+              ),
               verticalSpacer(),
-              plainText('''If you are using "la-based minor", you can set the tonic and ending note to "la" instead of "do".'''),
+              plainText(
+                '''If you are using "la-based minor", you can set the tonic and ending note to "la" instead of "do".''',
+              ),
               verticalSpacer(),
               subHeadingRow("Chord settings"),
               verticalSpacer(),
-              plainText('''In "Chord ID" and "Chord melody ID" modes, you can select which chords are available to be included in the generated melody.'''),
-              plainText('''There are a lot of chords in existence, and only a small selection are currently available in the app.'''),
-              plainText('''Long-press any chord button to see the associated solfege of the chord.'''),
+              plainText(
+                '''In "Chord ID" and "Chord melody ID" modes, you can select which chords are available to be included in the generated melody.''',
+              ),
+              plainText(
+                '''There are a lot of chords in existence, and only a small selection are currently available in the app.''',
+              ),
+              plainText(
+                '''Long-press any chord button to see the associated solfege of the chord.''',
+              ),
               verticalSpacer(),
-              plainText('''The "Range" dropdown box can be used to select the general octave of some of the available sets of chords.'''),
-              plainText('''The "Set" dropdown box can be used to select some common sets of chords.'''),
-              plainText('''You can also manually select or deselect individual chords by pressing the corresponding chord buttons.'''),
+              plainText(
+                '''The "Range" dropdown box can be used to select the general octave of some of the available sets of chords.''',
+              ),
+              plainText(
+                '''The "Set" dropdown box can be used to select some common sets of chords.''',
+              ),
+              plainText(
+                '''You can also manually select or deselect individual chords by pressing the corresponding chord buttons.''',
+              ),
               verticalSpacer(),
               TextRow("ID: Hands-free"),
               verticalSpacer(),
@@ -188,52 +253,94 @@ class _HelpPageState extends State<HelpPage> {
               verticalSpacer(),
               subHeadingRow("Automate your practice"),
               verticalSpacer(),
-              plainText('''After you have generated and guessed the solfege of melodies one by one a few times and the settings are suitable for your level, you can practice ear training while walking around, working on something else, or just sitting with your eyes closed.'''),
+              plainText(
+                '''After you have generated and guessed the solfege of melodies one by one a few times and the settings are suitable for your level, you can practice ear training while walking around, working on something else, or just sitting with your eyes closed.''',
+              ),
               verticalSpacer(),
-              plainText('''On the "Hands-free" page, you can generate and play between 5 and 25 melodies in a row without interacting with the app at all.'''),
+              plainText(
+                '''On the "Hands-free" page, you can generate and play between 5 and 25 melodies in a row without interacting with the app at all.''',
+              ),
               verticalSpacer(),
-              plainText('''For each round, the app will automatically generate a melody, play the melody using Guitar, Piano, or both, give you a few seconds to guess the solfege for that melody, and then sing and/or say the solfege to tell you the answer.'''),
-              plainText('''There is no option (nor any need) to input your guess using the buttons. Instead, you can sing the solfege out loud, then continue to listen to see if you are correct.'''),
+              plainText(
+                '''For each round, the app will automatically generate a melody, play the melody using Guitar, Piano, or both, give you a few seconds to guess the solfege for that melody, and then sing and/or say the solfege to tell you the answer.''',
+              ),
+              plainText(
+                '''There is no option (nor any need) to input your guess using the buttons. Instead, you can sing the solfege out loud, then continue to listen to see if you are correct.''',
+              ),
               verticalSpacer(),
               subHeadingRow("Hands-free settings"),
               verticalSpacer(),
-              plainText('''Use the dropdowns to select the number of rounds, the number of times the melody is played with an instrument, the number of times the melody is sung in solfege, and the number of times the melody is spoken in solfege.'''),
-              plainText('''You can also set the duration of the pauses between each step of a round, and which instrument is used to initially play the melody.'''),
+              plainText(
+                '''Use the dropdowns to select the number of rounds, the number of times the melody is played with an instrument, the number of times the melody is sung in solfege, and the number of times the melody is spoken in solfege.''',
+              ),
+              plainText(
+                '''You can also set the duration of the pauses between each step of a round, and which instrument is used to initially play the melody.''',
+              ),
               verticalSpacer(),
               subHeadingRow("Controls"),
               verticalSpacer(),
-              plainText('''Press "Start" to start the hands-free practice session.'''),
+              plainText(
+                '''Press "Start" to start the hands-free practice session.''',
+              ),
               verticalSpacer(),
-              plainText('''Press "Stop" to stop the playback of the melody at the end of the currently playing melody. There is no way to stop playback in the middle of a melody; if you press "Stop" repeatedly, each note will be cut short until it stops completely.'''),
+              plainText(
+                '''Press "Stop" to stop the playback of the melody at the end of the currently playing melody. There is no way to stop playback in the middle of a melody; if you press "Stop" repeatedly, each note will be cut short until it stops completely.''',
+              ),
               verticalSpacer(),
               subHeadingRow("Solfege"),
               verticalSpacer(),
-              plainText('''The text of the solfege will be shown in the text box while the solfege is being sung and spoken.'''),
+              plainText(
+                '''The text of the solfege will be shown in the text box while the solfege is being sung and spoken.''',
+              ),
               verticalSpacer(),
-              headingRow("Melody singing, Chord singing, and Chord melody singing"),
+              headingRow(
+                "Melody singing, Chord singing, and Chord melody singing",
+              ),
               verticalSpacer(),
               TextRow("Singing: Basic play"),
               verticalSpacer(),
-              plainText('''Press "Generate melody". The solfege text of the generated melody will be shown in the text area.'''),
-              plainText('''Optionally you can press "Say the solfege" to say the text of the solfege out loud.'''),
+              plainText(
+                '''Press "Generate melody". The solfege text of the generated melody will be shown in the text area.''',
+              ),
+              plainText(
+                '''Optionally you can press "Say the solfege" to say the text of the solfege out loud.''',
+              ),
               verticalSpacer(),
-              plainText('''Now press the upper "Guitar", "Piano", and/or "Solfege" buttons to listen to the first note or chord of the generated melody to cue the key.'''),
-              plainText('''The rest of the melody should be sung relative to the first note or chord.'''),
+              plainText(
+                '''Now press the upper "Guitar", "Piano", and/or "Solfege" buttons to listen to the first note or chord of the generated melody to cue the key.''',
+              ),
+              plainText(
+                '''The rest of the melody should be sung relative to the first note or chord.''',
+              ),
               verticalSpacer(),
-              plainText('''If "Starting note" is checked in the "Tonic" section of settings, the first note or chord of the melody will always be the tonic "do" or the I/i chord.'''),
+              plainText(
+                '''If "Starting note" is checked in the "Tonic" section of settings, the first note or chord of the melody will always be the tonic "do" or the I/i chord.''',
+              ),
               verticalSpacer(),
-              plainText('''Sing the melody out loud based on the starting note.'''),
-              plainText('''Then press the lower "Guitar", "Piano", and/or "Solfege" buttons to listen to the generated melody.'''),
+              plainText(
+                '''Sing the melody out loud based on the starting note.''',
+              ),
+              plainText(
+                '''Then press the lower "Guitar", "Piano", and/or "Solfege" buttons to listen to the generated melody.''',
+              ),
               plainText('''Evaluate whether you sang it correctly.'''),
               verticalSpacer(),
-              plainText('''Optionally, you can press the buttons for the notes and chords at the bottom of the page to remind yourself what they sound like.'''),
+              plainText(
+                '''Optionally, you can press the buttons for the notes and chords at the bottom of the page to remind yourself what they sound like.''',
+              ),
               verticalSpacer(),
               TextRow('''Singing: Settings'''),
               verticalSpacer(),
-              plainText('''The settings for "Melody singing", "Chord singing", and "Chord melody singing" modes are the same as those for "Melody ID", "Chord ID", and "Chord melody ID" modes, respectively. See "ID: Settings" above.'''),
+              plainText(
+                '''The settings for "Melody singing", "Chord singing", and "Chord melody singing" modes are the same as those for "Melody ID", "Chord ID", and "Chord melody ID" modes, respectively. See "ID: Settings" above.''',
+              ),
               verticalSpacer(),
-              plainText('''Ensure that the selected key, notes, and chords are in your singing range.'''),
-              plainText('''Each note of a chord needs to be sung individually, so it is recommended to set "Arpeggiate chord delay" to a relatively high number so that you can hear them individually.'''),
+              plainText(
+                '''Ensure that the selected key, notes, and chords are in your singing range.''',
+              ),
+              plainText(
+                '''Each note of a chord needs to be sung individually, so it is recommended to set "Arpeggiate chord delay" to a relatively high number so that you can hear them individually.''',
+              ),
               verticalSpacer(),
               TextRow("Singing: Hands-free"),
               verticalSpacer(),
@@ -243,26 +350,42 @@ class _HelpPageState extends State<HelpPage> {
               verticalSpacer(),
               subHeadingRow("Automate your practice"),
               verticalSpacer(),
-              plainText('''After you have generated and sung the solfege of melodies one by one a few times and the settings are suitable for your level, you can practice ear training while walking around, working on something else, or just sitting with your eyes closed.'''),
+              plainText(
+                '''After you have generated and sung the solfege of melodies one by one a few times and the settings are suitable for your level, you can practice ear training while walking around, working on something else, or just sitting with your eyes closed.''',
+              ),
               verticalSpacer(),
-              plainText('''On the "Hands-free" page, you can generate and sing between 5 and 25 melodies in a row without interacting with the app at all.'''),
+              plainText(
+                '''On the "Hands-free" page, you can generate and sing between 5 and 25 melodies in a row without interacting with the app at all.''',
+              ),
               verticalSpacer(),
-              plainText('''For each round, the app will automatically generate a melody, say the solfege of the melody out loud, play the first note or chord, give you some time to sing the melody yourself, and then play the melody in sung solfege and/or an instrument to tell you the answer.'''),
+              plainText(
+                '''For each round, the app will automatically generate a melody, say the solfege of the melody out loud, play the first note or chord, give you some time to sing the melody yourself, and then play the melody in sung solfege and/or an instrument to tell you the answer.''',
+              ),
               verticalSpacer(),
               subHeadingRow("Hands-free settings"),
               verticalSpacer(),
-              plainText('''Use the dropdowns to select the number of rounds, the number of times the solfege of melody is spoken out loud together with the first note, the number of times the melody is sung in solfege, and the number of times the melody is played on an instrument.'''),
-              plainText('''You can also set the duration of the pauses between each step of a round, and which instrument is used to play the melody.'''),
+              plainText(
+                '''Use the dropdowns to select the number of rounds, the number of times the solfege of melody is spoken out loud together with the first note, the number of times the melody is sung in solfege, and the number of times the melody is played on an instrument.''',
+              ),
+              plainText(
+                '''You can also set the duration of the pauses between each step of a round, and which instrument is used to play the melody.''',
+              ),
               verticalSpacer(),
               subHeadingRow("Controls"),
               verticalSpacer(),
-              plainText('''Press "Start" to start the hands-free practice session.'''),
+              plainText(
+                '''Press "Start" to start the hands-free practice session.''',
+              ),
               verticalSpacer(),
-              plainText('''Press "Stop" to stop the playback of the melody at the end of the currently playing melody. There is no way to stop playback in the middle of a melody; if you press "Stop" repeatedly, each note will be cut short until it stops completely.'''),
+              plainText(
+                '''Press "Stop" to stop the playback of the melody at the end of the currently playing melody. There is no way to stop playback in the middle of a melody; if you press "Stop" repeatedly, each note will be cut short until it stops completely.''',
+              ),
               verticalSpacer(),
               subHeadingRow("Solfege"),
               verticalSpacer(),
-              plainText('''The text of the solfege will be shown in the text box.'''),
+              plainText(
+                '''The text of the solfege will be shown in the text box.''',
+              ),
               verticalSpacer(),
               headingRow("About"),
               verticalSpacer(),
@@ -270,9 +393,15 @@ class _HelpPageState extends State<HelpPage> {
                 "Melody Ear Trainer is a free and open-source app designed to help people improve their musical ear. It is currently available for Windows and Android.",
               ),
               verticalSpacer(),
-              plainText("Melody Ear Trainer has no ads, no in-app purchases, no premium version, and no usage tracking."),
-              plainText("It does not access the internet, nor does it use the microphone or require any other permissions."),
-              plainText("The author wrote the app to improve their own musical ear, using a lot of free online resources, and the resulting app is freely shared back to the music community."),
+              plainText(
+                "Melody Ear Trainer has no ads, no in-app purchases, no premium version, and no usage tracking.",
+              ),
+              plainText(
+                "It does not access the internet, nor does it use the microphone or require any other permissions.",
+              ),
+              plainText(
+                "The author wrote the app to improve their own musical ear, using a lot of free online resources, and the resulting app is freely shared back to the music community.",
+              ),
               verticalSpacer(),
               plainText("Version 2.0.0, 2025"),
               verticalSpacer(),

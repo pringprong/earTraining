@@ -615,7 +615,7 @@ class chordSingingSettings extends GeneralProvider {
   String chordFrequencyDefault = "Every note";
 
   @override
-  int arpeggiateChordDelayDefault = 400;
+  int arpeggiateChordDelayDefault = 500;
 
   @override
   String startingDoDefault = "I_Rt";
@@ -659,7 +659,7 @@ class chordMelodyIDSettings extends GeneralProvider {
   String endingDo = "do";
 
   @override
-  int arpeggiateChordDelayDefault = 100;
+  int arpeggiateChordDelayDefault = 0;
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
@@ -694,7 +694,7 @@ class chordMelodySingingSettings extends GeneralProvider {
   String endingDo = "do";
 
   @override
-  int arpeggiateChordDelayDefault = 200;
+  int arpeggiateChordDelayDefault = 500;
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
