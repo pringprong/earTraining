@@ -49,7 +49,7 @@ class _HelpPageState extends State<HelpPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Light mode:'),
+                    child: Text('Light theme:'),
                   ),
                   Checkbox(
                     value: context.watch<ThemeProvider>().darkModeBool,
@@ -145,10 +145,10 @@ class _HelpPageState extends State<HelpPage> {
                       '''Long press any chord button to reveal the associated solfege of the chord.''',
                     ),
                     verticalSpacer(),
-                    TextRow("1.3 Modes"),
+                    TextRow("1.3 Modes of play"),
                     verticalSpacer(),
                     plainText(
-                      '''There are six modes, all of which begin by randomly generating a melody according to the settings for that mode.''',
+                      '''There are six ways to play Melody Ear Trainer, referred to here as modes, all of which begin by randomly generating a melody according to the settings for that mode.''',
                     ),
                     verticalSpacer(),
                     subHeadingRow("1.3.1 Melody, Chords, and Chord melody"),
@@ -206,7 +206,7 @@ class _HelpPageState extends State<HelpPage> {
                     subHeadingRow("2.1.4 See or listen to the correct answer"),
                     verticalSpacer(),
                     plainText(
-                      '''Expand the section "Solfege for generated melody" to see or listen to the correct answer.''',
+                      '''Expand the section "Solfege for generated melody" to see or listen to the solfege for the generated melody, which is also the correct answer.''',
                     ),
                     verticalSpacer(),
                     TextRow("2.2 ID: Settings"),
