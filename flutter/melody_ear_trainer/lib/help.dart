@@ -175,15 +175,22 @@ class _HelpPageState extends State<HelpPage> {
                     verticalSpacer(),
                     TextRow("2.1 ID: Basic play"),
                     verticalSpacer(),
+                    subHeadingRow("2.1.1 Generate a melody"),
+                    verticalSpacer(),
                     plainText(
                       '''Press "Generate melody", then press "Guitar" or "Piano" to listen to the generated melody.''',
                     ),
+                    verticalSpacer(),
+                    subHeadingRow("2.1.2 Play the melody using the buttons"),
+                    verticalSpacer(),
                     plainText(
                       '''After listening, play back the melody by pressing the corresponding solfege and/or chord buttons. Your guess will appear in the text area below the buttons.''',
                     ),
                     plainText(
                       "Alternatively, you can play the melody on your instrument first and then input your guess using the buttons.",
                     ),
+                    verticalSpacer(),
+                    subHeadingRow("2.1.3 Compare your guess"),
                     verticalSpacer(),
                     plainText(
                       '''Press "Compare with generated melody" to see if your written guess is correct. The button will turn green and show a checkmark if you are correct; it will turn red and show an "X" if you are incorrect.''',
@@ -195,6 +202,8 @@ class _HelpPageState extends State<HelpPage> {
                     plainText(
                       '''Use the "Guitar", "Piano", and "Solfege" buttons at the bottom to listen to to the melody you wrote and compare it to the sound of the generated melody.''',
                     ),
+                    verticalSpacer(),
+                    subHeadingRow("2.1.4 See or listen to the correct answer"),
                     verticalSpacer(),
                     plainText(
                       '''Expand the section "Solfege for generated melody" to see or listen to the correct answer.''',
@@ -335,12 +344,16 @@ class _HelpPageState extends State<HelpPage> {
                     verticalSpacer(),
                     TextRow("3.1 Singing: Basic play"),
                     verticalSpacer(),
+                    subHeadingRow("3.1.1 Generate a melody"),
+                    verticalSpacer(),
                     plainText(
                       '''Press "Generate melody". The solfege text of the generated melody will be shown in the text area.''',
                     ),
                     plainText(
                       '''Optionally you can press "Say the solfege" to say the text of the solfege out loud.''',
                     ),
+                    verticalSpacer(),
+                    subHeadingRow("3.1.2 Listen to the first note or chord"),
                     verticalSpacer(),
                     plainText(
                       '''Now press the upper "Guitar", "Piano", and/or "Solfege" buttons to listen to the first note or chord of the generated melody to cue the key.''',
@@ -353,9 +366,14 @@ class _HelpPageState extends State<HelpPage> {
                       '''If "Starting note" is checked in the "Tonic" section of settings, the first note or chord of the melody will always be the tonic "do" or the I/i chord.''',
                     ),
                     verticalSpacer(),
+                    subHeadingRow("3.1.3 Sing the melody"),
+                    verticalSpacer(),
                     plainText(
                       '''Sing the melody out loud based on the starting note.''',
                     ),
+                    verticalSpacer(),
+                    subHeadingRow("3.1.4 Listen to the generated melody"),
+                    verticalSpacer(),
                     plainText(
                       '''Then press the lower "Guitar", "Piano", and/or "Solfege" buttons to listen to the generated melody.''',
                     ),
