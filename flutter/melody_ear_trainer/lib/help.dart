@@ -129,9 +129,9 @@ class _HelpPageState extends State<HelpPage> {
                     plainText(
                       '''1. Chord scale degree ("I", "IV", "vi", etc. with upper-case for major chords and lower-case for minor chords),''',
                     ),
-                    plainText('''octave "00", "0", nothing, or "1",'''),
+                    plainText('''2. Octave "00", "0", nothing, or "1",'''),
                     plainText(
-                      '''and chord type ("Rt" for root position, "Fir" for first inversion, "Sec" for second inversion, and "Thr" for third inversion of seventh chords).''',
+                      '''3. Chord type ("Rt" for root position, "Fir" for first inversion, "Sec" for second inversion, and "Thr" for third inversion of seventh chords).''',
                     ),
                     verticalSpacer(),
                     plainText(

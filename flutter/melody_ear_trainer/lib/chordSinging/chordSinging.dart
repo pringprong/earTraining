@@ -77,8 +77,6 @@ class chordSingingState extends MelodyPageAbstractState {
               verticalSpacer(),
               subHeadingRow("Chords for reference"),
               verticalSpacer(),
-              plainText("Long press to see the solfege"),
-              verticalSpacer(),
               plainText("Note: Make sure all of these are in your range..."),
               verticalSpacer(),
               plainText("Long press to see the solfege"),
