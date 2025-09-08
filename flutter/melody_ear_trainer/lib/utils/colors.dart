@@ -120,10 +120,19 @@ const color3 = "#bcae9a"; // greeny beige, tan khaki _Sec
 const color4 = "#c3b2b7"; // pinky beige _Thr
 const color5 = "#d0a89b"; // reddish brown _All
 const color6 = "#84b6d4"; // grey blue
+const factor0 = 0.7;
 const factor1 = 0.85;
 const factor2 = 1.0;
 const factor3 = 1.15;
 const factor4 = 1.3;
+
+Color c1f0 = multiplyHexColor(color1, factor0);
+Color c2f0 = multiplyHexColor(color2, factor0);
+Color c3f0 = multiplyHexColor(color3, factor0);
+Color c4f0 = multiplyHexColor(color4, factor0);
+Color c5f0 = multiplyHexColor(color5, factor0);
+Color c6f0 = multiplyHexColor(color6, factor0);
+
 
 Color c1f1 = multiplyHexColor(color1, factor1);
 Color c1f2 = multiplyHexColor(color1, factor2);
