@@ -32,7 +32,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              TextRow("Settings:"),
+              subHeadingRow("Settings:"),
               Row(
                 children: [
                   Padding(
@@ -202,7 +202,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Controls:"),
+              subHeadingRow("Controls:"),
               verticalSpacer(),
               Row(
                 children: [
@@ -261,7 +261,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Solfege:"),
+              subHeadingRow("Solfege:"),
               verticalSpacer(),
               Row(
                 // Solfege Text Area
@@ -281,7 +281,7 @@ class _MelodyIDHandsFreeState extends State<MelodyIDHandsFree> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Current round:"),
+              subHeadingRow("Current round:"),
               verticalSpacer(),
               Row(
                 // Current Round Display

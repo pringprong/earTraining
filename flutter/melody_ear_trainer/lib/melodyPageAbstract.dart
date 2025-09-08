@@ -675,7 +675,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
     setState(() {});
   }
 
-  Row bigTextRow(String myText) {
+  Row instructionRow(String myText) {
     return Row(
       children: [
         Container(

@@ -6,7 +6,8 @@ import '../utils/colors.dart';
 import '../melodyPageAbstract.dart';
 
 class chordMelodySinging extends MelodyPageAbstract {
-  const chordMelodySinging({super.key, required super.audioController}) : super();
+  const chordMelodySinging({super.key, required super.audioController})
+    : super();
   @override
   chordMelodySingingState createState() => chordMelodySingingState();
 }
@@ -57,33 +58,33 @@ class chordMelodySingingState extends MelodyPageAbstractState {
             children: [
               generateMelodyButton(generalProvider, mappingProvider, true),
               verticalSpacer(),
-              TextRow("Generated melody:"),
+              subHeadingRow("Generated melody:"),
               verticalSpacer(),
               solfegeTextArea(),
               verticalSpacer(),
               sayTheSolfegeButton(generalProvider, mappingProvider),
               verticalSpacer(),
-              TextRow("Listen to first note:"),
+              subHeadingRow("Listen to first note:"),
               verticalSpacer(),
               playFirstNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
-              bigTextRow("Now try to sing the melody out loud..."),
+              instructionRow("Now try to sing the melody out loud..."),
               verticalSpacer(),
-              TextRow("Listen to the melody for comparison:"),
+              subHeadingRow("Listen to the melody for comparison:"),
               verticalSpacer(),
               playMelodyButtons(generalProvider, mappingProvider, true),
               verticalSpacer(),
-              bigTextRow("Did you sing it correctly?"),
+              instructionRow("Did you sing it correctly?"),
               verticalSpacer(),
-              TextRow("Notes for reference"),
+              subHeadingRow("Notes for reference"),
               verticalSpacer(),
-              TextRow("Make sure all of these are in your range..."),
+              plainText("Note: Make sure all of these are in your range..."),
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
-              TextRow("Long press to see the solfege"),
+              plainText("Long press to see the solfege"),
               verticalSpacer(),
-              buildSelectedChordButtons(generalProvider, mappingProvider,),
+              buildSelectedChordButtons(generalProvider, mappingProvider),
             ],
           ),
         ),

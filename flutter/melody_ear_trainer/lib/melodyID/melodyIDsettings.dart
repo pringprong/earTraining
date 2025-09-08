@@ -30,7 +30,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextRow("Melody notes:"),
+              subHeadingRow("Melody notes:"),
               Row(
                 children: [
                   Padding(
@@ -104,9 +104,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Select notes to include in melody:"),
+              subHeadingRow("Select notes to include in melody:"),
               verticalSpacer(),
-              TextRow("Be sure to include starting and ending notes if selected below"),
+              plainText(
+                "Note: Make sure to include starting and ending notes if selected below",
+              ),
               verticalSpacer(),
               Row(
                 children: [
@@ -119,7 +121,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Melody settings:"),
+              subHeadingRow("Melody settings:"),
               Row(
                 children: [
                   Padding(
@@ -193,7 +195,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Playback settings:"),
+              subHeadingRow("Playback settings:"),
               Row(
                 children: [
                   Padding(
@@ -310,9 +312,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Tonic:"),
+              subHeadingRow("Tonic:"),
               verticalSpacer(),
-              TextRow("Note: make sure these are selected in the melody notes above"),
+              plainText(
+                "Note: Make sure these are selected in the melody notes above",
+              ),
               Row(
                 children: [
                   Flexible(
@@ -528,7 +532,7 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Reset:"),
+              subHeadingRow("Reset:"),
               Row(
                 children: [
                   Expanded(

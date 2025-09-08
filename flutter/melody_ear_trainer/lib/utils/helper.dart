@@ -138,7 +138,7 @@ Widget buildChordButtons(
           ),
         );
       });
-      sections.add(TextRow(degree));
+      sections.add(subHeadingRow(degree));
       sections.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0),

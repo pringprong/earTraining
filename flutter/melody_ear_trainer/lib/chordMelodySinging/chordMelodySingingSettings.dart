@@ -40,7 +40,7 @@ class _chordMelodySingingSettingsPageState
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextRow("Melody notes:"),
+              subHeadingRow("Melody notes:"),
               Row(
                 children: [
                   Padding(
@@ -120,9 +120,11 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Select notes to include in melody:"),
+              subHeadingRow("Select notes to include in melody:"),
               verticalSpacer(),
-              TextRow("Be sure to include starting and ending notes if selected below"),
+              plainText(
+                "Note: Make sure to include starting and ending notes if selected below",
+              ),
               verticalSpacer(),
               Row(
                 children: [
@@ -135,7 +137,7 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Melody settings:"),
+              subHeadingRow("Melody settings:"),
               Row(
                 children: [
                   Padding(
@@ -269,7 +271,7 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Playback settings:"),
+              subHeadingRow("Playback settings:"),
               Row(
                 children: [
                   Padding(
@@ -461,9 +463,11 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Tonic:"),
+              subHeadingRow("Tonic:"),
               verticalSpacer(),
-              TextRow("Note: make sure these are selected in the notes above and/or chords below"),
+              plainText(
+                "Note: Make sure these are selected in the notes above and/or chords below",
+              ),
               Row(
                 children: [
                   Flexible(
@@ -773,7 +777,7 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Chord settings:"),
+              subHeadingRow("Chord settings:"),
               Row(
                 children: [
                   Padding(
@@ -858,14 +862,16 @@ class _chordMelodySingingSettingsPageState
                 ],
               ),
               verticalSpacer(),
-              TextRow("Select chords to include in melody:"),
+              subHeadingRow("Select chords to include in melody:"),
               verticalSpacer(),
-              TextRow("Long press to see the solfege"),
+              plainText("Long press to see the solfege"),
               verticalSpacer(),
-              TextRow("Be sure to include starting and ending chords if selected above"),
+              plainText(
+                "Note: Make sure to include starting and ending chords if selected above",
+              ),
               verticalSpacer(),
               buildChordButtons(mappingProvider, generalProvider),
-              TextRow("Reset:"),
+              subHeadingRow("Reset:"),
               Row(
                 children: [
                   Expanded(

@@ -32,7 +32,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              TextRow("Settings:"),
+              subHeadingRow("Settings:"),
               Row(
                 children: [
                   Padding(
@@ -201,7 +201,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Controls:"),
+              subHeadingRow("Controls:"),
               verticalSpacer(),
               Row(
                 children: [
@@ -259,7 +259,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Solfege:"),
+              subHeadingRow("Solfege:"),
               verticalSpacer(),
               Row(
                 // Solfege Text Area
@@ -279,7 +279,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                 ],
               ),
               verticalSpacer(),
-              TextRow("Current round:"),
+              subHeadingRow("Current round:"),
               verticalSpacer(),
               Row(
                 // Current Round Display
