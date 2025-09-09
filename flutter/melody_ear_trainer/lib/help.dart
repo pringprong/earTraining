@@ -317,6 +317,8 @@ class _HelpPageState extends State<HelpPage> {
                       '''You can also set the duration of the pauses between each step of a round, and which instrument is used to initially play the melody.''',
                     ),
                     verticalSpacer(),
+                    plainText('''You can change the settings while the hands-free session is running, and the changes will take effect from the next round onwards.'''),
+                    verticalSpacer(),
                     subHeadingRow("2.3.3 Controls"),
                     verticalSpacer(),
                     plainText(
@@ -324,7 +326,7 @@ class _HelpPageState extends State<HelpPage> {
                     ),
                     verticalSpacer(),
                     plainText(
-                      '''Press "Stop" to stop the playback of the melody at the end of the currently playing melody. There is no way to stop playback in the middle of a melody; if you press "Stop" repeatedly, each note will be cut short until it stops completely.''',
+                      '''Press "Stop" to stop the playback of the melody at the end of the currently playing melody. There is no way to stop playback in the middle of a melody; however, if you press "Stop" repeatedly, each note of the current melody will be cut short.''',
                     ),
                     verticalSpacer(),
                     subHeadingRow("2.3.4 Solfege"),
@@ -428,6 +430,8 @@ class _HelpPageState extends State<HelpPage> {
                       '''You can also set the duration of the pauses between each step of a round, and which instrument is used to play the melody.''',
                     ),
                     verticalSpacer(),
+                    plainText('''You can change the settings while the hands-free session is running, and the changes will take effect from the next round onwards.'''),
+                    verticalSpacer(),
                     subHeadingRow("3.3.3 Controls"),
                     verticalSpacer(),
                     plainText(
@@ -435,7 +439,7 @@ class _HelpPageState extends State<HelpPage> {
                     ),
                     verticalSpacer(),
                     plainText(
-                      '''Press "Stop" to stop the playback of the melody at the end of the currently playing melody. There is no way to stop playback in the middle of a melody; if you press "Stop" repeatedly, each note will be cut short until it stops completely.''',
+                      '''Press "Stop" to stop the playback of the melody at the end of the currently playing melody. There is no way to stop playback in the middle of a melody; however, if you press "Stop" repeatedly, each note of the current melody will be cut short.''',
                     ),
                     verticalSpacer(),
                     subHeadingRow("3.3.4 Solfege"),
