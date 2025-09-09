@@ -34,8 +34,17 @@ abstract class GeneralProvider extends ChangeNotifier {
   String chordFrequency = "Every 4 notes"; // Default chord frequency
   bool displayChordNames = false; // Whether to display chord names
 
-  int arpeggiateChordDelayDefault = 50;
-  int arpeggiateChordDelay = 50; // Default chord arpeggiation speed
+  int arpeggiateChordDelayGuitarDefault = 0;
+  int arpeggiateChordDelayGuitar = 0; // Default chord arpeggiation speed
+
+  int arpeggiateChordDelayPianoDefault = 100;
+  int arpeggiateChordDelayPiano = 100; // Default chord arpeggiation speed
+
+  int arpeggiateChordDelaySolfegeDefault = 500;
+  int arpeggiateChordDelaySolfege = 500; // Default chord arpeggiation speed
+
+  int arpeggiateChordDelaySpokenDefault = 600;
+  int arpeggiateChordDelaySpoken = 600; // Default chord arpeggiation speed
 
   String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
   bool allowRepeatedChords = false; // Allow repeated chords
@@ -239,8 +248,26 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateArpeggiateChordDelay({required int delay}) async {
-    arpeggiateChordDelay = delay;
+  void updateArpeggiateChordDelayGuitar({required int delay}) async {
+    arpeggiateChordDelayGuitar = delay;
+    saveSettings();
+    notifyListeners();
+  }
+
+  void updateArpeggiateChordDelayPiano({required int delay}) async {
+    arpeggiateChordDelayPiano = delay;
+    saveSettings();
+    notifyListeners();
+  }
+
+  void updateArpeggiateChordDelaySolfege({required int delay}) async {
+    arpeggiateChordDelaySolfege = delay;
+    saveSettings();
+    notifyListeners();
+  }
+
+  void updateArpeggiateChordDelaySpoken({required int delay}) async {
+    arpeggiateChordDelaySpoken = delay;
     saveSettings();
     notifyListeners();
   }
@@ -397,7 +424,10 @@ abstract class GeneralProvider extends ChangeNotifier {
       'selectedScale': selectedScale,
       'chordFrequency': chordFrequencyDefault,
       'displayChordNames': displayChordNames,
-      'arpeggiateChordDelay': arpeggiateChordDelay,
+      'arpeggiateChordDelayGuitar': arpeggiateChordDelayGuitar,
+      'arpeggiateChordDelayPiano': arpeggiateChordDelayPiano,
+      'arpeggiateChordDelaySolfege': arpeggiateChordDelaySolfege,
+      'arpeggiateChordDelaySpoken': arpeggiateChordDelaySpoken,
       'arpeggiateChordOrder': arpeggiateChordOrder,
       'allowRepeatedChords': allowRepeatedChords,
       'chordSetRange': chordSetRange,
@@ -439,8 +469,14 @@ abstract class GeneralProvider extends ChangeNotifier {
     selectedScale = settings['selectedScale'] ?? "Diatonic major";
     chordFrequency = settings['chordFrequency'] ?? chordFrequencyDefault;
     displayChordNames = settings['displayChordNames'] ?? false;
-    arpeggiateChordDelay =
-        settings['arpeggiateChordDelay'] ?? arpeggiateChordDelayDefault;
+    arpeggiateChordDelayGuitar =
+        settings['arpeggiateChordDelayGuitar'] ?? arpeggiateChordDelayGuitarDefault;
+    arpeggiateChordDelayPiano =
+        settings['arpeggiateChordDelayPiano'] ?? arpeggiateChordDelayPianoDefault;
+    arpeggiateChordDelaySolfege =
+        settings['arpeggiateChordDelaySolfege'] ?? arpeggiateChordDelaySolfegeDefault;
+    arpeggiateChordDelaySpoken =
+        settings['arpeggiateChordDelaySpoken'] ?? arpeggiateChordDelaySpokenDefault;
     arpeggiateChordOrder = settings['arpeggiateChordOrder'] ?? "Ascending";
     allowRepeatedChords = settings['allowRepeatedChords'] ?? false;
     chordSetRange = settings['chordSetRange'] ?? "Middle";
@@ -484,7 +520,10 @@ abstract class GeneralProvider extends ChangeNotifier {
     selectedScale = "Diatonic major";
     chordFrequency = chordFrequencyDefault;
     displayChordNames = true;
-    arpeggiateChordDelay = arpeggiateChordDelayDefault;
+    arpeggiateChordDelayGuitar = arpeggiateChordDelayGuitarDefault;
+    arpeggiateChordDelayPiano = arpeggiateChordDelayPianoDefault;
+    arpeggiateChordDelaySolfege = arpeggiateChordDelaySolfegeDefault;
+    arpeggiateChordDelaySpoken = arpeggiateChordDelaySpokenDefault;
     arpeggiateChordOrder = "Ascending";
     allowRepeatedChords = false;
     chordSetRange = "Middle";
@@ -580,7 +619,10 @@ class chordIDSettings extends GeneralProvider {
   String chordFrequencyDefault = "Every note";
 
   @override
-  int arpeggiateChordDelayDefault = 400;
+  int arpeggiateChordDelayGuitarDefault = 0;
+
+  @override
+  int arpeggiateChordDelayPianoDefault = 100;
 
   @override
   String startingDoDefault = "I_Rt";
@@ -615,7 +657,10 @@ class chordSingingSettings extends GeneralProvider {
   String chordFrequencyDefault = "Every note";
 
   @override
-  int arpeggiateChordDelayDefault = 500;
+  int arpeggiateChordDelayGuitarDefault = 200;
+
+  @override
+  int arpeggiateChordDelayPianoDefault = 300;
 
   @override
   String startingDoDefault = "I_Rt";
@@ -659,7 +704,10 @@ class chordMelodyIDSettings extends GeneralProvider {
   String endingDo = "do";
 
   @override
-  int arpeggiateChordDelayDefault = 0;
+  int arpeggiateChordDelayGuitarDefault = 0;
+
+  @override
+  int arpeggiateChordDelayPianoDefault = 50;
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
@@ -694,7 +742,10 @@ class chordMelodySingingSettings extends GeneralProvider {
   String endingDo = "do";
 
   @override
-  int arpeggiateChordDelayDefault = 500;
+  int arpeggiateChordDelayGuitarDefault = 200;
+
+  @override
+  int arpeggiateChordDelayPianoDefault = 300;
 
   @override
   String chordFrequencyDefault = "Every 4 notes";

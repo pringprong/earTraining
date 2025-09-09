@@ -118,7 +118,7 @@ class _HelpPageState extends State<HelpPage> {
                     subHeadingRow("1.2.1 Octaves"),
                     verticalSpacer(),
                     plainText(
-                      '''Three octaves are available in each key. The notes of the lowest octave are named "do0" to "ti0", the notes of the middle octave are named "do" to "ti", and the notes of the highest octave are named "do1" to "ti1". There is also one more do above "ti1" named "do2".''',
+                      '''Three octaves are available in each key. The notes of the lowest octave are named "do0" to "ti0", the notes of the middle octave are named "do" to "ti", and the notes of the highest octave are named "do1" to "ti1". There is also one more tonic note above "ti1" named "do2".''',
                     ),
                     verticalSpacer(),
                     subHeadingRow("1.2.2 Chords"),
@@ -249,6 +249,9 @@ class _HelpPageState extends State<HelpPage> {
                     plainText(
                       '''"Chord ID" and "Chord melody ID" modes have additional settings regarding whether to arpeggiate the chords, and if so, how slowly, or alternatively play all the notes of the chord at once (Arpeggiate chord delay 0).''',
                     ),
+                    verticalSpacer(),
+                    plainText(
+                      '''The arpeggiate chord delay is set independently for Guitar, Piano, Solfege, and Spoken.'''),
                     verticalSpacer(),
                     subHeadingRow("2.2.4 Tonic"),
                     verticalSpacer(),

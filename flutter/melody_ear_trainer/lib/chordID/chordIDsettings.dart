@@ -197,11 +197,11 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Arpeggiate chord delay (ms):'),
+                    child: Text('Arpeggiate chord delay - Guitar (ms):'),
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordIDSettings>().arpeggiateChordDelay,
+                        context.watch<chordIDSettings>().arpeggiateChordDelayGuitar,
                     items:
                         [
                           0,
@@ -211,6 +211,7 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                           300,
                           400,
                           500,
+                          600,
                         ].map<DropdownMenuItem<int>>((int value) {
                           return DropdownMenuItem<int>(
                             value: value,
@@ -221,7 +222,112 @@ class _chordIDSettingsPageState extends State<chordIDSettingsPage> {
                       if (newValue != null) {
                         context
                             .read<chordIDSettings>()
-                            .updateArpeggiateChordDelay(delay: newValue);
+                            .updateArpeggiateChordDelayGuitar(delay: newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Arpeggiate chord delay - Piano (ms):'),
+                  ),
+                  DropdownButton<int>(
+                    value:
+                        context.watch<chordIDSettings>().arpeggiateChordDelayPiano,
+                    items:
+                        [
+                          0,
+                          50,
+                          100,
+                          200,
+                          300,
+                          400,
+                          500,
+                          600,
+                        ].map<DropdownMenuItem<int>>((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context
+                            .read<chordIDSettings>()
+                            .updateArpeggiateChordDelayPiano(delay: newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Arpeggiate chord delay - Solfege (ms):'),
+                  ),
+                  DropdownButton<int>(
+                    value:
+                        context.watch<chordIDSettings>().arpeggiateChordDelaySolfege,
+                    items:
+                        [
+                          0,
+                          50,
+                          100,
+                          200,
+                          300,
+                          400,
+                          500,
+                          600,
+                        ].map<DropdownMenuItem<int>>((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context
+                            .read<chordIDSettings>()
+                            .updateArpeggiateChordDelaySolfege(delay: newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Arpeggiate chord delay - Spoken (ms):'),
+                  ),
+                  DropdownButton<int>(
+                    value:
+                        context.watch<chordIDSettings>().arpeggiateChordDelaySpoken,
+                    items:
+                        [
+                          0,
+                          50,
+                          100,
+                          200,
+                          300,
+                          400,
+                          500,
+                          600,
+                        ].map<DropdownMenuItem<int>>((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        context
+                            .read<chordIDSettings>()
+                            .updateArpeggiateChordDelaySpoken(delay: newValue);
                       }
                     },
                   ),

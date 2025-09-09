@@ -247,11 +247,22 @@ class ChordMelody {
     final key = generalProvider.selectedKey;
     final timeBetween = generalProvider.timeBetweenNotes;
     final truncate = generalProvider.truncateNotes;
-    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
-    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
     final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
     final nestedMapping = mappingProvider.getNestedMapping;
     int i = 0;
+    bool arpeggiate = false;
+    int arpeggiateDelay = 0;
+    if (instrument == "Guitar") {
+      arpeggiate = generalProvider.arpeggiateChordDelayGuitar > 0;
+      arpeggiateDelay = generalProvider.arpeggiateChordDelayGuitar;
+    } else if (instrument == "Piano") {
+      arpeggiate = generalProvider.arpeggiateChordDelayPiano > 0;
+      arpeggiateDelay = generalProvider.arpeggiateChordDelayPiano;
+    } else if (instrument == "Solfege") {
+      arpeggiate = generalProvider.arpeggiateChordDelaySolfege > 0;
+      arpeggiateDelay = generalProvider.arpeggiateChordDelaySolfege;
+    }
+
     for (var notes in chordMelodySolfege) {
       if (notes.length == 1) {
         final note = notes[0];
@@ -307,8 +318,8 @@ class ChordMelody {
   ) async {
     await widget.audioController.refresh();
     final timeBetween = generalProvider.timeBetweenNotes;
-    final arpeggiate = generalProvider.arpeggiateChordDelay > 0;
-    final arpeggiateDelay = generalProvider.arpeggiateChordDelay;
+    final arpeggiate = generalProvider.arpeggiateChordDelaySpoken > 0;
+    final arpeggiateDelay = generalProvider.arpeggiateChordDelaySpoken;
     final spokenMapping = mappingProvider.getSpokenMapping;
     int i = 0;
     for (var notes in chordMelodySolfege) {
