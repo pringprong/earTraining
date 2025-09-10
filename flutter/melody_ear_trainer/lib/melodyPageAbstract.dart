@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/utils/helper.dart';
 import '../audio/audio_controller.dart';
 import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
@@ -699,6 +700,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
     MappingProvider mappingProvider,
   ) {
     final selectedChords = generalProvider.getSelectedChords();
+    selectedChords.sort((a,b) => chordNameSort(a, b));
     final chordFrequency = generalProvider.chordFrequency;
     final chordMap = mappingProvider.getChordMap;
     if (chordFrequency == "Never") {
