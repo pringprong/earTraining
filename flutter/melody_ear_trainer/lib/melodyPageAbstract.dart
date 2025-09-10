@@ -709,7 +709,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
       runSpacing: 4,
       children:
           selectedChords.map((chord) {
-            final color = getChordButtonColor(chord);
+            final color = getChordButtonColor2(chord);
             final notes = chordMap[chord] ?? [];
             return Tooltip(
               message: notes.join(' '),

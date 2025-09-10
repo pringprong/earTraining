@@ -115,7 +115,7 @@ Widget buildChordButtons(
                   decoration: BoxDecoration(
                     color:
                         selected
-                            ? getChordButtonColor(chordName)
+                            ? getChordButtonColor2(chordName)
                             : yetAnotherGrey,
                     borderRadius: BorderRadius.circular(6),
                   ),

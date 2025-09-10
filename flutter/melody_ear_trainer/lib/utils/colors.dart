@@ -120,49 +120,56 @@ const color3 = "#bcae9a"; // greeny beige, tan khaki _Sec
 const color4 = "#c3b2b7"; // pinky beige _Thr
 const color5 = "#d0a89b"; // reddish brown _All
 const color6 = "#84b6d4"; // grey blue
+const color7 = "#0664c0"; // royal blue
+
 const factor0 = 0.7;
-const factor1 = 0.85;
-const factor2 = 1.0;
-const factor3 = 1.15;
-const factor4 = 1.3;
+const factor1 = 0.8;
+const factor2 = 0.9;
+const factor3 = 1.0;
+const factor4 = 1.1;
+// #0664c0   HEX:#1c4fa7
 
 Color c1f0 = multiplyHexColor(color1, factor0);
-Color c2f0 = multiplyHexColor(color2, factor0);
-Color c3f0 = multiplyHexColor(color3, factor0);
-Color c4f0 = multiplyHexColor(color4, factor0);
-Color c5f0 = multiplyHexColor(color5, factor0);
-Color c6f0 = multiplyHexColor(color6, factor0);
-
-
 Color c1f1 = multiplyHexColor(color1, factor1);
 Color c1f2 = multiplyHexColor(color1, factor2);
 Color c1f3 = multiplyHexColor(color1, factor3);
 Color c1f4 = multiplyHexColor(color1, factor4);
 
+Color c2f0 = multiplyHexColor(color2, factor0);
 Color c2f1 = multiplyHexColor(color2, factor1);
 Color c2f2 = multiplyHexColor(color2, factor2);
 Color c2f3 = multiplyHexColor(color2, factor3);
 Color c2f4 = multiplyHexColor(color2, factor4);
 
+Color c3f0 = multiplyHexColor(color3, factor0);
 Color c3f1 = multiplyHexColor(color3, factor1);
 Color c3f2 = multiplyHexColor(color3, factor2);
 Color c3f3 = multiplyHexColor(color3, factor3);
 Color c3f4 = multiplyHexColor(color3, factor4);
 
+Color c4f0 = multiplyHexColor(color4, factor0);
 Color c4f1 = multiplyHexColor(color4, factor1);
 Color c4f2 = multiplyHexColor(color4, factor2);
 Color c4f3 = multiplyHexColor(color4, factor3);
 Color c4f4 = multiplyHexColor(color4, factor4);
 
+Color c5f0 = multiplyHexColor(color5, factor0);
 Color c5f1 = multiplyHexColor(color5, factor1);
 Color c5f2 = multiplyHexColor(color5, factor2);
 Color c5f3 = multiplyHexColor(color5, factor3);
 Color c5f4 = multiplyHexColor(color5, factor4);
 
+Color c6f0 = multiplyHexColor(color6, factor0);
 Color c6f1 = multiplyHexColor(color6, factor1);
 Color c6f2 = multiplyHexColor(color6, factor2);
 Color c6f3 = multiplyHexColor(color6, factor3);
 Color c6f4 = multiplyHexColor(color6, factor4);
+
+Color c7f0 = multiplyHexColor(color7, factor0);
+Color c7f1 = multiplyHexColor(color7, factor1);
+Color c7f2 = multiplyHexColor(color7, factor2);
+Color c7f3 = multiplyHexColor(color7, factor3);
+Color c7f4 = multiplyHexColor(color7, factor4);
 
 Color getChordButtonColor(String chordName) {
   String c = chordName;
@@ -189,4 +196,52 @@ Color getChordButtonColor(String chordName) {
   if (c.endsWith("_All")) return c5f2;
 
   return c6f2;
+}
+
+
+Color getChordButtonColor2(String chordName) {
+  String c = chordName;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Rt")) return c5f0;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Fir")) return c5f1;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Sec")) return c5f2;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Thr")) return c5f3;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_All")) return c5f4;
+
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Rt")) return c2f0;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Fir")) return c2f1;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Sec")) return c2f2;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Thr")) return c2f3;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_All")) return c2f4;
+
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_Rt")) return c3f0;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_Fir")) return c3f1;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_Sec")) return c3f2;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_Thr")) return c3f3;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_All")) return c3f4;
+
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Rt")) return c6f0;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Fir")) return c6f1;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Sec")) return c6f2;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Thr")) return c6f3;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_All")) return c6f4;
+
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Rt")) return c1f0;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Fir")) return c1f1;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Sec")) return c1f2;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Thr")) return c1f3;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_All")) return c1f4;
+
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Rt")) return c4f0;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Fir")) return c4f1;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Sec")) return c4f2;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Thr")) return c4f3;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_All")) return c4f4;
+
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_Rt")) return c7f0;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_Fir")) return c7f1;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_Sec")) return c7f2;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_Thr")) return c7f3;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_All")) return c7f4;
+
+  return yetAnotherGrey;
 }
