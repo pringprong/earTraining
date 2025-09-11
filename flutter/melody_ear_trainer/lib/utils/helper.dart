@@ -153,13 +153,39 @@ Widget buildChordButtons(
   );
 }
 
-RegExp pattern = RegExp(r'([IViv7]{1,3})([01]{0,2})_(Rt|Fir|Sec|Thr|All)');
+RegExp chordNameParse = RegExp(r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)');
+
+const romanOrder = {
+  'I': 100,
+  'i': 200,
+  'I7': 300,
+  'II': 400,
+  'ii': 500,
+  'iid': 550,
+  'III': 600,
+  'iii': 700,
+  'IV': 800,
+  'iv': 900,
+  'IV7': 1000,
+  'V': 1100,
+  'v': 1200,
+  'V7': 1300,
+  'VI': 1400,
+  'vi': 1500,
+  'VII': 1600,
+  'vii': 1700,
+  'viid': 1800,
+};
+
+const numOrder = {'00': 100, '0': 200, '': 300, '1': 400};
+
+const suffixOrder = {'Rt': 100, 'Fir': 200, 'Sec': 300, 'Thr': 400, 'All': 500};
 
 int chordNameSort(String? a, String? b) {
-  String propertyA = a ?? "";
-  String propertyB = b ?? "";
-  final matchA = pattern.firstMatch(propertyA);
-  final matchB = pattern.firstMatch(propertyB);
+
+  final matchA = chordNameParse.firstMatch(a ?? "");
+  final matchB = chordNameParse.firstMatch(b ?? "");
+  
   if (matchA != null && matchB != null) {
     final romanA = matchA.group(1) ?? "";
     final romanB = matchB.group(1) ?? "";
@@ -168,48 +194,19 @@ int chordNameSort(String? a, String? b) {
     final suffixA = matchA.group(3) ?? "";
     final suffixB = matchB.group(3) ?? "";
 
-    const romanOrder = {
-      'I': 1,
-      'i': 2,
-      'I7': 3,
-      'II': 4,
-      'ii': 5,
-      'III': 6,
-      'iii': 7,
-      'IV': 8,
-      'iv': 9,
-      'IV7': 10,
-      'V': 11,
-      'v': 12,
-      'V7': 13,
-      'VI': 14,
-      'vi': 15,
-      'VII': 16,
-      'vii': 17,
-    };
-
-    const numOrder = {'00': 1, '0': 2, '': 3, '1': 4};
-
-    const suffixOrder = {'Rt': 1, 'Fir': 2, 'Sec': 3, 'Thr': 4, 'All': 5};
-
-    int romanComparison = (romanOrder[romanA] ?? 0).compareTo(
+    int romanComparison = 
+    (romanOrder[romanA] ?? 0).compareTo(
       romanOrder[romanB] ?? 0,
     );
     if (romanComparison != 0) return romanComparison;
 
-    int numberComparison = (numOrder[numberA] ?? 0).compareTo(
+    int numberComparison = 
+    (numOrder[numberA] ?? 0).compareTo(
       (numOrder[numberB] ?? 0),
     );
     if (numberComparison != 0) return numberComparison;
 
     return (suffixOrder[suffixA] ?? 0).compareTo(suffixOrder[suffixB] ?? 0);
   }
-  int comparison = propertyA.compareTo(propertyB);
-  if (comparison < 0) {
-    return -1;
-  } else if (comparison > 0) {
-    return 1;
-  } else {
-    return 0;
-  }
+return 0;
 }

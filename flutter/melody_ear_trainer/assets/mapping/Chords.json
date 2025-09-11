@@ -307,50 +307,50 @@
   },
   {
     "Category": "Major scale",
-    "Degree": "vii",
-    "Chord Set": "vii00_Fir",
+    "Degree": "viid",
+    "Chord Set": "viid00_Fir",
     "Notes": "re0,fa0,ti0"
   },
   {
     "Category": "Major scale",
-    "Degree": "vii",
-    "Chord Set": "vii00_Sec",
+    "Degree": "viid",
+    "Chord Set": "viid00_Sec",
     "Notes": "fa0,ti0,re"
   },
   {
     "Category": "Major scale",
-    "Degree": "vii",
-    "Chord Set": "vii0_Rt",
+    "Degree": "viid",
+    "Chord Set": "viid0_Rt",
     "Notes": "ti0,re,fa"
   },
   {
     "Category": "Major scale",
-    "Degree": "vii",
-    "Chord Set": "vii0_Fir",
+    "Degree": "viid",
+    "Chord Set": "viid0_Fir",
     "Notes": "re,fa,ti"
   },
   {
     "Category": "Major scale",
-    "Degree": "vii",
-    "Chord Set": "vii0_Sec",
+    "Degree": "viid",
+    "Chord Set": "viid0_Sec",
     "Notes": "fa,ti,re1"
   },
   {
     "Category": "Major scale",
-    "Degree": "vii",
-    "Chord Set": "vii_Rt",
+    "Degree": "viid",
+    "Chord Set": "viid_Rt",
     "Notes": "ti,re1,fa1"
   },
   {
     "Category": "Major scale",
-    "Degree": "vii",
-    "Chord Set": "vii_Fir",
+    "Degree": "viid",
+    "Chord Set": "viid_Fir",
     "Notes": "re1,fa1,ti1"
   },
   {
     "Category": "Major scale",
-    "Degree": "vii",
-    "Chord Set": "vii_All",
+    "Degree": "viid",
+    "Chord Set": "viid_All",
     "Notes": "re0,fa0,ti0,re,fa,ti,re1,fa1,ti1"
   },
   {
@@ -409,50 +409,50 @@
   },
   {
     "Category": "Minor scale",
-    "Degree": "ii",
-    "Chord Set": "ii0_Rt",
+    "Degree": "iid",
+    "Chord Set": "iid0_Rt",
     "Notes": "re0,fa0,ki0"
   },
   {
     "Category": "Minor scale",
-    "Degree": "ii",
-    "Chord Set": "ii0_Fir",
+    "Degree": "iid",
+    "Chord Set": "iid0_Fir",
     "Notes": "fa0,ki0,re"
   },
   {
     "Category": "Minor scale",
-    "Degree": "ii",
-    "Chord Set": "ii0_Sec",
+    "Degree": "iid",
+    "Chord Set": "iid0_Sec",
     "Notes": "ki0,re,fa"
   },
   {
     "Category": "Minor scale",
-    "Degree": "ii",
-    "Chord Set": "ii_Rt",
+    "Degree": "iid",
+    "Chord Set": "iid_Rt",
     "Notes": "re,fa,ki"
   },
   {
     "Category": "Minor scale",
-    "Degree": "ii",
-    "Chord Set": "ii_Fir",
+    "Degree": "iid",
+    "Chord Set": "iid_Fir",
     "Notes": "fa,ki,re1"
   },
   {
     "Category": "Minor scale",
-    "Degree": "ii",
-    "Chord Set": "ii_Sec",
+    "Degree": "iid",
+    "Chord Set": "iid_Sec",
     "Notes": "ki,re1,fa1"
   },
   {
     "Category": "Minor scale",
-    "Degree": "ii",
-    "Chord Set": "ii1_Rt",
+    "Degree": "iid",
+    "Chord Set": "iid1_Rt",
     "Notes": "re1,fa1,ki1"
   },
   {
     "Category": "Minor scale",
-    "Degree": "ii",
-    "Chord Set": "ii_All",
+    "Degree": "iid",
+    "Chord Set": "iid_All",
     "Notes": "re0,fa0,ki0,re,fa,ki,re1,fa1,ki1"
   },
   {
