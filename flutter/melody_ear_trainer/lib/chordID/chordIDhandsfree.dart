@@ -213,18 +213,20 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
                         foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
-                        setState(() {
-                          solfegeText = "";
-                          notPaused = true;
-                        });
-
-                        currentRound = 0;
-                        chordMelody = ChordMelody();
-                        playFunction(
-                          context.read<chordIDSettings>(),
-                          context.read<MappingProvider>(),
-                          nestedMapping,
-                        );
+                        if (!running) {
+                          setState(() {
+                            solfegeText = "";
+                            notPaused = true;
+                          });
+                          running = true;
+                          currentRound = 0;
+                          chordMelody = ChordMelody();
+                          playFunction(
+                            context.read<chordIDSettings>(),
+                            context.read<MappingProvider>(),
+                            nestedMapping,
+                          );
+                        }
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -352,12 +354,8 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    if (running) {
-      return; // Prevent multiple concurrent executions
-    }
     while (currentRound < context.read<chordIDSettings>().getNumberOfRounds &&
         notPaused) {
-      running = true;
       solfegeText = "";
       setState(() {});
       String result = chordMelody.generateChordMelody(

@@ -233,18 +233,20 @@ class _chordMelodySingingHandsFreeState
                         foregroundColor: buttonForegroundColor,
                       ),
                       onPressed: () {
-                        setState(() {
-                          solfegeText = "";
-                          notPaused = true;
-                        });
-
-                        currentRound = 0;
-                        chordMelody = ChordMelody();
-                        playFunction(
-                          context.read<chordMelodySingingSettings>(),
-                          context.read<MappingProvider>(),
-                          nestedMapping,
-                        );
+                        if (!running) {
+                          setState(() {
+                            solfegeText = "";
+                            notPaused = true;
+                          });
+                          running = true;
+                          currentRound = 0;
+                          chordMelody = ChordMelody();
+                          playFunction(
+                            context.read<chordMelodySingingSettings>(),
+                            context.read<MappingProvider>(),
+                            nestedMapping,
+                          );
+                        }
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -374,11 +376,7 @@ class _chordMelodySingingHandsFreeState
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    if (running) {
-      return; // Prevent multiple concurrent executions
-    }
     while (currentRound < generalProvider.getNumberOfRounds && notPaused) {
-      running = true;
       solfegeText = "";
       setState(() {});
       String result = chordMelody.generateChordMelody(
