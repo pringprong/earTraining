@@ -138,7 +138,7 @@ class _HelpPageState extends State<HelpPage> {
                       '''For example, "I0_Rt" is the tonic major chord in root position in the lowest octave, with associated solfege "do0, mi0, so0".''',
                     ),
                     plainText(
-                      '''"IV_Sec" is the major four chord in second inversion in the middle octave, with associated solfege "do1, fa1, la1".''',
+                      '''"IV_Sec" is the second inversion of the major four chord in the middle octave, with associated solfege "do1, fa1, la1".''',
                     ),
                     verticalSpacer(),
                     plainText(

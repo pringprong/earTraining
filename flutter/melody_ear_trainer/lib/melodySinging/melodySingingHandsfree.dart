@@ -18,6 +18,7 @@ class MelodySingingHandsFree extends StatefulWidget {
 class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
   int currentRound = 0;
   bool notPaused = true;
+  bool running = false;
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
   String currentInstrument = "Piano";
@@ -254,6 +255,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                       onPressed: () {
                         setState(() {
                           notPaused = false;
+                          running = false;
                           solfegeText = "";
                           currentRound = 0;
                           widget.audioController.refresh();
@@ -319,6 +321,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
   @override
   void dispose() {
     notPaused = false;
+    running = false;
     widget.audioController.dispose();
     super.dispose();
   }
@@ -360,7 +363,11 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
+    if (running) {
+      return; // Prevent multiple concurrent executions
+    }
     while (currentRound < generalProvider.getNumberOfRounds && notPaused) {
+      running = true;
       solfegeText = "";
       setState(() {});
       String result = chordMelody.generateChordMelody(
@@ -429,5 +436,6 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
       currentRound++;
       setState(() {});
     }
+    running = false;
   }
 }

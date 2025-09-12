@@ -20,6 +20,7 @@ class _chordMelodySingingHandsFreeState
     extends State<chordMelodySingingHandsFree> {
   int currentRound = 0;
   bool notPaused = true;
+  bool running = false;
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
   String currentInstrument = "Piano";
@@ -265,6 +266,7 @@ class _chordMelodySingingHandsFreeState
                       onPressed: () {
                         setState(() {
                           notPaused = false;
+                          running = false;
                           solfegeText = "";
                           currentRound = 0;
                           widget.audioController.refresh();
@@ -330,6 +332,7 @@ class _chordMelodySingingHandsFreeState
   @override
   void dispose() {
     notPaused = false;
+    running = false;
     widget.audioController.dispose();
     super.dispose();
   }
@@ -371,7 +374,11 @@ class _chordMelodySingingHandsFreeState
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
+    if (running) {
+      return; // Prevent multiple concurrent executions
+    }
     while (currentRound < generalProvider.getNumberOfRounds && notPaused) {
+      running = true;
       solfegeText = "";
       setState(() {});
       String result = chordMelody.generateChordMelody(
@@ -440,5 +447,6 @@ class _chordMelodySingingHandsFreeState
       currentRound++;
       setState(() {});
     }
+    running = false;
   }
 }
