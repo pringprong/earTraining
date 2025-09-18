@@ -24,6 +24,7 @@ import 'chordMelodyID/chordMelodyIDhandsfree.dart';
 import 'chordMelodySinging/chordMelodySinging.dart';
 import 'chordMelodySinging/chordMelodySingingHandsfree.dart';
 import 'chordMelodySinging/chordMelodySingingSettings.dart';
+import 'progressiontree.dart';
 
 // import 'package:logging/logging.dart';
 
@@ -164,6 +165,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
         '/chordMelodySingingHandsfree':
             (context) =>
                 chordMelodySingingHandsFree(audioController: audioController),
+        '/progressiontree': (context) => TreeViewPageFromJson(),
         // Add other routes here
       },
     );

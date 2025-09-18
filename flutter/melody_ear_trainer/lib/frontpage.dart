@@ -26,7 +26,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       child: Card(
                         color: c2f4,
                         child: SizedBox(
-                          height: 120,
+                          height: 100,
                           child: Center(
                             child: const Text(
                               "Melody ID",
@@ -34,6 +34,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                                 fontSize: 20,
                                 color: buttonForegroundColor,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -49,7 +50,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       child: Card(
                         color: c2f2,
                         child: SizedBox(
-                          height: 120,
+                          height: 100,
                           child: Center(
                             child: const Text(
                               "Melody singing",
@@ -57,6 +58,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                                 fontSize: 20,
                                 color: buttonForegroundColor,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -77,7 +79,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       child: Card(
                         color: c4f4,
                         child: SizedBox(
-                          height: 120,
+                          height: 100,
                           child: Center(
                             child: const Text(
                               "Chord ID",
@@ -85,6 +87,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                                 fontSize: 20,
                                 color: buttonForegroundColor,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -100,7 +103,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       child: Card(
                         color: c4f2,
                         child: SizedBox(
-                          height: 120,
+                          height: 100,
                           child: Center(
                             child: const Text(
                               "Chord singing",
@@ -108,6 +111,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                                 fontSize: 20,
                                 color: buttonForegroundColor,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -128,7 +132,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       child: Card(
                         color: c3f4,
                         child: SizedBox(
-                          height: 120,
+                          height: 100,
                           child: Center(
                             child: const Text(
                               "Chord melody\nID",
@@ -152,7 +156,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       child: Card(
                         color: c3f2,
                         child: SizedBox(
-                          height: 120,
+                          height: 100,
                           child: Center(
                             child: const Text(
                               "Chord melody\nsinging",
@@ -174,24 +178,34 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
               ),
               verticalSpacer(),
               // Fourth row: double-width, half-height
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Card(
-              //         child: SizedBox(
-              //           height: 60,
-              //           child: Center(
-              //             child: Text(
-              //               "Progress report",
-              //               style: TextStyle(fontSize: 20),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              //verticalSpacer(),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      child: Card(
+                        color: c5f4,
+                        child: SizedBox(
+                          height: 100,
+                          child: Center(
+                            child: const Text(
+                              "Progression tree",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: buttonForegroundColor,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/progressiontree');
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              verticalSpacer(),
               Row(
                 children: [
                   Expanded(
@@ -199,7 +213,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                       child: Card(
                         color: c1f4,
                         child: SizedBox(
-                          height: 120,
+                          height: 100,
                           child: Center(
                             child: const Text(
                               "Help",
@@ -207,6 +221,7 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                                 fontSize: 20,
                                 color: buttonForegroundColor,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
