@@ -1,0 +1,30 @@
+{
+    "nodes": [
+        {
+            "id": 1,
+            "shape": "Circle",
+            "label": "Start"
+        },
+        {
+            "id": 2,
+            "shape": "Rectangle",
+            "label": "Natural minor mission 1",
+            "info": "3 levels"
+        },
+        {
+            "id": 3,
+            "shape": "Circle",
+            "label": "Campaign hub"
+        }
+    ],
+    "edges": [
+        {
+            "from": 1,
+            "to": 2
+        },
+        {
+            "from": 2,
+            "to": 3
+        }
+    ]
+}

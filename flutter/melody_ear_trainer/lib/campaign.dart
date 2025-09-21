@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
+import 'package:melody_ear_trainer/utils/colors.dart';
 import 'utils/helper.dart';
 //import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -15,68 +16,122 @@ class campaignTree extends StatefulWidget {
 }
 
 class _campaignTreeState extends State<campaignTree> {
-  var json = {
-    'nodes': [
-      {'id': 1, 'shape': 'Circle', 'label': 'Start'},
-      {'id': 2, 'shape': 'Rectangle', 'label': 'Mission 1', 'info': '3 levels'},
-    ],
-    'edges': [
-      {'from': 1, 'to': 2},
-    ],
-  };
+  // JSON loaded from file (replaces the previous hardcoded `var json`)
+  Map<String, dynamic> json = {'nodes': [], 'edges': []};
+  bool _loaded = false;
+  bool _loading = false;
 
+  // Graph and layout config (made non-final so we can replace when loading)
+  Graph graph = Graph()..isTree = true;
+  BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
 
+  @override
+  void initState() {
+    // configure layout
+    builder
+      ..siblingSeparation = (30)
+      ..levelSeparation = (30)
+      ..subtreeSeparation = (30)
+      ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // load json once, using filename from the route arguments
+    if (!_loaded && !_loading) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as CampaignArguments;
+      final filename = args.filename;
+      _loading = true;
+      _loadJsonFromFile(filename);
+    }
+  }
+
+  Future<void> _loadJsonFromFile(String filename) async {
+    final path = 'assets/mapping/$filename';
+    try {
+      final contents = await File(path).readAsString();
+      final decoded = jsonDecode(contents) as Map<String, dynamic>;
+      setState(() {
+        json = decoded;
+        _buildGraphFromJson();
+        _loaded = true;
+        _loading = false;
+      });
+    } catch (e) {
+      // If file read fails, fall back to empty graph and log error
+      debugPrint('Failed to read $path: $e');
+      setState(() {
+        json = {'nodes': [], 'edges': []};
+        graph = Graph()..isTree = true;
+        _loaded = true;
+        _loading = false;
+      });
+    }
+  }
+
+  void _buildGraphFromJson() {
+    graph = Graph()..isTree = true;
+    final edges = json['edges'] ?? [];
+    for (var element in edges) {
+      final fromNodeId = element['from'];
+      final toNodeId = element['to'];
+      graph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as CampaignArguments;
     String title = args.title;
-    String filename = args.filename;
-    File file = File('assets/mapping/' + filename);
-
-
 
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(title),
-          Expanded(
-            child: InteractiveViewer(
-              constrained: false,
-              boundaryMargin: EdgeInsets.all(100),
-              minScale: 0.01,
-              maxScale: 5.6,
-              child: GraphView(
-                graph: graph,
-                algorithm: BuchheimWalkerAlgorithm(
-                  builder,
-                  TreeEdgeRenderer(builder),
-                ),
-                paint:
-                    Paint()
-                      ..color = Colors.white
-                      ..strokeWidth = 1
-                      ..style = PaintingStyle.stroke,
-                builder: (Node node) {
-                  // I can decide what widget should be shown here based on the id
-                  var a = node.key!.value as int?;
-                  var nodes = json['nodes']!;
-                  var nodeValue = nodes.firstWhere(
-                    (element) => element['id'] == a,
-                  );
-                  return rectangleWidget(
-                    nodeValue['label'] as String?,
-                    nodeValue['info'] as String?,
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
+      body:
+          _loaded
+              ? Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  headingRow( title),
+                  verticalSpacer(),
+                  Expanded(
+                    child: InteractiveViewer(
+                      constrained: false,
+                      boundaryMargin: EdgeInsets.all(100),
+                      minScale: 0.01,
+                      maxScale: 5.6,
+                      child: GraphView(
+                        graph: graph,
+                        algorithm: BuchheimWalkerAlgorithm(
+                          builder,
+                          TreeEdgeRenderer(builder),
+                        ),
+                        paint:
+                            Paint()
+                              ..color = Colors.white
+                              ..strokeWidth = 1
+                              ..style = PaintingStyle.stroke,
+                        builder: (Node node) {
+                          // decide which widget to show based on id
+                          var a = node.key!.value as int?;
+                          var nodes = json['nodes']!;
+                          var nodeValue = nodes.firstWhere(
+                            (element) => element['id'] == a,
+                          );
+                          return rectangleWidget(
+                            nodeValue['label'] as String?,
+                            nodeValue['info'] as String?,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              )
+              : Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -96,25 +151,5 @@ class _campaignTreeState extends State<campaignTree> {
         child: Text(titleText + '\n' + infoText, textAlign: TextAlign.center),
       ),
     );
-  }
-
-  final Graph graph = Graph()..isTree = true;
-  BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
-
-  @override
-  void initState() {
-    var edges = json["edges"]!;
-    edges.forEach((element) {
-      var fromNodeId = element["from"];
-      var toNodeId = element["to"];
-      graph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
-    });
-
-    builder
-      ..siblingSeparation = (30)
-      ..levelSeparation = (30)
-      ..subtreeSeparation = (30)
-      ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
-    super.initState();
   }
 }
