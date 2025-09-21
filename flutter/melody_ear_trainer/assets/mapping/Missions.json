@@ -1,0 +1,74 @@
+[
+  {
+    "Campaign": "Campaign 1: Diatonic major",
+    "Filename": "diatonic_major.json",
+    "Mode": "Melody ID",
+    "Mission": "Mission 1",
+    "Level": "Level 1",
+    "NumNotes": "4",
+    "NumTests": "3",
+    "NumQuestions": "10",
+    "Passing Score": "9",
+    "Notes": "do,re,mi"
+  },
+  {
+    "Campaign": "Campaign 1: Diatonic major",
+    "Filename": "diatonic_major.json",
+    "Mode": "Melody ID",
+    "Mission": "Mission 1",
+    "Level": "Level 2",
+    "NumNotes": "4",
+    "NumTests": "4",
+    "NumQuestions": "10",
+    "Passing Score": "9",
+    "Notes": "do,re,mi,do1"
+  },
+  {
+    "Campaign": "Campaign 1: Diatonic major",
+    "Filename": "diatonic_major.json",
+    "Mode": "Melody ID",
+    "Mission": "Mission 1",
+    "Level": "Level 3",
+    "NumNotes": "4",
+    "NumTests": "5",
+    "NumQuestions": "10",
+    "Passing Score": "9",
+    "Notes": "do,re,mi,fa,do1"
+  },
+  {
+    "Campaign": "Campaign 2: Natural minor",
+    "Filename": "natural_minor.json",
+    "Mode": "Melody ID",
+    "Mission": "Natural minor mission 1",
+    "Level": "Level 1",
+    "NumNotes": "4",
+    "NumTests": "3",
+    "NumQuestions": "10",
+    "Passing Score": "9",
+    "Notes": "do,re,nu"
+  },
+  {
+    "Campaign": "Campaign 2: Natural minor",
+    "Filename": "natural_minor.json",
+    "Mode": "Melody ID",
+    "Mission": "Natural minor mission 1",
+    "Level": "Level 2",
+    "NumNotes": "4",
+    "NumTests": "4",
+    "NumQuestions": "10",
+    "Passing Score": "9",
+    "Notes": "do,re,nu,do1"
+  },
+  {
+    "Campaign": "Campaign 2: Natural minor",
+    "Filename": "natural_minor.json",
+    "Mode": "Melody ID",
+    "Mission": "Natural minor mission 1",
+    "Level": "Level 3",
+    "NumNotes": "4",
+    "NumTests": "5",
+    "NumQuestions": "10",
+    "Passing Score": "9",
+    "Notes": "do,re,nu,fa,do1"
+  }
+]

@@ -5,6 +5,7 @@ import 'utils/helper.dart';
 //import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'mission.dart';
 
 class campaignTree extends StatefulWidget {
   const campaignTree({super.key});
@@ -95,7 +96,7 @@ class _campaignTreeState extends State<campaignTree> {
               ? Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  headingRow( title),
+                  headingRow(title),
                   verticalSpacer(),
                   Expanded(
                     child: InteractiveViewer(
@@ -115,16 +116,22 @@ class _campaignTreeState extends State<campaignTree> {
                               ..strokeWidth = 1
                               ..style = PaintingStyle.stroke,
                         builder: (Node node) {
-                          // decide which widget to show based on id
+                          // decide which widget to show based on id and shape
                           var a = node.key!.value as int?;
-                          var nodes = json['nodes']!;
-                          var nodeValue = nodes.firstWhere(
+                          var nodesList = json['nodes'] as List<dynamic>;
+                          var nodeValue = nodesList.firstWhere(
                             (element) => element['id'] == a,
                           );
-                          return rectangleWidget(
-                            nodeValue['label'] as String?,
-                            nodeValue['info'] as String?,
-                          );
+                          final shape =
+                              (nodeValue['shape'] ?? 'Rectangle').toString();
+                          final label = nodeValue['label'] as String?;
+                          final info = nodeValue['info'] as String?;
+                          if (shape.toLowerCase() == 'circle') {
+                            return circleWidget(label, info);
+                          } else {
+                            // Rectangle: interactive — push Mission
+                            return rectangleWidget(context, label, info, title);
+                          }
                         },
                       ),
                     ),
@@ -135,12 +142,39 @@ class _campaignTreeState extends State<campaignTree> {
     );
   }
 
-  Widget rectangleWidget(String? title, String? info) {
+  Widget circleWidget(String? title, String? info) {
+    String titleText = title ?? 'no title';
+    //String infoText = info ?? '';
+    return Container(
+      width: 100,
+      height: 100,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+        boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
+      ),
+      padding: EdgeInsets.all(8),
+      child: Text(titleText, textAlign: TextAlign.center),
+    );
+  }
+
+  Widget rectangleWidget(
+    BuildContext context,
+    String? title,
+    String? info,
+    String campaignTitle,
+  ) {
     String titleText = title ?? 'no title';
     String infoText = info ?? '';
     return InkWell(
       onTap: () {
-        print(title);
+        // create MissionArguments and navigate to Mission page
+        Navigator.pushNamed(
+          context,
+          Mission.routeName,
+          arguments: MissionArguments(campaignTitle, titleText, infoText),
+        );
       },
       child: Container(
         padding: EdgeInsets.all(4),

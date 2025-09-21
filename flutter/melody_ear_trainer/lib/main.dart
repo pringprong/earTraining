@@ -26,6 +26,7 @@ import 'chordMelodySinging/chordMelodySingingHandsfree.dart';
 import 'chordMelodySinging/chordMelodySingingSettings.dart';
 import 'campaign.dart';
 import 'homepage.dart';
+import 'mission.dart';
 
 // import 'package:logging/logging.dart';
 
@@ -168,6 +169,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
             (context) =>
                 chordMelodySingingHandsFree(audioController: audioController),
         campaignTree.routeName: (context) => campaignTree(),
+        Mission.routeName: (context) => Mission(),
         // Add other routes here
       },
     );
