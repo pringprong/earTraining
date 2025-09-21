@@ -153,7 +153,9 @@ Widget buildChordButtons(
   );
 }
 
-RegExp chordNameParse = RegExp(r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)');
+RegExp chordNameParse = RegExp(
+  r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',
+);
 
 const romanOrder = {
   'I': 100,
@@ -182,10 +184,9 @@ const numOrder = {'00': 100, '0': 200, '': 300, '1': 400};
 const suffixOrder = {'Rt': 100, 'Fir': 200, 'Sec': 300, 'Thr': 400, 'All': 500};
 
 int chordNameSort(String? a, String? b) {
-
   final matchA = chordNameParse.firstMatch(a ?? "");
   final matchB = chordNameParse.firstMatch(b ?? "");
-  
+
   if (matchA != null && matchB != null) {
     final romanA = matchA.group(1) ?? "";
     final romanB = matchB.group(1) ?? "";
@@ -194,19 +195,32 @@ int chordNameSort(String? a, String? b) {
     final suffixA = matchA.group(3) ?? "";
     final suffixB = matchB.group(3) ?? "";
 
-    int romanComparison = 
-    (romanOrder[romanA] ?? 0).compareTo(
+    int romanComparison = (romanOrder[romanA] ?? 0).compareTo(
       romanOrder[romanB] ?? 0,
     );
     if (romanComparison != 0) return romanComparison;
 
-    int numberComparison = 
-    (numOrder[numberA] ?? 0).compareTo(
+    int numberComparison = (numOrder[numberA] ?? 0).compareTo(
       (numOrder[numberB] ?? 0),
     );
     if (numberComparison != 0) return numberComparison;
 
     return (suffixOrder[suffixA] ?? 0).compareTo(suffixOrder[suffixB] ?? 0);
   }
-return 0;
+  return 0;
+}
+
+class CampaignArguments {
+  final String title;
+  final String filename;
+
+  CampaignArguments(this.title, this.filename);
+}
+
+class MissionArguments {
+  final String campaignTitle;
+  final String missionTitle;
+  final String missionInfo;
+
+  MissionArguments(this.campaignTitle, this.missionTitle, this.missionInfo);
 }

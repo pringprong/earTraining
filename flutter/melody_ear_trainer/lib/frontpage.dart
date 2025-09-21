@@ -177,35 +177,6 @@ class _MelodyFrontPageState extends State<MelodyFrontPage> {
                 ],
               ),
               verticalSpacer(),
-              // Fourth row: double-width, half-height
-              Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      child: Card(
-                        color: c5f4,
-                        child: SizedBox(
-                          height: 100,
-                          child: Center(
-                            child: const Text(
-                              "Progression tree",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: buttonForegroundColor,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/progressiontree');
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              verticalSpacer(),
               Row(
                 children: [
                   Expanded(

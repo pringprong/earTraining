@@ -24,7 +24,8 @@ import 'chordMelodyID/chordMelodyIDhandsfree.dart';
 import 'chordMelodySinging/chordMelodySinging.dart';
 import 'chordMelodySinging/chordMelodySingingHandsfree.dart';
 import 'chordMelodySinging/chordMelodySingingSettings.dart';
-import 'progressiontree.dart';
+import 'campaign.dart';
+import 'homepage.dart';
 
 // import 'package:logging/logging.dart';
 
@@ -118,10 +119,11 @@ class MelodyEarTrainerApp extends StatelessWidget {
       title: 'Melody Ear Trainer',
       //theme: ThemeData.dark(),
       theme: context.watch<ThemeProvider>().getThemeData,
-      home: MelodyFrontPage(),
+      home: MelodyHomePage(),
       routes: {
+        '/home': (context) => MelodyHomePage(),
         '/help': (context) => HelpPage(),
-        '/home': (context) => MelodyFrontPage(),
+        '/frontpage': (context) => MelodyFrontPage(),
         '/melodyID': (context) => MelodyID(audioController: audioController),
         '/melodyIDsettings':
             (context) => MelodyIDSettingsPage(audioController: audioController),
@@ -165,7 +167,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
         '/chordMelodySingingHandsfree':
             (context) =>
                 chordMelodySingingHandsFree(audioController: audioController),
-        '/progressiontree': (context) => TreeViewPageFromJson(),
+        campaignTree.routeName: (context) => campaignTree(),
         // Add other routes here
       },
     );
