@@ -16,10 +16,10 @@ class _MissionState extends State<Mission> {
   @override
   Widget build(BuildContext context) {
         final args =
-        ModalRoute.of(context)!.settings.arguments as MissionArguments;
-    String campaignTitle = args.campaignTitle;
-    String missionTitle = args.missionTitle;
-    String missionInfo = args.missionInfo;
+        ModalRoute.of(context)!.settings.arguments as MissionInfo;
+    String campaignTitle = args.campaignName;
+    String missionTitle = args.missionName;
+    String missionInfo = args.mode;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,

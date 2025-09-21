@@ -217,10 +217,39 @@ class CampaignArguments {
   CampaignArguments(this.title, this.filename);
 }
 
-class MissionArguments {
-  final String campaignTitle;
-  final String missionTitle;
-  final String missionInfo;
+class MissionInfo {
+  final String campaignName;
+  final String missionName;
+  final String mode;
+  List<LevelInfo> levels = [];
+  MissionInfo(this.campaignName, this.missionName, this.mode);
 
-  MissionArguments(this.campaignTitle, this.missionTitle, this.missionInfo);
+  void addLevel(LevelInfo level) {
+    levels.add(level);
+  }
+}
+
+class LevelInfo {
+  final String campaignName;
+  final String missionName;
+  final String levelName;
+  final int numNotes;
+  final int numTests;
+  final int numQuestions;
+  final int passingScore;
+  List<String> notes = [];
+
+  LevelInfo(
+    this.campaignName,
+    this.missionName,
+    this.levelName,
+    this.numNotes,
+    this.numTests,
+    this.numQuestions,
+    this.passingScore,
+  );
+
+  setNotes(List<String> noteList) {
+    notes = noteList;
+  }
 }

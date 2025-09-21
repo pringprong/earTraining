@@ -8,8 +8,7 @@
         {
             "id": 2,
             "shape": "Rectangle",
-            "label": "Mission 1",
-            "info": "3 levels"
+            "label": "Mission 1"
         },
         {
             "id": 3,

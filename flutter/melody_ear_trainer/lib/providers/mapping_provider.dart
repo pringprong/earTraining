@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import '../utils/helper.dart';
 
 class MappingProvider extends ChangeNotifier {
-
   MappingProvider() {
     loadMappingJSON;
     loadSpokenJSON;
     loadChordSetsJSON;
     loadScalesJSON;
     loadNotesJSON;
+    loadMissionsJSON;
   }
 
   // These are from Mapping.json
@@ -20,7 +21,7 @@ class MappingProvider extends ChangeNotifier {
   // These are from Spoken.json
   Map<String, String> spokenMapping = {};
 
-  // These are from Chords.json 
+  // These are from Chords.json
   Map<String, Map<String, Map<String, List<String>>>> chordsMapping = {};
   Map<String, List<String>> chordMap = {};
   // From ChordSets.json
@@ -39,54 +40,85 @@ class MappingProvider extends ChangeNotifier {
   Map<String, String> noteColors = {};
   Map<String, double> noteColorFactors = {};
 
+  // These are from Missions.json
+  Map<String, String> campaigns = {};
+  // the first key is the campaign
+  // the second key is the mission name
+  // the value is a list of keys: Mode and Level
+  Map<String, Map<String, MissionInfo>> missions = {};
+
+
   // Getters
   List<String> get getMappingKeys {
     return mappingKeys;
   }
+
   List<String> get getInstruments {
     return instruments;
   }
+
   Map<String, Map<String, Map<String, String>>> get getNestedMapping {
     return nestedMapping;
   }
+
   Map<String, String> get getSpokenMapping {
     return spokenMapping;
   }
+
   Map<String, Map<String, Map<String, List<String>>>> get getChordsMapping {
     return chordsMapping;
   }
+
   Map<String, List<String>> get getChordMap {
     return chordMap;
   }
+
   List<String> get getChordList {
     return chordList;
   }
+
   Map<String, Map<String, List<String>>> get getChordSetsMapping {
     return chordSetsMapping;
   }
+
   List<String> get getRangesList {
     return rangesList;
   }
+
   List<String> get getChordSetsList {
     return chordSetsList;
   }
+
   Map<String, Map<String, List<String>>> get getScalesMapping {
     return scalesMapping;
   }
+
   List<String> get getOctaveKeys {
     return octavekeys;
   }
+
   List<String> get getScaleKeys {
     return scalekeys;
   }
+
   List<String> get getNoteKeys {
     return noteKeys;
   }
+
   Map<String, String> get getNoteColors {
     return noteColors;
   }
+
   Map<String, double> get getNoteColorFactors {
     return noteColorFactors;
+  }
+
+  Map<String, String> get getCampaigns {
+    return campaigns;
+  }
+
+  Map<String, Map<String, MissionInfo>> get getMissions {
+    return missions;
   }
 
   Future<void> get loadMappingJSON async {
@@ -174,8 +206,9 @@ class MappingProvider extends ChangeNotifier {
 
     // Add "Select all" set for each rangeValue
     for (var rangeValue in rangesList) {
-      chordSetsMapping[rangeValue]?["Select all"] 
-        = List<String>.from(chordList,);
+      chordSetsMapping[rangeValue]?["Select all"] = List<String>.from(
+        chordList,
+      );
     }
     notifyListeners();
   }
@@ -220,6 +253,55 @@ class MappingProvider extends ChangeNotifier {
         noteKeys.add(note);
       }
     }
+    notifyListeners();
+  }
+
+  Future<void> get loadMissionsJSON async {
+    final String jsonData = await rootBundle.loadString(
+      'assets/mapping/Missions.json',
+    );
+    final List<dynamic> items = await json.decode(jsonData);
+    for (var item in items) {
+      String campaign = item['Campaign'];
+      String filename = item['Filename'];
+      if (campaign.isNotEmpty && !campaigns.containsKey(campaign)) {
+        campaigns[campaign] = filename;
+      }
+
+      // for each item:
+      // add the campaign as a key to missions if it is not already present
+
+      // extract the notes from item['Notes'] to a List<String> by parsing on comma
+      // create a LevelInfo object from [item['Level'], item['NumNotes'], 
+      // item['NumTests'], item['NumQuestions'], item['PassingScore']]
+      // add the notes to the LevelInfo object using setNotes()
+
+      // create a MissionInfo object if one does not exist
+      // using [item['Mission'], item['Mode']]
+      // add the LevelInfo object to the MissionInfo object using addLevel()
+
+      // add the MissionInfo object to the missions map
+      // using the campaign and mission as keys
+      String mission = item['Mission'];
+      String mode = item['Mode'];
+      String level = item['Level'];
+      int numNotes = int.parse(item['NumNotes']);
+      int numTests = int.parse(item['NumTests']);  
+      int numQuestions = int.parse(item['NumQuestions']);
+      int passingScore = int.parse(item['PassingScore']);
+      String notesStr = item['Notes'];
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).
+      toList();
+      LevelInfo levelInfo = LevelInfo(campaign, mission, level, numNotes, numTests, 
+        numQuestions, passingScore);
+      levelInfo.setNotes(notes);
+      missions[campaign] ??= {};
+      missions[campaign]![mission] ??= MissionInfo(campaign, mission, mode);
+      missions[campaign]![mission]!.addLevel(levelInfo);
+
+    }
+
+
     notifyListeners();
   }
 }

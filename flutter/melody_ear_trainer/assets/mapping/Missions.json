@@ -8,7 +8,7 @@
     "NumNotes": "4",
     "NumTests": "3",
     "NumQuestions": "10",
-    "Passing Score": "9",
+    "PassingScore": "9",
     "Notes": "do,re,mi"
   },
   {
@@ -20,7 +20,7 @@
     "NumNotes": "4",
     "NumTests": "4",
     "NumQuestions": "10",
-    "Passing Score": "9",
+    "PassingScore": "9",
     "Notes": "do,re,mi,do1"
   },
   {
@@ -32,7 +32,7 @@
     "NumNotes": "4",
     "NumTests": "5",
     "NumQuestions": "10",
-    "Passing Score": "9",
+    "PassingScore": "9",
     "Notes": "do,re,mi,fa,do1"
   },
   {
@@ -44,7 +44,7 @@
     "NumNotes": "4",
     "NumTests": "3",
     "NumQuestions": "10",
-    "Passing Score": "9",
+    "PassingScore": "9",
     "Notes": "do,re,nu"
   },
   {
@@ -56,7 +56,7 @@
     "NumNotes": "4",
     "NumTests": "4",
     "NumQuestions": "10",
-    "Passing Score": "9",
+    "PassingScore": "9",
     "Notes": "do,re,nu,do1"
   },
   {
@@ -68,7 +68,7 @@
     "NumNotes": "4",
     "NumTests": "5",
     "NumQuestions": "10",
-    "Passing Score": "9",
+    "PassingScore": "9",
     "Notes": "do,re,nu,fa,do1"
   }
 ]

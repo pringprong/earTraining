@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'utils/colors.dart';
 import 'campaign.dart';
 import 'utils/helper.dart';
+import 'package:provider/provider.dart';
+import 'providers/mapping_provider.dart';
 
 class MelodyHomePage extends StatefulWidget {
   const MelodyHomePage({super.key});
@@ -12,6 +14,10 @@ class MelodyHomePage extends StatefulWidget {
 class _MelodyHomePageState extends State<MelodyHomePage> {
   @override
   Widget build(BuildContext context) {
+    // obtain campaigns map from MappingProvider
+    final mappingProvider = Provider.of<MappingProvider>(context);
+    final Map<String, String> campaigns = mappingProvider.getCampaigns;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -20,43 +26,49 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
         child: Center(
           child: Column(
             children: [
-              // First row
-              Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      child: Card(
-                        color: c5f4,
-                        child: SizedBox(
-                          height: 100,
-                          child: Center(
-                            child: const Text(
-                              "Campaign 1: Diatonic major",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: buttonForegroundColor,
+              // generate one button per campaign entry
+              if (campaigns.isEmpty) ...[
+                TextRow('No campaigns available'),
+              ] else
+                ...campaigns.entries.expand((entry) sync* {
+                  yield Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          child: Card(
+                            color: c5f4,
+                            child: SizedBox(
+                              height: 100,
+                              child: Center(
+                                child: Text(
+                                  entry.key,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: buttonForegroundColor,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              campaignTree.routeName,
+                              arguments: CampaignArguments(
+                                entry.key,
+                                entry.value.toString(),
+                              ),
+                            );
+                          },
                         ),
                       ),
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          campaignTree.routeName,
-                          arguments: CampaignArguments(
-                            'Campaign 1: Diatonic major'
-                            , 'diatonic_major.json'
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                    ],
+                  );
+                  yield verticalSpacer();
+                }).toList(),
               verticalSpacer(),
-               Row(
+              Row(
                 children: [
                   Expanded(
                     child: GestureDetector(
@@ -77,15 +89,14 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, '/frontpage',
-                        );
+                        Navigator.pushNamed(context, '/frontpage');
                       },
                     ),
                   ),
                 ],
               ),
               verticalSpacer(),
-             Row(
+              Row(
                 children: [
                   Expanded(
                     child: GestureDetector(

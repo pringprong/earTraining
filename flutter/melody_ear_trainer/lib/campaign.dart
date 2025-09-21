@@ -6,6 +6,8 @@ import 'utils/helper.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'mission.dart';
+import 'providers/mapping_provider.dart';
+import 'package:provider/provider.dart';
 
 class campaignTree extends StatefulWidget {
   const campaignTree({super.key});
@@ -88,6 +90,9 @@ class _campaignTreeState extends State<campaignTree> {
     final args =
         ModalRoute.of(context)!.settings.arguments as CampaignArguments;
     String title = args.title;
+    final mappingProvider = Provider.of<MappingProvider>(context);
+    final Map<String, Map<String, MissionInfo>> missions =
+        mappingProvider.getMissions;
 
     return Scaffold(
       appBar: AppBar(),
@@ -125,12 +130,15 @@ class _campaignTreeState extends State<campaignTree> {
                           final shape =
                               (nodeValue['shape'] ?? 'Rectangle').toString();
                           final label = nodeValue['label'] as String?;
-                          final info = nodeValue['info'] as String?;
+                          //final info = nodeValue['info'] as String?;
                           if (shape.toLowerCase() == 'circle') {
-                            return circleWidget(label, info);
+                            return circleWidget(label);
                           } else {
                             // Rectangle: interactive — push Mission
-                            return rectangleWidget(context, label, info, title);
+                            MissionInfo missionInfo = missions[title]![label]!;
+
+                            //MissionInfo(campaignName: title, missionName: label ?? 'no name', mode: info ?? 'no mode');
+                            return rectangleWidget(context, missionInfo);
                           }
                         },
                       ),
@@ -142,7 +150,7 @@ class _campaignTreeState extends State<campaignTree> {
     );
   }
 
-  Widget circleWidget(String? title, String? info) {
+  Widget circleWidget(String? title) {
     String titleText = title ?? 'no title';
     //String infoText = info ?? '';
     return Container(
@@ -151,7 +159,7 @@ class _campaignTreeState extends State<campaignTree> {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white,
+        color: Colors.black,
         boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
       ),
       padding: EdgeInsets.all(8),
@@ -159,22 +167,11 @@ class _campaignTreeState extends State<campaignTree> {
     );
   }
 
-  Widget rectangleWidget(
-    BuildContext context,
-    String? title,
-    String? info,
-    String campaignTitle,
-  ) {
-    String titleText = title ?? 'no title';
-    String infoText = info ?? '';
+  Widget rectangleWidget(BuildContext context, MissionInfo missionInfo) {
     return InkWell(
       onTap: () {
         // create MissionArguments and navigate to Mission page
-        Navigator.pushNamed(
-          context,
-          Mission.routeName,
-          arguments: MissionArguments(campaignTitle, titleText, infoText),
-        );
+        Navigator.pushNamed(context, Mission.routeName, arguments: missionInfo);
       },
       child: Container(
         padding: EdgeInsets.all(4),
@@ -182,7 +179,10 @@ class _campaignTreeState extends State<campaignTree> {
           borderRadius: BorderRadius.circular(4),
           boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
         ),
-        child: Text(titleText + '\n' + infoText, textAlign: TextAlign.center),
+        child: Text(
+          missionInfo.missionName + '\n' + missionInfo.mode,
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
