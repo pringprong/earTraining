@@ -222,10 +222,20 @@ class MissionInfo {
   final String missionName;
   final String mode;
   List<LevelInfo> levels = [];
+  GeneralProvider? settings;
+
   MissionInfo(this.campaignName, this.missionName, this.mode);
 
   void addLevel(LevelInfo level) {
     levels.add(level);
+  }
+
+  void setSettings(GeneralProvider missionSettings) {
+    settings = missionSettings;
+  }
+
+  GeneralProvider? getSettings() {
+    return settings;
   }
 }
 
@@ -238,6 +248,7 @@ class LevelInfo {
   final int numQuestions;
   final int passingScore;
   List<String> notes = [];
+  GeneralProvider? settings;
 
   LevelInfo(
     this.campaignName,
@@ -251,5 +262,9 @@ class LevelInfo {
 
   setNotes(List<String> noteList) {
     notes = noteList;
+  }
+
+  void setSettings(GeneralProvider levelSettings) {
+    settings = levelSettings;
   }
 }

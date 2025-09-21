@@ -759,3 +759,35 @@ class chordMelodySingingSettings extends GeneralProvider {
   @override
   int solfegeRepeatsDefault = 1;
 }
+
+class missionSettingsProvider extends GeneralProvider {
+  @override
+  String saveName = "minimal_settings";
+
+  @override
+  int numberOfNotesDefault = 5;
+
+  @override
+  String startingDoDefault = "do";
+
+  @override
+  String endingDoDefault = "do";
+
+  @override
+  String startingDo = "do";
+
+  @override
+  String endingDo = "do";
+
+  @override
+  String chordFrequencyDefault = "Never";
+
+  @override
+  int melodyRepeatsDefault = 1;
+
+  @override
+  int spokenRepeatsDefault = 1;
+  
+  @override
+  int solfegeRepeatsDefault = 1;
+}
