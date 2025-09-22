@@ -46,7 +46,7 @@ class _campaignTreeState extends State<campaignTree> {
     if (!_loaded && !_loading) {
       final args =
           ModalRoute.of(context)!.settings.arguments as CampaignArguments;
-      final filename = args.filename;
+      final filename = args.CampaignFilename;
       _loading = true;
       _loadJsonFromFile(filename);
     }
@@ -87,9 +87,8 @@ class _campaignTreeState extends State<campaignTree> {
 
   @override
   Widget build(BuildContext context) {
-    final args =
+    final campArgs =
         ModalRoute.of(context)!.settings.arguments as CampaignArguments;
-    String title = args.title;
     final mappingProvider = Provider.of<MappingProvider>(context);
     final Map<String, Map<String, MissionInfo>> missions =
         mappingProvider.getMissions;
@@ -101,7 +100,7 @@ class _campaignTreeState extends State<campaignTree> {
               ? Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  headingRow(title),
+                  headingRow(campArgs.CampaignName),
                   verticalSpacer(),
                   Expanded(
                     child: InteractiveViewer(
@@ -130,14 +129,13 @@ class _campaignTreeState extends State<campaignTree> {
                           final shape =
                               (nodeValue['shape'] ?? 'Rectangle').toString();
                           final label = nodeValue['label'] as String?;
-                          //final info = nodeValue['info'] as String?;
                           if (shape.toLowerCase() == 'circle') {
                             return circleWidget(label);
                           } else {
                             // Rectangle: interactive — push Mission
-                            MissionInfo missionInfo = missions[title]![label]!;
-
-                            //MissionInfo(campaignName: title, missionName: label ?? 'no name', mode: info ?? 'no mode');
+                            MissionInfo missionInfo =
+                                missions[campArgs
+                                    .CampaignID]![nodeValue['missionid']]!;
                             return rectangleWidget(context, missionInfo);
                           }
                         },
@@ -179,8 +177,8 @@ class _campaignTreeState extends State<campaignTree> {
           borderRadius: BorderRadius.circular(4),
           boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
         ),
-        child: Text(
-          missionInfo.missionName + '\n' + missionInfo.mode,
+        child: Text("Mission name: " +
+          missionInfo.MissionName + '\nMode: ' + missionInfo.MissionMode,
           textAlign: TextAlign.center,
         ),
       ),

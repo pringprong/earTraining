@@ -16,7 +16,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
   Widget build(BuildContext context) {
     // obtain campaigns map from MappingProvider
     final mappingProvider = Provider.of<MappingProvider>(context);
-    final Map<String, String> campaigns = mappingProvider.getCampaigns;
+    final Map<String, CampaignArguments> campaigns =
+        mappingProvider.getCampaigns;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -31,6 +32,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                 TextRow('No campaigns available'),
               ] else
                 ...campaigns.entries.expand((entry) sync* {
+                  CampaignArguments campArgs = entry.value;
                   yield Row(
                     children: [
                       Expanded(
@@ -41,7 +43,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               height: 100,
                               child: Center(
                                 child: Text(
-                                  entry.key,
+                                  campArgs.CampaignName,
                                   style: const TextStyle(
                                     fontSize: 20,
                                     color: buttonForegroundColor,
@@ -55,11 +57,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             Navigator.pushNamed(
                               context,
                               campaignTree.routeName,
-                              arguments: CampaignArguments(
-                                entry.key,
-                                entry.value.toString(),
-                              ),
-                            );
+                              arguments: campArgs
+                              );
                           },
                         ),
                       ),

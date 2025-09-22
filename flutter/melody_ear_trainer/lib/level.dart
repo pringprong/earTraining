@@ -15,9 +15,9 @@ class _LevelState extends State<Level> {
   Widget build(BuildContext context) {
     final levelInfo =
         ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    String campaignTitle = levelInfo.campaignName;
-    String missionTitle = levelInfo.missionName;
-    String levelTitle = levelInfo.levelName;
+    String campaignTitle = levelInfo.CampaignName;
+    String missionTitle = levelInfo.MissionName;
+    String levelTitle = levelInfo.LevelName;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -29,10 +29,75 @@ class _LevelState extends State<Level> {
             children: [
               headingRow(campaignTitle),
               verticalSpacer(),
-              TextRow(missionTitle),
+              TextRow("Mission name: " + missionTitle),
               verticalSpacer(),
-              TextRow(levelTitle),
+              TextRow("Level name: " + levelTitle),
               verticalSpacer(),
+                           Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: c2f3,
+              foregroundColor: buttonForegroundColor,
+              padding: const EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Practice", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+        ),
+      ],
+    ),
+              verticalSpacer(),
+             Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: c2f3,
+              foregroundColor: buttonForegroundColor,
+              padding: const EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Hands free practice", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+        ),
+      ],
+    ),
+              verticalSpacer(),
+             Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: c2f3,
+              foregroundColor: buttonForegroundColor,
+              padding: const EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+
+
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Test", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+        ),
+      ],
+    ),
+
             ],
           ),
         ),

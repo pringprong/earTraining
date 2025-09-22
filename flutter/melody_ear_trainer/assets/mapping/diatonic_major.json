@@ -3,17 +3,20 @@
         {
             "id": 1,
             "shape": "Circle",
-            "label": "Start"
+            "label": "Start",
+            "missionid": ""
         },
         {
             "id": 2,
             "shape": "Rectangle",
-            "label": "Mission 1"
+            "label": "Mission 1",
+            "missionid": "c1m1"
         },
         {
             "id": 3,
             "shape": "Circle",
-            "label": "Campaign hub"
+            "label": "Campaign hub",
+            "missionid": ""
         }
     ],
     "edges": [

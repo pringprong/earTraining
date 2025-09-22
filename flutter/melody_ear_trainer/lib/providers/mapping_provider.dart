@@ -41,12 +41,11 @@ class MappingProvider extends ChangeNotifier {
   Map<String, double> noteColorFactors = {};
 
   // These are from Missions.json
-  Map<String, String> campaigns = {};
+  Map<String, CampaignArguments> campaigns = {};
   // the first key is the campaign
   // the second key is the mission name
   // the value is a list of keys: Mode and Level
   Map<String, Map<String, MissionInfo>> missions = {};
-
 
   // Getters
   List<String> get getMappingKeys {
@@ -113,7 +112,7 @@ class MappingProvider extends ChangeNotifier {
     return noteColorFactors;
   }
 
-  Map<String, String> get getCampaigns {
+  Map<String, CampaignArguments> get getCampaigns {
     return campaigns;
   }
 
@@ -262,17 +261,22 @@ class MappingProvider extends ChangeNotifier {
     );
     final List<dynamic> items = await json.decode(jsonData);
     for (var item in items) {
-      String campaign = item['Campaign'];
-      String filename = item['Filename'];
-      if (campaign.isNotEmpty && !campaigns.containsKey(campaign)) {
-        campaigns[campaign] = filename;
+      String campaignID = item['CampaignID'];
+      String campaignName = item['CampaignName'];
+      String filename = item['CampaignFilename'];
+      if (campaignID.isNotEmpty && !campaigns.containsKey(campaignID)) {
+        campaigns[campaignID] = CampaignArguments(
+          campaignID,
+          campaignName,
+          filename,
+        );
       }
 
       // for each item:
       // add the campaign as a key to missions if it is not already present
 
       // extract the notes from item['Notes'] to a List<String> by parsing on comma
-      // create a LevelInfo object from [item['Level'], item['NumNotes'], 
+      // create a LevelInfo object from [item['Level'], item['NumNotes'],
       // item['NumTests'], item['NumQuestions'], item['PassingScore']]
       // add the notes to the LevelInfo object using setNotes()
 
@@ -282,25 +286,57 @@ class MappingProvider extends ChangeNotifier {
 
       // add the MissionInfo object to the missions map
       // using the campaign and mission as keys
-      String mission = item['Mission'];
-      String mode = item['Mode'];
-      String level = item['Level'];
+      String missionID = item['MissionID'];
+      String missionName = item['MissionName'];
+      String missionMode = item['MissionMode'];
+
+      missions[campaignID] ??= {};
+      missions[campaignID]![missionID] ??= MissionInfo(
+        campaignName,
+        missionID,
+        missionName,
+        missionMode,
+      );
+
+      String levelID = item['LevelID'];
+      String levelName = item['LevelName'];
       int numNotes = int.parse(item['NumNotes']);
-      int numTests = int.parse(item['NumTests']);  
+      int maxDistance = int.parse(item['MaxDistance']);
+      bool allowRepeatedNotes = bool.parse(item['AllowRepeatedNotes']);
+      String playbackSpeed = item['PlaybackSpeed'];
+      bool startWithDo = bool.parse(item['StartWithDo']);
+      bool endWithDo = bool.parse(item['EndWithDo']);
+      String startingDo = item['StartingDo'];
+      String endingDo = item['EndingDo'];
+      String chordFrequency = item['ChordFrequency'];
+      int numTests = int.parse(item['NumTests']);
       int numQuestions = int.parse(item['NumQuestions']);
       int passingScore = int.parse(item['PassingScore']);
+
       String notesStr = item['Notes'];
-      List<String> notes = notesStr.split(',').map((s) => s.trim()).
-      toList();
-      LevelInfo levelInfo = LevelInfo(campaign, mission, level, numNotes, numTests, 
-        numQuestions, passingScore);
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+
+      LevelInfo levelInfo = LevelInfo(
+        campaignName,
+        missionName,
+        levelID,
+        levelName,
+        numNotes,
+        maxDistance,
+        allowRepeatedNotes,
+        playbackSpeed,
+        startWithDo,
+        endWithDo,
+        startingDo,
+        endingDo,
+        chordFrequency,
+        numTests,
+        numQuestions,
+        passingScore,
+      );
       levelInfo.setNotes(notes);
-      missions[campaign] ??= {};
-      missions[campaign]![mission] ??= MissionInfo(campaign, mission, mode);
-      missions[campaign]![mission]!.addLevel(levelInfo);
-
+      missions[campaignID]![missionID]!.addLevel(levelInfo);
     }
-
 
     notifyListeners();
   }

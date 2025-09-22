@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'utils/colors.dart';
 import 'utils/helper.dart';
 import 'level.dart';
-import 'providers/general_provider.dart';
+//import 'providers/general_provider.dart';
 import 'missionSettings.dart';
 
 class Mission extends StatefulWidget {
@@ -19,11 +19,11 @@ class _MissionState extends State<Mission> {
     final missionInfo =
         ModalRoute.of(context)!.settings.arguments as MissionInfo;
     String campaignTitle = missionInfo.campaignName;
-    String missionTitle = missionInfo.missionName;
-    String mode = missionInfo.mode;
-    missionSettingsProvider ms = missionSettingsProvider();
+    String missionTitle = missionInfo.MissionName;
+    String mode = missionInfo.MissionMode;
+//    missionSettingsProvider ms = missionSettingsProvider();
 
-    missionInfo.setSettings(ms);
+    //missionInfo.setSettings(ms);
 
     final levels = missionInfo.levels;
 
@@ -37,9 +37,9 @@ class _MissionState extends State<Mission> {
             children: [
               headingRow(campaignTitle),
               verticalSpacer(),
-              TextRow(missionTitle),
+              TextRow("Mission name: " + missionTitle),
               verticalSpacer(),
-              subHeadingRow(mode),
+              subHeadingRow("Mode: " + mode),
               verticalSpacer(),
               Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -85,7 +85,7 @@ class _MissionState extends State<Mission> {
                         ],
                         rows:
                             levels.map((LevelInfo lvl) {
-                              lvl.setSettings(ms);
+//                              lvl.setSettings(ms);
                               return DataRow(
                                 // make the row selectable/clickable
                                 onSelectChanged: (selected) {
@@ -98,9 +98,9 @@ class _MissionState extends State<Mission> {
                                   }
                                 },
                                 cells: [
-                                  DataCell(Text(lvl.levelName)),
-                                  DataCell(Text(lvl.numTests.toString())),
-                                  DataCell(Text(lvl.passingScore.toString())),
+                                  DataCell(Text(lvl.LevelName)),
+                                  DataCell(Text(lvl.NumTests.toString())),
+                                  DataCell(Text(lvl.PassingScore.toString())),
                                 ],
                               );
                             }).toList(),

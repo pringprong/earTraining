@@ -7,51 +7,6 @@ abstract class GeneralProvider extends ChangeNotifier {
   /// Override in subclasses for different settings
   String saveName = "general_settings";
 
-  String defaultKey = "C";
-  String selectedKey = "C";
-
-  int numberOfNotesDefault = 5;
-  int numberOfNotes = 5;
-
-  int maxDistance = 7;
-  bool allowRepeatedNotes = false;
-  String selectedInstrument = "Piano";
-  int timeBetweenNotes = 900; // Time in milliseconds between notes
-  String truncateNotes = "1200"; // Truncate notes to 1200 milliseconds
-  String playbackSpeed = "Normal"; // Playback speed
-
-  bool startWithDo = true;
-  bool endWithDo = true;
-  String startingDoDefault = "";
-  String endingDoDefault = "";
-  String startingDo = ""; // Default starting note
-  String endingDo = ""; // Default ending note
-
-  String selectedOctave = "Middle octave"; // Default octave selection
-  String selectedScale = "Diatonic major"; // Default scale selection
-
-  String chordFrequencyDefault = "Every 4 notes";
-  String chordFrequency = "Every 4 notes"; // Default chord frequency
-  bool displayChordNames = false; // Whether to display chord names
-
-  int arpeggiateChordDelayGuitarDefault = 0;
-  int arpeggiateChordDelayGuitar = 0; // Default chord arpeggiation speed
-
-  int arpeggiateChordDelayPianoDefault = 100;
-  int arpeggiateChordDelayPiano = 100; // Default chord arpeggiation speed
-
-  int arpeggiateChordDelaySolfegeDefault = 500;
-  int arpeggiateChordDelaySolfege = 500; // Default chord arpeggiation speed
-
-  int arpeggiateChordDelaySpokenDefault = 600;
-  int arpeggiateChordDelaySpoken = 600; // Default chord arpeggiation speed
-
-  String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
-  bool allowRepeatedChords = false; // Allow repeated chords
-
-  String chordSetRange = "Middle"; // Default chord set range
-  String chordSet = "I_IV_V"; // Default chord set
-
   static const List<String> defaultNoteKeys = [
     "do",
     "re",
@@ -103,19 +58,171 @@ abstract class GeneralProvider extends ChangeNotifier {
     "do2",
   ];
 
-  Map<String, bool> noteSelection = {};
-  Map<String, bool> get getNoteSelection {
-    return noteSelection;
+  // Settings that are user preferences
+  // and will be set in the Mission Settings
+
+  String defaultKey = "C";
+  String selectedKey = "C";
+  String selectedInstrument = "Piano";
+
+  void setKeyAndInstrument(String newKey, String newInstrument) {
+    selectedKey = newKey;
+    selectedInstrument = newInstrument;
+
+    saveSettings();
+    notifyListeners();
   }
+
+  // Settings that will be fixed by the level
+  // Either because they are related to melody difficulty
+  // or because we don't want the user to be able to change them
+  // in the missions
+  Map<String, bool> noteSelection = {};
+
+  int numberOfNotesDefault = 5;
+  int numberOfNotes = 5;
+  int maxDistance = 7;
+  bool allowRepeatedNotes = false;
+  int timeBetweenNotes = 900; // Time in milliseconds between notes
+  String truncateNotes = "1200"; // Truncate notes to 1200 milliseconds
+  String playbackSpeed = "Normal"; // Playback speed
+
+  bool startWithDo = true;
+  bool endWithDo = true;
+  String startingDoDefault = "";
+  String endingDoDefault = "";
+  String startingDo = ""; // Default starting note
+  String endingDo = ""; // Default ending note
+
+  String chordFrequencyDefault = "Every 4 notes";
+  String chordFrequency = "Every 4 notes";
+
+  void setLevelDetails(
+    List<String> newSelectedKeys,
+    int newNumNotes,
+    int newMaxDistance,
+    bool newAllowRepeatedNotes,
+    String newPlaybackSpeed,
+    bool newStartWithDo,
+    bool newEndWithDo,
+    String newStartingDo,
+    String newEndingDo,
+    String newChordFrequency,
+  ) {
+    for (var key in noteKeys) {
+      noteSelection[key] = newSelectedKeys.contains(key);
+    }
+    numberOfNotes = newNumNotes;
+    maxDistance = newMaxDistance;
+    allowRepeatedNotes = newAllowRepeatedNotes;
+    playbackSpeed = newPlaybackSpeed;
+
+    switch (newPlaybackSpeed) {
+      case 'Very fast':
+        {
+          timeBetweenNotes = 300;
+          truncateNotes = '600';
+        }
+      case 'Fast':
+        {
+          timeBetweenNotes = 600;
+          truncateNotes = '900';
+        }
+      case 'Normal':
+        {
+          timeBetweenNotes = 900;
+          truncateNotes = '1200';
+        }
+      case 'Slow':
+        {
+          timeBetweenNotes = 1200;
+          truncateNotes = '1500';
+        }
+    }
+    startWithDo = newStartWithDo;
+    endWithDo = newEndWithDo;
+    startingDo = newStartingDo;
+    endingDo = newEndingDo;
+    chordFrequency = newChordFrequency;
+
+    saveSettings();
+    notifyListeners();
+  }
+
+  // only for levels that have chords:
+  int arpeggiateChordDelayGuitarDefault = 0;
+  int arpeggiateChordDelayGuitar = 0; // Default chord arpeggiation speed
+
+  int arpeggiateChordDelayPianoDefault = 100;
+  int arpeggiateChordDelayPiano = 100; // Default chord arpeggiation speed
+
+  int arpeggiateChordDelaySolfegeDefault = 500;
+  int arpeggiateChordDelaySolfege = 500; // Default chord arpeggiation speed
+
+  int arpeggiateChordDelaySpokenDefault = 600;
+  int arpeggiateChordDelaySpoken = 600; // Default chord arpeggiation speed
+
+  String arpeggiateChordOrder = "Ascending"; // Default arpeggiate chord order
+  bool allowRepeatedChords = false; // Allow repeated chords
 
   // --- Selected Chords Map ---
   Map<String, bool> selectedChords = {
-    for (var key in "I_Rt,IV0_Sec,V0_Fir".split(','))
-      key: true, // Initialize all chords as not selected
+    for (var key in "I_Rt,IV0_Sec,V0_Fir".split(',')) key: true,
   };
+
+  voidSetChordDetails(
+    int newArpeggiateChordDelayGuitar,
+    int newArpeggiateChordDelayPiano,
+    int newArpeggiateChordDelaySolfege,
+    int newArpeggiateChordDelaySpoken,
+    String newArpeggiateChordOrder,
+    bool newAllowRepeatedChords,
+    List<String> newChords,
+  ) {
+    arpeggiateChordDelayGuitar = newArpeggiateChordDelayGuitar;
+    arpeggiateChordDelayPiano = newArpeggiateChordDelayPiano;
+    arpeggiateChordDelaySolfege = newArpeggiateChordDelaySolfege;
+    arpeggiateChordDelaySpoken = newArpeggiateChordDelaySpoken;
+    arpeggiateChordOrder = newArpeggiateChordOrder;
+    allowRepeatedChords = newAllowRepeatedChords;
+    selectedChords.clear();
+    for (var chord in newChords) {
+      if (chord.isNotEmpty) {
+        selectedChords[chord] = true;
+      }
+    }
+    saveSettings();
+    notifyListeners();
+  }
+
+  // Settings that are only relevant to the custom practice area
+  // and are ignored by the missions and levels
+
+  String selectedOctave = "Middle octave"; // Default octave selection
+  String selectedScale = "Diatonic major"; // Default scale selection
+  String chordSetRange = "Middle"; // Default chord set range
+  String chordSet = "I_IV_V"; // Default chord set
+
+  // settings that are ignored by everyone
+  bool displayChordNames = false; // Whether to display chord names
+
+  // settings for the handsfree
+  int numberOfRounds = 5;
+  int melodyRepeatsDefault = 3;
+  int melodyRepeats = 3;
+  int spokenRepeatsDefault = 1;
+  int spokenRepeats = 1;
+  int solfegeRepeatsDefault = 1;
+  int solfegeRepeats = 1;
+  String handsfreeInstrument = "Alternate";
+  int timeDelayRepeat = 5;
 
   GeneralProvider() {
     loadSettings();
+  }
+
+  Map<String, bool> get getNoteSelection {
+    return noteSelection;
   }
 
   String get getSelectedKey {
@@ -333,7 +440,6 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   /******** Handsfree listening settings  ********/
 
-  int numberOfRounds = 5;
   int get getNumberOfRounds {
     return numberOfRounds;
   }
@@ -344,8 +450,6 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int melodyRepeatsDefault = 3;
-  int melodyRepeats = 3;
   int get getMelodyRepeats {
     return melodyRepeats;
   }
@@ -356,8 +460,6 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int spokenRepeatsDefault = 1;
-  int spokenRepeats = 1;
   int get getSpokenRepeats {
     return spokenRepeats;
   }
@@ -368,8 +470,6 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int solfegeRepeatsDefault = 1;
-  int solfegeRepeats = 1;
   int get getSolfegeRepeats {
     return solfegeRepeats;
   }
@@ -380,7 +480,6 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String handsfreeInstrument = "Alternate";
   String get getHandsfreeInstrument {
     return handsfreeInstrument;
   }
@@ -391,7 +490,6 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int timeDelayRepeat = 5;
   int get getTimeDelayRepeat {
     return timeDelayRepeat;
   }
@@ -470,13 +568,17 @@ abstract class GeneralProvider extends ChangeNotifier {
     chordFrequency = settings['chordFrequency'] ?? chordFrequencyDefault;
     displayChordNames = settings['displayChordNames'] ?? false;
     arpeggiateChordDelayGuitar =
-        settings['arpeggiateChordDelayGuitar'] ?? arpeggiateChordDelayGuitarDefault;
+        settings['arpeggiateChordDelayGuitar'] ??
+        arpeggiateChordDelayGuitarDefault;
     arpeggiateChordDelayPiano =
-        settings['arpeggiateChordDelayPiano'] ?? arpeggiateChordDelayPianoDefault;
+        settings['arpeggiateChordDelayPiano'] ??
+        arpeggiateChordDelayPianoDefault;
     arpeggiateChordDelaySolfege =
-        settings['arpeggiateChordDelaySolfege'] ?? arpeggiateChordDelaySolfegeDefault;
+        settings['arpeggiateChordDelaySolfege'] ??
+        arpeggiateChordDelaySolfegeDefault;
     arpeggiateChordDelaySpoken =
-        settings['arpeggiateChordDelaySpoken'] ?? arpeggiateChordDelaySpokenDefault;
+        settings['arpeggiateChordDelaySpoken'] ??
+        arpeggiateChordDelaySpokenDefault;
     arpeggiateChordOrder = settings['arpeggiateChordOrder'] ?? "Ascending";
     allowRepeatedChords = settings['allowRepeatedChords'] ?? false;
     chordSetRange = settings['chordSetRange'] ?? "Middle";
@@ -489,8 +591,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     );
     selectedChords = Map<String, bool>.from(
       jsonDecode(
-        settings['selectedChords'] ??
-            '{"I_Rt":true,"IV_Rt":true,"V_Rt":true}',
+        settings['selectedChords'] ?? '{"I_Rt":true,"IV_Rt":true,"V_Rt":true}',
       ),
     );
     numberOfRounds = settings['numberOfRounds'] ?? 5;
@@ -571,7 +672,7 @@ class MelodyIDSettings extends GeneralProvider {
 
   @override
   int spokenRepeatsDefault = 1;
-  
+
   @override
   int solfegeRepeatsDefault = 2;
 }
@@ -603,7 +704,7 @@ class MelodySingingSettings extends GeneralProvider {
 
   @override
   int spokenRepeatsDefault = 1;
-  
+
   @override
   int solfegeRepeatsDefault = 1;
 }
@@ -641,7 +742,7 @@ class chordIDSettings extends GeneralProvider {
 
   @override
   int spokenRepeatsDefault = 0;
-  
+
   @override
   int solfegeRepeatsDefault = 2;
 }
@@ -679,7 +780,7 @@ class chordSingingSettings extends GeneralProvider {
 
   @override
   int spokenRepeatsDefault = 1;
-  
+
   @override
   int solfegeRepeatsDefault = 1;
 }
@@ -717,7 +818,7 @@ class chordMelodyIDSettings extends GeneralProvider {
 
   @override
   int spokenRepeatsDefault = 0;
-  
+
   @override
   int solfegeRepeatsDefault = 2;
 }
@@ -787,7 +888,7 @@ class missionSettingsProvider extends GeneralProvider {
 
   @override
   int spokenRepeatsDefault = 1;
-  
+
   @override
   int solfegeRepeatsDefault = 1;
 }

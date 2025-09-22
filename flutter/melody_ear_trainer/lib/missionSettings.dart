@@ -23,7 +23,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
     ModalRoute.of(context)!.settings.arguments as MissionInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
     //final generalProvider = missionInfo.getSettings() ?? missionSettings();
-    final String missionName = missionInfo.missionName;
+    final String missionName = missionInfo.MissionName;
 
     return Scaffold(
       appBar: AppBar(title: Text(missionName + ' settings')),

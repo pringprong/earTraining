@@ -211,60 +211,84 @@ int chordNameSort(String? a, String? b) {
 }
 
 class CampaignArguments {
-  final String title;
-  final String filename;
+  final String CampaignID;
+  final String CampaignName;
+  final String CampaignFilename;
 
-  CampaignArguments(this.title, this.filename);
+  CampaignArguments(this.CampaignID, this.CampaignName, this.CampaignFilename);
 }
 
 class MissionInfo {
   final String campaignName;
-  final String missionName;
-  final String mode;
+  final String MissionID;
+  final String MissionName;
+  final String MissionMode;
   List<LevelInfo> levels = [];
-  GeneralProvider? settings;
 
-  MissionInfo(this.campaignName, this.missionName, this.mode);
+  MissionInfo(
+    this.campaignName,
+    this.MissionID,
+    this.MissionName,
+    this.MissionMode,
+  );
 
   void addLevel(LevelInfo level) {
     levels.add(level);
   }
 
-  void setSettings(GeneralProvider missionSettings) {
-    settings = missionSettings;
-  }
+  // void setSettings(GeneralProvider missionSettings) {
+  //   settings = missionSettings;
+  // }
 
-  GeneralProvider? getSettings() {
-    return settings;
-  }
+  // GeneralProvider? getSettings() {
+  //   return settings;
+  // }
 }
 
 class LevelInfo {
-  final String campaignName;
-  final String missionName;
-  final String levelName;
-  final int numNotes;
-  final int numTests;
-  final int numQuestions;
-  final int passingScore;
-  List<String> notes = [];
-  GeneralProvider? settings;
+  final String CampaignName;
+  final String MissionName;
+  final String LevelID;
+  final String LevelName;
+  List<String> Notes = [];
+  final int NumNotes;
+  final int MaxDistance;
+  final bool AllowRepeatedNotes;
+  final String PlaybackSpeed;
+  final bool StartWithDo;
+  final bool EndWithDo;
+  final String StartingDo;
+  final String EndingDo;
+  final String ChordFrequency;
+  final int NumTests;
+  final int NumQuestions;
+  final int PassingScore;
+  //GeneralProvider? settings;
 
   LevelInfo(
-    this.campaignName,
-    this.missionName,
-    this.levelName,
-    this.numNotes,
-    this.numTests,
-    this.numQuestions,
-    this.passingScore,
+    this.CampaignName,
+    this.MissionName,
+    this.LevelID,
+    this.LevelName,
+  this.NumNotes,
+  this.MaxDistance,
+  this.AllowRepeatedNotes,
+  this.PlaybackSpeed,
+  this.StartWithDo,
+  this.EndWithDo,
+  this.StartingDo,
+  this.EndingDo,
+  this.ChordFrequency,
+  this.NumTests,
+  this.NumQuestions,
+  this.PassingScore,
   );
 
   setNotes(List<String> noteList) {
-    notes = noteList;
+    Notes = noteList;
   }
 
-  void setSettings(GeneralProvider levelSettings) {
-    settings = levelSettings;
-  }
+  // void setSettings(GeneralProvider levelSettings) {
+  //   settings = levelSettings;
+  // }
 }
