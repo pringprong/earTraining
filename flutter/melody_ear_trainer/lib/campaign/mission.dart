@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'utils/colors.dart';
-import 'utils/helper.dart';
+import '../utils/colors.dart';
+import '../utils/helper.dart';
 import 'level.dart';
 //import 'providers/general_provider.dart';
 import 'missionSettings.dart';

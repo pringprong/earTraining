@@ -5,7 +5,7 @@ import 'help.dart';
 import 'providers/general_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/mapping_provider.dart';
-import 'frontpage.dart';
+import 'custom.dart';
 import 'melodyID/melodyID.dart';
 import 'melodyID/melodyIDsettings.dart';
 import 'melodyID/melodyIDhandsfree.dart';
@@ -24,11 +24,11 @@ import 'chordMelodyID/chordMelodyIDhandsfree.dart';
 import 'chordMelodySinging/chordMelodySinging.dart';
 import 'chordMelodySinging/chordMelodySingingHandsfree.dart';
 import 'chordMelodySinging/chordMelodySingingSettings.dart';
-import 'campaign.dart';
+import 'campaign/campaign.dart';
 import 'homepage.dart';
-import 'mission.dart';
-import 'level.dart';
-import 'missionSettings.dart';
+import 'campaign/mission.dart';
+import 'campaign/level.dart';
+import 'campaign/missionSettings.dart';
 
 // import 'package:logging/logging.dart';
 
@@ -108,8 +108,7 @@ void main() async {
         ),
         ChangeNotifierProvider<missionSettingsProvider>(
           create: (context) {
-            final msp =
-                missionSettingsProvider();
+            final msp = missionSettingsProvider();
             return msp;
           },
         ),
@@ -133,7 +132,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
       routes: {
         '/home': (context) => MelodyHomePage(),
         '/help': (context) => HelpPage(),
-        '/frontpage': (context) => MelodyFrontPage(),
+        '/frontpage': (context) => CustomFrontPage(),
         '/melodyID': (context) => MelodyID(audioController: audioController),
         '/melodyIDsettings':
             (context) => MelodyIDSettingsPage(audioController: audioController),

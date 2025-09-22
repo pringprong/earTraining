@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'utils/colors.dart';
-import 'campaign.dart';
+import 'campaign/campaign.dart';
 import 'utils/helper.dart';
 import 'package:provider/provider.dart';
 import 'providers/mapping_provider.dart';

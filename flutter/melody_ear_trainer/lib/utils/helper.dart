@@ -235,19 +235,12 @@ class MissionInfo {
   void addLevel(LevelInfo level) {
     levels.add(level);
   }
-
-  // void setSettings(GeneralProvider missionSettings) {
-  //   settings = missionSettings;
-  // }
-
-  // GeneralProvider? getSettings() {
-  //   return settings;
-  // }
 }
 
 class LevelInfo {
   final String CampaignName;
   final String MissionName;
+  final String MissionMode;
   final String LevelID;
   final String LevelName;
   List<String> Notes = [];
@@ -268,20 +261,21 @@ class LevelInfo {
   LevelInfo(
     this.CampaignName,
     this.MissionName,
+    this.MissionMode,
     this.LevelID,
     this.LevelName,
-  this.NumNotes,
-  this.MaxDistance,
-  this.AllowRepeatedNotes,
-  this.PlaybackSpeed,
-  this.StartWithDo,
-  this.EndWithDo,
-  this.StartingDo,
-  this.EndingDo,
-  this.ChordFrequency,
-  this.NumTests,
-  this.NumQuestions,
-  this.PassingScore,
+    this.NumNotes,
+    this.MaxDistance,
+    this.AllowRepeatedNotes,
+    this.PlaybackSpeed,
+    this.StartWithDo,
+    this.EndWithDo,
+    this.StartingDo,
+    this.EndingDo,
+    this.ChordFrequency,
+    this.NumTests,
+    this.NumQuestions,
+    this.PassingScore,
   );
 
   setNotes(List<String> noteList) {

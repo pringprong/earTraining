@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'utils/colors.dart';
 
-class MelodyFrontPage extends StatefulWidget {
-  const MelodyFrontPage({super.key});
+class CustomFrontPage extends StatefulWidget {
+  const CustomFrontPage({super.key});
   @override
-  State<MelodyFrontPage> createState() => _MelodyFrontPageState();
+  State<CustomFrontPage> createState() => _CustomFrontPageState();
 }
 
-class _MelodyFrontPageState extends State<MelodyFrontPage> {
+class _CustomFrontPageState extends State<CustomFrontPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

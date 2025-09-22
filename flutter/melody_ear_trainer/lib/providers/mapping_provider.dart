@@ -319,6 +319,7 @@ class MappingProvider extends ChangeNotifier {
       LevelInfo levelInfo = LevelInfo(
         campaignName,
         missionName,
+        missionMode,
         levelID,
         levelName,
         numNotes,

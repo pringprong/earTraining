@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
-import '../providers/general_provider.dart';
-import '../providers/mapping_provider.dart';
+import '../../providers/general_provider.dart';
+import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
-import '../utils/colors.dart';
-import '../utils/helper.dart';
-
+import '../../utils/colors.dart';
+import '../../utils/helper.dart';
 
 class missionSettingsPage extends StatefulWidget {
   const missionSettingsPage({super.key});
 
   static const String routeName = '/missionSettings';
   @override
-  State<missionSettingsPage> createState() =>
-      _missionSettingsPageState();
+  State<missionSettingsPage> createState() => _missionSettingsPageState();
 }
 
 class _missionSettingsPageState extends State<missionSettingsPage> {
-
   @override
   Widget build(BuildContext context) {
-      final missionInfo =
-    ModalRoute.of(context)!.settings.arguments as MissionInfo;
+    final missionInfo =
+        ModalRoute.of(context)!.settings.arguments as MissionInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
-    //final generalProvider = missionInfo.getSettings() ?? missionSettings();
     final String missionName = missionInfo.MissionName;
 
     return Scaffold(
@@ -31,7 +27,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
-            children: [             
+            children: [
               verticalSpacer(),
               subHeadingRow("Playback settings:"),
               Row(
@@ -54,7 +50,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                             .toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<chordMelodyIDSettings>().updateSelectedKey(
+                        context.read<missionSettingsProvider>().updateSelectedKey(
                           newkey: newValue,
                         );
                       }
@@ -72,7 +68,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                     hint: Text('Playback instrument'),
                     value:
                         context
-                            .watch<chordMelodyIDSettings>()
+                            .watch<missionSettingsProvider>()
                             .selectedInstrument,
                     items:
                         mappingProvider.getInstruments
@@ -86,14 +82,13 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context
-                            .read<chordMelodyIDSettings>()
+                            .read<missionSettingsProvider>()
                             .updateSelectedInstrument(instrument: newValue);
                       }
                     },
                   ),
                 ],
               ),
-
             ], // Children of Column
           ),
         ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:melody_ear_trainer/utils/colors.dart';
-import 'utils/helper.dart';
+import '../utils/helper.dart';
 //import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'mission.dart';
-import 'providers/mapping_provider.dart';
+import '../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 
 class campaignTree extends StatefulWidget {
