@@ -3,6 +3,9 @@ import '../../providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../utils/helper.dart';
+import 'levelMelodyID.dart';
+import 'levelMelodyIDhandsfree.dart';
+import 'levelMelodyIDtest.dart';
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -59,11 +62,13 @@ class _LevelState extends State<Level> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-                        if(levelInfo.MissionMode == "Melody ID") {
-                          
+                        if (levelInfo.MissionMode == "Melody ID") {
+                          Navigator.pushNamed(
+                            context,
+                            LevelMelodyID.routeName,
+                            arguments: levelInfo,
+                          );
                         }
-
-
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
@@ -84,7 +89,15 @@ class _LevelState extends State<Level> {
                         foregroundColor: buttonForegroundColor,
                         padding: const EdgeInsets.all(12.0),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (levelInfo.MissionMode == "Melody ID") {
+                          Navigator.pushNamed(
+                            context,
+                            LevelMelodyIDHandsFree.routeName,
+                            arguments: levelInfo,
+                          );
+                        }
+                      },
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
@@ -107,7 +120,15 @@ class _LevelState extends State<Level> {
                         foregroundColor: buttonForegroundColor,
                         padding: const EdgeInsets.all(12.0),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (levelInfo.MissionMode == "Melody ID") {
+                          Navigator.pushNamed(
+                            context,
+                            LevelMelodyIDTest.routeName,
+                            arguments: levelInfo,
+                          );
+                        }
+                      },
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text("Test", style: TextStyle(fontSize: 20)),

@@ -85,7 +85,6 @@ class _MissionState extends State<Mission> {
                         ],
                         rows:
                             levels.map((LevelInfo lvl) {
-//                              lvl.setSettings(ms);
                               return DataRow(
                                 // make the row selectable/clickable
                                 onSelectChanged: (selected) {

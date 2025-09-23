@@ -145,8 +145,8 @@ abstract class GeneralProvider extends ChangeNotifier {
     endingDo = newEndingDo;
     chordFrequency = newChordFrequency;
 
-    saveSettings();
-    notifyListeners();
+    //saveSettings();
+    //notifyListeners();
   }
 
   // only for levels that have chords:

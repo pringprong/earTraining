@@ -6,15 +6,15 @@ import '../utils/colors.dart';
 import '../melodyPageAbstract.dart';
 import '../utils/helper.dart';
 
-class LevelMelodyID extends MelodyPageAbstract {
-  const LevelMelodyID({super.key, required super.audioController}) : super();
+class LevelMelodyIDTest extends MelodyPageAbstract {
+  const LevelMelodyIDTest({super.key, required super.audioController}) : super();
 
-  static const String routeName = '/levelmelodyid';
+  static const String routeName = '/levelmelodyidtest';
   @override
-  LevelMelodyIDState createState() => LevelMelodyIDState();
+  LevelMelodyIDTestState createState() => LevelMelodyIDTestState();
 }
 
-class LevelMelodyIDState extends MelodyPageAbstractState {
+class LevelMelodyIDTestState extends MelodyPageAbstractState {
   @override
   Widget build(BuildContext context) {
     final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
@@ -36,8 +36,11 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
               verticalSpacer(),
               TextRow("Level name: " + levelInfo.LevelName),
               verticalSpacer(),
-              generateMelodyButton(generalProvider, mappingProvider, false),
+              plainText("Passing score: " + levelInfo.PassingScore.toString() 
+                + " / " + levelInfo.NumQuestions.toString()),
               verticalSpacer(),
+              //generateMelodyButton(generalProvider, mappingProvider, false),
+              //verticalSpacer(),
               subHeadingRow("Listen to generated melody:"),
               verticalSpacer(),
               playMelodyButtons(generalProvider, mappingProvider, false),
