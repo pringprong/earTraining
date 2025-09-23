@@ -32,6 +32,7 @@ import 'campaign/missionSettings.dart';
 import 'campaign/levelMelodyID.dart';
 import 'campaign/levelMelodyIDhandsfree.dart';
 import 'campaign/levelMelodyIDtest.dart';
+import 'campaign/levelTestResults.dart';
 
 // import 'package:logging/logging.dart';
 
@@ -182,6 +183,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
         campaignTree.routeName: (context) => campaignTree(),
         Mission.routeName: (context) => Mission(),
         Level.routeName: (context) => Level(),
+        LevelTestResultsPage.routeName: (context) => LevelTestResultsPage(),
         missionSettingsPage.routeName: (context) => missionSettingsPage(),
         LevelMelodyID.routeName:
             (context) => LevelMelodyID(audioController: audioController),
@@ -189,8 +191,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
             (context) =>
                 LevelMelodyIDHandsFree(audioController: audioController),
         LevelMelodyIDTest.routeName:
-            (context) =>
-                LevelMelodyIDTest(audioController: audioController),
+            (context) => LevelMelodyIDTest(audioController: audioController),
         // Add other routes here
       },
     );

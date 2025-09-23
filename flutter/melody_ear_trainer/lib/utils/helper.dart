@@ -286,3 +286,10 @@ class LevelInfo {
   //   settings = levelSettings;
   // }
 }
+
+class LevelTestResults{
+  LevelInfo levelInfo;
+  final int score;
+
+  LevelTestResults(this.levelInfo, this.score);
+}

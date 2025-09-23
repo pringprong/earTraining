@@ -3,24 +3,48 @@ import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/colors.dart';
-import '../melodyPageAbstract.dart';
+import '../testPageAbstract.dart';
 import '../utils/helper.dart';
+import 'levelTestResults.dart';
 
-class LevelMelodyIDTest extends MelodyPageAbstract {
-  const LevelMelodyIDTest({super.key, required super.audioController}) : super();
+class LevelMelodyIDTest extends TestPageAbstract {
+  const LevelMelodyIDTest({super.key, required super.audioController})
+    : super();
 
   static const String routeName = '/levelmelodyidtest';
   @override
   LevelMelodyIDTestState createState() => LevelMelodyIDTestState();
 }
 
-class LevelMelodyIDTestState extends MelodyPageAbstractState {
+class LevelMelodyIDTestState extends TestPageAbstractState {
+  LevelInfo levelInfo = LevelInfo(
+    "",
+    "",
+    "",
+    "",
+    "",
+    0,
+    0,
+    false,
+    "",
+    true,
+    true,
+    "",
+    ""
+        "",
+    "",
+    0,
+    0,
+    0,
+  );
+
   @override
   Widget build(BuildContext context) {
-    final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
+    levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
 
     final mappingProvider = Provider.of<MappingProvider>(context);
     final generalProvider = Provider.of<missionSettingsProvider>(context);
+    numberOfQuestions = levelInfo.NumQuestions;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Practice')),
@@ -36,18 +60,31 @@ class LevelMelodyIDTestState extends MelodyPageAbstractState {
               verticalSpacer(),
               TextRow("Level name: " + levelInfo.LevelName),
               verticalSpacer(),
-              plainText("Passing score: " + levelInfo.PassingScore.toString() 
-                + " / " + levelInfo.NumQuestions.toString()),
+              plainText(
+                "Passing score: " +
+                    levelInfo.PassingScore.toString() +
+                    " / " +
+                    levelInfo.NumQuestions.toString(),
+              ),
               verticalSpacer(),
-              //generateMelodyButton(generalProvider, mappingProvider, false),
-              //verticalSpacer(),
-              subHeadingRow("Listen to generated melody:"),
+              plainText(
+                "Current score: " +
+                    correctAnswers.toString() +
+                    " / " +
+                    currentRound.toString(),
+              ),
+              verticalSpacer(),
+              startTestButton(generalProvider, mappingProvider, false),
+              verticalSpacer(),
+              TextRow("Current question: " + currentRound.toString()),
+              verticalSpacer(),
+              subHeadingRow("Listen to melody again:"),
               verticalSpacer(),
               playMelodyButtons(generalProvider, mappingProvider, false),
               verticalSpacer(),
-              solfegeExpansionTile(generalProvider, mappingProvider),
-              verticalSpacer(),
-              subHeadingRow("Play the melody back:"),
+              //solfegeExpansionTile(generalProvider, mappingProvider),
+              //verticalSpacer(),
+              subHeadingRow("Enter the solfege for the melody:"),
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
@@ -55,15 +92,23 @@ class LevelMelodyIDTestState extends MelodyPageAbstractState {
               verticalSpacer(),
               clearAndBackspaceButtons(),
               verticalSpacer(),
-              compareButton(),
-              verticalSpacer(),
-              subHeadingRow("Listen to your melody:"),
-              verticalSpacer(),
-              userWrittenMelodyButtons(generalProvider, mappingProvider),
+              enterGuessbutton(generalProvider, mappingProvider, false),
+              //compareButton(),
+              //verticalSpacer(),
+              //subHeadingRow("Listen to your melody:"),
+              // verticalSpacer(),
+              // userWrittenMelodyButtons(generalProvider, mappingProvider),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void finishTest() {
+    LevelTestResults ltr = LevelTestResults(levelInfo, correctAnswers);
+    Navigator.pop(context);
+    Navigator.pushNamed(context, LevelTestResultsPage.routeName, arguments: ltr);
   }
 }
