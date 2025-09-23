@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:melody_ear_trainer/utils/colors.dart';
 import '../utils/helper.dart';
-//import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
-import 'dart:io';
+//import 'dart:io';
 import 'mission.dart';
 import '../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
+
 
 class campaignTree extends StatefulWidget {
   const campaignTree({super.key});
@@ -54,8 +55,11 @@ class _campaignTreeState extends State<campaignTree> {
 
   Future<void> _loadJsonFromFile(String filename) async {
     final path = 'assets/mapping/$filename';
+    final String contents = await rootBundle.loadString(path);
+    //final List<dynamic> items = await json.decode(jsonData);
+
     try {
-      final contents = await File(path).readAsString();
+      //final contents = await File(path).readAsString();
       final decoded = jsonDecode(contents) as Map<String, dynamic>;
       setState(() {
         json = decoded;
