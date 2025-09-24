@@ -1,0 +1,32 @@
+{
+    "nodes": [
+        {
+            "id": 1,
+            "shape": "Circle",
+            "label": "Start",
+            "missionid": ""
+        },
+        {
+            "id": 2,
+            "shape": "Rectangle",
+            "label": "Mission 1",
+            "missionid": "c3m1"
+        },
+        {
+            "id": 3,
+            "shape": "Circle",
+            "label": "Campaign hub",
+            "missionid": ""
+        }
+    ],
+    "edges": [
+        {
+            "from": 1,
+            "to": 2
+        },
+        {
+            "from": 2,
+            "to": 3
+        }
+    ]
+}

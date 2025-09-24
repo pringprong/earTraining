@@ -81,15 +81,6 @@ flutter:
   assets:
     - assets/audio/
     - assets/mapping/
-    - assets/mapping/Chords.json
-    - assets/mapping/ChordSets.json
-    - assets/mapping/diatonic_major.json
-    - assets/mapping/Mapping.json
-    - assets/mapping/Missions.json
-    - assets/mapping/natural_minor.json
-    - assets/mapping/Notes.json
-    - assets/mapping/Scales.json
-    - assets/mapping/Spoken.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -16,6 +16,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
   int currentRound = 0;
   int correctAnswers = 0;
   int numberOfQuestions = 0;
+  int completedQuestions = 0;
 
   Row startTestButton(
     GeneralProvider generalProvider,
@@ -33,6 +34,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
+              currentRound++;
               newGenerateChordMelody(
                 generalProvider,
                 mappingProvider,
@@ -85,11 +87,11 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
             ),
             onPressed: () {
               setState(() {
+                completedQuestions++;
                 // Compare writtenChordMelody with generated melody
                 melodiesSame = generatedChordMelody.sameAs(
                   userWrittenChordMelody,
                 );
-                currentRound++;
                 if (melodiesSame) {
                   setToCorrectGuess();
                   correctAnswers++;
@@ -97,7 +99,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                   setToIncorrectGuess();
                 }
               });
-              if (currentRound == numberOfQuestions + 1) {
+              if (completedQuestions == numberOfQuestions) {
                 // override this method in the implementation
                 finishTest();
               } else {

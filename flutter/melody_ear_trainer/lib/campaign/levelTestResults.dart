@@ -34,9 +34,9 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
             children: [
               headingRow(campaignTitle),
               verticalSpacer(),
-              TextRow("Mission name: " + missionTitle),
+              TextRow("Mission: " + missionTitle),
               verticalSpacer(),
-              TextRow("Level name: " + levelTitle),
+              TextRow("Level: " + levelTitle),
               verticalSpacer(),
               TextRow("your score: " + levelTestResults.score.toString() + " / " + levelTestResults.levelInfo.NumQuestions.toString()),
               verticalSpacer(),

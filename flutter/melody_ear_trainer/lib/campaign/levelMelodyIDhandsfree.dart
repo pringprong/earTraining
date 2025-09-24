@@ -38,9 +38,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
             children: [
                 headingRow(levelInfo.CampaignName),
               verticalSpacer(),
-              TextRow("Mission name: " + levelInfo.MissionName),
+              TextRow("Mission: " + levelInfo.MissionName),
               verticalSpacer(),
-              TextRow("Level name: " + levelInfo.LevelName),
+              TextRow("Level: " + levelInfo.LevelName),
               verticalSpacer(),
             subHeadingRow("Settings:"),
               Row(

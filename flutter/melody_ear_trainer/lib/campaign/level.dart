@@ -47,9 +47,9 @@ class _LevelState extends State<Level> {
             children: [
               headingRow(campaignTitle),
               verticalSpacer(),
-              TextRow("Mission name: " + missionTitle),
+              TextRow("Mission: " + missionTitle),
               verticalSpacer(),
-              TextRow("Level name: " + levelTitle),
+              TextRow("Level: " + levelTitle),
               verticalSpacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,

@@ -32,9 +32,9 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
             children: [
               headingRow(levelInfo.CampaignName),
               verticalSpacer(),
-              TextRow("Mission name: " + levelInfo.MissionName),
+              TextRow("Mission: " + levelInfo.MissionName),
               verticalSpacer(),
-              TextRow("Level name: " + levelInfo.LevelName),
+              TextRow("Level: " + levelInfo.LevelName),
               verticalSpacer(),
               generateMelodyButton(generalProvider, mappingProvider, false),
               verticalSpacer(),

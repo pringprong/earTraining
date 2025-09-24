@@ -37,7 +37,7 @@ class _MissionState extends State<Mission> {
             children: [
               headingRow(campaignTitle),
               verticalSpacer(),
-              TextRow("Mission name: " + missionTitle),
+              TextRow("Mission: " + missionTitle),
               verticalSpacer(),
               subHeadingRow("Mode: " + mode),
               verticalSpacer(),
