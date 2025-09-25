@@ -17,6 +17,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
   int correctAnswers = 0;
   int numberOfQuestions = 0;
   int completedQuestions = 0;
+  String previousQuestionResultText = "";
 
   Row startTestButton(
     GeneralProvider generalProvider,
@@ -88,6 +89,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
             onPressed: () {
               setState(() {
                 completedQuestions++;
+                currentRound++;
                 // Compare writtenChordMelody with generated melody
                 melodiesSame = generatedChordMelody.sameAs(
                   userWrittenChordMelody,
@@ -95,8 +97,10 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 if (melodiesSame) {
                   setToCorrectGuess();
                   correctAnswers++;
+                  previousQuestionResultText = "Correct! Next question:";
                 } else {
                   setToIncorrectGuess();
+                  previousQuestionResultText = "Incorrect. Next question:";
                 }
               });
               if (completedQuestions == numberOfQuestions) {
@@ -121,6 +125,26 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
               }
             },
           ),
+        ),
+      ],
+    );
+  }
+
+  Row previousQuestionResult() {
+    return Row(
+      // Solfege Text Area
+      children: [
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            border: Border.all(color: borderColor),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(previousQuestionResultText, style: TextStyle(fontSize: 22)),
         ),
       ],
     );

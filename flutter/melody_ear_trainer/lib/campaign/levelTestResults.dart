@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/campaign/levelMelodyIDtest.dart';
 //import '../../providers/general_provider.dart';
 //import 'package:provider/provider.dart';
 import '../utils/colors.dart';
@@ -18,12 +19,13 @@ class LevelTestResultsPage extends StatefulWidget {
 class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
   @override
   Widget build(BuildContext context) {
-    final levelTestResults = ModalRoute.of(context)!.settings.arguments as LevelTestResults;
+    final levelTestResults =
+        ModalRoute.of(context)!.settings.arguments as LevelTestResults;
     String campaignTitle = levelTestResults.levelInfo.CampaignName;
     String missionTitle = levelTestResults.levelInfo.MissionName;
     String levelTitle = levelTestResults.levelInfo.LevelName;
     //final GeneralProvider = Provider.of<missionSettingsProvider>(context);
- 
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -38,28 +40,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               verticalSpacer(),
               TextRow("Level: " + levelTitle),
               verticalSpacer(),
-              TextRow("your score: " + levelTestResults.score.toString() + " / " + levelTestResults.levelInfo.NumQuestions.toString()),
-              verticalSpacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: c2f3,
-                        foregroundColor: buttonForegroundColor,
-                        padding: const EdgeInsets.all(12.0),
-                      ),
-                      onPressed: () {
-
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Text("Do another test", style: TextStyle(fontSize: 20)),
-                      ),
-                    ),
-                  ),
-                ],
+              TextRow(
+                "your score: " +
+                    levelTestResults.score.toString() +
+                    " / " +
+                    levelTestResults.levelInfo.NumQuestions.toString(),
               ),
               verticalSpacer(),
               Row(
@@ -73,12 +58,17 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-
+                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                          context,
+                          LevelMelodyIDTest.routeName,
+                          arguments: levelTestResults.levelInfo,
+                        );
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          "Return to level main page",
+                          "Do another test",
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -98,11 +88,14 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-
+                        Navigator.pop(context);
                       },
                       child: FittedBox(
                         fit: BoxFit.fill,
-                        child: Text("Test", style: TextStyle(fontSize: 20)),
+                        child: Text(
+                          "Return to level main page",
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
                     ),
                   ),

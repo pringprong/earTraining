@@ -51,6 +51,8 @@ class _LevelState extends State<Level> {
               verticalSpacer(),
               TextRow("Level: " + levelTitle),
               verticalSpacer(),
+              TextRow("Level main page"),
+              verticalSpacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

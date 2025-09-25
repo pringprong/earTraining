@@ -19,8 +19,8 @@
     "EndingDo": "do",
     "ChordFrequency": "Never",
     "NumTests": "1",
-    "NumQuestions": "10",
-    "PassingScore": "9"
+    "NumQuestions": "2",
+    "PassingScore": "1"
   },
   {
     "CampaignID": "c1",

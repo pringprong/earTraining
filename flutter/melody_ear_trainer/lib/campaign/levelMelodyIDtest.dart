@@ -47,7 +47,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
     numberOfQuestions = levelInfo.NumQuestions;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Practice')),
+      appBar: AppBar(title: Text('Test')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -71,10 +71,12 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
                 "Current score: " +
                     correctAnswers.toString() +
                     " / " +
-                    currentRound.toString(),
+                    completedQuestions.toString(),
               ),
               verticalSpacer(),
               startTestButton(generalProvider, mappingProvider, false),
+              verticalSpacer(),
+              previousQuestionResult(),
               verticalSpacer(),
               TextRow("Current question: " + currentRound.toString()),
               verticalSpacer(),

@@ -181,7 +181,7 @@ class _campaignTreeState extends State<campaignTree> {
           borderRadius: BorderRadius.circular(4),
           boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
         ),
-        child: Text("Mission name: " +
+        child: Text("Mission: " +
           missionInfo.MissionName + '\nMode: ' + missionInfo.MissionMode,
           textAlign: TextAlign.center,
         ),
