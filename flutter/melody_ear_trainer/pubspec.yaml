@@ -48,12 +48,14 @@ dependencies:
   sqflite: ^2.2.8
   path_provider: ^2.0.15
   path: ^1.8.3
+  intl: ^0.18.0 # Use the latest version
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.14.4
+  sqflite_common_ffi: any
 
 flutter_launcher_icons:
   image_path: "assets/icons/icon.png"

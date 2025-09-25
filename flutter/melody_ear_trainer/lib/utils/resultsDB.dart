@@ -72,6 +72,11 @@ class TestResultsDB {
     return await db.insert('test_results', entry.toMap());
   }
 
+  Future deleteAllResults() async {
+    final db = await instance.database;
+    return await db.rawDelete("DELETE FROM test_results");
+  }
+
   Future<List<TestResult>> getResultsForLevel(String levelID) async {
     final db = await instance.database;
     final maps = await db.query(

@@ -132,6 +132,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
           );
         })
         .catchError((err) {
+          print(err);
           // Even if DB write fails, still navigate so user isn't blocked
           LevelTestResults ltr = LevelTestResults(levelInfo, correctAnswers);
           Navigator.pop(context);

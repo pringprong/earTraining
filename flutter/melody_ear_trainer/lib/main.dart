@@ -33,10 +33,11 @@ import 'campaign/levelMelodyID.dart';
 import 'campaign/levelMelodyIDhandsfree.dart';
 import 'campaign/levelMelodyIDtest.dart';
 import 'campaign/levelTestResults.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 // import 'package:logging/logging.dart';
 
-void main() async {
+Future main() async {
   // The `flutter_soloud` package logs everything
   // (from severe warnings to fine debug messages)
   // using the standard `package:logging`.
@@ -58,6 +59,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final audioController = AudioController();
   await audioController.initialize();
+  // Initialize FFI
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
   runApp(
     MultiProvider(
       providers: [

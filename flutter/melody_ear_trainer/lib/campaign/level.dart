@@ -7,6 +7,7 @@ import 'levelMelodyID.dart';
 import 'levelMelodyIDhandsfree.dart';
 import 'levelMelodyIDtest.dart';
 import '../utils/resultsDB.dart';
+import 'package:intl/intl.dart';
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -168,9 +169,9 @@ class _LevelState extends State<Level> {
                         // format timestamp to a friendly display
                         String when;
                         try {
-                          when =
-                              DateTime.parse(r.timestamp).toLocal().toString();
+                          when = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(r.timestamp));
                         } catch (_) {
+                          print("Couldn't parse timestamp");
                           when = r.timestamp;
                         }
                         return Row(

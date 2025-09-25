@@ -4,6 +4,7 @@ import 'providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'utils/resultsDB.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -83,6 +84,28 @@ class _HelpPageState extends State<HelpPage> {
                       fit: BoxFit.fill,
                       child: Text(
                         "Reset all settings to default",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              verticalSpacer(),
+              Row(
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: c3f3,
+                      foregroundColor: buttonForegroundColor,
+                      padding: const EdgeInsets.all(12.0),
+                    ),
+                    onPressed: () {
+                      TestResultsDB.instance.deleteAllResults();
+                    },
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Text(
+                        "Delete all results from database",
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -251,7 +274,8 @@ class _HelpPageState extends State<HelpPage> {
                     ),
                     verticalSpacer(),
                     plainText(
-                      '''The arpeggiate chord delay is set independently for Guitar, Piano, Solfege, and Spoken.'''),
+                      '''The arpeggiate chord delay is set independently for Guitar, Piano, Solfege, and Spoken.''',
+                    ),
                     verticalSpacer(),
                     subHeadingRow("2.2.4 Tonic"),
                     verticalSpacer(),
@@ -317,7 +341,9 @@ class _HelpPageState extends State<HelpPage> {
                       '''You can also set the duration of the pauses between each step of a round, and which instrument is used to initially play the melody.''',
                     ),
                     verticalSpacer(),
-                    plainText('''You can change the settings while the hands-free session is running, and the changes will take effect from the next round onwards.'''),
+                    plainText(
+                      '''You can change the settings while the hands-free session is running, and the changes will take effect from the next round onwards.''',
+                    ),
                     verticalSpacer(),
                     subHeadingRow("2.3.3 Controls"),
                     verticalSpacer(),
@@ -430,7 +456,9 @@ class _HelpPageState extends State<HelpPage> {
                       '''You can also set the duration of the pauses between each step of a round, and which instrument is used to play the melody.''',
                     ),
                     verticalSpacer(),
-                    plainText('''You can change the settings while the hands-free session is running, and the changes will take effect from the next round onwards.'''),
+                    plainText(
+                      '''You can change the settings while the hands-free session is running, and the changes will take effect from the next round onwards.''',
+                    ),
                     verticalSpacer(),
                     subHeadingRow("3.3.3 Controls"),
                     verticalSpacer(),
@@ -476,7 +504,9 @@ class _HelpPageState extends State<HelpPage> {
                     verticalSpacer(),
                     plainText("Version 2.0.0, 2025"),
                     verticalSpacer(),
-              plainText('''Developed by github contributor "pringprong"'''),
+                    plainText(
+                      '''Developed by github contributor "pringprong"''',
+                    ),
                     plainText(
                       "https://github.com/pringprong/earTraining/tree/main/flutter/melody_ear_trainer",
                     ),
