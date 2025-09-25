@@ -6,6 +6,7 @@ import '../utils/helper.dart';
 import 'levelMelodyID.dart';
 import 'levelMelodyIDhandsfree.dart';
 import 'levelMelodyIDtest.dart';
+import '../utils/resultsDB.dart';
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -138,6 +139,56 @@ class _LevelState extends State<Level> {
                     ),
                   ),
                 ],
+              ),
+              verticalSpacer(),
+
+              // Test history section: show saved test results for this level
+              subHeadingRow("Test history"),
+              verticalSpacer(),
+              FutureBuilder<List<TestResult>>(
+                future: TestResultsDB.instance.getResultsForLevel(
+                  levelInfo.LevelID,
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return plainText("Loading history...");
+                  }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return plainText("No test results yet for this level.");
+                  }
+                  final rows = snapshot.data!;
+                  return SizedBox(
+                    height: 160, // fixed height so page scroll stays stable
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: rows.length,
+                      separatorBuilder: (_, __) => Divider(),
+                      itemBuilder: (context, index) {
+                        final r = rows[index];
+                        // format timestamp to a friendly display
+                        String when;
+                        try {
+                          when =
+                              DateTime.parse(r.timestamp).toLocal().toString();
+                        } catch (_) {
+                          when = r.timestamp;
+                        }
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                when,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Text("${r.score} / ${r.numQuestions}"),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           ),

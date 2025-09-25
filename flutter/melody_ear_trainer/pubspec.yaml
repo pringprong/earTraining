@@ -45,6 +45,9 @@ dependencies:
   graphview: ^1.2.0
   flame: ^1.32.0
   #flutter_graph_view: ^1.2.0
+  sqflite: ^2.2.8
+  path_provider: ^2.0.15
+  path: ^1.8.3
 
 
 dev_dependencies:
