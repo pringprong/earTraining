@@ -28,7 +28,12 @@
             "id": 5,
             "shape": "Rectangle",
             "label": "",
-            "missionid": "c1m03"
+            "missionid": "c1m03",R
+			"dependson": 
+				[
+					"c1m01", 
+					"c1m02"
+				]
         },
         {
             "id": 6,

@@ -55,10 +55,7 @@ class _campaignTreeState extends State<campaignTree> {
   Future<void> _loadJsonFromFile(String filename) async {
     final path = 'assets/mapping/$filename';
     final String contents = await rootBundle.loadString(path);
-    //final List<dynamic> items = await json.decode(jsonData);
-
     try {
-      //final contents = await File(path).readAsString();
       final decoded = jsonDecode(contents) as Map<String, dynamic>;
       setState(() {
         json = decoded;

@@ -321,11 +321,13 @@ class MissionSavedSettings {
   final String MissionID;
   String key;
   String instrument;
+  bool passedMission;
 
   MissionSavedSettings({
     this.id = 0,
     required this.MissionID,
     required this.key,
     required this.instrument,
+    this.passedMission = false
   });
 }

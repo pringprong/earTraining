@@ -48,17 +48,15 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               verticalSpacer(),
               TextRow("Level status:"),
               verticalSpacer(),
+              statusRow(
+                levelStatus, 
+                numPassedTests >= lvli.NumTests),
               plainText(
-                "Number of passed tests required: " + lvli.NumTests.toString(),
+                "Number of passed tests: " + numPassedTests.toString() + " /  " + lvli.NumTests.toString(),
               ),
               plainText(
                 "Passing score for each test: " + lvli.PassingScore.toString(),
               ),
-              plainText(
-                "Number of tests passed so far: " + numPassedTests.toString(),
-              ),
-              verticalSpacer(),
-              subHeadingRow(levelStatus),
               verticalSpacer(),
               TextRow(
                 "your score: " +
@@ -88,7 +86,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Text(
-                          "Do another test",
+                          "Level not passed yet? Do another test",
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -125,6 +123,30 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Row statusRow(String myText, bool passed) {
+    Color myColor = passed ? passedColor : notYetPassedColor;
+    return Row(
+      children: [
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          color: myColor,
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          child: Center(
+
+            child: Text(
+              "Level status: " + myText,
+              style: TextStyle(fontSize: 22, color: buttonForegroundColor),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

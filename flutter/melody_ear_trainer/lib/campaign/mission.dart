@@ -42,6 +42,12 @@ class _MissionState extends State<Mission> {
       lastLevel.NumTests,
     );
     String missionStatus = status ? "Passed" : "Not passed yet";
+    objectBox.updateMissionPassed(
+      missionInfo.MissionID,
+      generalProvider.getSelectedKey,
+      generalProvider.getSelectedInstrument,
+      status,
+    );
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,

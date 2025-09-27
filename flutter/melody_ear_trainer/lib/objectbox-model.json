@@ -44,7 +44,7 @@
     },
     {
       "id": "2:5420111329682083104",
-      "lastPropertyId": "4:3848511680063436816",
+      "lastPropertyId": "5:4773569153967267474",
       "name": "MissionSavedSettings",
       "properties": [
         {
@@ -67,6 +67,11 @@
           "id": "4:3848511680063436816",
           "name": "instrument",
           "type": 9
+        },
+        {
+          "id": "5:4773569153967267474",
+          "name": "passedMission",
+          "type": 1
         }
       ],
       "relations": []

@@ -63,6 +63,10 @@ class ObjectBox {
             .count();
     return ltrq >= numTests;
   }
+
+  void removeAllLevelTestResults() {
+    _levelTestResultsBox.removeAll();
+  }
   //#endregion ****Level Test Results methods END */
 
   MissionSavedSettings? getMissionSavedSettings(int id) =>
@@ -92,18 +96,18 @@ class ObjectBox {
     return queryResults.first;
   }
 
-  // void updateKey(String mid, String newkey) {
-  //   Query<MissionSavedSettings> qmms =
-  //       _missionSavedSettingsBox
-  //           .query(MissionSavedSettings_.MissionID.equals(mid))
-  //           .build();
-  //   List<MissionSavedSettings> queryResults = qmms.find();
-  //   if (queryResults.isNotEmpty) {
-  //     MissionSavedSettings mss = queryResults.first;
-  //     mss.key = newkey;
-  //     _missionSavedSettingsBox.put(mss);
-  //   }
-  // }
+  void updateKey(String mid, String newkey) {
+    Query<MissionSavedSettings> qmms =
+        _missionSavedSettingsBox
+            .query(MissionSavedSettings_.MissionID.equals(mid))
+            .build();
+    List<MissionSavedSettings> queryResults = qmms.find();
+    if (queryResults.isNotEmpty) {
+      MissionSavedSettings mss = queryResults.first;
+      mss.key = newkey;
+      _missionSavedSettingsBox.put(mss);
+    }
+  }
 
   void updateInstrument(String mid, String newInstrument) {
     Query<MissionSavedSettings> qmms =
@@ -135,6 +139,51 @@ class ObjectBox {
           MissionID: mid,
           key: newkey,
           instrument: newInstrument,
+        ),
+      );
+    }
+  }
+
+  void removeAllMissionSavedSettings() {
+    _missionSavedSettingsBox.removeAll();
+  }
+
+  bool isMissionPassed(String missionID) {
+    Query<MissionSavedSettings> qmms =
+        _missionSavedSettingsBox
+            .query(MissionSavedSettings_.MissionID.equals(missionID))
+            .build();
+    List<MissionSavedSettings> queryResults = qmms.find();
+    if (queryResults.isNotEmpty) {
+      return queryResults.first.passedMission;
+    }
+    return false;
+  }
+
+  void updateMissionPassed(
+    String mid,
+    String newkey,
+    String newInstrument,
+    bool passed,
+  ) {
+    Query<MissionSavedSettings> qmms =
+        _missionSavedSettingsBox
+            .query(MissionSavedSettings_.MissionID.equals(mid))
+            .build();
+    List<MissionSavedSettings> queryResults = qmms.find();
+    if (queryResults.isNotEmpty) {
+      MissionSavedSettings mss = queryResults.first;
+      mss.key = newkey;
+      mss.instrument = newInstrument;
+      mss.passedMission = passed;
+      _missionSavedSettingsBox.put(mss);
+    } else {
+      _missionSavedSettingsBox.put(
+        MissionSavedSettings(
+          MissionID: mid,
+          key: newkey,
+          instrument: newInstrument,
+          passedMission: passed
         ),
       );
     }

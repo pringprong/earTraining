@@ -5,7 +5,6 @@ import 'providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'utils/resultsDB.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -101,7 +100,8 @@ class _HelpPageState extends State<HelpPage> {
                       padding: const EdgeInsets.all(12.0),
                     ),
                     onPressed: () {
-                      //TestResultsDB.instance.deleteAllResults();
+                      objectBox.removeAllLevelTestResults();
+                      objectBox.removeAllMissionSavedSettings();
                     },
                     child: FittedBox(
                       fit: BoxFit.fill,

@@ -68,7 +68,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(2, 5420111329682083104),
     name: 'MissionSavedSettings',
-    lastPropertyId: const obx_int.IdUid(4, 3848511680063436816),
+    lastPropertyId: const obx_int.IdUid(5, 4773569153967267474),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -93,6 +93,12 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(4, 3848511680063436816),
         name: 'instrument',
         type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 4773569153967267474),
+        name: 'passedMission',
+        type: 1,
         flags: 0,
       ),
     ],
@@ -227,11 +233,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final MissionIDOffset = fbb.writeString(object.MissionID);
         final keyOffset = fbb.writeString(object.key);
         final instrumentOffset = fbb.writeString(object.instrument);
-        fbb.startTable(5);
+        fbb.startTable(6);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, MissionIDOffset);
         fbb.addOffset(2, keyOffset);
         fbb.addOffset(3, instrumentOffset);
+        fbb.addBool(4, object.passedMission);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -253,11 +260,18 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final instrumentParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 10, '');
+        final passedMissionParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          12,
+          false,
+        );
         final object = MissionSavedSettings(
           id: idParam,
           MissionID: MissionIDParam,
           key: keyParam,
           instrument: instrumentParam,
+          passedMission: passedMissionParam,
         );
 
         return object;
@@ -321,5 +335,10 @@ class MissionSavedSettings_ {
   /// See [MissionSavedSettings.instrument].
   static final instrument = obx.QueryStringProperty<MissionSavedSettings>(
     _entities[1].properties[3],
+  );
+
+  /// See [MissionSavedSettings.passedMission].
+  static final passedMission = obx.QueryBooleanProperty<MissionSavedSettings>(
+    _entities[1].properties[4],
   );
 }
