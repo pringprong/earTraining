@@ -24,10 +24,12 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
   String currentInstrument = "Piano";
+  
   @override
   Widget build(BuildContext context) {
     final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    final nestedMapping = context.read<MappingProvider>().getNestedMapping;
+    final mappingProvider = Provider.of<MappingProvider>(context);
+    final nestedMapping = mappingProvider.getNestedMapping;
     return Scaffold(
       appBar: AppBar(title: Text('Hands-free melody ID')),
       body: Padding(
@@ -36,9 +38,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-                headingRow(levelInfo.CampaignName),
+                headingRow(mappingProvider.getCampaignName(levelInfo.CampaignID)),
               verticalSpacer(),
-              TextRow("Mission: " + levelInfo.MissionName),
+              TextRow("Mission: " + mappingProvider.getMissionName(levelInfo.MissionID)),
               verticalSpacer(),
               TextRow("Level: " + levelInfo.LevelName),
               verticalSpacer(),

@@ -9,7 +9,6 @@ import 'mission.dart';
 import '../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 
-
 class campaignTree extends StatefulWidget {
   const campaignTree({super.key});
 
@@ -45,8 +44,7 @@ class _campaignTreeState extends State<campaignTree> {
     super.didChangeDependencies();
     // load json once, using filename from the route arguments
     if (!_loaded && !_loading) {
-      final args =
-          ModalRoute.of(context)!.settings.arguments as CampaignArguments;
+      final args = ModalRoute.of(context)!.settings.arguments as CampaignInfo;
       final filename = args.CampaignFilename;
       _loading = true;
       _loadJsonFromFile(filename);
@@ -91,11 +89,9 @@ class _campaignTreeState extends State<campaignTree> {
 
   @override
   Widget build(BuildContext context) {
-    final campArgs =
-        ModalRoute.of(context)!.settings.arguments as CampaignArguments;
+    final campArgs = ModalRoute.of(context)!.settings.arguments as CampaignInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
-    final Map<String, Map<String, MissionInfo>> missions =
-        mappingProvider.getMissions;
+    final Map<String, MissionInfo> missions = mappingProvider.getMissions;
 
     return Scaffold(
       appBar: AppBar(),
@@ -138,8 +134,7 @@ class _campaignTreeState extends State<campaignTree> {
                           } else {
                             // Rectangle: interactive — push Mission
                             MissionInfo missionInfo =
-                                missions[campArgs
-                                    .CampaignID]![nodeValue['missionid']]!;
+                                missions[nodeValue['missionid']]!;
                             return rectangleWidget(context, missionInfo);
                           }
                         },
@@ -181,8 +176,11 @@ class _campaignTreeState extends State<campaignTree> {
           borderRadius: BorderRadius.circular(4),
           boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
         ),
-        child: Text("Mission: " +
-          missionInfo.MissionName + '\nMode: ' + missionInfo.MissionMode,
+        child: Text(
+          "Mission: " +
+              missionInfo.MissionName +
+              '\nMode: ' +
+              missionInfo.MissionMode,
           textAlign: TextAlign.center,
         ),
       ),

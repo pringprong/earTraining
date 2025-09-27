@@ -23,9 +23,6 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
     "",
     "",
     "",
-    "",
-    "",
-    "",
     0,
     0,
     false,
@@ -57,9 +54,9 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              headingRow(levelInfo.CampaignName),
+              headingRow(mappingProvider.getCampaignName(levelInfo.CampaignID)),
               verticalSpacer(),
-              TextRow("Mission: " + levelInfo.MissionName),
+              TextRow("Mission: " + mappingProvider.getMissionName(levelInfo.MissionID)),
               verticalSpacer(),
               TextRow("Level: " + levelInfo.LevelName),
               verticalSpacer(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import 'colors.dart';
+import 'dart:collection';
 
 // Add this utility function to your file (e.g., below the listEquals function or anywhere in your class/file):
 String chordMelodySolfegeToString(List<List<String>> data) {
@@ -210,47 +211,49 @@ int chordNameSort(String? a, String? b) {
   return 0;
 }
 
-class CampaignArguments {
+class CampaignInfo {
   final String CampaignID;
   final String CampaignName;
   final String CampaignFilename;
+  final MissionIDs = LinkedHashSet<String>();
 
-  CampaignArguments(this.CampaignID, this.CampaignName, this.CampaignFilename);
+  CampaignInfo(this.CampaignID, this.CampaignName, this.CampaignFilename);
+
+  void addMissionID(String newMissionID) {
+    MissionIDs.add(newMissionID);
+  }
 }
 
 class MissionInfo {
   final String CampaignID;
-  final String CampaignName;
   final String MissionID;
   final String MissionName;
   final String MissionMode;
-  Map<String, LevelInfo> levels = {};
+  final LevelIDs = LinkedHashSet<String>();
 
   MissionInfo(
     this.CampaignID,
-    this.CampaignName,
     this.MissionID,
     this.MissionName,
     this.MissionMode,
   );
 
-  void addLevel(String levelid, LevelInfo level) {
-    if (levels.isNotEmpty && !levels.containsKey(levelid)) {
-      levels[levelid] = level;
-    }
+  void addLevelID(String levelid) {
+    LevelIDs.add(levelid);
   }
 
-  LevelInfo getLevel(String levelID) {
-    return levels[levelID]!;
+  LinkedHashSet<String> getLevelIDs() {
+    return LevelIDs;
+  }
+
+  List<String> getLevelIDsList() {
+    return LevelIDs.toList();
   }
 }
 
 class LevelInfo {
   final String CampaignID;
-  final String CampaignName;
   final String MissionID;
-  final String MissionName;
-  final String MissionMode;
   final String LevelID;
   final String LevelName;
   List<String> Notes = [];
@@ -270,10 +273,7 @@ class LevelInfo {
 
   LevelInfo(
     this.CampaignID,
-    this.CampaignName,
     this.MissionID,
-    this.MissionName,
-    this.MissionMode,
     this.LevelID,
     this.LevelName,
     this.NumNotes,

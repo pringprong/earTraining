@@ -26,9 +26,8 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     String campaignTitle =
         mappingProvider.getCampaigns[levelTestResults.CampaignID]!.CampaignName;
     MissionInfo mi =
-        mappingProvider.getMissions[levelTestResults
-            .CampaignID]![levelTestResults.MissionID]!;
-    LevelInfo lvli = mi.getLevel(levelTestResults.LevelID);
+        mappingProvider.getMissions[levelTestResults.MissionID]!;
+    LevelInfo lvli = mappingProvider.getLevelInfo(levelTestResults.LevelID);
     String missionTitle = mi.MissionName;
     String levelTitle = lvli.LevelName;
     //final GeneralProvider = Provider.of<missionSettingsProvider>(context);

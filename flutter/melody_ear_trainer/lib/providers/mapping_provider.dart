@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../utils/helper.dart';
+import 'dart:collection';
 
 class MappingProvider extends ChangeNotifier {
   MappingProvider() {
@@ -41,11 +42,9 @@ class MappingProvider extends ChangeNotifier {
   Map<String, double> noteColorFactors = {};
 
   // These are from Missions.json
-  Map<String, CampaignArguments> campaigns = {};
-  // the first key is the campaign
-  // the second key is the mission name
-  // the value is a list of keys: Mode and Level
-  Map<String, Map<String, MissionInfo>> missions = {};
+  Map<String, CampaignInfo> campaigns = {};
+  Map<String, MissionInfo> missions = {};
+  Map<String, LevelInfo> levels = {};
 
   // Getters
   List<String> get getMappingKeys {
@@ -112,12 +111,39 @@ class MappingProvider extends ChangeNotifier {
     return noteColorFactors;
   }
 
-  Map<String, CampaignArguments> get getCampaigns {
+  Map<String, CampaignInfo> get getCampaigns {
     return campaigns;
   }
 
-  Map<String, Map<String, MissionInfo>> get getMissions {
+  String getCampaignName(String campaignID) {
+    return campaigns[campaignID]!.CampaignName;
+  }
+
+  Map<String, MissionInfo> get getMissions {
     return missions;
+  }
+
+  String getMissionName(String missionID) {
+    return missions[missionID]!.MissionName;
+  }
+
+  String getMissionMode(String missionID) {
+    return missions[missionID]!.MissionMode;
+  }
+
+  LevelInfo getLevelInfo(String levelID) {
+    return levels[levelID]!;
+  }
+
+  List<LevelInfo> getLevelsForMission(String missionID) {
+    List<LevelInfo> list = [];
+    LinkedHashSet<String> levelIDs = missions[missionID]!.LevelIDs;
+    levelIDs.forEach((levelid) {
+      list.add(levels[levelid]!);
+    });
+    // get the list of levels based on missionID
+    // then extract the levelInfo objects from levels
+    return list;
   }
 
   Future<void> get loadMappingJSON async {
@@ -264,43 +290,16 @@ class MappingProvider extends ChangeNotifier {
       String campaignID = item['CampaignID'];
       String campaignName = item['CampaignName'];
       String filename = item['CampaignFilename'];
-      if (campaignID.isNotEmpty && !campaigns.containsKey(campaignID)) {
-        campaigns[campaignID] = CampaignArguments(
-          campaignID,
-          campaignName,
-          filename,
-        );
-      }
 
-      // for each item:
-      // add the campaign as a key to missions if it is not already present
-
-      // extract the notes from item['Notes'] to a List<String> by parsing on comma
-      // create a LevelInfo object from [item['Level'], item['NumNotes'],
-      // item['NumTests'], item['NumQuestions'], item['PassingScore']]
-      // add the notes to the LevelInfo object using setNotes()
-
-      // create a MissionInfo object if one does not exist
-      // using [item['Mission'], item['Mode']]
-      // add the LevelInfo object to the MissionInfo object using addLevel()
-
-      // add the MissionInfo object to the missions map
-      // using the campaign and mission as keys
       String missionID = item['MissionID'];
       String missionName = item['MissionName'];
       String missionMode = item['MissionMode'];
 
-      missions[campaignID] ??= {};
-      missions[campaignID]![missionID] ??= MissionInfo(
-        campaignID,
-        campaignName,
-        missionID,
-        missionName,
-        missionMode,
-      );
-
       String levelID = item['LevelID'];
       String levelName = item['LevelName'];
+      String notesStr = item['Notes'];
+      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+
       int numNotes = int.parse(item['NumNotes']);
       int maxDistance = int.parse(item['MaxDistance']);
       bool allowRepeatedNotes = bool.parse(item['AllowRepeatedNotes']);
@@ -314,15 +313,32 @@ class MappingProvider extends ChangeNotifier {
       int numQuestions = int.parse(item['NumQuestions']);
       int passingScore = int.parse(item['PassingScore']);
 
-      String notesStr = item['Notes'];
-      List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+      if (campaignID.isNotEmpty && !campaigns.containsKey(campaignID)) {
+        campaigns[campaignID] = CampaignInfo(
+          campaignID,
+          campaignName,
+          filename,
+        );
+      }
+      if (campaigns.containsKey(campaignID)) {
+        campaigns[campaignID]!.addMissionID(missionID);
+      } // addMission won't add duplicates because it's a LinkedHashSet
+
+      if (missionID.isNotEmpty && !missions.containsKey(missionID)) {
+        missions[missionID] = MissionInfo(
+          campaignID,
+          missionID,
+          missionName,
+          missionMode,
+        );
+      }
+      if (missions.containsKey(missionID)) {
+        missions[missionID]!.addLevelID(levelID);
+      }
 
       LevelInfo levelInfo = LevelInfo(
         campaignID,
-        campaignName,
         missionID,
-        missionName,
-        missionMode,
         levelID,
         levelName,
         numNotes,
@@ -339,7 +355,10 @@ class MappingProvider extends ChangeNotifier {
         passingScore,
       );
       levelInfo.setNotes(notes);
-      missions[campaignID]![missionID]!.addLevel(levelID, levelInfo);
+
+      if (levelID.isNotEmpty && !levels.containsKey(levelID)) {
+        levels[levelID] = levelInfo;
+      }
     }
 
     notifyListeners();

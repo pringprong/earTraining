@@ -18,7 +18,6 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
   @override
   Widget build(BuildContext context) {
     final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-
     final mappingProvider = Provider.of<MappingProvider>(context);
     final generalProvider = Provider.of<missionSettingsProvider>(context);
     return Scaffold(
@@ -30,9 +29,9 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              headingRow(levelInfo.CampaignName),
+              headingRow(mappingProvider.getCampaignName(levelInfo.CampaignID)),
               verticalSpacer(),
-              TextRow("Mission: " + levelInfo.MissionName),
+              TextRow("Mission: " + mappingProvider.getMissionName(levelInfo.MissionID)),
               verticalSpacer(),
               TextRow("Level: " + levelInfo.LevelName),
               verticalSpacer(),

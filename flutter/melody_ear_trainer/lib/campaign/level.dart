@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../providers/general_provider.dart';
+import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../utils/helper.dart';
 import 'levelMelodyID.dart';
 import 'levelMelodyIDhandsfree.dart';
 import 'levelMelodyIDtest.dart';
-import '../utils/resultsDB.dart';
-import 'package:intl/intl.dart';
+//import '../utils/resultsDB.dart';
+//import 'package:intl/intl.dart';
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -21,8 +22,12 @@ class _LevelState extends State<Level> {
   @override
   Widget build(BuildContext context) {
     final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    String campaignTitle = levelInfo.CampaignName;
-    String missionTitle = levelInfo.MissionName;
+    final mappingProvider = Provider.of<MappingProvider>(context);
+    String campaignTitle = mappingProvider.getCampaignName(
+      levelInfo.CampaignID,
+    );
+    String missionTitle = mappingProvider.getMissionName(levelInfo.MissionID);
+    String missionMode = mappingProvider.getMissionMode(levelInfo.MissionID);
     String levelTitle = levelInfo.LevelName;
     final GeneralProvider = Provider.of<missionSettingsProvider>(context);
     // update the settings to reflect the details of this level
@@ -66,7 +71,7 @@ class _LevelState extends State<Level> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-                        if (levelInfo.MissionMode == "Melody ID") {
+                        if (missionMode == "Melody ID") {
                           Navigator.pushNamed(
                             context,
                             LevelMelodyID.routeName,
@@ -94,7 +99,7 @@ class _LevelState extends State<Level> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-                        if (levelInfo.MissionMode == "Melody ID") {
+                        if (missionMode == "Melody ID") {
                           Navigator.pushNamed(
                             context,
                             LevelMelodyIDHandsFree.routeName,
@@ -125,7 +130,7 @@ class _LevelState extends State<Level> {
                         padding: const EdgeInsets.all(12.0),
                       ),
                       onPressed: () {
-                        if (levelInfo.MissionMode == "Melody ID") {
+                        if (missionMode == "Melody ID") {
                           Navigator.pushNamed(
                             context,
                             LevelMelodyIDTest.routeName,
@@ -146,51 +151,51 @@ class _LevelState extends State<Level> {
               // Test history section: show saved test results for this level
               subHeadingRow("Test history"),
               verticalSpacer(),
-              FutureBuilder<List<TestResult>>(
-                future: TestResultsDB.instance.getResultsForLevel(
-                  levelInfo.LevelID,
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return plainText("Loading history...");
-                  }
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return plainText("No test results yet for this level.");
-                  }
-                  final rows = snapshot.data!;
-                  return SizedBox(
-                    height: 160, // fixed height so page scroll stays stable
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: rows.length,
-                      separatorBuilder: (_, __) => Divider(),
-                      itemBuilder: (context, index) {
-                        final r = rows[index];
-                        // format timestamp to a friendly display
-                        String when;
-                        try {
-                          when = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(r.timestamp));
-                        } catch (_) {
-                          print("Couldn't parse timestamp");
-                          when = r.timestamp;
-                        }
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                when,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Text("${r.score} / ${r.numQuestions}"),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
+              // FutureBuilder<List<TestResult>>(
+              //   future: TestResultsDB.instance.getResultsForLevel(
+              //     levelInfo.LevelID,
+              //   ),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return plainText("Loading history...");
+              //     }
+              //     if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              //       return plainText("No test results yet for this level.");
+              //     }
+              //     final rows = snapshot.data!;
+              //     return SizedBox(
+              //       height: 160, // fixed height so page scroll stays stable
+              //       child: ListView.separated(
+              //         shrinkWrap: true,
+              //         itemCount: rows.length,
+              //         separatorBuilder: (_, __) => Divider(),
+              //         itemBuilder: (context, index) {
+              //           final r = rows[index];
+              //           // format timestamp to a friendly display
+              //           String when;
+              //           try {
+              //             when = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(r.timestamp));
+              //           } catch (_) {
+              //             print("Couldn't parse timestamp");
+              //             when = r.timestamp;
+              //           }
+              //           return Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //               Expanded(
+              //                 child: Text(
+              //                   when,
+              //                   overflow: TextOverflow.ellipsis,
+              //                 ),
+              //               ),
+              //               Text("${r.score} / ${r.numQuestions}"),
+              //             ],
+              //           );
+              //         },
+              //       ),
+              //     );
+              //   },
+              // ),
             ],
           ),
         ),
