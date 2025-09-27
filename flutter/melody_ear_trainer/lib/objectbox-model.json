@@ -1,0 +1,57 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:558994816910863526",
+      "lastPropertyId": "6:1570814640359703298",
+      "name": "LevelTestResults",
+      "properties": [
+        {
+          "id": "1:5452915458201226532",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7281914708086593546",
+          "name": "CampaignID",
+          "type": 9
+        },
+        {
+          "id": "3:1549321501555700883",
+          "name": "MissionID",
+          "type": 9
+        },
+        {
+          "id": "4:7126470332977816987",
+          "name": "LevelID",
+          "type": 9
+        },
+        {
+          "id": "5:1628598140301944507",
+          "name": "score",
+          "type": 6
+        },
+        {
+          "id": "6:1570814640359703298",
+          "name": "timestamp",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:558994816910863526",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

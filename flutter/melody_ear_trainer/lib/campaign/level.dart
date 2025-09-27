@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/main.dart';
 import '../../providers/general_provider.dart';
 import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,7 @@ import 'levelMelodyID.dart';
 import 'levelMelodyIDhandsfree.dart';
 import 'levelMelodyIDtest.dart';
 //import '../utils/resultsDB.dart';
-//import 'package:intl/intl.dart';
+
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -42,6 +43,9 @@ class _LevelState extends State<Level> {
       levelInfo.StartingDo,
       levelInfo.EndingDo,
       levelInfo.ChordFrequency,
+    );
+    List<LevelTestResults> ltrList = objectBox.getLevelTestResultsByLevelID(
+      levelInfo.LevelID,
     );
 
     return Scaffold(
@@ -147,55 +151,19 @@ class _LevelState extends State<Level> {
                 ],
               ),
               verticalSpacer(),
-
-              // Test history section: show saved test results for this level
               subHeadingRow("Test history"),
               verticalSpacer(),
-              // FutureBuilder<List<TestResult>>(
-              //   future: TestResultsDB.instance.getResultsForLevel(
-              //     levelInfo.LevelID,
-              //   ),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.waiting) {
-              //       return plainText("Loading history...");
-              //     }
-              //     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              //       return plainText("No test results yet for this level.");
-              //     }
-              //     final rows = snapshot.data!;
-              //     return SizedBox(
-              //       height: 160, // fixed height so page scroll stays stable
-              //       child: ListView.separated(
-              //         shrinkWrap: true,
-              //         itemCount: rows.length,
-              //         separatorBuilder: (_, __) => Divider(),
-              //         itemBuilder: (context, index) {
-              //           final r = rows[index];
-              //           // format timestamp to a friendly display
-              //           String when;
-              //           try {
-              //             when = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(r.timestamp));
-              //           } catch (_) {
-              //             print("Couldn't parse timestamp");
-              //             when = r.timestamp;
-              //           }
-              //           return Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               Expanded(
-              //                 child: Text(
-              //                   when,
-              //                   overflow: TextOverflow.ellipsis,
-              //                 ),
-              //               ),
-              //               Text("${r.score} / ${r.numQuestions}"),
-              //             ],
-              //           );
-              //         },
-              //       ),
-              //     );
-              //   },
-              // ),
+              ListView.builder(              
+                itemCount: ltrList.length,
+                itemBuilder: (context, index) {
+                  final ltr = ltrList[index];
+                  return ListTile(
+                    title: Text("Score: " + ltr.score.toString()),
+                    subtitle: Text("Date: " + ltr.timestamp),
+                  );
+                },
+                shrinkWrap: true,
+              ),
             ],
           ),
         ),

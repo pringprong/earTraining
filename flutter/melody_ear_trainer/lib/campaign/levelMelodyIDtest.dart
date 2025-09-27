@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/main.dart';
 import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import '../utils/colors.dart';
 import '../testPageAbstract.dart';
 import '../utils/helper.dart';
 import 'levelTestResults.dart';
+import 'package:intl/intl.dart';
 //import '../utils/resultsDB.dart';
 
 class LevelMelodyIDTest extends TestPageAbstract {
@@ -56,7 +58,10 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
             children: [
               headingRow(mappingProvider.getCampaignName(levelInfo.CampaignID)),
               verticalSpacer(),
-              TextRow("Mission: " + mappingProvider.getMissionName(levelInfo.MissionID)),
+              TextRow(
+                "Mission: " +
+                    mappingProvider.getMissionName(levelInfo.MissionID),
+              ),
               verticalSpacer(),
               TextRow("Level: " + levelInfo.LevelName),
               verticalSpacer(),
@@ -110,7 +115,9 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
   @override
   void finishTest() {
     // write a test-result row to the database, then navigate to results page
-    final timestamp = DateTime.now().toIso8601String();
+    String timestamp = DateFormat(
+      'yyyy-MM-dd HH:MM',
+    ).format(DateTime.now());
     // final entry = TestResult(
     //   timestamp: timestamp,
     //   levelID: levelInfo.LevelID,
@@ -120,12 +127,13 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
 
     // insert and when done navigate to results pag
     LevelTestResults ltr = LevelTestResults(
-      levelInfo.CampaignID,
-      levelInfo.MissionID,
-      levelInfo.LevelID, 
-      correctAnswers,
-      timestamp
-      );
+      CampaignID: levelInfo.CampaignID,
+      MissionID: levelInfo.MissionID,
+      LevelID: levelInfo.LevelID,
+      score: correctAnswers,
+      timestamp: timestamp,
+    );
+    objectBox.insertLevelTestResult(ltr);
     Navigator.pop(context);
     Navigator.pushNamed(
       context,

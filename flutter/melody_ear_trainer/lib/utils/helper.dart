@@ -3,6 +3,8 @@ import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import 'colors.dart';
 import 'dart:collection';
+import 'package:objectbox/objectbox.dart';
+import '../objectbox.g.dart';
 
 // Add this utility function to your file (e.g., below the listEquals function or anywhere in your class/file):
 String chordMelodySolfegeToString(List<List<String>> data) {
@@ -295,18 +297,21 @@ class LevelInfo {
   }
 }
 
+@Entity()
 class LevelTestResults {
+  int id;
   final String CampaignID;
   final String MissionID;
   final String LevelID;
   final int score;
   final String timestamp;
 
-  LevelTestResults(
-    this.CampaignID,
-    this.MissionID,
-    this.LevelID,
-    this.score,
-    this.timestamp,
-  );
+  LevelTestResults({
+    this.id = 0,
+    required this.CampaignID,
+    required this.MissionID,
+    required this.LevelID,
+    required this.score,
+    required this.timestamp,
+  });
 }

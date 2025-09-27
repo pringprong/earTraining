@@ -33,9 +33,45 @@ import 'campaign/levelMelodyID.dart';
 import 'campaign/levelMelodyIDhandsfree.dart';
 import 'campaign/levelMelodyIDtest.dart';
 import 'campaign/levelTestResults.dart';
+import 'utils/helper.dart';
+//import 'package:objectbox/objectbox.dart';
+import 'objectbox.g.dart';
+//import 'package:objectbox/model.dart';
+//import 'package:objectbox_flutter/model/user.dart';
 //import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-
 // import 'package:logging/logging.dart';
+
+late ObjectBox objectBox;
+
+class ObjectBox {
+  late final Store _store;
+  late final Box<LevelTestResults> _levelTestResultsBox;
+  ObjectBox._init(this._store) {
+    _levelTestResultsBox = Box<LevelTestResults>(_store);
+  }
+  static Future<ObjectBox> init() async {
+    final store = await openStore();
+    return ObjectBox._init(store);
+  }
+
+  LevelTestResults? getLevelTestResult(int id) => _levelTestResultsBox.get(id);
+  Stream<List<LevelTestResults>> getLevelTestResults() => _levelTestResultsBox
+      .query()
+      .watch(triggerImmediately: true)
+      .map((query) => query.find());
+  int insertLevelTestResult(LevelTestResults ltr) =>
+      _levelTestResultsBox.put(ltr);
+  bool deleteLevelTestResult(int id) => _levelTestResultsBox.remove(id);
+  List<LevelTestResults> getLevelTestResultsByLevelID(String levelid) {
+    Query<LevelTestResults> ltrq =
+        _levelTestResultsBox
+            .query(LevelTestResults_.LevelID.equals(levelid))
+            .build();
+    List<LevelTestResults> queryResults = ltrq.find();
+    ltrq.close();
+    return queryResults;
+  }
+}
 
 Future main() async {
   // The `flutter_soloud` package logs everything
@@ -56,7 +92,8 @@ Future main() async {
   //   );
   // });
 
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  objectBox = await ObjectBox.init();
   // Initialize FFI
   //sqfliteFfiInit();
   //databaseFactory = databaseFactoryFfi;
