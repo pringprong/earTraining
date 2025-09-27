@@ -449,7 +449,7 @@ packages:
     source: hosted
     version: "4.3.1"
   objectbox_flutter_libs:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: objectbox_flutter_libs
       sha256: cd754766e04229a4f51250f121813d9a3c1a74fc21cd68e48b3c6085cbcd6c85

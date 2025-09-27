@@ -44,15 +44,14 @@ dependencies:
   flame: ^1.32.0
   intl: ^0.18.0 # Use the latest version
   objectbox: ^4.3.1
+  objectbox_flutter_libs: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: any 
-  objectbox: any
   build_runner: ^2.1.11
   objectbox_generator: any
-  objectbox_flutter_libs: any
 
 
 flutter_launcher_icons:
