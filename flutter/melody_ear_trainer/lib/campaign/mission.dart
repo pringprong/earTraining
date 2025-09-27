@@ -4,6 +4,7 @@ import '../utils/colors.dart';
 import '../utils/helper.dart';
 import 'level.dart';
 import '../providers/mapping_provider.dart';
+import '../providers/general_provider.dart';
 import 'missionSettings.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,13 @@ class _MissionState extends State<Mission> {
     final missionInfo =
         ModalRoute.of(context)!.settings.arguments as MissionInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
+    final generalProvider = Provider.of<missionSettingsProvider>(context);
+    MissionSavedSettings? mss = objectBox.getMissionSavedSettingsByMissionID(
+      missionInfo.MissionID,
+    );
+    if (mss != null) {
+      generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
+    }
     String campaignTitle = mappingProvider.getCampaignName(
       missionInfo.CampaignID,
     );
@@ -54,13 +62,17 @@ class _MissionState extends State<Mission> {
                 verticalSpacer(),
                 statusRow(missionStatus, status),
                 verticalSpacer(),
+                plainText("Completed " + "X" + " / " + "Y" + " levels so far"),
+                verticalSpacer(),
+                subHeadingRow("Select a level from the table :"),
+                verticalSpacer(),
                 // Levels table
                 if (levels.isEmpty) ...[
                   TextRow('No levels available'),
                 ] else ...[
                   // Constrain table height to avoid overflow
                   SizedBox(
-                    height: 240,
+                    height: 500,
                     child: SingleChildScrollView(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -133,6 +145,31 @@ class _MissionState extends State<Mission> {
                     ),
                   ),
                 ],
+                verticalSpacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: c2f3,
+                          foregroundColor: buttonForegroundColor,
+                          padding: const EdgeInsets.all(12.0),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                            "Return to campaign tree",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 verticalSpacer(),
                 settingsButton(missionInfo),
               ],

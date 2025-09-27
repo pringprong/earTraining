@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/main.dart';
 import 'utils/colors.dart';
 import 'campaign/campaign.dart';
 import 'utils/helper.dart';
@@ -121,6 +122,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     ),
                   ],
                 ),
+                plainText("Version " + versionNumber),
               ],
             ),
           ),

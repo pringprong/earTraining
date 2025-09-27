@@ -65,6 +65,40 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(2, 5420111329682083104),
+    name: 'MissionSavedSettings',
+    lastPropertyId: const obx_int.IdUid(4, 3848511680063436816),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 8222897753442264369),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 6773169120080283881),
+        name: 'MissionID',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 6364753487137395997),
+        name: 'key',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 3848511680063436816),
+        name: 'instrument',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -105,7 +139,7 @@ Future<obx.Store> openStore({
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(1, 558994816910863526),
+    lastEntityId: const obx_int.IdUid(2, 5420111329682083104),
     lastIndexId: const obx_int.IdUid(0, 0),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
@@ -181,6 +215,54 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    MissionSavedSettings: obx_int.EntityDefinition<MissionSavedSettings>(
+      model: _entities[1],
+      toOneRelations: (MissionSavedSettings object) => [],
+      toManyRelations: (MissionSavedSettings object) => {},
+      getId: (MissionSavedSettings object) => object.id,
+      setId: (MissionSavedSettings object, int id) {
+        object.id = id;
+      },
+      objectToFB: (MissionSavedSettings object, fb.Builder fbb) {
+        final MissionIDOffset = fbb.writeString(object.MissionID);
+        final keyOffset = fbb.writeString(object.key);
+        final instrumentOffset = fbb.writeString(object.instrument);
+        fbb.startTable(5);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, MissionIDOffset);
+        fbb.addOffset(2, keyOffset);
+        fbb.addOffset(3, instrumentOffset);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final MissionIDParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final keyParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final instrumentParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 10, '');
+        final object = MissionSavedSettings(
+          id: idParam,
+          MissionID: MissionIDParam,
+          key: keyParam,
+          instrument: instrumentParam,
+        );
+
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -216,5 +298,28 @@ class LevelTestResults_ {
   /// See [LevelTestResults.timestamp].
   static final timestamp = obx.QueryStringProperty<LevelTestResults>(
     _entities[0].properties[5],
+  );
+}
+
+/// [MissionSavedSettings] entity fields to define ObjectBox queries.
+class MissionSavedSettings_ {
+  /// See [MissionSavedSettings.id].
+  static final id = obx.QueryIntegerProperty<MissionSavedSettings>(
+    _entities[1].properties[0],
+  );
+
+  /// See [MissionSavedSettings.MissionID].
+  static final MissionID = obx.QueryStringProperty<MissionSavedSettings>(
+    _entities[1].properties[1],
+  );
+
+  /// See [MissionSavedSettings.key].
+  static final key = obx.QueryStringProperty<MissionSavedSettings>(
+    _entities[1].properties[2],
+  );
+
+  /// See [MissionSavedSettings.instrument].
+  static final instrument = obx.QueryStringProperty<MissionSavedSettings>(
+    _entities[1].properties[3],
   );
 }

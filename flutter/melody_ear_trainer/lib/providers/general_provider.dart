@@ -68,9 +68,6 @@ abstract class GeneralProvider extends ChangeNotifier {
   void setKeyAndInstrument(String newKey, String newInstrument) {
     selectedKey = newKey;
     selectedInstrument = newInstrument;
-
-    saveSettings();
-    notifyListeners();
   }
 
   // Settings that will be fixed by the level

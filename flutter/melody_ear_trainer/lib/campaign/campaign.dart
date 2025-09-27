@@ -95,7 +95,7 @@ class _campaignTreeState extends State<campaignTree> {
     final Map<String, MissionInfo> missions = mappingProvider.getMissions;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('Melody ear trainer')),
       body:
           _loaded
               ? Column(

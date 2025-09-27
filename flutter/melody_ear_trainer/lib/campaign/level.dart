@@ -192,12 +192,13 @@ class _LevelState extends State<Level> {
                   "Number of tests passed so far: " +
                       numPassedTests.toString() +
                       " / " +
-                      levelInfo.NumTests.toString() +
-                      " required",
+                      levelInfo.NumTests.toString(),
                 ),
                 plainText(
                   "Passing score for each test: " +
-                      levelInfo.PassingScore.toString(),
+                      levelInfo.PassingScore.toString() +
+                      " / " +
+                      levelInfo.NumQuestions.toString(),
                 ),
                 //subHeadingRow(levelStatus),
                 verticalSpacer(),

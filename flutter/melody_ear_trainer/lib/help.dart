@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/main.dart';
 import 'package:melody_ear_trainer/providers/theme_provider.dart';
 import 'providers/general_provider.dart';
 import 'package:provider/provider.dart';
@@ -502,7 +503,7 @@ class _HelpPageState extends State<HelpPage> {
                       "The author wrote the app to improve their own musical ear, using a lot of free online resources, and the resulting app is freely shared back to the music community.",
                     ),
                     verticalSpacer(),
-                    plainText("Version 2.0.0, 2025"),
+                    plainText("Version " + versionNumber),
                     verticalSpacer(),
                     plainText(
                       '''Developed by github contributor "pringprong"''',

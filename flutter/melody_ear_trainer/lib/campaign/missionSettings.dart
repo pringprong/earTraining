@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/main.dart';
 import '../../providers/general_provider.dart';
 import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
@@ -50,9 +51,14 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                             .toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<missionSettingsProvider>().updateSelectedKey(
-                          newkey: newValue,
-                        );
+                        context
+                            .read<missionSettingsProvider>()
+                            .updateSelectedKey(newkey: newValue);
+                        objectBox.updateKeyAndInstrument(
+                          missionInfo.MissionID,
+                          newValue,
+                          context.read<missionSettingsProvider>().selectedInstrument
+                          );
                       }
                     },
                   ),
@@ -84,6 +90,10 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                         context
                             .read<missionSettingsProvider>()
                             .updateSelectedInstrument(instrument: newValue);
+                        objectBox.updateKeyAndInstrument(
+                          missionInfo.MissionID, 
+                          context.read<missionSettingsProvider>().selectedKey,
+                          newValue);
                       }
                     },
                   ),

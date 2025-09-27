@@ -29,7 +29,6 @@ Widget buildNotesGrid(
   final noteColors = mappingProvider.getNoteColors;
   final noteColorFactor = mappingProvider.getNoteColorFactors;
   final noteSelection = generalProvider.getNoteSelection;
-  //print(noteSelection);
   List<Widget> rows = [];
   for (int row = 0; row < 4; row++) {
     int start = row * 12;
@@ -313,5 +312,20 @@ class LevelTestResults {
     required this.LevelID,
     required this.score,
     required this.timestamp,
+  });
+}
+
+@Entity()
+class MissionSavedSettings {
+  int id;
+  final String MissionID;
+  String key;
+  String instrument;
+
+  MissionSavedSettings({
+    this.id = 0,
+    required this.MissionID,
+    required this.key,
+    required this.instrument,
   });
 }

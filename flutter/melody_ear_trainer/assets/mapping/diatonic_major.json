@@ -17,6 +17,24 @@
             "shape": "Circle",
             "label": "Campaign hub",
             "missionid": ""
+        },
+        {
+            "id": 4,
+            "shape": "Rectangle",
+            "label": "Depth first",
+            "missionid": "c1m2"
+        },
+        {
+            "id": 5,
+            "shape": "Rectangle",
+            "label": "Depth first",
+            "missionid": "c1m3"
+        },
+        {
+            "id": 6,
+            "shape": "Circle",
+            "label": "Next hub",
+            "missionid": ""
         }
     ],
     "edges": [
@@ -27,6 +45,22 @@
         {
             "from": 2,
             "to": 3
+        },
+        {
+            "from": 3,
+            "to": 4
+        },
+        {
+            "from": 3,
+            "to": 5
+        },
+        {
+            "from": 4,
+            "to": 6
+        },
+        {
+            "from": 5,
+            "to": 6
         }
     ]
 }

@@ -36,6 +36,7 @@ import 'campaign/levelTestResults.dart';
 import 'utils/objectBox.dart';
 
 late ObjectBox objectBox;
+final String versionNumber = "3.0";
 
 Future main() async {
   // The `flutter_soloud` package logs everything
