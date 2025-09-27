@@ -6,7 +6,7 @@ import '../utils/colors.dart';
 import '../testPageAbstract.dart';
 import '../utils/helper.dart';
 import 'levelTestResults.dart';
-import '../utils/resultsDB.dart';
+//import '../utils/resultsDB.dart';
 
 class LevelMelodyIDTest extends TestPageAbstract {
   const LevelMelodyIDTest({super.key, required super.audioController})
@@ -19,6 +19,8 @@ class LevelMelodyIDTest extends TestPageAbstract {
 
 class LevelMelodyIDTestState extends TestPageAbstractState {
   LevelInfo levelInfo = LevelInfo(
+    "",
+    "",
     "",
     "",
     "",
@@ -112,35 +114,26 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
   void finishTest() {
     // write a test-result row to the database, then navigate to results page
     final timestamp = DateTime.now().toIso8601String();
-    final entry = TestResult(
-      timestamp: timestamp,
-      levelID: levelInfo.LevelID,
-      numQuestions: levelInfo.NumQuestions,
-      score: correctAnswers,
-    );
+    // final entry = TestResult(
+    //   timestamp: timestamp,
+    //   levelID: levelInfo.LevelID,
+    //   numQuestions: levelInfo.NumQuestions,
+    //   score: correctAnswers,
+    // );
 
-    // insert and when done navigate to results page
-    TestResultsDB.instance
-        .insertResult(entry)
-        .then((_) {
-          LevelTestResults ltr = LevelTestResults(levelInfo, correctAnswers);
-          Navigator.pop(context);
-          Navigator.pushNamed(
-            context,
-            LevelTestResultsPage.routeName,
-            arguments: ltr,
-          );
-        })
-        .catchError((err) {
-          print(err);
-          // Even if DB write fails, still navigate so user isn't blocked
-          LevelTestResults ltr = LevelTestResults(levelInfo, correctAnswers);
-          Navigator.pop(context);
-          Navigator.pushNamed(
-            context,
-            LevelTestResultsPage.routeName,
-            arguments: ltr,
-          );
-        });
+    // insert and when done navigate to results pag
+    LevelTestResults ltr = LevelTestResults(
+      levelInfo.CampaignID,
+      levelInfo.MissionID,
+      levelInfo.LevelID, 
+      correctAnswers,
+      timestamp
+      );
+    Navigator.pop(context);
+    Navigator.pushNamed(
+      context,
+      LevelTestResultsPage.routeName,
+      arguments: ltr,
+    );
   }
 }

@@ -33,7 +33,7 @@ import 'campaign/levelMelodyID.dart';
 import 'campaign/levelMelodyIDhandsfree.dart';
 import 'campaign/levelMelodyIDtest.dart';
 import 'campaign/levelTestResults.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+//import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 // import 'package:logging/logging.dart';
 
@@ -56,12 +56,13 @@ Future main() async {
   //   );
   // });
 
-  WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
+  // Initialize FFI
+  //sqfliteFfiInit();
+  //databaseFactory = databaseFactoryFfi;
+  //final database = openDatabase(join(await getDatabasesPath(),'test_results.db'));
   final audioController = AudioController();
   await audioController.initialize();
-  // Initialize FFI
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
   runApp(
     MultiProvider(
       providers: [

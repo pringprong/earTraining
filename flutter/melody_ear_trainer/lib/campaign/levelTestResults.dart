@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/campaign/levelMelodyIDtest.dart';
-//import '../../providers/general_provider.dart';
-//import 'package:provider/provider.dart';
+import '../../providers/mapping_provider.dart';
+import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../utils/helper.dart';
 //import 'levelMelodyID.dart';
@@ -21,9 +21,16 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
   Widget build(BuildContext context) {
     final levelTestResults =
         ModalRoute.of(context)!.settings.arguments as LevelTestResults;
-    String campaignTitle = levelTestResults.levelInfo.CampaignName;
-    String missionTitle = levelTestResults.levelInfo.MissionName;
-    String levelTitle = levelTestResults.levelInfo.LevelName;
+    final mappingProvider = Provider.of<MappingProvider>(context);
+
+    String campaignTitle =
+        mappingProvider.getCampaigns[levelTestResults.CampaignID]!.CampaignName;
+    MissionInfo mi =
+        mappingProvider.getMissions[levelTestResults
+            .CampaignID]![levelTestResults.MissionID]!;
+    LevelInfo lvli = mi.getLevel(levelTestResults.LevelID);
+    String missionTitle = mi.MissionName;
+    String levelTitle = lvli.LevelName;
     //final GeneralProvider = Provider.of<missionSettingsProvider>(context);
 
     return Scaffold(
@@ -44,7 +51,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 "your score: " +
                     levelTestResults.score.toString() +
                     " / " +
-                    levelTestResults.levelInfo.NumQuestions.toString(),
+                    lvli.NumQuestions.toString(),
               ),
               verticalSpacer(),
               Row(
@@ -62,7 +69,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                         Navigator.pushNamed(
                           context,
                           LevelMelodyIDTest.routeName,
-                          arguments: levelTestResults.levelInfo,
+                          arguments: lvli,
                         );
                       },
                       child: FittedBox(

@@ -219,26 +219,36 @@ class CampaignArguments {
 }
 
 class MissionInfo {
-  final String campaignName;
+  final String CampaignID;
+  final String CampaignName;
   final String MissionID;
   final String MissionName;
   final String MissionMode;
-  List<LevelInfo> levels = [];
+  Map<String, LevelInfo> levels = {};
 
   MissionInfo(
-    this.campaignName,
+    this.CampaignID,
+    this.CampaignName,
     this.MissionID,
     this.MissionName,
     this.MissionMode,
   );
 
-  void addLevel(LevelInfo level) {
-    levels.add(level);
+  void addLevel(String levelid, LevelInfo level) {
+    if (levels.isNotEmpty && !levels.containsKey(levelid)) {
+      levels[levelid] = level;
+    }
+  }
+
+  LevelInfo getLevel(String levelID) {
+    return levels[levelID]!;
   }
 }
 
 class LevelInfo {
+  final String CampaignID;
   final String CampaignName;
+  final String MissionID;
   final String MissionName;
   final String MissionMode;
   final String LevelID;
@@ -259,7 +269,9 @@ class LevelInfo {
   //GeneralProvider? settings;
 
   LevelInfo(
+    this.CampaignID,
     this.CampaignName,
+    this.MissionID,
     this.MissionName,
     this.MissionMode,
     this.LevelID,
@@ -281,15 +293,20 @@ class LevelInfo {
   setNotes(List<String> noteList) {
     Notes = noteList;
   }
-
-  // void setSettings(GeneralProvider levelSettings) {
-  //   settings = levelSettings;
-  // }
 }
 
-class LevelTestResults{
-  LevelInfo levelInfo;
+class LevelTestResults {
+  final String CampaignID;
+  final String MissionID;
+  final String LevelID;
   final int score;
+  final String timestamp;
 
-  LevelTestResults(this.levelInfo, this.score);
+  LevelTestResults(
+    this.CampaignID,
+    this.MissionID,
+    this.LevelID,
+    this.score,
+    this.timestamp,
+  );
 }

@@ -292,6 +292,7 @@ class MappingProvider extends ChangeNotifier {
 
       missions[campaignID] ??= {};
       missions[campaignID]![missionID] ??= MissionInfo(
+        campaignID,
         campaignName,
         missionID,
         missionName,
@@ -317,7 +318,9 @@ class MappingProvider extends ChangeNotifier {
       List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
 
       LevelInfo levelInfo = LevelInfo(
+        campaignID,
         campaignName,
+        missionID,
         missionName,
         missionMode,
         levelID,
@@ -336,7 +339,7 @@ class MappingProvider extends ChangeNotifier {
         passingScore,
       );
       levelInfo.setNotes(notes);
-      missions[campaignID]![missionID]!.addLevel(levelInfo);
+      missions[campaignID]![missionID]!.addLevel(levelID, levelInfo);
     }
 
     notifyListeners();

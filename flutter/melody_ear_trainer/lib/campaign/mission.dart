@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/colors.dart';
 import '../utils/helper.dart';
-import 'level.dart';
+//import 'level.dart';
 //import 'providers/general_provider.dart';
 import 'missionSettings.dart';
 
@@ -18,7 +18,7 @@ class _MissionState extends State<Mission> {
   Widget build(BuildContext context) {
     final missionInfo =
         ModalRoute.of(context)!.settings.arguments as MissionInfo;
-    String campaignTitle = missionInfo.campaignName;
+    String campaignTitle = missionInfo.CampaignName;
     String missionTitle = missionInfo.MissionName;
     String mode = missionInfo.MissionMode;
 //    missionSettingsProvider ms = missionSettingsProvider();
@@ -68,46 +68,46 @@ class _MissionState extends State<Mission> {
       ],
     ),
               // Levels table
-              if (levels.isEmpty) ...[
-                TextRow('No levels available'),
-              ] else ...[
-                // Constrain table height to avoid overflow
-                SizedBox(
-                  height: 240,
-                  child: SingleChildScrollView(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const [
-                          DataColumn(label: Text('Level')),
-                          DataColumn(label: Text('Tests')),
-                          DataColumn(label: Text('Passing')),
-                        ],
-                        rows:
-                            levels.map((LevelInfo lvl) {
-                              return DataRow(
-                                // make the row selectable/clickable
-                                onSelectChanged: (selected) {
-                                  if (selected == true) {
-                                    Navigator.pushNamed(
-                                      context,
-                                      Level.routeName,
-                                      arguments: lvl,
-                                    );
-                                  }
-                                },
-                                cells: [
-                                  DataCell(Text(lvl.LevelName)),
-                                  DataCell(Text(lvl.NumTests.toString())),
-                                  DataCell(Text(lvl.PassingScore.toString())),
-                                ],
-                              );
-                            }).toList(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+               if (levels.isEmpty) ...[
+                 TextRow('No levels available'),
+               ] else ...[
+                 // Constrain table height to avoid overflow
+                 SizedBox(
+                   height: 240,
+                   child: SingleChildScrollView(
+                     child: SingleChildScrollView(
+                       scrollDirection: Axis.horizontal,
+                       child: DataTable(
+                         columns: const [
+                           DataColumn(label: Text('Level')),
+                           DataColumn(label: Text('Tests')),
+                           DataColumn(label: Text('Passing')),
+                         ],
+                         rows:
+              //               levels.map((LevelInfo lvl) {
+              //                 return DataRow(
+              //                   // make the row selectable/clickable
+              //                   onSelectChanged: (selected) {
+              //                     if (selected == true) {
+              //                       Navigator.pushNamed(
+              //                         context,
+              //                         Level.routeName,
+              //                         arguments: lvl,
+              //                       );
+              //                     }
+              //                   },
+              //                   cells: [
+              //                     DataCell(Text(lvl.LevelName)),
+              //                     DataCell(Text(lvl.NumTests.toString())),
+              //                     DataCell(Text(lvl.PassingScore.toString())),
+              //                   ],
+              //                 );
+              //               }).toList(),
+                       ),
+                     ),
+                   ),
+                 ),
+               ],
               verticalSpacer(),
             ],
           ),
