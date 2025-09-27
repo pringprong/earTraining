@@ -15,10 +15,10 @@ Row headingRow(String myText) {
       Expanded(
         child: Wrap(
           children: [
-            Text(myText, 
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 26)),
+            Text(
+              myText,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+            ),
           ],
         ),
       ),
@@ -33,10 +33,10 @@ Row TextRow(String myText) {
       Expanded(
         child: Wrap(
           children: [
-            Text(myText, 
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22)),
+            Text(
+              myText,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            ),
           ],
         ),
       ),
@@ -51,10 +51,10 @@ Row subHeadingRow(String myText) {
       Expanded(
         child: Wrap(
           children: [
-            Text(myText, 
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18)),
+            Text(
+              myText,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
           ],
         ),
       ),
@@ -63,15 +63,11 @@ Row subHeadingRow(String myText) {
 }
 
 Row plainText(String myText) {
-    return Row(
+  return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Expanded(
-        child: Wrap(
-          children: [
-            Text(myText, style: TextStyle(fontSize: 16)),
-          ],
-        ),
+        child: Wrap(children: [Text(myText, style: TextStyle(fontSize: 16))]),
       ),
     ],
   );
@@ -108,6 +104,9 @@ IconData incorrectGuessIcon = Icons.cancel;
 Color incorrectGuessIconColor = Colors.red;
 Color incorrectGuessButtonColor = const Color.fromARGB(255, 240, 128, 128);
 Color incorrectGuessForegroundColor = buttonForegroundColor;
+
+Color passedColor = correctGuessButtonColor;
+Color notYetPassedColor = clearButtonColor;
 
 const Color borderColor = Colors.grey;
 const Color yetAnotherGrey = Color.fromARGB(255, 181, 196, 212);
@@ -197,7 +196,6 @@ Color getChordButtonColor(String chordName) {
 
   return c6f2;
 }
-
 
 Color getChordButtonColor2(String chordName) {
   String c = chordName;

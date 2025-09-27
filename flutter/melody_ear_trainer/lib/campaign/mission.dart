@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/main.dart';
 import '../utils/colors.dart';
 import '../utils/helper.dart';
 import 'level.dart';
@@ -26,92 +27,170 @@ class _MissionState extends State<Mission> {
     String missionTitle = missionInfo.MissionName;
     String mode = missionInfo.MissionMode;
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
+    LevelInfo lastLevel = levels.last;
+    bool status = objectBox.levelPassed(
+      lastLevel.LevelID,
+      lastLevel.PassingScore,
+      lastLevel.NumTests,
+    );
+    String missionStatus = status ? "Passed" : "Not passed yet";
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            children: [
-              headingRow(campaignTitle),
-              verticalSpacer(),
-              TextRow("Mission: " + missionTitle),
-              verticalSpacer(),
-              subHeadingRow("Mode: " + mode),
-              verticalSpacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: c2f3,
-                        foregroundColor: buttonForegroundColor,
-                        padding: const EdgeInsets.all(12.0),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          missionSettingsPage.routeName,
-                          arguments: missionInfo,
-                        );
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Text("Settings", style: TextStyle(fontSize: 20)),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              children: [
+                headingRow(campaignTitle),
+                verticalSpacer(),
+                TextRow("Mission: " + missionTitle),
+                verticalSpacer(),
+                subHeadingRow("Mode: " + mode),
+                verticalSpacer(),
+                TextRow("Mission main page"),
+                verticalSpacer(),
+                statusRow(missionStatus, status),
+                verticalSpacer(),
+                // Levels table
+                if (levels.isEmpty) ...[
+                  TextRow('No levels available'),
+                ] else ...[
+                  // Constrain table height to avoid overflow
+                  SizedBox(
+                    height: 240,
+                    child: SingleChildScrollView(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          showCheckboxColumn: false,
+                          columns: const [
+                            DataColumn(label: Text('Levels')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('# Tests Passed')),
+                          ],
+                          rows:
+                              levels.map((LevelInfo lvl) {
+                                int numPassedTests = objectBox
+                                    .numPassedTestsForLevel(
+                                      lvl.LevelID,
+                                      lvl.PassingScore,
+                                    );
+                                String levelStatus =
+                                    numPassedTests >= lvl.NumTests
+                                        ? "Passed"
+                                        : "Not passed yet";
+                                Color rowColor =
+                                    numPassedTests >= lvl.NumTests
+                                        ? passedColor
+                                        : notYetPassedColor;
+                                return DataRow(
+                                  // make the row selectable/clickable
+                                  color: WidgetStateProperty.all(rowColor),
+                                  onSelectChanged: (selected) {
+                                    if (selected == true) {
+                                      Navigator.pushNamed(
+                                        context,
+                                        Level.routeName,
+                                        arguments: lvl,
+                                      );
+                                    }
+                                  },
+                                  cells: [
+                                    DataCell(
+                                      Text(
+                                        lvl.LevelName,
+                                        style: TextStyle(
+                                          color: buttonForegroundColor,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        levelStatus,
+                                        style: TextStyle(
+                                          color: buttonForegroundColor,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        numPassedTests.toString() +
+                                            " / " +
+                                            lvl.NumTests.toString(),
+                                        style: TextStyle(
+                                          color: buttonForegroundColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                        ),
                       ),
                     ),
                   ),
                 ],
-              ),
-              // Levels table
-              if (levels.isEmpty) ...[
-                TextRow('No levels available'),
-              ] else ...[
-                // Constrain table height to avoid overflow
-                SizedBox(
-                  height: 240,
-                  child: SingleChildScrollView(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const [
-                          DataColumn(label: Text('Level')),
-                          DataColumn(label: Text('Tests')),
-                          DataColumn(label: Text('Passing')),
-                        ],
-                        rows:
-                            levels.map((LevelInfo lvl) {
-                              return DataRow(
-                                // make the row selectable/clickable
-                                onSelectChanged: (selected) {
-                                  if (selected == true) {
-                                    Navigator.pushNamed(
-                                      context,
-                                      Level.routeName,
-                                      arguments: lvl,
-                                    );
-                                  }
-                                },
-                                cells: [
-                                  DataCell(Text(lvl.LevelName)),
-                                  DataCell(Text(lvl.NumTests.toString())),
-                                  DataCell(Text(lvl.PassingScore.toString())),
-                                ],
-                              );
-                            }).toList(),
-                      ),
-                    ),
-                  ),
-                ),
+                verticalSpacer(),
+                settingsButton(missionInfo),
               ],
-              verticalSpacer(),
-            ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Row statusRow(String myText, bool passed) {
+    Color myColor = passed ? passedColor : notYetPassedColor;
+    return Row(
+      children: [
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          color: myColor,
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          child: Center(
+            child: Text(
+              "Mission status: " + myText,
+              style: TextStyle(fontSize: 22, color: buttonForegroundColor),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row settingsButton(MissionInfo missionInfo) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: c2f3,
+              foregroundColor: buttonForegroundColor,
+              padding: const EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                missionSettingsPage.routeName,
+                arguments: missionInfo,
+              );
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Mission settings", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

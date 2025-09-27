@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
+import 'package:melody_ear_trainer/main.dart';
 import 'package:melody_ear_trainer/utils/colors.dart';
 import '../utils/helper.dart';
 import 'package:flutter/services.dart';
@@ -135,7 +136,7 @@ class _campaignTreeState extends State<campaignTree> {
                             // Rectangle: interactive — push Mission
                             MissionInfo missionInfo =
                                 missions[nodeValue['missionid']]!;
-                            return rectangleWidget(context, missionInfo);
+                            return rectangleWidget(context, missionInfo, mappingProvider);
                           }
                         },
                       ),
@@ -164,7 +165,22 @@ class _campaignTreeState extends State<campaignTree> {
     );
   }
 
-  Widget rectangleWidget(BuildContext context, MissionInfo missionInfo) {
+  Widget rectangleWidget(
+    BuildContext context, 
+    MissionInfo missionInfo, 
+    MappingProvider mappingProvider) {
+    final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
+    LevelInfo lastLevel = levels.last;
+    String missionStatus = objectBox.levelPassed(
+              lastLevel.LevelID,
+              lastLevel.PassingScore,
+              lastLevel.NumTests,
+            )
+            ? "Passed"
+            : "Not passed yet";
+    Color nodeColor = missionStatus == "Passed"
+                                      ? passedColor
+                                      : notYetPassedColor;
     return InkWell(
       onTap: () {
         // create MissionArguments and navigate to Mission page
@@ -174,14 +190,18 @@ class _campaignTreeState extends State<campaignTree> {
         padding: EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
+          boxShadow: [BoxShadow(color: nodeColor, spreadRadius: 1)],
         ),
         child: Text(
           "Mission: " +
               missionInfo.MissionName +
               '\nMode: ' +
-              missionInfo.MissionMode,
+              missionInfo.MissionMode  +
+              '\nStatus ' +
+              missionStatus,
           textAlign: TextAlign.center,
+          style: TextStyle(color: buttonForegroundColor,
+          ),
         ),
       ),
     );

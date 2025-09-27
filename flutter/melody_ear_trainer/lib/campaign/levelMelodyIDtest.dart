@@ -89,9 +89,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
               verticalSpacer(),
               playMelodyButtons(generalProvider, mappingProvider, false),
               verticalSpacer(),
-              //solfegeExpansionTile(generalProvider, mappingProvider),
-              //verticalSpacer(),
-              subHeadingRow("Enter the solfege for the melody:"),
+              subHeadingRow("Enter the solfege for the melody (" + levelInfo.NumNotes.toString() + " notes):"),
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
@@ -100,11 +98,6 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
               clearAndBackspaceButtons(),
               verticalSpacer(),
               enterGuessbutton(generalProvider, mappingProvider, false),
-              //compareButton(),
-              //verticalSpacer(),
-              //subHeadingRow("Listen to your melody:"),
-              // verticalSpacer(),
-              // userWrittenMelodyButtons(generalProvider, mappingProvider),
             ],
           ),
         ),
@@ -118,12 +111,6 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
     String timestamp = DateFormat(
       'yyyy-MM-dd HH:MM',
     ).format(DateTime.now());
-    // final entry = TestResult(
-    //   timestamp: timestamp,
-    //   levelID: levelInfo.LevelID,
-    //   numQuestions: levelInfo.NumQuestions,
-    //   score: correctAnswers,
-    // );
 
     // insert and when done navigate to results pag
     LevelTestResults ltr = LevelTestResults(

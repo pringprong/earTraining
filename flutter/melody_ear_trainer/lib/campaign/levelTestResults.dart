@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/campaign/levelMelodyIDtest.dart';
+import 'package:melody_ear_trainer/main.dart';
 import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../utils/helper.dart';
-//import 'levelMelodyID.dart';
-//import 'levelMelodyIDhandsfree.dart';
-//import 'levelMelodyIDtest.dart';
 
 class LevelTestResultsPage extends StatefulWidget {
   const LevelTestResultsPage({super.key});
@@ -22,16 +20,18 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     final levelTestResults =
         ModalRoute.of(context)!.settings.arguments as LevelTestResults;
     final mappingProvider = Provider.of<MappingProvider>(context);
-
     String campaignTitle =
         mappingProvider.getCampaigns[levelTestResults.CampaignID]!.CampaignName;
-    MissionInfo mi =
-        mappingProvider.getMissions[levelTestResults.MissionID]!;
+    MissionInfo mi = mappingProvider.getMissions[levelTestResults.MissionID]!;
     LevelInfo lvli = mappingProvider.getLevelInfo(levelTestResults.LevelID);
     String missionTitle = mi.MissionName;
     String levelTitle = lvli.LevelName;
-    //final GeneralProvider = Provider.of<missionSettingsProvider>(context);
-
+    int numPassedTests = objectBox.numPassedTestsForLevel(
+      lvli.LevelID,
+      lvli.PassingScore,
+    );
+    String levelStatus =
+        numPassedTests >= lvli.NumTests ? "Passed" : "Not passed yet";
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -45,6 +45,20 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               TextRow("Mission: " + missionTitle),
               verticalSpacer(),
               TextRow("Level: " + levelTitle),
+              verticalSpacer(),
+              TextRow("Level status:"),
+              verticalSpacer(),
+              plainText(
+                "Number of passed tests required: " + lvli.NumTests.toString(),
+              ),
+              plainText(
+                "Passing score for each test: " + lvli.PassingScore.toString(),
+              ),
+              plainText(
+                "Number of tests passed so far: " + numPassedTests.toString(),
+              ),
+              verticalSpacer(),
+              subHeadingRow(levelStatus),
               verticalSpacer(),
               TextRow(
                 "your score: " +

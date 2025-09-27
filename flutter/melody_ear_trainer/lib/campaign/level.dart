@@ -8,8 +8,6 @@ import '../utils/helper.dart';
 import 'levelMelodyID.dart';
 import 'levelMelodyIDhandsfree.dart';
 import 'levelMelodyIDtest.dart';
-//import '../utils/resultsDB.dart';
-
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -47,127 +45,204 @@ class _LevelState extends State<Level> {
     List<LevelTestResults> ltrList = objectBox.getLevelTestResultsByLevelID(
       levelInfo.LevelID,
     );
+    int numPassedTests = objectBox.numPassedTestsForLevel(
+      levelInfo.LevelID,
+      levelInfo.PassingScore,
+    );
+    String levelStatus =
+        numPassedTests >= levelInfo.NumTests ? "Passed" : "Not passed yet";
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            children: [
-              headingRow(campaignTitle),
-              verticalSpacer(),
-              TextRow("Mission: " + missionTitle),
-              verticalSpacer(),
-              TextRow("Level: " + levelTitle),
-              verticalSpacer(),
-              TextRow("Level main page"),
-              verticalSpacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: c2f3,
-                        foregroundColor: buttonForegroundColor,
-                        padding: const EdgeInsets.all(12.0),
-                      ),
-                      onPressed: () {
-                        if (missionMode == "Melody ID") {
-                          Navigator.pushNamed(
-                            context,
-                            LevelMelodyID.routeName,
-                            arguments: levelInfo,
-                          );
-                        }
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Text("Practice", style: TextStyle(fontSize: 20)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              verticalSpacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: c2f3,
-                        foregroundColor: buttonForegroundColor,
-                        padding: const EdgeInsets.all(12.0),
-                      ),
-                      onPressed: () {
-                        if (missionMode == "Melody ID") {
-                          Navigator.pushNamed(
-                            context,
-                            LevelMelodyIDHandsFree.routeName,
-                            arguments: levelInfo,
-                          );
-                        }
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Text(
-                          "Hands free practice",
-                          style: TextStyle(fontSize: 20),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              children: [
+                headingRow(campaignTitle),
+                verticalSpacer(),
+                TextRow("Mission: " + missionTitle),
+                verticalSpacer(),
+                TextRow("Level: " + levelTitle),
+                verticalSpacer(),
+                TextRow("Level main page"),
+                verticalSpacer(),
+                statusRow(levelStatus, numPassedTests >= levelInfo.NumTests),
+                verticalSpacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: c2f3,
+                          foregroundColor: buttonForegroundColor,
+                          padding: const EdgeInsets.all(12.0),
+                        ),
+                        onPressed: () {
+                          if (missionMode == "Melody ID") {
+                            Navigator.pushNamed(
+                              context,
+                              LevelMelodyID.routeName,
+                              arguments: levelInfo,
+                            );
+                          }
+                        },
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text("Practice", style: TextStyle(fontSize: 20)),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              verticalSpacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: c2f3,
-                        foregroundColor: buttonForegroundColor,
-                        padding: const EdgeInsets.all(12.0),
-                      ),
-                      onPressed: () {
-                        if (missionMode == "Melody ID") {
-                          Navigator.pushNamed(
-                            context,
-                            LevelMelodyIDTest.routeName,
-                            arguments: levelInfo,
-                          );
-                        }
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Text("Test", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+                verticalSpacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: c2f3,
+                          foregroundColor: buttonForegroundColor,
+                          padding: const EdgeInsets.all(12.0),
+                        ),
+                        onPressed: () {
+                          if (missionMode == "Melody ID") {
+                            Navigator.pushNamed(
+                              context,
+                              LevelMelodyIDHandsFree.routeName,
+                              arguments: levelInfo,
+                            );
+                          }
+                        },
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                            "Hands free practice",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              verticalSpacer(),
-              subHeadingRow("Test history"),
-              verticalSpacer(),
-              ListView.builder(              
-                itemCount: ltrList.length,
-                itemBuilder: (context, index) {
-                  final ltr = ltrList[index];
-                  return ListTile(
-                    title: Text("Score: " + ltr.score.toString()),
-                    subtitle: Text("Date: " + ltr.timestamp),
-                  );
-                },
-                shrinkWrap: true,
-              ),
-            ],
+                  ],
+                ),
+                verticalSpacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: c2f3,
+                          foregroundColor: buttonForegroundColor,
+                          padding: const EdgeInsets.all(12.0),
+                        ),
+                        onPressed: () {
+                          if (missionMode == "Melody ID") {
+                            Navigator.pushNamed(
+                              context,
+                              LevelMelodyIDTest.routeName,
+                              arguments: levelInfo,
+                            );
+                          }
+                        },
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                            "Take a test for this level",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                verticalSpacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: c2f3,
+                          foregroundColor: buttonForegroundColor,
+                          padding: const EdgeInsets.all(12.0),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                            "Return to mission main page",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                verticalSpacer(),
+                TextRow("Level status:"),
+                verticalSpacer(),
+                plainText(
+                  "Number of tests passed so far: " +
+                      numPassedTests.toString() +
+                      " / " +
+                      levelInfo.NumTests.toString() +
+                      " required",
+                ),
+                plainText(
+                  "Passing score for each test: " +
+                      levelInfo.PassingScore.toString(),
+                ),
+                //subHeadingRow(levelStatus),
+                verticalSpacer(),
+                TextRow("Test history"),
+                verticalSpacer(),
+                ListView.builder(
+                  itemCount: ltrList.length,
+                  itemBuilder: (context, index) {
+                    final ltr = ltrList[index];
+                    return ListTile(
+                      title: Text("Score: " + ltr.score.toString()),
+                      subtitle: Text("Date: " + ltr.timestamp),
+                    );
+                  },
+                  shrinkWrap: true,
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Row statusRow(String myText, bool passed) {
+    Color myColor = passed ? passedColor : notYetPassedColor;
+    return Row(
+      children: [
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          color: myColor,
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          child: Center(
+
+            child: Text(
+              "Level status: " + myText,
+              style: TextStyle(fontSize: 22, color: buttonForegroundColor),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
