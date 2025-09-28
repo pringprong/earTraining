@@ -183,7 +183,7 @@ class ObjectBox {
           MissionID: mid,
           key: newkey,
           instrument: newInstrument,
-          passedMission: passed
+          passedMission: passed,
         ),
       );
     }

@@ -62,59 +62,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorMap["c2f3"] ?? Colors.white,
-                      foregroundColor:
-                          colorMap["buttonForegroundColor"] ?? Colors.white,
-                      padding: const EdgeInsets.all(12.0),
-                    ),
-                    onPressed: () {
-                      deleteAllPreferences();
-                      melodyIDProvider.loadSettings();
-                      melodySingingProvider.loadSettings();
-                      chordIDProvider.loadSettings();
-                      chordSingingProvider.loadSettings();
-                      chordMelodyIDProvider.loadSettings();
-                      chordMelodySingingProvider.loadSettings();
-                      setState(() {});
-                    },
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Text(
-                        "Reset all settings to default",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               verticalSpacer(),
-              Row(
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorMap["c3f3"] ?? Colors.white,
-                      foregroundColor:
-                          colorMap["buttonForegroundColor"] ?? Colors.white,
-                      padding: const EdgeInsets.all(12.0),
-                    ),
-                    onPressed: () {
-                      objectBox.removeAllLevelTestResults();
-                      objectBox.removeAllMissionSavedSettings();
-                    },
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Text(
-                        "Delete all results from database",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               verticalSpacer(),
               sectionBox(
                 color: colorMap["c1f0"] ?? Colors.white,
@@ -534,6 +482,86 @@ class _HelpPageState extends State<HelpPage> {
                     plainText("Salamander Grand Piano V3_48khz24bit"),
                   ],
                 ),
+              ),
+              verticalSpacer(),
+              ExpansionTile(
+                title: Text(
+                  "Developer tools",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+                initiallyExpanded: false,
+                children: [
+                      Row(
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                      foregroundColor:
+                          colorMap["buttonForegroundColor"] ?? Colors.white,
+                      padding: const EdgeInsets.all(12.0),
+                    ),
+                    onPressed: () {
+                      deleteAllPreferences();
+                      melodyIDProvider.loadSettings();
+                      melodySingingProvider.loadSettings();
+                      chordIDProvider.loadSettings();
+                      chordSingingProvider.loadSettings();
+                      chordMelodyIDProvider.loadSettings();
+                      chordMelodySingingProvider.loadSettings();
+                      setState(() {});
+                    },
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Text(
+                        "Reset all settings to default - do not click!",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              verticalSpacer(),
+              Row(
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                      foregroundColor:
+                          colorMap["buttonForegroundColor"] ?? Colors.white,
+                      padding: const EdgeInsets.all(12.0),
+                    ),
+                    onPressed: () {
+                      objectBox.removeAllLevelTestResults();
+                      objectBox.removeAllMissionSavedSettings();
+                    },
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Text(
+                        "Delete all results from database - do not click!",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              verticalSpacer(),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Unlock all missions:'),
+                  ),
+                  Checkbox(
+                    value: context.watch<ThemeProvider>().unlockall,
+                    onChanged: (bool? newValue) {
+                      if (newValue != null) {
+                        context.read<ThemeProvider>().setUnlockAll(newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+      ],
               ),
             ], // Children of Column
           ),

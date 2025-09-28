@@ -23,13 +23,14 @@ bool listEquals<T>(List<T>? a, List<T>? b) {
 
 Widget buildNotesGrid(
   GeneralProvider generalProvider,
-  MappingProvider mappingProvider,
+  MappingProvider mappingProvider
 ) {
   final noteKeys = mappingProvider.getNoteKeys;
   final noteColors = mappingProvider.getNoteColors;
   final noteColorFactor = mappingProvider.getNoteColorFactors;
   final noteSelection = generalProvider.getNoteSelection;
   List<Widget> rows = [];
+
   for (int row = 0; row < 4; row++) {
     int start = row * 12;
     int end = (row == 3) ? start + 1 : start + 12;
@@ -160,6 +161,20 @@ Widget buildChordButtons(
     children: sections,
   );
 }
+
+  Widget optionalChordButtons(GeneralProvider gp, MappingProvider mp) {
+    if(gp.selectedChords.isNotEmpty && gp.chordFrequency != "Never") {
+      return buildChordButtons(mp, gp);
+    }
+    return SizedBox.shrink();
+  }
+
+  Widget optionalNoteButtons(GeneralProvider gp, MappingProvider mp) {
+    if(gp.getSelectedNotes().isNotEmpty && gp.chordFrequency != "Every note") {
+      return buildNotesGrid(gp, mp);
+    }
+    return SizedBox.shrink();
+  }
 
 RegExp chordNameParse = RegExp(
   r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',

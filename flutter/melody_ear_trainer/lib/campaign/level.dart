@@ -28,9 +28,9 @@ class _LevelState extends State<Level> {
     String missionTitle = mappingProvider.getMissionName(levelInfo.MissionID);
     String missionMode = mappingProvider.getMissionMode(levelInfo.MissionID);
     String levelTitle = levelInfo.LevelName;
-    final GeneralProvider = Provider.of<missionSettingsProvider>(context);
+    final generalProvider = Provider.of<missionSettingsProvider>(context);
     // update the settings to reflect the details of this level
-    GeneralProvider.setLevelDetails(
+    generalProvider.setLevelDetails(
       levelInfo.Notes,
       levelInfo.NumNotes,
       levelInfo.MaxDistance,
@@ -70,6 +70,10 @@ class _LevelState extends State<Level> {
                 TextRow("Level main page"),
                 verticalSpacer(),
                 statusRow(levelStatus, numPassedTests >= levelInfo.NumTests),
+                verticalSpacer(),
+                optionalNoteButtons(generalProvider, mappingProvider),
+                verticalSpacer(),
+                optionalChordButtons(generalProvider, mappingProvider),
                 verticalSpacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,

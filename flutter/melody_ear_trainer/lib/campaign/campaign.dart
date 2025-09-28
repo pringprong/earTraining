@@ -5,9 +5,9 @@ import 'package:melody_ear_trainer/utils/colors.dart';
 import '../utils/helper.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
-//import 'dart:io';
 import 'mission.dart';
 import '../providers/mapping_provider.dart';
+import '../providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class campaignTree extends StatefulWidget {
@@ -90,6 +90,7 @@ class _campaignTreeState extends State<campaignTree> {
     final campArgs = ModalRoute.of(context)!.settings.arguments as CampaignInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
     final Map<String, MissionInfo> missions = mappingProvider.getMissions;
+    //final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -143,50 +144,52 @@ class _campaignTreeState extends State<campaignTree> {
 
                           // Evaluate unlocked state (optional keys: unlockedby, unlockedbyrelationship)
                           bool unlocked = true;
-                          if (nodeValue.containsKey('unlockedby')) {
-                            try {
-                              final raw = nodeValue['unlockedby'];
-                              final List<String> unlockedList =
-                                  (raw is List)
-                                      ? raw.map((e) => e.toString()).toList()
-                                      : [raw.toString()];
-                              final relationship =
-                                  (nodeValue['unlockedbyrelationship'] ?? 'AND')
-                                      .toString()
-                                      .toUpperCase();
+                          if (!context.watch<ThemeProvider>().unlockall) {
+                            if (nodeValue.containsKey('unlockedby')) {
+                              try {
+                                final raw = nodeValue['unlockedby'];
+                                final List<String> unlockedList =
+                                    (raw is List)
+                                        ? raw.map((e) => e.toString()).toList()
+                                        : [raw.toString()];
+                                final relationship =
+                                    (nodeValue['unlockedbyrelationship'] ??
+                                            'AND')
+                                        .toString()
+                                        .toUpperCase();
 
-                              // Lookup each mission id via global objectBox.isMissionPassed(...) (synchronous)
-                              List<bool> results = [];
-                              for (final mid in unlockedList) {
-                                bool passed = false;
-                                try {
-                                  passed = objectBox.isMissionPassed(mid);
-                                } catch (e) {
-                                  // lookup failure -> treat as not passed
-                                  debugPrint(
-                                    'campaign.dart: isMissionPassed lookup error for "$mid": $e',
-                                  );
-                                  passed = false;
+                                // Lookup each mission id via global objectBox.isMissionPassed(...) (synchronous)
+                                List<bool> results = [];
+                                for (final mid in unlockedList) {
+                                  bool passed = false;
+                                  try {
+                                    passed = objectBox.isMissionPassed(mid);
+                                  } catch (e) {
+                                    // lookup failure -> treat as not passed
+                                    debugPrint(
+                                      'campaign.dart: isMissionPassed lookup error for "$mid": $e',
+                                    );
+                                    passed = false;
+                                  }
+                                  results.add(passed);
                                 }
-                                results.add(passed);
+                                if (results.isEmpty) {
+                                  unlocked = true;
+                                } else if (relationship == 'AND') {
+                                  unlocked = results.every((b) => b);
+                                } else {
+                                  // default OR
+                                  unlocked = results.any((b) => b);
+                                }
+                              } catch (e) {
+                                debugPrint(
+                                  'campaign.dart: error evaluating unlockedby for node $nodeValue: $e',
+                                );
+                                unlocked =
+                                    true; // fail-open to avoid accidentally hiding content
                               }
-                              if (results.isEmpty) {
-                                unlocked = true;
-                              } else if (relationship == 'AND') {
-                                unlocked = results.every((b) => b);
-                              } else {
-                                // default OR
-                                unlocked = results.any((b) => b);
-                              }
-                            } catch (e) {
-                              debugPrint(
-                                'campaign.dart: error evaluating unlockedby for node $nodeValue: $e',
-                              );
-                              unlocked =
-                                  true; // fail-open to avoid accidentally hiding content
                             }
                           }
-
                           final shape =
                               (nodeValue['shape'] ?? 'Rectangle').toString();
                           final label = nodeValue['label'] as String?;
@@ -250,7 +253,7 @@ class _campaignTreeState extends State<campaignTree> {
           boxShadow: [BoxShadow(color: Colors.grey.shade700, spreadRadius: 1)],
         ),
         child: Text(
-          "Mission Locked until preceding missions are passed",
+          "Mission Locked\nuntil preceding missions\nare passed",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white70),
         ),
