@@ -28,18 +28,25 @@
             "id": 5,
             "shape": "Rectangle",
             "label": "",
-            "missionid": "c1m03",R
-			"dependson": 
+            "missionid": "c1m03",
+			"unlockedby": 
 				[
 					"c1m01", 
 					"c1m02"
-				]
+				],
+			"unlockedbyrelationship": "OR"
         },
         {
             "id": 6,
             "shape": "Circle",
             "label": "Next hub",
-            "missionid": ""
+            "missionid": "",
+			"unlockedby": 
+				[
+					"c1m01", 
+					"c1m02"
+				],
+			"unlockedbyrelationship": "AND"
         }
     ],
     "edges": [
