@@ -66,8 +66,9 @@ class _HelpPageState extends State<HelpPage> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: c2f3,
-                      foregroundColor: buttonForegroundColor,
+                      backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                      foregroundColor:
+                          colorMap["buttonForegroundColor"] ?? Colors.white,
                       padding: const EdgeInsets.all(12.0),
                     ),
                     onPressed: () {
@@ -95,8 +96,9 @@ class _HelpPageState extends State<HelpPage> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: c3f3,
-                      foregroundColor: buttonForegroundColor,
+                      backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                      foregroundColor:
+                          colorMap["buttonForegroundColor"] ?? Colors.white,
                       padding: const EdgeInsets.all(12.0),
                     ),
                     onPressed: () {
@@ -115,7 +117,7 @@ class _HelpPageState extends State<HelpPage> {
               ),
               verticalSpacer(),
               sectionBox(
-                color: c1f0,
+                color: colorMap["c1f0"] ?? Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -191,7 +193,7 @@ class _HelpPageState extends State<HelpPage> {
               ),
               verticalSpacer(),
               sectionBox(
-                color: c2f0,
+                color: colorMap["c2f0"] ?? Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -366,7 +368,7 @@ class _HelpPageState extends State<HelpPage> {
               ),
               verticalSpacer(),
               sectionBox(
-                color: c3f0,
+                color: colorMap["c3f0"] ?? Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -481,7 +483,7 @@ class _HelpPageState extends State<HelpPage> {
               ),
               verticalSpacer(),
               sectionBox(
-                color: c4f0,
+                color: colorMap["c4f0"] ?? Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -516,7 +518,7 @@ class _HelpPageState extends State<HelpPage> {
               ),
               verticalSpacer(),
               sectionBox(
-                color: c5f0,
+                color: colorMap["c5f0"] ?? Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

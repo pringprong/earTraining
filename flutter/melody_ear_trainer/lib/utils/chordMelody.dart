@@ -155,6 +155,10 @@ class ChordMelody {
         // Add a chord
         String selectedChord;
         if (allowRepeatedChords) {
+            // TO DO: 
+            //what we want to do here is double or triple the non-repeated chords
+            // in the list of available chords
+            // so that a repeated chord is possible but not very likely
           selectedChord =
               availableChords[random.nextInt(availableChords.length)];
         } else {
@@ -184,6 +188,10 @@ class ChordMelody {
         if (i == 2 && startWithDo) {
           if (allowRepeats) {
             candidates = List<String>.from(availableNotes);
+            // TO DO:
+            //what we want to do here is double or triple the non-repeated notes
+            // in the list of available notes
+            // so that a repeated note is possible but not very likely
           } else {
             candidates =
                 availableNotes.where((note) => note != startingDo).toList();
@@ -195,6 +203,10 @@ class ChordMelody {
             currentNote = chordMelody[chordMelody.length - 2];
           }
           if (allowRepeats) {
+            // TO DO:
+            //what we want to do here is double or triple the non-repeated notes
+            // in the list of available notes
+            // so that a repeated note is not very likely
             candidates =
                 availableNotes.where((note) {
                   if (currentNote == null) return true;

@@ -39,15 +39,17 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         Expanded(
                           child: GestureDetector(
                             child: Card(
-                              color: c5f4,
+                              color: colorMap["c5f4"],
                               child: SizedBox(
                                 height: 70,
                                 child: Center(
                                   child: Text(
                                     campArgs.CampaignName,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 20,
-                                      color: buttonForegroundColor,
+                                      color:
+                                          colorMap["buttonForegroundColor"] ??
+                                          Colors.white,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -72,15 +74,17 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     Expanded(
                       child: GestureDetector(
                         child: Card(
-                          color: c5f4,
+                          color: colorMap["c5f4"],
                           child: SizedBox(
                             height: 70,
                             child: Center(
-                              child: const Text(
+                              child: Text(
                                 "Custom study",
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: buttonForegroundColor,
+                                  color:
+                                      colorMap["buttonForegroundColor"] ??
+                                      Colors.white,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -100,15 +104,17 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     Expanded(
                       child: GestureDetector(
                         child: Card(
-                          color: c1f4,
+                          color: colorMap["c1f4"] ?? Colors.white,
                           child: SizedBox(
                             height: 70,
                             child: Center(
-                              child: const Text(
+                              child: Text(
                                 "Help",
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: buttonForegroundColor,
+                                  color:
+                                      colorMap["buttonForegroundColor"] ??
+                                      Colors.white,
                                 ),
                                 textAlign: TextAlign.center,
                               ),

@@ -47,7 +47,10 @@ Widget buildNotesGrid(
             padding: const EdgeInsets.all(1.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: selected ? buttonColor : borderColor,
+                backgroundColor:
+                    selected
+                        ? buttonColor
+                        : colorMap["borderColor"] ?? Colors.white,
                 //minimumSize: Size(40, 40),
                 padding: EdgeInsets.zero,
                 textStyle: TextStyle(
@@ -67,7 +70,8 @@ Widget buildNotesGrid(
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                    color: noteButtonForegroundColor,
+                    color:
+                        colorMap["noteButtonForegroundColor"] ?? Colors.white,
                   ),
                 ),
               ),
@@ -118,7 +122,7 @@ Widget buildChordButtons(
                     color:
                         selected
                             ? getChordButtonColor2(chordName)
-                            : yetAnotherGrey,
+                            : colorMap["yetAnotherGrey"] ?? Colors.white,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -128,7 +132,9 @@ Widget buildChordButtons(
                       chordName,
                       style: TextStyle(
                         fontSize: 20,
-                        color: noteButtonForegroundColor,
+                        color:
+                            colorMap["noteButtonForegroundColor"] ??
+                            Colors.white,
                         fontWeight:
                             selected ? FontWeight.bold : FontWeight.normal,
                       ),
@@ -328,6 +334,6 @@ class MissionSavedSettings {
     required this.MissionID,
     required this.key,
     required this.instrument,
-    this.passedMission = false
+    this.passedMission = false,
   });
 }

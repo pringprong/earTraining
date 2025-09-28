@@ -18,30 +18,33 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   ChordMelody userWrittenChordMelody = ChordMelody();
 
   IconData comparisonIcon = waitingForGuessIcon;
-  Color comparisonIconColor = waitingForGuessIconColor;
-  Color comparisonColor = waitingForGuessButtonColor;
+  Color comparisonIconColor =
+      colorMap["waitingForGuessIconColor"] ?? Colors.white;
+  Color comparisonColor =
+      colorMap["waitingForGuessButtonColor"] ?? Colors.white;
 
   void setToWaitingForGuess() {
     setState(() {
       comparisonIcon = waitingForGuessIcon;
-      comparisonIconColor = waitingForGuessIconColor;
-      comparisonColor = waitingForGuessButtonColor;
+      comparisonIconColor =
+          colorMap["waitingForGuessIconColor"] ?? Colors.white;
+      comparisonColor = colorMap["waitingForGuessButtonColor"] ?? Colors.white;
     });
   }
 
   void setToCorrectGuess() {
     setState(() {
       comparisonIcon = correctGuessIcon;
-      comparisonIconColor = correctGuessIconColor;
-      comparisonColor = correctGuessButtonColor;
+      comparisonIconColor = colorMap["correctGuessIconColor"] ?? Colors.white;
+      comparisonColor = colorMap["correctGuessButtonColor"] ?? Colors.white;
     });
   }
 
   void setToIncorrectGuess() {
     setState(() {
       comparisonIcon = incorrectGuessIcon;
-      comparisonIconColor = incorrectGuessIconColor;
-      comparisonColor = incorrectGuessButtonColor;
+      comparisonIconColor = colorMap["incorrectGuessIconColor"] ?? Colors.white;
+      comparisonColor = colorMap["incorrectGuessButtonColor"] ?? Colors.white;
     });
   }
 
@@ -56,8 +59,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c2f3,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c2f3"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -92,8 +96,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c3f4,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c3f4"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed:
                 () => generatedChordMelody.playChordMelody(
@@ -113,8 +118,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c5f4,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c5f4"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed:
                 () => generatedChordMelody.playChordMelody(
@@ -134,8 +140,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: c1f4,
-                foregroundColor: buttonForegroundColor,
+                backgroundColor: colorMap["c1f4"] ?? Colors.white,
+                foregroundColor:
+                    colorMap["buttonForegroundColor"] ?? Colors.white,
               ),
               onPressed:
                   () => generatedChordMelody.playChordMelody(
@@ -165,8 +172,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c3f1,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c3f1"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed: () {
               ChordMelody fn = ChordMelody.singleChord(
@@ -191,8 +199,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c5f1,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c5f1"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed: () {
               ChordMelody fn = ChordMelody.singleChord(
@@ -216,8 +225,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c1f1,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c1f1"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed: () {
               ChordMelody fn = ChordMelody.singleChord(
@@ -259,8 +269,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             Expanded(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: c1f4,
-                  foregroundColor: buttonForegroundColor,
+                  backgroundColor: colorMap["c1f4"] ?? Colors.white,
+                  foregroundColor:
+                      colorMap["buttonForegroundColor"] ?? Colors.white,
                 ),
                 onPressed: () {
                   solfegeText = generatedChordMelody.getChordMelody().join(' ');
@@ -277,8 +288,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             Expanded(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: c1f3,
-                  foregroundColor: buttonForegroundColor,
+                  backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                  foregroundColor:
+                      colorMap["buttonForegroundColor"] ?? Colors.white,
                 ),
                 onPressed:
                     () => generatedChordMelody.playSpoken(
@@ -297,8 +309,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             Expanded(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: c1f2,
-                  foregroundColor: buttonForegroundColor,
+                  backgroundColor: colorMap["c1f2"] ?? Colors.white,
+                  foregroundColor:
+                      colorMap["buttonForegroundColor"] ?? Colors.white,
                 ),
                 onPressed:
                     () => generatedChordMelody.playChordMelody(
@@ -322,7 +335,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             width: double.infinity,
             padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
-              border: Border.all(color: borderColor),
+              border: Border.all(
+                color: colorMap["borderColor"] ?? Colors.white,
+              ),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(solfegeText, style: TextStyle(fontSize: 18)),
@@ -343,7 +358,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
           width: double.infinity,
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
+            border: Border.all(color: colorMap["borderColor"] ?? Colors.white),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(solfegeText, style: TextStyle(fontSize: 18)),
@@ -362,8 +377,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c1f3,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c1f3"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -390,7 +406,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         width: double.infinity,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          border: Border.all(color: borderColor),
+          border: Border.all(color: colorMap["borderColor"] ?? Colors.white),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
@@ -408,8 +424,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: clearButtonColor,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["clearButtonColor"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed: () {
               setState(() {
@@ -428,8 +445,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: yetAnotherGrey,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed: () {
               setState(() {
@@ -460,7 +478,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all<Color>(comparisonColor),
               foregroundColor: WidgetStateProperty.all<Color>(
-                buttonForegroundColor,
+                colorMap["buttonForegroundColor"] ?? Colors.white,
               ),
             ),
             label: FittedBox(
@@ -499,8 +517,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c3f3,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c3f3"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed:
                 () => userWrittenChordMelody.playChordMelody(
@@ -519,8 +538,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c5f3,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c5f3"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed:
                 () => userWrittenChordMelody.playChordMelody(
@@ -539,8 +559,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c1f3,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c1f3"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
             ),
             onPressed:
                 () => userWrittenChordMelody.playChordMelody(
@@ -599,7 +620,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                                 noteColors[note].toString(),
                                 noteColorFactor[note] ?? 1.0,
                               ),
-                              foregroundColor: noteButtonForegroundColor,
+                              foregroundColor:
+                                  colorMap["noteButtonForegroundColor"] ??
+                                  Colors.white,
                               padding: const EdgeInsets.all(0.0),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               shape: RoundedRectangleBorder(
@@ -683,12 +706,15 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.9,
           ),
-          color: c6f3,
+          color: colorMap["c6f3"] ?? Colors.white,
           width: double.infinity,
           padding: EdgeInsets.all(12),
           child: Text(
             myText,
-            style: TextStyle(fontSize: 22, color: buttonForegroundColor),
+            style: TextStyle(
+              fontSize: 22,
+              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+            ),
           ),
         ),
       ],
@@ -700,7 +726,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
     MappingProvider mappingProvider,
   ) {
     final selectedChords = generalProvider.getSelectedChords();
-    selectedChords.sort((a,b) => chordNameSort(a, b));
+    selectedChords.sort((a, b) => chordNameSort(a, b));
     final chordFrequency = generalProvider.chordFrequency;
     final chordMap = mappingProvider.getChordMap;
     if (chordFrequency == "Never") {
@@ -746,7 +772,8 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                     chord,
                     style: TextStyle(
                       fontSize: 20,
-                      color: noteButtonForegroundColor,
+                      color:
+                          colorMap["noteButtonForegroundColor"] ?? Colors.white,
                     ),
                   ),
                 ),

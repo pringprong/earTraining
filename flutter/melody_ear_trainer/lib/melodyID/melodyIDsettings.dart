@@ -423,8 +423,9 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c3f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         String filename =
@@ -461,8 +462,9 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c5f2,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c5f2"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         String filename =
@@ -499,8 +501,9 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c1f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         String filename =
@@ -538,8 +541,9 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c1f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
                         context.read<MelodyIDSettings>().resetAllSettings();

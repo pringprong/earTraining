@@ -77,8 +77,9 @@ class _LevelState extends State<Level> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: c2f3,
-                          foregroundColor: buttonForegroundColor,
+                          backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                          foregroundColor:
+                              colorMap["buttonForegroundColor"] ?? Colors.white,
                           padding: const EdgeInsets.all(12.0),
                         ),
                         onPressed: () {
@@ -92,7 +93,10 @@ class _LevelState extends State<Level> {
                         },
                         child: FittedBox(
                           fit: BoxFit.fill,
-                          child: Text("Practice", style: TextStyle(fontSize: 20)),
+                          child: Text(
+                            "Practice",
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       ),
                     ),
@@ -105,8 +109,9 @@ class _LevelState extends State<Level> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: c2f3,
-                          foregroundColor: buttonForegroundColor,
+                          backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                          foregroundColor:
+                              colorMap["buttonForegroundColor"] ?? Colors.white,
                           padding: const EdgeInsets.all(12.0),
                         ),
                         onPressed: () {
@@ -136,8 +141,9 @@ class _LevelState extends State<Level> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: c2f3,
-                          foregroundColor: buttonForegroundColor,
+                          backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                          foregroundColor:
+                              colorMap["buttonForegroundColor"] ?? Colors.white,
                           padding: const EdgeInsets.all(12.0),
                         ),
                         onPressed: () {
@@ -167,8 +173,9 @@ class _LevelState extends State<Level> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: c2f3,
-                          foregroundColor: buttonForegroundColor,
+                          backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                          foregroundColor:
+                              colorMap["buttonForegroundColor"] ?? Colors.white,
                           padding: const EdgeInsets.all(12.0),
                         ),
                         onPressed: () {
@@ -224,7 +231,10 @@ class _LevelState extends State<Level> {
   }
 
   Row statusRow(String myText, bool passed) {
-    Color myColor = passed ? passedColor : notYetPassedColor;
+    Color myColor =
+        passed
+            ? colorMap["passedColor"] ?? Colors.white
+            : colorMap["notYetPassedColor"] ?? Colors.white;
     return Row(
       children: [
         Container(
@@ -235,10 +245,12 @@ class _LevelState extends State<Level> {
           width: double.infinity,
           padding: EdgeInsets.all(12),
           child: Center(
-
             child: Text(
               "Level status: " + myText,
-              style: TextStyle(fontSize: 22, color: buttonForegroundColor),
+              style: TextStyle(
+                fontSize: 22,
+                color: colorMap["buttonForegroundColor"] ?? Colors.white,
+              ),
               textAlign: TextAlign.center,
             ),
           ),

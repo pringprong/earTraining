@@ -89,30 +89,6 @@ Color multiplyHexColor(String hexColor, double factor) {
   return Colors.grey;
 }
 
-IconData waitingForGuessIcon = Icons.help_outline;
-Color waitingForGuessIconColor = Colors.grey;
-Color waitingForGuessButtonColor = Colors.grey.shade300;
-const Color buttonForegroundColor = Colors.black;
-Color waitingForGuessForegroundColor = buttonForegroundColor;
-
-IconData correctGuessIcon = Icons.check_circle;
-Color correctGuessIconColor = Colors.green;
-Color correctGuessButtonColor = const Color.fromARGB(255, 191, 220, 158);
-Color correctGuessForegroundColor = buttonForegroundColor;
-
-IconData incorrectGuessIcon = Icons.cancel;
-Color incorrectGuessIconColor = Colors.red;
-Color incorrectGuessButtonColor = const Color.fromARGB(255, 240, 128, 128);
-Color incorrectGuessForegroundColor = buttonForegroundColor;
-
-Color passedColor = correctGuessButtonColor;
-Color notYetPassedColor = clearButtonColor;
-
-const Color borderColor = Colors.grey;
-const Color yetAnotherGrey = Color.fromARGB(255, 181, 196, 212);
-const Color noteButtonForegroundColor = Colors.white;
-const Color clearButtonColor = Color.fromARGB(255, 176, 204, 231);
-
 const color1 = "#8189d3"; // mauvey blue _Rt
 const color2 = "#89afaa"; // green _Fir
 const color3 = "#bcae9a"; // greeny beige, tan khaki _Sec
@@ -128,118 +104,177 @@ const factor3 = 1.0;
 const factor4 = 1.1;
 // #0664c0   HEX:#1c4fa7
 
-Color c1f0 = multiplyHexColor(color1, factor0);
-Color c1f1 = multiplyHexColor(color1, factor1);
-Color c1f2 = multiplyHexColor(color1, factor2);
-Color c1f3 = multiplyHexColor(color1, factor3);
-Color c1f4 = multiplyHexColor(color1, factor4);
+Map<String, Color> colorMap = {
+  'c1f0': multiplyHexColor(color1, factor0),
+  'c1f1': multiplyHexColor(color1, factor1),
+  'c1f2': multiplyHexColor(color1, factor2),
+  'c1f3': multiplyHexColor(color1, factor3),
+  'c1f4': multiplyHexColor(color1, factor4),
 
-Color c2f0 = multiplyHexColor(color2, factor0);
-Color c2f1 = multiplyHexColor(color2, factor1);
-Color c2f2 = multiplyHexColor(color2, factor2);
-Color c2f3 = multiplyHexColor(color2, factor3);
-Color c2f4 = multiplyHexColor(color2, factor4);
+  'c2f0': multiplyHexColor(color2, factor0),
+  'c2f1': multiplyHexColor(color2, factor1),
+  'c2f2': multiplyHexColor(color2, factor2),
+  'c2f3': multiplyHexColor(color2, factor3),
+  'c2f4': multiplyHexColor(color2, factor4),
 
-Color c3f0 = multiplyHexColor(color3, factor0);
-Color c3f1 = multiplyHexColor(color3, factor1);
-Color c3f2 = multiplyHexColor(color3, factor2);
-Color c3f3 = multiplyHexColor(color3, factor3);
-Color c3f4 = multiplyHexColor(color3, factor4);
+  'c3f0': multiplyHexColor(color3, factor0),
+  'c3f1': multiplyHexColor(color3, factor1),
+  'c3f2': multiplyHexColor(color3, factor2),
+  'c3f3': multiplyHexColor(color3, factor3),
+  'c3f4': multiplyHexColor(color3, factor4),
 
-Color c4f0 = multiplyHexColor(color4, factor0);
-Color c4f1 = multiplyHexColor(color4, factor1);
-Color c4f2 = multiplyHexColor(color4, factor2);
-Color c4f3 = multiplyHexColor(color4, factor3);
-Color c4f4 = multiplyHexColor(color4, factor4);
+  'c4f0': multiplyHexColor(color4, factor0),
+  'c4f1': multiplyHexColor(color4, factor1),
+  'c4f2': multiplyHexColor(color4, factor2),
+  'c4f3': multiplyHexColor(color4, factor3),
+  'c4f4': multiplyHexColor(color4, factor4),
 
-Color c5f0 = multiplyHexColor(color5, factor0);
-Color c5f1 = multiplyHexColor(color5, factor1);
-Color c5f2 = multiplyHexColor(color5, factor2);
-Color c5f3 = multiplyHexColor(color5, factor3);
-Color c5f4 = multiplyHexColor(color5, factor4);
+  'c5f0': multiplyHexColor(color5, factor0),
+  'c5f1': multiplyHexColor(color5, factor1),
+  'c5f2': multiplyHexColor(color5, factor2),
+  'c5f3': multiplyHexColor(color5, factor3),
+  'c5f4': multiplyHexColor(color5, factor4),
 
-Color c6f0 = multiplyHexColor(color6, factor0);
-Color c6f1 = multiplyHexColor(color6, factor1);
-Color c6f2 = multiplyHexColor(color6, factor2);
-Color c6f3 = multiplyHexColor(color6, factor3);
-Color c6f4 = multiplyHexColor(color6, factor4);
+  'c6f0': multiplyHexColor(color6, factor0),
+  'c6f1': multiplyHexColor(color6, factor1),
+  'c6f2': multiplyHexColor(color6, factor2),
+  'c6f3': multiplyHexColor(color6, factor3),
+  'c6f4': multiplyHexColor(color6, factor4),
 
-Color c7f0 = multiplyHexColor(color7, factor0);
-Color c7f1 = multiplyHexColor(color7, factor1);
-Color c7f2 = multiplyHexColor(color7, factor2);
-Color c7f3 = multiplyHexColor(color7, factor3);
-Color c7f4 = multiplyHexColor(color7, factor4);
+  'c7f0': multiplyHexColor(color7, factor0),
+  'c7f1': multiplyHexColor(color7, factor1),
+  'c7f2': multiplyHexColor(color7, factor2),
+  'c7f3': multiplyHexColor(color7, factor3),
+  'c7f4': multiplyHexColor(color7, factor4),
+
+  'waitingForGuessIconColor': Colors.grey,
+  'waitingForGuessButtonColor': Colors.grey.shade300,
+  'buttonForegroundColor': Colors.black,
+  'correctGuessIconColor': Colors.green,
+  'correctGuessButtonColor': Color.fromARGB(255, 191, 220, 158),
+  'incorrectGuessIconColor': Colors.red,
+  'incorrectGuessButtonColor': Color.fromARGB(255, 240, 128, 128),
+
+  'passedColor': Color.fromARGB(255, 191, 220, 158),
+  'notYetPassedColor': Color.fromARGB(255, 176, 204, 231),
+
+  'borderColor': Colors.grey,
+  'yetAnotherGrey': Color.fromARGB(255, 181, 196, 212),
+  'noteButtonForegroundColor': Colors.white,
+  'clearButtonColor': Color.fromARGB(255, 176, 204, 231),
+};
+
+IconData waitingForGuessIcon = Icons.help_outline;
+IconData correctGuessIcon = Icons.check_circle;
+IconData incorrectGuessIcon = Icons.cancel;
 
 Color getChordButtonColor(String chordName) {
   String c = chordName;
-  if (c.endsWith("00_Rt")) return c1f1;
-  if (c.endsWith("0_Rt")) return c1f2;
-  if (c.endsWith("1_Rt")) return c1f4;
-  if (c.endsWith("_Rt")) return c1f3;
+  if (c.endsWith("00_Rt")) return colorMap["c1f1"] ?? Colors.white;
+  if (c.endsWith("0_Rt")) return colorMap["c1f2"] ?? Colors.white;
+  if (c.endsWith("1_Rt")) return colorMap["c1f4"] ?? Colors.white;
+  if (c.endsWith("_Rt")) return colorMap["c1f3"] ?? Colors.white;
 
-  if (c.endsWith("00_Fir")) return c2f1;
-  if (c.endsWith("0_Fir")) return c2f2;
-  if (c.endsWith("1_Fir")) return c2f4;
-  if (c.endsWith("_Fir")) return c2f3;
+  if (c.endsWith("00_Fir")) return colorMap["c2f1"] ?? Colors.white;
+  if (c.endsWith("0_Fir")) return colorMap["c2f2"] ?? Colors.white;
+  if (c.endsWith("1_Fir")) return colorMap["c2f4"] ?? Colors.white;
+  if (c.endsWith("_Fir")) return colorMap["c2f3"] ?? Colors.white;
 
-  if (c.endsWith("00_Sec")) return c3f1;
-  if (c.endsWith("0_Sec")) return c3f2;
-  if (c.endsWith("1_Sec")) return c3f4;
-  if (c.endsWith("_Sec")) return c3f3;
+  if (c.endsWith("00_Sec")) return colorMap["c3f1"] ?? Colors.white;
+  if (c.endsWith("0_Sec")) return colorMap["c3f2"] ?? Colors.white;
+  if (c.endsWith("1_Sec")) return colorMap["c3f4"] ?? Colors.white;
+  if (c.endsWith("_Sec")) return colorMap["c3f3"] ?? Colors.white;
 
-  if (c.endsWith("00_Thr")) return c4f1;
-  if (c.endsWith("0_Thr")) return c4f2;
-  if (c.endsWith("1_Thr")) return c4f4;
-  if (c.endsWith("_Thr")) return c4f3;
+  if (c.endsWith("00_Thr")) return colorMap["c4f1"] ?? Colors.white;
+  if (c.endsWith("0_Thr")) return colorMap["c4f2"] ?? Colors.white;
+  if (c.endsWith("1_Thr")) return colorMap["c4f4"] ?? Colors.white;
+  if (c.endsWith("_Thr")) return colorMap["c4f3"] ?? Colors.white;
 
-  if (c.endsWith("_All")) return c5f2;
+  if (c.endsWith("_All")) return colorMap["c5f2"] ?? Colors.white;
 
-  return c6f2;
+  return colorMap["c6f2"] ?? Colors.white;
 }
 
 Color getChordButtonColor2(String chordName) {
   String c = chordName;
-  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Rt")) return c5f0;
-  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Fir")) return c5f1;
-  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Sec")) return c5f2;
-  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Thr")) return c5f3;
-  if (c.toLowerCase().startsWith("vii") & c.endsWith("_All")) return c5f4;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Rt"))
+    return colorMap["c5f0"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Fir"))
+    return colorMap["c5f1"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Sec"))
+    return colorMap["c5f2"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_Thr"))
+    return colorMap["c5f3"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("vii") & c.endsWith("_All"))
+    return colorMap["c5f4"] ?? Colors.white;
 
-  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Rt")) return c2f0;
-  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Fir")) return c2f1;
-  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Sec")) return c2f2;
-  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Thr")) return c2f3;
-  if (c.toLowerCase().startsWith("vi") & c.endsWith("_All")) return c2f4;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Rt"))
+    return colorMap["c2f0"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Fir"))
+    return colorMap["c2f1"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Sec"))
+    return colorMap["c2f2"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_Thr"))
+    return colorMap["c2f3"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("vi") & c.endsWith("_All"))
+    return colorMap["c2f4"] ?? Colors.white;
 
-  if (c.toLowerCase().startsWith("v") & c.endsWith("_Rt")) return c3f0;
-  if (c.toLowerCase().startsWith("v") & c.endsWith("_Fir")) return c3f1;
-  if (c.toLowerCase().startsWith("v") & c.endsWith("_Sec")) return c3f2;
-  if (c.toLowerCase().startsWith("v") & c.endsWith("_Thr")) return c3f3;
-  if (c.toLowerCase().startsWith("v") & c.endsWith("_All")) return c3f4;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_Rt"))
+    return colorMap["c3f0"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_Fir"))
+    return colorMap["c3f1"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_Sec"))
+    return colorMap["c3f2"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_Thr"))
+    return colorMap["c3f3"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("v") & c.endsWith("_All"))
+    return colorMap["c3f4"] ?? Colors.white;
 
-  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Rt")) return c6f0;
-  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Fir")) return c6f1;
-  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Sec")) return c6f2;
-  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Thr")) return c6f3;
-  if (c.toLowerCase().startsWith("iv") & c.endsWith("_All")) return c6f4;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Rt"))
+    return colorMap["c6f0"] ?? Colors.white;
+  colorMap["c6f1"] ?? Colors.white;
+  colorMap["c6f2"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Fir"))
+    return colorMap["c6f1"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Sec"))
+    return colorMap["c6f2"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_Thr"))
+    return colorMap["c6f3"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("iv") & c.endsWith("_All"))
+    return colorMap["c6f4"] ?? Colors.white;
 
-  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Rt")) return c1f0;
-  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Fir")) return c1f1;
-  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Sec")) return c1f2;
-  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Thr")) return c1f3;
-  if (c.toLowerCase().startsWith("iii") & c.endsWith("_All")) return c1f4;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Rt"))
+    return colorMap["c1f0"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Fir"))
+    return colorMap["c1f1"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Sec"))
+    return colorMap["c1f2"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_Thr"))
+    return colorMap["c1f3"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("iii") & c.endsWith("_All"))
+    return colorMap["c1f4"] ?? Colors.white;
 
-  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Rt")) return c4f0;
-  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Fir")) return c4f1;
-  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Sec")) return c4f2;
-  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Thr")) return c4f3;
-  if (c.toLowerCase().startsWith("ii") & c.endsWith("_All")) return c4f4;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Rt"))
+    return colorMap["c4f0"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Fir"))
+    return colorMap["c4f1"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Sec"))
+    return colorMap["c4f2"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_Thr"))
+    return colorMap["c4f3"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("ii") & c.endsWith("_All"))
+    return colorMap["c4f4"] ?? Colors.white;
 
-  if (c.toLowerCase().startsWith("i") & c.endsWith("_Rt")) return c7f0;
-  if (c.toLowerCase().startsWith("i") & c.endsWith("_Fir")) return c7f1;
-  if (c.toLowerCase().startsWith("i") & c.endsWith("_Sec")) return c7f2;
-  if (c.toLowerCase().startsWith("i") & c.endsWith("_Thr")) return c7f3;
-  if (c.toLowerCase().startsWith("i") & c.endsWith("_All")) return c7f4;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_Rt"))
+    return colorMap["c7f0"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_Fir"))
+    return colorMap["c7f1"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_Sec"))
+    return colorMap["c7f2"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_Thr"))
+    return colorMap["c7f3"] ?? Colors.white;
+  if (c.toLowerCase().startsWith("i") & c.endsWith("_All"))
+    return colorMap["c7f4"] ?? Colors.white;
 
-  return yetAnotherGrey;
+  return colorMap["yetAnotherGrey"] ?? Colors.white;
 }

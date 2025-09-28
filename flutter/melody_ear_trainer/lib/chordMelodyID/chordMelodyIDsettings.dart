@@ -383,7 +383,9 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodyIDSettings>().arpeggiateChordDelayGuitar,
+                        context
+                            .watch<chordMelodyIDSettings>()
+                            .arpeggiateChordDelayGuitar,
                     items:
                         [
                           0,
@@ -418,7 +420,9 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodyIDSettings>().arpeggiateChordDelayPiano,
+                        context
+                            .watch<chordMelodyIDSettings>()
+                            .arpeggiateChordDelayPiano,
                     items:
                         [
                           0,
@@ -453,7 +457,9 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodyIDSettings>().arpeggiateChordDelaySolfege,
+                        context
+                            .watch<chordMelodyIDSettings>()
+                            .arpeggiateChordDelaySolfege,
                     items:
                         [
                           0,
@@ -488,7 +494,9 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodyIDSettings>().arpeggiateChordDelaySpoken,
+                        context
+                            .watch<chordMelodyIDSettings>()
+                            .arpeggiateChordDelaySpoken,
                     items:
                         [
                           0,
@@ -671,8 +679,9 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c3f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -732,8 +741,9 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c5f2,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c5f2"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -793,8 +803,9 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c1f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -942,8 +953,9 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c1f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
                         context

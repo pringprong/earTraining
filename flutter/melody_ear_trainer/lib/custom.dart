@@ -24,15 +24,17 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c2f4,
+                        color: colorMap["c2f4"],
                         child: SizedBox(
                           height: 100,
                           child: Center(
-                            child: const Text(
+                            child: Text(
                               "Melody ID",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: buttonForegroundColor,
+                                color:
+                                    colorMap["buttonForegroundColor"] ??
+                                    Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -48,15 +50,17 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c2f2,
+                        color: colorMap["c2f2"],
                         child: SizedBox(
                           height: 100,
                           child: Center(
-                            child: const Text(
+                            child: Text(
                               "Melody singing",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: buttonForegroundColor,
+                                color:
+                                    colorMap["buttonForegroundColor"] ??
+                                    Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -77,15 +81,17 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c4f4,
+                        color: colorMap["c4f4"],
                         child: SizedBox(
                           height: 100,
                           child: Center(
-                            child: const Text(
+                            child: Text(
                               "Chord ID",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: buttonForegroundColor,
+                                color:
+                                    colorMap["buttonForegroundColor"] ??
+                                    Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -101,15 +107,17 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c4f2,
+                        color: colorMap["c4f2"],
                         child: SizedBox(
                           height: 100,
                           child: Center(
-                            child: const Text(
+                            child: Text(
                               "Chord singing",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: buttonForegroundColor,
+                                color:
+                                    colorMap["buttonForegroundColor"] ??
+                                    Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -130,15 +138,17 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c3f4,
+                        color: colorMap["c3f4"],
                         child: SizedBox(
                           height: 100,
                           child: Center(
-                            child: const Text(
+                            child: Text(
                               "Chord melody\nID",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: buttonForegroundColor,
+                                color:
+                                    colorMap["buttonForegroundColor"] ??
+                                    Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -154,15 +164,17 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c3f2,
+                        color: colorMap["c3f2"],
                         child: SizedBox(
                           height: 100,
                           child: Center(
-                            child: const Text(
+                            child: Text(
                               "Chord melody\nsinging",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: buttonForegroundColor,
+                                color:
+                                    colorMap["buttonForegroundColor"] ??
+                                    Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -182,15 +194,17 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: c1f4,
+                        color: colorMap["c1f4"],
                         child: SizedBox(
                           height: 100,
                           child: Center(
-                            child: const Text(
+                            child: Text(
                               "Help",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: buttonForegroundColor,
+                                color:
+                                    colorMap["buttonForegroundColor"] ??
+                                    Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),

@@ -402,7 +402,9 @@ class _chordMelodySingingSettingsPageState
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodySingingSettings>().arpeggiateChordDelayGuitar,
+                        context
+                            .watch<chordMelodySingingSettings>()
+                            .arpeggiateChordDelayGuitar,
                     items:
                         [
                           0,
@@ -437,7 +439,9 @@ class _chordMelodySingingSettingsPageState
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodySingingSettings>().arpeggiateChordDelayPiano,
+                        context
+                            .watch<chordMelodySingingSettings>()
+                            .arpeggiateChordDelayPiano,
                     items:
                         [
                           0,
@@ -472,7 +476,9 @@ class _chordMelodySingingSettingsPageState
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodySingingSettings>().arpeggiateChordDelaySolfege,
+                        context
+                            .watch<chordMelodySingingSettings>()
+                            .arpeggiateChordDelaySolfege,
                     items:
                         [
                           0,
@@ -507,7 +513,9 @@ class _chordMelodySingingSettingsPageState
                   ),
                   DropdownButton<int>(
                     value:
-                        context.watch<chordMelodySingingSettings>().arpeggiateChordDelaySpoken,
+                        context
+                            .watch<chordMelodySingingSettings>()
+                            .arpeggiateChordDelaySpoken,
                     items:
                         [
                           0,
@@ -697,8 +705,9 @@ class _chordMelodySingingSettingsPageState
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c3f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -760,8 +769,9 @@ class _chordMelodySingingSettingsPageState
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c5f2,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c5f2"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -823,8 +833,9 @@ class _chordMelodySingingSettingsPageState
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c1f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         // startingDo is a note
@@ -981,8 +992,8 @@ class _chordMelodySingingSettingsPageState
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c1f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                        foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
                         context

@@ -30,8 +30,9 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c7f3,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c7f3"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -76,7 +77,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all<Color>(comparisonColor),
               foregroundColor: WidgetStateProperty.all<Color>(
-                buttonForegroundColor,
+                colorMap["buttonForegroundColor"] ?? Colors.white,
               ),
               padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                 const EdgeInsets.all(12.0),
@@ -141,10 +142,13 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
           width: double.infinity,
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
+            border: Border.all(color: colorMap["borderColor"] ?? Colors.white),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Text(previousQuestionResultText, style: TextStyle(fontSize: 22)),
+          child: Text(
+            previousQuestionResultText,
+            style: TextStyle(fontSize: 22),
+          ),
         ),
       ],
     );

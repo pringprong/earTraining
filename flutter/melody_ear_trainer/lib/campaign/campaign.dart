@@ -250,7 +250,7 @@ class _campaignTreeState extends State<campaignTree> {
           boxShadow: [BoxShadow(color: Colors.grey.shade700, spreadRadius: 1)],
         ),
         child: Text(
-          "Mission Locked",
+          "Mission Locked until preceding missions are passed",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white70),
         ),
@@ -269,7 +269,9 @@ class _campaignTreeState extends State<campaignTree> {
             ? "Passed"
             : "Not passed yet";
     Color nodeColor =
-        missionStatus == "Passed" ? passedColor : notYetPassedColor;
+        missionStatus == "Passed"
+            ? colorMap["passedColor"] ?? Colors.white
+            : colorMap["notYetPassedColor"] ?? Colors.white;
     return InkWell(
       onTap: () {
         // create MissionArguments and navigate to Mission page
@@ -289,7 +291,9 @@ class _campaignTreeState extends State<campaignTree> {
               '\nStatus ' +
               missionStatus,
           textAlign: TextAlign.center,
-          style: TextStyle(color: buttonForegroundColor),
+          style: TextStyle(
+            color: colorMap["buttonForegroundColor"] ?? Colors.white,
+          ),
         ),
       ),
     );

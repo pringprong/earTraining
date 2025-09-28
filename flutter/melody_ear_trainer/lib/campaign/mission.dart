@@ -102,8 +102,10 @@ class _MissionState extends State<Mission> {
                                         : "Not passed yet";
                                 Color rowColor =
                                     numPassedTests >= lvl.NumTests
-                                        ? passedColor
-                                        : notYetPassedColor;
+                                        ? colorMap["passedColor"] ??
+                                            Colors.white
+                                        : colorMap["notYetPassedColor"] ??
+                                            Colors.white;
                                 return DataRow(
                                   // make the row selectable/clickable
                                   color: WidgetStateProperty.all(rowColor),
@@ -121,7 +123,9 @@ class _MissionState extends State<Mission> {
                                       Text(
                                         lvl.LevelName,
                                         style: TextStyle(
-                                          color: buttonForegroundColor,
+                                          color:
+                                              colorMap["buttonForegroundColor"] ??
+                                              Colors.white,
                                         ),
                                       ),
                                     ),
@@ -129,7 +133,9 @@ class _MissionState extends State<Mission> {
                                       Text(
                                         levelStatus,
                                         style: TextStyle(
-                                          color: buttonForegroundColor,
+                                          color:
+                                              colorMap["buttonForegroundColor"] ??
+                                              Colors.white,
                                         ),
                                       ),
                                     ),
@@ -139,7 +145,9 @@ class _MissionState extends State<Mission> {
                                             " / " +
                                             lvl.NumTests.toString(),
                                         style: TextStyle(
-                                          color: buttonForegroundColor,
+                                          color:
+                                              colorMap["buttonForegroundColor"] ??
+                                              Colors.white,
                                         ),
                                       ),
                                     ),
@@ -158,8 +166,9 @@ class _MissionState extends State<Mission> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: c2f3,
-                          foregroundColor: buttonForegroundColor,
+                          backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                          foregroundColor:
+                              colorMap["buttonForegroundColor"] ?? Colors.white,
                           padding: const EdgeInsets.all(12.0),
                         ),
                         onPressed: () {
@@ -187,7 +196,10 @@ class _MissionState extends State<Mission> {
   }
 
   Row statusRow(String myText, bool passed) {
-    Color myColor = passed ? passedColor : notYetPassedColor;
+    Color myColor =
+        passed
+            ? colorMap["passedColor"] ?? Colors.white
+            : colorMap["notYetPassedColor"] ?? Colors.white;
     return Row(
       children: [
         Container(
@@ -200,7 +212,10 @@ class _MissionState extends State<Mission> {
           child: Center(
             child: Text(
               "Mission status: " + myText,
-              style: TextStyle(fontSize: 22, color: buttonForegroundColor),
+              style: TextStyle(
+                fontSize: 22,
+                color: colorMap["buttonForegroundColor"] ?? Colors.white,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -216,8 +231,9 @@ class _MissionState extends State<Mission> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: c2f3,
-              foregroundColor: buttonForegroundColor,
+              backgroundColor: colorMap["c2f3"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {

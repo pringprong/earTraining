@@ -217,8 +217,9 @@ class _chordMelodyIDHandsFreeState extends State<chordMelodyIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c3f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
                         if (!running) {
@@ -250,8 +251,9 @@ class _chordMelodyIDHandsFreeState extends State<chordMelodyIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c5f2,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c5f2"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
                         setState(() {
@@ -283,7 +285,9 @@ class _chordMelodyIDHandsFreeState extends State<chordMelodyIDHandsFree> {
                     width: double.infinity,
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: borderColor),
+                      border: Border.all(
+                        color: colorMap["borderColor"] ?? Colors.white,
+                      ),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(solfegeText, style: TextStyle(fontSize: 18)),

@@ -431,8 +431,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c3f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         String filename =
@@ -469,8 +470,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c5f2,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c5f2"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         String filename =
@@ -507,8 +509,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c1f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () async {
                         String filename =
@@ -546,8 +549,9 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c1f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c1f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
                         context

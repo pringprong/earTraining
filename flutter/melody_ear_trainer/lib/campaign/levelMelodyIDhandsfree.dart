@@ -24,7 +24,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
   String currentInstrument = "Piano";
-  
+
   @override
   Widget build(BuildContext context) {
     final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
@@ -38,13 +38,16 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-                headingRow(mappingProvider.getCampaignName(levelInfo.CampaignID)),
+              headingRow(mappingProvider.getCampaignName(levelInfo.CampaignID)),
               verticalSpacer(),
-              TextRow("Mission: " + mappingProvider.getMissionName(levelInfo.MissionID)),
+              TextRow(
+                "Mission: " +
+                    mappingProvider.getMissionName(levelInfo.MissionID),
+              ),
               verticalSpacer(),
               TextRow("Level: " + levelInfo.LevelName),
               verticalSpacer(),
-            subHeadingRow("Settings:"),
+              subHeadingRow("Settings:"),
               Row(
                 children: [
                   Padding(
@@ -52,7 +55,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                     child: Text('Number of rounds:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<missionSettingsProvider>().numberOfRounds,
+                    value:
+                        context.watch<missionSettingsProvider>().numberOfRounds,
                     items:
                         [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
                           int value,
@@ -64,9 +68,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<missionSettingsProvider>().setNumberOfRounds(
-                          rounds: newValue,
-                        );
+                        context
+                            .read<missionSettingsProvider>()
+                            .setNumberOfRounds(rounds: newValue);
                       }
                     },
                   ),
@@ -79,7 +83,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                     child: Text('Instrument repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<missionSettingsProvider>().melodyRepeats,
+                    value:
+                        context.watch<missionSettingsProvider>().melodyRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -91,9 +96,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<missionSettingsProvider>().setMelodyRepeats(
-                          repeats: newValue,
-                        );
+                        context
+                            .read<missionSettingsProvider>()
+                            .setMelodyRepeats(repeats: newValue);
                       }
                     },
                   ),
@@ -106,7 +111,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                     child: Text('Solfege repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<missionSettingsProvider>().solfegeRepeats,
+                    value:
+                        context.watch<missionSettingsProvider>().solfegeRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -118,9 +124,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<missionSettingsProvider>().setSolfegeRepeats(
-                          repeats: newValue,
-                        );
+                        context
+                            .read<missionSettingsProvider>()
+                            .setSolfegeRepeats(repeats: newValue);
                       }
                     },
                   ),
@@ -133,7 +139,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                     child: Text('Spoken repeats:'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<missionSettingsProvider>().spokenRepeats,
+                    value:
+                        context.watch<missionSettingsProvider>().spokenRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -145,9 +152,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<missionSettingsProvider>().setSpokenRepeats(
-                          repeats: newValue,
-                        );
+                        context
+                            .read<missionSettingsProvider>()
+                            .setSpokenRepeats(repeats: newValue);
                       }
                     },
                     //               },
@@ -161,7 +168,10 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                     child: Text('Time between repeats (s):'),
                   ),
                   DropdownButton<int>(
-                    value: context.watch<missionSettingsProvider>().getTimeDelayRepeat,
+                    value:
+                        context
+                            .watch<missionSettingsProvider>()
+                            .getTimeDelayRepeat,
                     items:
                         [1, 2, 3, 4, 5, 6, 7, 8].map<DropdownMenuItem<int>>((
                           int value,
@@ -173,9 +183,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context.read<missionSettingsProvider>().setTimeDelayRepeat(
-                          delay: newValue,
-                        );
+                        context
+                            .read<missionSettingsProvider>()
+                            .setTimeDelayRepeat(delay: newValue);
                       }
                     },
                     //               },
@@ -191,7 +201,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                   DropdownButton<String>(
                     hint: Text('Select Instrument'),
                     value:
-                        context.watch<missionSettingsProvider>().handsfreeInstrument,
+                        context
+                            .watch<missionSettingsProvider>()
+                            .handsfreeInstrument,
                     items:
                         [
                           "Guitar",
@@ -205,9 +217,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                         }).toList(),
                     onChanged: (String? newValue) {
                       if (newValue != null) {
-                        context.read<missionSettingsProvider>().setHandsfreeInstrument(
-                          instrument: newValue,
-                        );
+                        context
+                            .read<missionSettingsProvider>()
+                            .setHandsfreeInstrument(instrument: newValue);
                       }
                     },
                   ),
@@ -221,8 +233,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c3f3,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
                         if (!running) {
@@ -254,8 +267,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: c5f2,
-                        foregroundColor: buttonForegroundColor,
+                        backgroundColor: colorMap["c5f2"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
                         setState(() {
@@ -287,7 +301,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                     width: double.infinity,
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: borderColor),
+                      border: Border.all(
+                        color: colorMap["borderColor"] ?? Colors.white,
+                      ),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(solfegeText, style: TextStyle(fontSize: 18)),
@@ -303,7 +319,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                   Text(
                     (min(
                           currentRound + 1,
-                          context.read<missionSettingsProvider>().getNumberOfRounds,
+                          context
+                              .read<missionSettingsProvider>()
+                              .getNumberOfRounds,
                         )).toString() +
                         " / " +
                         context
@@ -366,7 +384,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    while (currentRound < context.read<missionSettingsProvider>().getNumberOfRounds &&
+    while (currentRound <
+            context.read<missionSettingsProvider>().getNumberOfRounds &&
         notPaused) {
       solfegeText = "";
       setState(() {});
@@ -382,11 +401,14 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
       }
       for (
         int i = 0;
-        i < context.read<missionSettingsProvider>().getMelodyRepeats && notPaused;
+        i < context.read<missionSettingsProvider>().getMelodyRepeats &&
+            notPaused;
         i++
       ) {
         await chordMelody.playChordMelody(
-          getInstrument(context.read<missionSettingsProvider>().handsfreeInstrument),
+          getInstrument(
+            context.read<missionSettingsProvider>().handsfreeInstrument,
+          ),
           generalProvider,
           mappingProvider,
           widget,
@@ -404,7 +426,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
       setState(() {});
       for (
         int j = 0;
-        j < context.read<missionSettingsProvider>().getSolfegeRepeats && notPaused;
+        j < context.read<missionSettingsProvider>().getSolfegeRepeats &&
+            notPaused;
         j++
       ) {
         await chordMelody.playChordMelody(
@@ -424,7 +447,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
       }
       for (
         int k = 0;
-        k < context.read<missionSettingsProvider>().getSpokenRepeats && notPaused;
+        k < context.read<missionSettingsProvider>().getSpokenRepeats &&
+            notPaused;
         k++
       ) {
         await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
