@@ -134,25 +134,73 @@ class _campaignTreeState extends State<campaignTree> {
                           // the boolean values should then be combined into one final result
                           // using AND or OR depending on the value of "unlockedbyrelationship"
                           // we pass the result to the widget constructor
-                          // if the value is true, then the widget is unlocked and 
+                          // if the value is true, then the widget is unlocked and
                           // we use the current code.
                           // if the value is false, the widget is locked, the widget constructor should:
                           // not display the label, just a "Mission Locked"
                           // set the color of the widget to grey
                           // and have no OnPressed reaction
+
+                          // Evaluate unlocked state (optional keys: unlockedby, unlockedbyrelationship)
+                          bool unlocked = true;
+                          if (nodeValue.containsKey('unlockedby')) {
+                            try {
+                              final raw = nodeValue['unlockedby'];
+                              final List<String> unlockedList =
+                                  (raw is List)
+                                      ? raw.map((e) => e.toString()).toList()
+                                      : [raw.toString()];
+                              final relationship =
+                                  (nodeValue['unlockedbyrelationship'] ?? 'AND')
+                                      .toString()
+                                      .toUpperCase();
+
+                              // Lookup each mission id via global objectBox.isMissionPassed(...) (synchronous)
+                              List<bool> results = [];
+                              for (final mid in unlockedList) {
+                                bool passed = false;
+                                try {
+                                  passed = objectBox.isMissionPassed(mid);
+                                } catch (e) {
+                                  // lookup failure -> treat as not passed
+                                  debugPrint(
+                                    'campaign.dart: isMissionPassed lookup error for "$mid": $e',
+                                  );
+                                  passed = false;
+                                }
+                                results.add(passed);
+                              }
+                              if (results.isEmpty) {
+                                unlocked = true;
+                              } else if (relationship == 'AND') {
+                                unlocked = results.every((b) => b);
+                              } else {
+                                // default OR
+                                unlocked = results.any((b) => b);
+                              }
+                            } catch (e) {
+                              debugPrint(
+                                'campaign.dart: error evaluating unlockedby for node $nodeValue: $e',
+                              );
+                              unlocked =
+                                  true; // fail-open to avoid accidentally hiding content
+                            }
+                          }
+
                           final shape =
                               (nodeValue['shape'] ?? 'Rectangle').toString();
                           final label = nodeValue['label'] as String?;
                           if (shape.toLowerCase() == 'circle') {
-                            return circleWidget(label);
+                            return circleWidget(label, unlocked);
                           } else {
-                            // Rectangle: interactive — push Mission
+                            // Rectangle: interactive — push Mission (if unlocked)
                             MissionInfo missionInfo =
                                 missions[nodeValue['missionid']]!;
                             return rectangleWidget(
                               context,
                               missionInfo,
                               mappingProvider,
+                              unlocked,
                             );
                           }
                         },
@@ -165,20 +213,24 @@ class _campaignTreeState extends State<campaignTree> {
     );
   }
 
-  Widget circleWidget(String? title) {
-    String titleText = title ?? 'no title';
-    //String infoText = info ?? '';
+  Widget circleWidget(String? title, bool unlocked) {
+    String titleText = unlocked ? (title ?? 'no title') : 'Locked';
+    Color fill = unlocked ? Colors.black : Colors.grey;
     return Container(
       width: 100,
       height: 100,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.black,
+        color: fill,
         boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
       ),
       padding: EdgeInsets.all(8),
-      child: Text(titleText, textAlign: TextAlign.center),
+      child: Text(
+        titleText,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+      ),
     );
   }
 
@@ -186,7 +238,26 @@ class _campaignTreeState extends State<campaignTree> {
     BuildContext context,
     MissionInfo missionInfo,
     MappingProvider mappingProvider,
+    bool unlocked,
   ) {
+    if (!unlocked) {
+      // Locked appearance: no interaction, greyed out, label "Mission Locked"
+      return Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: Colors.grey,
+          boxShadow: [BoxShadow(color: Colors.grey.shade700, spreadRadius: 1)],
+        ),
+        child: Text(
+          "Mission Locked",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white70),
+        ),
+      );
+    }
+
+    // Unlocked behaviour (existing code)
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
     LevelInfo lastLevel = levels.last;
     String missionStatus =
