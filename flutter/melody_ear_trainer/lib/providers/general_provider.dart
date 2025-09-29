@@ -308,12 +308,17 @@ abstract class GeneralProvider extends ChangeNotifier {
   }
 
   /// 1. Set all values of the map at once
-  void setNoteSelection({required List<String> selectedKeys}) async {
+  void setNoteSelection({
+    required List<String> selectedKeys,
+    bool notify = true,
+  }) async {
     for (var key in noteKeys) {
       noteSelection[key] = selectedKeys.contains(key);
     }
     saveSettings();
-    notifyListeners();
+    if (notify) {
+      notifyListeners();
+    }
   }
 
   /// 2. Toggle one value of the map

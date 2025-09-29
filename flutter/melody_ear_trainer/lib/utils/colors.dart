@@ -161,6 +161,7 @@ Map<String, Color> colorMap = {
   'borderColor': Colors.grey,
   'yetAnotherGrey': Color.fromARGB(255, 181, 196, 212),
   'noteButtonForegroundColor': Colors.white,
+  'newNoteButtonForegroundColor': Colors.black,
   'clearButtonColor': Color.fromARGB(255, 176, 204, 231),
 };
 

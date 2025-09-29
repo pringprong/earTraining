@@ -28,8 +28,11 @@ Widget buildNotesGrid(
   String octave = "All octaves",
   String scaleSet = "Chromatic",
   int numNotesInOctave = 12,
-]) { 
-  final noteKeys = mappingProvider.getScalesMapping[octave]![scaleSet] ?? mappingProvider.getNoteKeys;
+  List<String> newNotes = const [],
+]) {
+  final noteKeys =
+      mappingProvider.getScalesMapping[octave]![scaleSet] ??
+      mappingProvider.getNoteKeys;
   final noteColors = mappingProvider.getNoteColors;
   final noteColorFactor = mappingProvider.getNoteColorFactors;
   final noteSelection = generalProvider.getNoteSelection;
@@ -53,6 +56,12 @@ Widget buildNotesGrid(
       final String tempColor = noteColors[note].toString();
       final double tempFactor = noteColorFactor[note] ?? 1.0;
       final buttonColor = multiplyHexColor(tempColor, tempFactor);
+      Color foregroundColor =
+          colorMap["noteButtonForegroundColor"] ?? Colors.white;
+      if (newNotes.contains(note)) {
+        foregroundColor =
+          colorMap["newNoteButtonForegroundColor"] ?? Colors.white;
+      }
       buttons.add(
         Expanded(
           child: Padding(
@@ -82,8 +91,7 @@ Widget buildNotesGrid(
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                    color:
-                        colorMap["noteButtonForegroundColor"] ?? Colors.white,
+                    color: foregroundColor,
                   ),
                 ),
               ),
@@ -241,14 +249,22 @@ Widget optionalChordButtons(
 Widget optionalNoteButtons(
   GeneralProvider gp,
   MappingProvider mp,
-  bool tapToSelect,[
+  bool tapToSelect, [
   String octave = "All octaves",
   String scaleSet = "Chromatic",
   int numNotesInOctave = 12,
-]
-) {
+  List<String> newNotes = const [],
+]) {
   if (gp.getSelectedNotes().isNotEmpty && gp.chordFrequency != "Every note") {
-    return buildNotesGrid(gp, mp, tapToSelect, octave, scaleSet, numNotesInOctave);
+    return buildNotesGrid(
+      gp,
+      mp,
+      tapToSelect,
+      octave,
+      scaleSet,
+      numNotesInOctave,
+      newNotes
+    );
   }
   return SizedBox.shrink();
 }
@@ -338,6 +354,7 @@ class MissionInfo {
   final String MissionID;
   final String MissionName;
   final String MissionMode;
+  List<String> MissionNewNotes = [];
   final LevelIDs = LinkedHashSet<String>();
 
   MissionInfo(
@@ -346,6 +363,10 @@ class MissionInfo {
     this.MissionName,
     this.MissionMode,
   );
+
+  setMissionNewNotes(List<String> noteList) {
+    MissionNewNotes = noteList;
+  }
 
   void addLevelID(String levelid) {
     LevelIDs.add(levelid);
@@ -366,6 +387,7 @@ class LevelInfo {
   final String LevelID;
   final String LevelName;
   List<String> Notes = [];
+  List<String> NewNotes = [];
   final int NumNotes;
   final int MaxDistance;
   final bool AllowRepeatedNotes;
@@ -401,6 +423,10 @@ class LevelInfo {
 
   setNotes(List<String> noteList) {
     Notes = noteList;
+  }
+
+  setNewNotes(List<String> noteList) {
+    NewNotes = noteList;
   }
 }
 

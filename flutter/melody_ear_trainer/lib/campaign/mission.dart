@@ -36,6 +36,7 @@ class _MissionState extends State<Mission> {
     String mode = missionInfo.MissionMode;
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
     LevelInfo lastLevel = levels.last;
+    generalProvider.setNoteSelection(selectedKeys: lastLevel.Notes, notify: false);
     bool status = objectBox.levelPassed(
       lastLevel.LevelID,
       lastLevel.PassingScore,
@@ -71,12 +72,15 @@ class _MissionState extends State<Mission> {
                 plainText("Completed " + "X" + " / " + "Y" + " levels so far"),
                 verticalSpacer(),
                 optionalNoteButtons(
-                  generalProvider, 
-                  mappingProvider, 
+                  generalProvider,
+                  mappingProvider,
                   false,
                   mappingProvider.getCampaignOctave(missionInfo.CampaignID),
                   mappingProvider.getCampaignSet(missionInfo.CampaignID),
-                  mappingProvider.getCampaignNotesInOctave(missionInfo.CampaignID),
+                  mappingProvider.getCampaignNotesInOctave(
+                    missionInfo.CampaignID,
+                  ),
+                  missionInfo.MissionNewNotes,
                 ),
                 verticalSpacer(),
                 optionalChordButtons(generalProvider, mappingProvider, false),

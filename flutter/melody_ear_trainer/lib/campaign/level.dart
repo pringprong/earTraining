@@ -78,6 +78,7 @@ class _LevelState extends State<Level> {
                   mappingProvider.getCampaignOctave(levelInfo.CampaignID),
                   mappingProvider.getCampaignSet(levelInfo.CampaignID),
                   mappingProvider.getCampaignNotesInOctave(levelInfo.CampaignID),
+                  levelInfo.NewNotes
                 ),
                 verticalSpacer(),
                 optionalChordButtons(generalProvider, mappingProvider, false),

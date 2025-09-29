@@ -309,11 +309,17 @@ class MappingProvider extends ChangeNotifier {
       String missionID = item['MissionID'];
       String missionName = item['MissionName'];
       String missionMode = item['MissionMode'];
+      String mnnStr = item['MissionNewNotes'];
+      List<String> missionNewNotes =
+          mnnStr.split(',').map((s) => s.trim()).toList();
 
       String levelID = item['LevelID'];
       String levelName = item['LevelName'];
       String notesStr = item['Notes'];
       List<String> notes = notesStr.split(',').map((s) => s.trim()).toList();
+      String newNotesStr = item['NewNotes'];
+      List<String> newNotes =
+          newNotesStr.split(',').map((s) => s.trim()).toList();
 
       int numNotes = int.parse(item['NumNotes']);
       int maxDistance = int.parse(item['MaxDistance']);
@@ -343,12 +349,14 @@ class MappingProvider extends ChangeNotifier {
       } // addMission won't add duplicates because it's a LinkedHashSet
 
       if (missionID.isNotEmpty && !missions.containsKey(missionID)) {
-        missions[missionID] = MissionInfo(
+        MissionInfo mi = MissionInfo(
           campaignID,
           missionID,
           missionName,
           missionMode,
         );
+        mi.setMissionNewNotes(missionNewNotes);
+        missions[missionID] = mi;
       }
       if (missions.containsKey(missionID)) {
         missions[missionID]!.addLevelID(levelID);
@@ -373,6 +381,7 @@ class MappingProvider extends ChangeNotifier {
         passingScore,
       );
       levelInfo.setNotes(notes);
+      levelInfo.setNewNotes(newNotes);
 
       if (levelID.isNotEmpty && !levels.containsKey(levelID)) {
         levels[levelID] = levelInfo;
