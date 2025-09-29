@@ -118,6 +118,7 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                     child: buildNotesGrid(
                       context.read<MelodySingingSettings>(),
                       context.read<MappingProvider>(),
+                      true
                     ),
                   ),
                 ],

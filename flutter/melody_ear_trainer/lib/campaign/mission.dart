@@ -70,9 +70,9 @@ class _MissionState extends State<Mission> {
                 verticalSpacer(),
                 plainText("Completed " + "X" + " / " + "Y" + " levels so far"),
                 verticalSpacer(),
-                optionalNoteButtons(generalProvider, mappingProvider),
+                optionalNoteButtons(generalProvider, mappingProvider, false),
                 verticalSpacer(),
-                optionalChordButtons(generalProvider, mappingProvider),
+                optionalChordButtons(generalProvider, mappingProvider, false),
                 subHeadingRow("Select a level from the table :"),
                 verticalSpacer(),
                 // Levels table

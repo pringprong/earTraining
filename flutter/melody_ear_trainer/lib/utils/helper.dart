@@ -23,13 +23,21 @@ bool listEquals<T>(List<T>? a, List<T>? b) {
 
 Widget buildNotesGrid(
   GeneralProvider generalProvider,
-  MappingProvider mappingProvider
+  MappingProvider mappingProvider,
+  bool tapToSelect,
 ) {
   final noteKeys = mappingProvider.getNoteKeys;
   final noteColors = mappingProvider.getNoteColors;
   final noteColorFactor = mappingProvider.getNoteColorFactors;
   final noteSelection = generalProvider.getNoteSelection;
   List<Widget> rows = [];
+
+  void onPressedFunction(GeneralProvider gp, String note) {
+    if (tapToSelect) {
+      return generalProvider.toggleNoteSelection(key: note);
+    }
+    return;
+  }
 
   for (int row = 0; row < 4; row++) {
     int start = row * 12;
@@ -62,7 +70,7 @@ Widget buildNotesGrid(
                 ),
               ),
               onPressed: () {
-                generalProvider.toggleNoteSelection(key: note);
+                onPressedFunction(generalProvider, note);
               },
               child: FittedBox(
                 fit: BoxFit.fill,
@@ -91,8 +99,16 @@ Widget buildNotesGrid(
 Widget buildChordButtons(
   MappingProvider mappingProvider,
   GeneralProvider generalProvider,
+  bool tapToSelect,
 ) {
   List<Widget> sections = [];
+  void onPressedFunction(GeneralProvider gp, String chordName) {
+    if (tapToSelect) {
+      return gp.toggleSelectedChord(chordName);
+    }
+    return;
+  }
+
   mappingProvider.getChordsMapping.forEach((category, degreesMap) {
     // Section title
     sections.add(
@@ -116,7 +132,7 @@ Widget buildChordButtons(
               message: notes.join(' '),
               child: GestureDetector(
                 onTap: () {
-                  generalProvider.toggleSelectedChord(chordName);
+                  onPressedFunction(generalProvider, chordName);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -162,19 +178,73 @@ Widget buildChordButtons(
   );
 }
 
-  Widget optionalChordButtons(GeneralProvider gp, MappingProvider mp) {
-    if(gp.selectedChords.isNotEmpty && gp.chordFrequency != "Never") {
-      return buildChordButtons(mp, gp);
+Widget buildSelectedChordButtonsHelper(
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+  ) {
+    final selectedChords = generalProvider.getSelectedChords();
+    selectedChords.sort((a, b) => chordNameSort(a, b));
+    final chordFrequency = generalProvider.chordFrequency;
+    final chordMap = mappingProvider.getChordMap;
+    if (chordFrequency == "Never") {
+      return Padding(padding: const EdgeInsets.all(0.0));
     }
-    return SizedBox.shrink();
+    return Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      children:
+          selectedChords.map((chord) {
+            final color = getChordButtonColor2(chord);
+            final notes = chordMap[chord] ?? [];
+            return Tooltip(
+              message: notes.join(' '),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                onPressed: () {
+                },
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    chord,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color:
+                          colorMap["noteButtonForegroundColor"] ?? Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+    );
   }
 
-  Widget optionalNoteButtons(GeneralProvider gp, MappingProvider mp) {
-    if(gp.getSelectedNotes().isNotEmpty && gp.chordFrequency != "Every note") {
-      return buildNotesGrid(gp, mp);
-    }
-    return SizedBox.shrink();
+Widget optionalChordButtons(GeneralProvider gp, MappingProvider mp, bool tapToSelect) {
+  if (gp.selectedChords.isNotEmpty && gp.chordFrequency != "Never") {
+    return buildSelectedChordButtonsHelper(gp, mp);
   }
+  return SizedBox.shrink();
+}
+
+Widget optionalNoteButtons(
+  GeneralProvider gp,
+  MappingProvider mp,
+  bool tapToSelect,
+) {
+  if (gp.getSelectedNotes().isNotEmpty && gp.chordFrequency != "Every note") {
+    return buildNotesGrid(gp, mp, tapToSelect);
+  }
+  return SizedBox.shrink();
+}
 
 RegExp chordNameParse = RegExp(
   r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',

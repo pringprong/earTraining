@@ -132,6 +132,7 @@ class _chordMelodySingingSettingsPageState
                     child: buildNotesGrid(
                       context.read<chordMelodySingingSettings>(),
                       context.read<MappingProvider>(),
+                      true
                     ),
                   ),
                 ],
@@ -985,7 +986,7 @@ class _chordMelodySingingSettingsPageState
                 "Note: Make sure to include starting and ending chords if selected above",
               ),
               verticalSpacer(),
-              buildChordButtons(mappingProvider, generalProvider),
+              buildChordButtons(mappingProvider, generalProvider, true),
               subHeadingRow("Reset:"),
               Row(
                 children: [

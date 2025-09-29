@@ -71,9 +71,9 @@ class _LevelState extends State<Level> {
                 verticalSpacer(),
                 statusRow(levelStatus, numPassedTests >= levelInfo.NumTests),
                 verticalSpacer(),
-                optionalNoteButtons(generalProvider, mappingProvider),
+                optionalNoteButtons(generalProvider, mappingProvider, false),
                 verticalSpacer(),
-                optionalChordButtons(generalProvider, mappingProvider),
+                optionalChordButtons(generalProvider, mappingProvider, false),
                 verticalSpacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
