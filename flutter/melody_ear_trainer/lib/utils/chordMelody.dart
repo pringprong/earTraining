@@ -154,24 +154,31 @@ class ChordMelody {
               0)) {
         // Add a chord
         String selectedChord;
+        List<String> unusedChords =
+            availableChords.where((chord) => chord != previousChord).toList();
+        // if we're on the second-last item and endingDo is a chord and allowRepeatedChords
+        // is false (which it is in this Else) then we also need to remove endingDo from the list
+        // to avoid the situation where endingDo is a repeat  of the secondlast item
+        if (i == numNotes - 1 &&
+            endWithDo &&
+            mappingProvider.getChordMap.keys.contains(endingDo)) {
+          unusedChords =
+              unusedChords.where((chord) => chord != endingDo).toList();
+        }
         if (allowRepeatedChords) {
-            // TO DO: 
-            //what we want to do here is double or triple the non-repeated chords
-            // in the list of available chords
-            // so that a repeated chord is possible but not very likely
-          selectedChord =
-              availableChords[random.nextInt(availableChords.length)];
-        } else {
-          List<String> unusedChords =
-              availableChords.where((chord) => chord != previousChord).toList();
-          // if we're on the second-last item and endingDo is a chord and allowRepeatedChords
-          // is false (which it is in this Else) then we also need to remove endingDo from the list
-          // to avoid the situation where endingDo is a repeat  of the secondlast item
-          if (i == numNotes-1 
-            && endWithDo
-            && mappingProvider.getChordMap.keys.contains(endingDo)) {
-            unusedChords = unusedChords.where((chord) => chord != endingDo).toList();
+          // what we want to do here is double or triple the non-repeated chords
+          // in the list of available chords
+          // so that a repeated chord is possible but not very likely
+          List<String> availableChordsForSelection = availableChords;
+          availableChordsForSelection.addAll(unusedChords);
+          if (availableChords.isNotEmpty && availableChords.length < 5) {
+            availableChordsForSelection.addAll(unusedChords);
           }
+          selectedChord =
+              availableChordsForSelection[random.nextInt(
+                availableChordsForSelection.length,
+              )];
+        } else {
           if (unusedChords.isEmpty) {
             return "Not enough unique chords available! Please select more chords or set Chord Frequency to Never.";
           }
@@ -188,10 +195,17 @@ class ChordMelody {
         if (i == 2 && startWithDo) {
           if (allowRepeats) {
             candidates = List<String>.from(availableNotes);
-            // TO DO:
-            //what we want to do here is double or triple the non-repeated notes
+            // double or triple the non-repeated notes
             // in the list of available notes
             // so that a repeated note is possible but not very likely
+            candidates.addAll(
+              availableNotes.where((note) => note != startingDo).toList(),
+            );
+            if (candidates.isNotEmpty && candidates.length < 8) {
+              candidates.addAll(
+                availableNotes.where((note) => note != startingDo).toList(),
+              );
+            }
           } else {
             candidates =
                 availableNotes.where((note) => note != startingDo).toList();
@@ -202,8 +216,30 @@ class ChordMelody {
           if (currentNote is! String && chordMelody.length >= 2) {
             currentNote = chordMelody[chordMelody.length - 2];
           }
+          List<String> nonRepeatedCandidates = [];
+          if (i == numNotes - 1 && endWithDo) {
+            nonRepeatedCandidates =
+                availableNotes.where((note) {
+                  if (currentNote == null) return true;
+                  return note != currentNote &&
+                      note != endingDo &&
+                      (availableNotes.indexOf(note) -
+                                  availableNotes.indexOf(currentNote))
+                              .abs() <=
+                          maxDist;
+                }).toList();
+          } else {
+            nonRepeatedCandidates =
+                availableNotes.where((note) {
+                  if (currentNote == null) return true;
+                  return note != currentNote &&
+                      (availableNotes.indexOf(note) -
+                                  availableNotes.indexOf(currentNote))
+                              .abs() <=
+                          maxDist;
+                }).toList();
+          }
           if (allowRepeats) {
-            // TO DO:
             //what we want to do here is double or triple the non-repeated notes
             // in the list of available notes
             // so that a repeated note is not very likely
@@ -215,27 +251,12 @@ class ChordMelody {
                           .abs() <=
                       maxDist;
                 }).toList();
-          } else if (i == numNotes - 1 && endWithDo) {
-            candidates =
-                availableNotes.where((note) {
-                  if (currentNote == null) return true;
-                  return note != currentNote &&
-                      note != endingDo &&
-                      (availableNotes.indexOf(note) -
-                                  availableNotes.indexOf(currentNote))
-                              .abs() <=
-                          maxDist;
-                }).toList();
+            candidates.addAll(nonRepeatedCandidates);
+            if (candidates.isNotEmpty && candidates.length < 8) {
+              candidates.addAll(nonRepeatedCandidates);
+            }
           } else {
-            candidates =
-                availableNotes.where((note) {
-                  if (currentNote == null) return true;
-                  return note != currentNote &&
-                      (availableNotes.indexOf(note) -
-                                  availableNotes.indexOf(currentNote))
-                              .abs() <=
-                          maxDist;
-                }).toList();
+            candidates = nonRepeatedCandidates;
           }
         }
         if (candidates.isEmpty) {
