@@ -757,7 +757,7 @@ class _chordSingingSettingsPageState extends State<chordSingingSettingsPage> {
                 "Note: Make sure to include starting and ending chords if selected above",
               ),
               verticalSpacer(),
-              buildChordButtons(mappingProvider, generalProvider, true),
+              buildChordButtons(generalProvider, mappingProvider, true),
               subHeadingRow("Reset:"),
               Row(
                 children: [

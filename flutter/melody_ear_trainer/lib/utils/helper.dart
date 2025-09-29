@@ -24,9 +24,12 @@ bool listEquals<T>(List<T>? a, List<T>? b) {
 Widget buildNotesGrid(
   GeneralProvider generalProvider,
   MappingProvider mappingProvider,
-  bool tapToSelect,
-) {
-  final noteKeys = mappingProvider.getNoteKeys;
+  bool tapToSelect, [
+  String octave = "All octaves",
+  String scaleSet = "Chromatic",
+  int numNotesInOctave = 12,
+]) { 
+  final noteKeys = mappingProvider.getScalesMapping[octave]![scaleSet] ?? mappingProvider.getNoteKeys;
   final noteColors = mappingProvider.getNoteColors;
   final noteColorFactor = mappingProvider.getNoteColorFactors;
   final noteSelection = generalProvider.getNoteSelection;
@@ -40,8 +43,8 @@ Widget buildNotesGrid(
   }
 
   for (int row = 0; row < 4; row++) {
-    int start = row * 12;
-    int end = (row == 3) ? start + 1 : start + 12;
+    int start = row * numNotesInOctave;
+    int end = (row == 3) ? start + 1 : start + numNotesInOctave;
     if (start >= noteKeys.length) break;
     List<Widget> buttons = [];
     for (int i = start; i < end && i < noteKeys.length; i++) {
@@ -97,8 +100,8 @@ Widget buildNotesGrid(
 }
 
 Widget buildChordButtons(
-  MappingProvider mappingProvider,
   GeneralProvider generalProvider,
+  MappingProvider mappingProvider,
   bool tapToSelect,
 ) {
   List<Widget> sections = [];
@@ -179,56 +182,56 @@ Widget buildChordButtons(
 }
 
 Widget buildSelectedChordButtonsHelper(
-    GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
-  ) {
-    final selectedChords = generalProvider.getSelectedChords();
-    selectedChords.sort((a, b) => chordNameSort(a, b));
-    final chordFrequency = generalProvider.chordFrequency;
-    final chordMap = mappingProvider.getChordMap;
-    if (chordFrequency == "Never") {
-      return Padding(padding: const EdgeInsets.all(0.0));
-    }
-    return Wrap(
-      spacing: 4,
-      runSpacing: 4,
-      children:
-          selectedChords.map((chord) {
-            final color = getChordButtonColor2(chord);
-            final notes = chordMap[chord] ?? [];
-            return Tooltip(
-              message: notes.join(' '),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: color,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 6,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
+  GeneralProvider generalProvider,
+  MappingProvider mappingProvider,
+) {
+  final selectedChords = generalProvider.getSelectedChords();
+  selectedChords.sort((a, b) => chordNameSort(a, b));
+  final chordFrequency = generalProvider.chordFrequency;
+  final chordMap = mappingProvider.getChordMap;
+  if (chordFrequency == "Never") {
+    return Padding(padding: const EdgeInsets.all(0.0));
+  }
+  return Wrap(
+    spacing: 4,
+    runSpacing: 4,
+    children:
+        selectedChords.map((chord) {
+          final color = getChordButtonColor2(chord);
+          final notes = chordMap[chord] ?? [];
+          return Tooltip(
+            message: notes.join(' '),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: color,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
                 ),
-                onPressed: () {
-                },
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: Text(
-                    chord,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color:
-                          colorMap["noteButtonForegroundColor"] ?? Colors.white,
-                    ),
+              ),
+              onPressed: () {},
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Text(
+                  chord,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color:
+                        colorMap["noteButtonForegroundColor"] ?? Colors.white,
                   ),
                 ),
               ),
-            );
-          }).toList(),
-    );
-  }
+            ),
+          );
+        }).toList(),
+  );
+}
 
-Widget optionalChordButtons(GeneralProvider gp, MappingProvider mp, bool tapToSelect) {
+Widget optionalChordButtons(
+  GeneralProvider gp,
+  MappingProvider mp,
+  bool tapToSelect,
+) {
   if (gp.selectedChords.isNotEmpty && gp.chordFrequency != "Never") {
     return buildSelectedChordButtonsHelper(gp, mp);
   }
@@ -238,10 +241,14 @@ Widget optionalChordButtons(GeneralProvider gp, MappingProvider mp, bool tapToSe
 Widget optionalNoteButtons(
   GeneralProvider gp,
   MappingProvider mp,
-  bool tapToSelect,
+  bool tapToSelect,[
+  String octave = "All octaves",
+  String scaleSet = "Chromatic",
+  int numNotesInOctave = 12,
+]
 ) {
   if (gp.getSelectedNotes().isNotEmpty && gp.chordFrequency != "Every note") {
-    return buildNotesGrid(gp, mp, tapToSelect);
+    return buildNotesGrid(gp, mp, tapToSelect, octave, scaleSet, numNotesInOctave);
   }
   return SizedBox.shrink();
 }
@@ -307,9 +314,19 @@ class CampaignInfo {
   final String CampaignID;
   final String CampaignName;
   final String CampaignFilename;
+  final String CampaignOctave;
+  final String CampaignSet;
+  final int CampaignNotesInOctave;
   final MissionIDs = LinkedHashSet<String>();
 
-  CampaignInfo(this.CampaignID, this.CampaignName, this.CampaignFilename);
+  CampaignInfo(
+    this.CampaignID,
+    this.CampaignName,
+    this.CampaignFilename,
+    this.CampaignOctave,
+    this.CampaignSet,
+    this.CampaignNotesInOctave,
+  );
 
   void addMissionID(String newMissionID) {
     MissionIDs.add(newMissionID);

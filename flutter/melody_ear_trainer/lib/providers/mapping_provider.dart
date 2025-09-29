@@ -119,6 +119,18 @@ class MappingProvider extends ChangeNotifier {
     return campaigns[campaignID]!.CampaignName;
   }
 
+  String getCampaignOctave(String campaignID) {
+    return campaigns[campaignID]!.CampaignOctave;
+  }
+
+  String getCampaignSet(String campaignID) {
+    return campaigns[campaignID]!.CampaignSet;
+  }
+
+  int getCampaignNotesInOctave(String campaignID) {
+    return campaigns[campaignID]!.CampaignNotesInOctave;
+  }
+
   Map<String, MissionInfo> get getMissions {
     return missions;
   }
@@ -290,6 +302,9 @@ class MappingProvider extends ChangeNotifier {
       String campaignID = item['CampaignID'];
       String campaignName = item['CampaignName'];
       String filename = item['CampaignFilename'];
+      String octave = item['CampaignOctave'];
+      String scaleSet = item['CampaignSet'];
+      int numNotesInOctave = int.parse(item['CampaignNotesInOctave']);
 
       String missionID = item['MissionID'];
       String missionName = item['MissionName'];
@@ -318,6 +333,9 @@ class MappingProvider extends ChangeNotifier {
           campaignID,
           campaignName,
           filename,
+          octave,
+          scaleSet,
+          numNotesInOctave,
         );
       }
       if (campaigns.containsKey(campaignID)) {
