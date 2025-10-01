@@ -20,18 +20,16 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     final levelTestResults =
         ModalRoute.of(context)!.settings.arguments as LevelTestResults;
     final mappingProvider = Provider.of<MappingProvider>(context);
-    String campaignTitle =
-        mappingProvider.getCampaigns[levelTestResults.CampaignID]!.CampaignName;
     MissionInfo mi = mappingProvider.getMissions[levelTestResults.MissionID]!;
-    LevelInfo lvli = mappingProvider.getLevelInfo(levelTestResults.LevelID);
+    LevelInfo levelInfo = mappingProvider.getLevelInfo(levelTestResults.LevelID);
     String missionTitle = mi.MissionName;
-    String levelTitle = lvli.LevelName;
+    String levelTitle = levelInfo.LevelName;
     int numPassedTests = objectBox.numPassedTestsForLevel(
-      lvli.LevelID,
-      lvli.PassingScore,
+      levelInfo.LevelID,
+      levelInfo.PassingScore,
     );
     String levelStatus =
-        numPassedTests >= lvli.NumTests
+        numPassedTests >= levelInfo.NumTests
             ? "Passed!"
             : numPassedTests > 0
             ? "In progress"
@@ -44,7 +42,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
         child: Center(
           child: Column(
             children: [
-              headingRow(campaignTitle),
+              campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
               TextRow("Mission: " + missionTitle),
               verticalSpacer(),
@@ -57,17 +55,17 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 "Number of passed tests: " +
                     numPassedTests.toString() +
                     " /  " +
-                    lvli.NumTests.toString(),
+                    levelInfo.NumTests.toString(),
               ),
               plainText(
-                "Passing score for each test: " + lvli.PassingScore.toString(),
+                "Passing score for each test: " + levelInfo.PassingScore.toString(),
               ),
               verticalSpacer(),
               TextRow(
                 "your score: " +
                     levelTestResults.score.toString() +
                     " / " +
-                    lvli.NumQuestions.toString(),
+                    levelInfo.NumQuestions.toString(),
               ),
               verticalSpacer(),
               Row(
@@ -86,7 +84,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                         Navigator.pushNamed(
                           context,
                           LevelMelodyIDTest.routeName,
-                          arguments: lvli,
+                          arguments: levelInfo,
                         );
                       },
                       child: FittedBox(

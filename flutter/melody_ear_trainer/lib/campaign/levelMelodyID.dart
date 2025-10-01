@@ -29,7 +29,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              headingRow(mappingProvider.getCampaignName(levelInfo.CampaignID)),
+              campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
               TextRow("Mission: " + mappingProvider.getMissionName(levelInfo.MissionID)),
               verticalSpacer(),

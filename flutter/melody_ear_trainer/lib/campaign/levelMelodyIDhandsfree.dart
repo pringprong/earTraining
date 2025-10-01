@@ -38,7 +38,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              headingRow(mappingProvider.getCampaignName(levelInfo.CampaignID)),
+              campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
               TextRow(
                 "Mission: " +

@@ -296,8 +296,8 @@ Widget campaignHeader(CampaignInfo campArgs) {
             ),
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: SizedBox(
-            height: 50,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Wrap(
                 children: [

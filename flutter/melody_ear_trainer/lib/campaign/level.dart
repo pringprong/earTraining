@@ -22,9 +22,6 @@ class _LevelState extends State<Level> {
   Widget build(BuildContext context) {
     final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
-    String campaignTitle = mappingProvider.getCampaignName(
-      levelInfo.CampaignID,
-    );
     String missionTitle = mappingProvider.getMissionName(levelInfo.MissionID);
     String missionMode = mappingProvider.getMissionMode(levelInfo.MissionID);
     String levelTitle = levelInfo.LevelName;
@@ -52,7 +49,7 @@ class _LevelState extends State<Level> {
           child: Center(
             child: Column(
               children: [
-                headingRow(campaignTitle),
+                campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
                 verticalSpacer(),
                 TextRow("Mission: " + missionTitle),
                 verticalSpacer(),

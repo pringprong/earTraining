@@ -29,6 +29,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              campaignHeader(mappingProvider.campaigns[missionInfo.CampaignID]!),
               verticalSpacer(),
               subHeadingRow("Playback settings:"),
               Row(
