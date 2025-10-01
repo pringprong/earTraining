@@ -95,60 +95,69 @@ class _MissionState extends State<Mission> {
                 ] else ...[
                   // Constrain list height to avoid overflow
                   ListView.builder(
-                    itemCount: levels.length,
+                    itemCount: (levels.length + 1) ~/ 2, // number of pairs
                     shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final LevelInfo lvl = levels[index];
-                      int numPassedTests = objectBox.numPassedTestsForLevel(
-                        lvl.LevelID,
-                        lvl.PassingScore,
-                      );
-                      Color tileColor =
-                          numPassedTests >= lvl.NumTests
-                              ? colorMap["passedColor"] ?? Colors.white
-                              : numPassedTests > 0 ? colorMap["inProgressColor"] ?? Colors.white
-                              :colorMap["notYetStartedColor"] ?? Colors.white;
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, pairIndex) {
+                      final int leftIndex = pairIndex * 2;
+                      final int rightIndex = leftIndex + 1;
+                      final LevelInfo leftLvl = levels[leftIndex];
+                      final LevelInfo? rightLvl =
+                          rightIndex < levels.length ? levels[rightIndex] : null;
+
+                      Widget buildTile(LevelInfo lvl) {
+                        int numPassedTests = objectBox.numPassedTestsForLevel(
+                          lvl.LevelID,
+                          lvl.PassingScore,
+                        );
+                        Color tileColor = numPassedTests >= lvl.NumTests
+                            ? colorMap["passedColor"] ?? Colors.white
+                            : numPassedTests > 0
+                                ? colorMap["inProgressColor"] ?? Colors.white
+                                : colorMap["notYetStartedColor"] ?? Colors.white;
+                        return ListTile(
+                          tileColor: tileColor,
+                          dense: true,
+                          title: Text(
+                            lvl.LevelName,
+                            style: TextStyle(
+                              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          trailing: Text(
+                            "${numPassedTests.toString()} / ${lvl.NumTests.toString()}",
+                            style: TextStyle(
+                              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              Level.routeName,
+                              arguments: lvl,
+                            );
+                          },
+                        );
+                      }
+
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            ListTile(
-                              tileColor: tileColor,
-                              dense: true,
-                              //contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              title: Text(
-                                lvl.LevelName,
-                                style: TextStyle(
-                                  color:
-                                      colorMap["buttonForegroundColor"] ??
-                                      Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              trailing: Text(
-                                "${numPassedTests.toString()} / ${lvl.NumTests.toString()}",
-                                style: TextStyle(
-                                  color:
-                                      colorMap["buttonForegroundColor"] ??
-                                      Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  Level.routeName,
-                                  arguments: lvl,
-                                );
-                              },
+                            Expanded(child: buildTile(leftLvl)),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: rightLvl != null
+                                  ? buildTile(rightLvl)
+                                  : SizedBox.shrink(),
                             ),
                           ],
                         ),
                       );
                     },
-                  ),
-                ],
+                  ),                ],
                 verticalSpacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
