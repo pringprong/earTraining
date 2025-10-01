@@ -5,6 +5,7 @@ import 'providers/general_provider.dart';
 import 'package:provider/provider.dart';
 import 'utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'utils/helper.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});

@@ -6,6 +6,80 @@ import 'dart:collection';
 import 'package:objectbox/objectbox.dart';
 import '../objectbox.g.dart';
 
+
+SizedBox verticalSpacer() {
+  return SizedBox(height: 8);
+}
+
+SizedBox horizontalSpacer() {
+  return SizedBox(width: 8);
+}
+
+Row headingRow(String myText) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Expanded(
+        child: Wrap(
+          children: [
+            Text(
+              myText,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Row TextRow(String myText) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Expanded(
+        child: Wrap(
+          children: [
+            Text(
+              myText,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Row subHeadingRow(String myText) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Expanded(
+        child: Wrap(
+          children: [
+            Text(
+              myText,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Row plainText(String myText) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Expanded(
+        child: Wrap(children: [Text(myText, style: TextStyle(fontSize: 16))]),
+      ),
+    ],
+  );
+}
+
 // Add this utility function to your file (e.g., below the listEquals function or anywhere in your class/file):
 String chordMelodySolfegeToString(List<List<String>> data) {
   return data.map((inner) => inner.join('-')).join(' ');

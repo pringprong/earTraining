@@ -6,6 +6,7 @@ import '../audio/audio_controller.dart';
 import '../utils/colors.dart';
 import '../utils/chordMelody.dart';
 import 'dart:math';
+import '../utils/helper.dart';
 
 class MelodyIDHandsFree extends StatefulWidget {
   const MelodyIDHandsFree({super.key, required this.audioController});

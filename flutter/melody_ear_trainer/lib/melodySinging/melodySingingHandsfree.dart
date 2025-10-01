@@ -4,6 +4,7 @@ import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import '../audio/audio_controller.dart';
 import '../utils/colors.dart';
+import '../utils/helper.dart';
 import '../utils/chordMelody.dart';
 import 'dart:math';
 

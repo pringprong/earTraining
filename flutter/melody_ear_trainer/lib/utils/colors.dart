@@ -1,77 +1,77 @@
 import 'package:flutter/material.dart';
 
-SizedBox verticalSpacer() {
-  return SizedBox(height: 8);
-}
+// SizedBox verticalSpacer() {
+//   return SizedBox(height: 8);
+// }
 
-SizedBox horizontalSpacer() {
-  return SizedBox(width: 8);
-}
+// SizedBox horizontalSpacer() {
+//   return SizedBox(width: 8);
+// }
 
-Row headingRow(String myText) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Expanded(
-        child: Wrap(
-          children: [
-            Text(
-              myText,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
+// Row headingRow(String myText) {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.start,
+//     children: [
+//       Expanded(
+//         child: Wrap(
+//           children: [
+//             Text(
+//               myText,
+//               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
-Row TextRow(String myText) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Expanded(
-        child: Wrap(
-          children: [
-            Text(
-              myText,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
+// Row TextRow(String myText) {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.start,
+//     children: [
+//       Expanded(
+//         child: Wrap(
+//           children: [
+//             Text(
+//               myText,
+//               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
-Row subHeadingRow(String myText) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Expanded(
-        child: Wrap(
-          children: [
-            Text(
-              myText,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
+// Row subHeadingRow(String myText) {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.start,
+//     children: [
+//       Expanded(
+//         child: Wrap(
+//           children: [
+//             Text(
+//               myText,
+//               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
-Row plainText(String myText) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Expanded(
-        child: Wrap(children: [Text(myText, style: TextStyle(fontSize: 16))]),
-      ),
-    ],
-  );
-}
+// Row plainText(String myText) {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.start,
+//     children: [
+//       Expanded(
+//         child: Wrap(children: [Text(myText, style: TextStyle(fontSize: 16))]),
+//       ),
+//     ],
+//   );
+// }
 
 Color multiplyHexColor(String hexColor, double factor) {
   hexColor = hexColor.replaceAll('#', '');

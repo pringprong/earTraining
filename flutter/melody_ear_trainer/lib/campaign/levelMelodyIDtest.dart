@@ -3,7 +3,6 @@ import 'package:melody_ear_trainer/main.dart';
 import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
-import '../utils/colors.dart';
 import '../testPageAbstract.dart';
 import '../utils/helper.dart';
 import 'levelTestResults.dart';
