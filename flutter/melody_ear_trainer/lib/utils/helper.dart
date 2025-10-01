@@ -282,6 +282,43 @@ Widget buildSelectedChordButtonsHelper(
 //   return SizedBox.shrink();
 // }
 
+Widget campaignHeader(CampaignInfo campArgs) {
+  return Row(
+    children: [
+      Expanded(
+        child: (Card(
+          color: colorMap["buttonForegroundColor"] ?? Colors.white,
+          borderOnForeground: true,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: getCampaignColor(campArgs.CampaignID),
+              width: 1.0,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: SizedBox(
+            height: 50,
+            child: Center(
+              child: Wrap(
+                children: [
+                  Text(
+                  campArgs.CampaignName,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color:getCampaignColor(campArgs.CampaignID) ,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                ],
+              ),
+            ),
+          ),
+        )),
+      ),
+    ],
+  );
+}
+
 RegExp chordNameParse = RegExp(
   r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',
 );

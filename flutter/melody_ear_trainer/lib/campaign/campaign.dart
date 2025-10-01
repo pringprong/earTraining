@@ -101,7 +101,7 @@ class _campaignTreeState extends State<campaignTree> {
               ? Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  headingRow(campArgs.CampaignName),
+                  campaignHeader(campArgs),
                   verticalSpacer(),
                   Expanded(
                     child: InteractiveViewer(

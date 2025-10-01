@@ -23,10 +23,6 @@ class _MissionState extends State<Mission> {
         ModalRoute.of(context)!.settings.arguments as MissionInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
     final generalProvider = Provider.of<missionSettingsProvider>(context);
-
-    String campaignTitle = mappingProvider.getCampaignName(
-      missionInfo.CampaignID,
-    );
     String missionTitle = missionInfo.MissionName;
     String mode = missionInfo.MissionMode;
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
@@ -47,7 +43,7 @@ class _MissionState extends State<Mission> {
           child: Center(
             child: Column(
               children: [
-                headingRow(campaignTitle),
+                campaignHeader(mappingProvider.campaigns[missionInfo.CampaignID]!),
                 verticalSpacer(),
                 TextRow("Mission: " + missionTitle),
                 verticalSpacer(),
@@ -57,7 +53,7 @@ class _MissionState extends State<Mission> {
                 verticalSpacer(),
                 statusRow(thisMissionStatus),
                 verticalSpacer(),
-                plainText("Completed " + "X" + " / " + "Y" + " levels so far"),
+                subHeadingRow("Notes to learn in this level:"),
                 verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,

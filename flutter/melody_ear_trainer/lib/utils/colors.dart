@@ -178,6 +178,22 @@ Color missionLevelStatusColor(String missionStatus) {
       : colorMap["inProgressColor"] ?? Colors.white;
 }
 
+Color getCampaignColor(String CampaignID) {
+  switch (CampaignID) {
+    case "c0":
+      return colorMap['c5f2'] ?? Colors.white;
+    case "c1":
+      return colorMap['c1f2'] ?? Colors.white;
+    case "c2":
+      return colorMap['c2f2'] ?? Colors.white;
+    case "c3":
+      return colorMap['c3f2'] ?? Colors.white;
+    case "c4":
+      return colorMap['c4f2'] ?? Colors.white;
+  }
+  return Colors.grey;
+}
+
 Color getChordButtonColor(String chordName) {
   String c = chordName;
   if (c.endsWith("00_Rt")) return colorMap["c1f1"] ?? Colors.white;

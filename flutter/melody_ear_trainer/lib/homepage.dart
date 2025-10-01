@@ -39,7 +39,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         Expanded(
                           child: GestureDetector(
                             child: Card(
-                              color: colorMap["c5f4"],
+                              color: getCampaignColor(campArgs.CampaignID),
                               child: SizedBox(
                                 height: 70,
                                 child: Center(
