@@ -156,7 +156,8 @@ Map<String, Color> colorMap = {
   'incorrectGuessButtonColor': Color.fromARGB(255, 240, 128, 128),
 
   'passedColor': Color.fromARGB(255, 191, 220, 158),
-  'notYetPassedColor': Color.fromARGB(255, 176, 204, 231),
+  'notYetStartedColor': Color.fromARGB(255, 176, 204, 231),
+  'inProgressColor': Color.fromARGB(255, 121, 185, 245),
 
   'borderColor': Colors.grey,
   'yetAnotherGrey': Color.fromARGB(255, 181, 196, 212),

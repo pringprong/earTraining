@@ -133,7 +133,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     Color myColor =
         passed
             ? colorMap["passedColor"] ?? Colors.white
-            : colorMap["notYetPassedColor"] ?? Colors.white;
+            : colorMap["notYetStartedColor"] ?? Colors.white;
     return Row(
       children: [
         Container(

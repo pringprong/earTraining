@@ -36,7 +36,10 @@ class _MissionState extends State<Mission> {
     String mode = missionInfo.MissionMode;
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
     LevelInfo lastLevel = levels.last;
-    generalProvider.setNoteSelection(selectedKeys: lastLevel.Notes, notify: false);
+    generalProvider.setNoteSelection(
+      selectedKeys: lastLevel.Notes,
+      notify: false,
+    );
     bool status = objectBox.levelPassed(
       lastLevel.LevelID,
       lastLevel.PassingScore,
@@ -84,93 +87,66 @@ class _MissionState extends State<Mission> {
                 ),
                 verticalSpacer(),
                 optionalChordButtons(generalProvider, mappingProvider, false),
-                subHeadingRow("Select a level from the table :"),
+                subHeadingRow("Select a level:"),
                 verticalSpacer(),
                 // Levels table
                 if (levels.isEmpty) ...[
                   TextRow('No levels available'),
                 ] else ...[
-                  // Constrain table height to avoid overflow
-                  SizedBox(
-                    height: 500,
-                    child: SingleChildScrollView(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          showCheckboxColumn: false,
-                          columns: const [
-                            DataColumn(label: Text('Levels')),
-                            DataColumn(label: Text('Status')),
-                            DataColumn(label: Text('# Tests Passed')),
-                          ],
-                          rows:
-                              levels.map((LevelInfo lvl) {
-                                int numPassedTests = objectBox
-                                    .numPassedTestsForLevel(
-                                      lvl.LevelID,
-                                      lvl.PassingScore,
-                                    );
-                                String levelStatus =
-                                    numPassedTests >= lvl.NumTests
-                                        ? "Passed"
-                                        : "Not passed yet";
-                                Color rowColor =
-                                    numPassedTests >= lvl.NumTests
-                                        ? colorMap["passedColor"] ??
-                                            Colors.white
-                                        : colorMap["notYetPassedColor"] ??
-                                            Colors.white;
-                                return DataRow(
-                                  // make the row selectable/clickable
-                                  color: WidgetStateProperty.all(rowColor),
-                                  onSelectChanged: (selected) {
-                                    if (selected == true) {
-                                      Navigator.pushNamed(
-                                        context,
-                                        Level.routeName,
-                                        arguments: lvl,
-                                      );
-                                    }
-                                  },
-                                  cells: [
-                                    DataCell(
-                                      Text(
-                                        lvl.LevelName,
-                                        style: TextStyle(
-                                          color:
-                                              colorMap["buttonForegroundColor"] ??
-                                              Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        levelStatus,
-                                        style: TextStyle(
-                                          color:
-                                              colorMap["buttonForegroundColor"] ??
-                                              Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        numPassedTests.toString() +
-                                            " / " +
-                                            lvl.NumTests.toString(),
-                                        style: TextStyle(
-                                          color:
-                                              colorMap["buttonForegroundColor"] ??
-                                              Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                  // Constrain list height to avoid overflow
+                  ListView.builder(
+                    itemCount: levels.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final LevelInfo lvl = levels[index];
+                      int numPassedTests = objectBox.numPassedTestsForLevel(
+                        lvl.LevelID,
+                        lvl.PassingScore,
+                      );
+                      Color tileColor =
+                          numPassedTests >= lvl.NumTests
+                              ? colorMap["passedColor"] ?? Colors.white
+                              : numPassedTests > 0 ? colorMap["inProgressColor"] ?? Colors.white
+                              :colorMap["notYetStartedColor"] ?? Colors.white;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ListTile(
+                              tileColor: tileColor,
+                              dense: true,
+                              //contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              title: Text(
+                                lvl.LevelName,
+                                style: TextStyle(
+                                  color:
+                                      colorMap["buttonForegroundColor"] ??
+                                      Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              trailing: Text(
+                                "${numPassedTests.toString()} / ${lvl.NumTests.toString()}",
+                                style: TextStyle(
+                                  color:
+                                      colorMap["buttonForegroundColor"] ??
+                                      Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  Level.routeName,
+                                  arguments: lvl,
                                 );
-                              }).toList(),
+                              },
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ],
                 verticalSpacer(),
@@ -213,7 +189,7 @@ class _MissionState extends State<Mission> {
     Color myColor =
         passed
             ? colorMap["passedColor"] ?? Colors.white
-            : colorMap["notYetPassedColor"] ?? Colors.white;
+            : colorMap["notYetStartedColor"] ?? Colors.white;
     return Row(
       children: [
         Container(

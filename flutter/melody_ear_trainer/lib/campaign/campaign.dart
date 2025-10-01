@@ -217,7 +217,8 @@ class _campaignTreeState extends State<campaignTree> {
   }
 
   Widget circleWidget(String? title, bool unlocked) {
-    String titleText = unlocked ? (title ?? 'no title') : 'Locked';
+    String titleText =
+        unlocked ? (title ?? 'no title') : 'Pass previous\nmissions first';
     Color fill = unlocked ? Colors.black : Colors.grey;
     return Container(
       width: 100,
@@ -253,7 +254,7 @@ class _campaignTreeState extends State<campaignTree> {
           boxShadow: [BoxShadow(color: Colors.grey.shade700, spreadRadius: 1)],
         ),
         child: Text(
-          "Mission Locked\nuntil preceding missions\nare passed",
+          "Pass previous\nmissions first",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white70),
         ),
@@ -274,7 +275,7 @@ class _campaignTreeState extends State<campaignTree> {
     Color nodeColor =
         missionStatus == "Passed"
             ? colorMap["passedColor"] ?? Colors.white
-            : colorMap["notYetPassedColor"] ?? Colors.white;
+            : colorMap["notYetStartedColor"] ?? Colors.white;
     return InkWell(
       onTap: () {
         // create MissionArguments and navigate to Mission page

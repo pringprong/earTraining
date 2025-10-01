@@ -72,13 +72,15 @@ class _LevelState extends State<Level> {
                 statusRow(levelStatus, numPassedTests >= levelInfo.NumTests),
                 verticalSpacer(),
                 optionalNoteButtons(
-                  generalProvider, 
-                  mappingProvider, 
+                  generalProvider,
+                  mappingProvider,
                   false,
                   mappingProvider.getCampaignOctave(levelInfo.CampaignID),
                   mappingProvider.getCampaignSet(levelInfo.CampaignID),
-                  mappingProvider.getCampaignNotesInOctave(levelInfo.CampaignID),
-                  levelInfo.NewNotes
+                  mappingProvider.getCampaignNotesInOctave(
+                    levelInfo.CampaignID,
+                  ),
+                  levelInfo.NewNotes,
                 ),
                 verticalSpacer(),
                 optionalChordButtons(generalProvider, mappingProvider, false),
@@ -246,7 +248,7 @@ class _LevelState extends State<Level> {
     Color myColor =
         passed
             ? colorMap["passedColor"] ?? Colors.white
-            : colorMap["notYetPassedColor"] ?? Colors.white;
+            : colorMap["notYetStartedColor"] ?? Colors.white;
     return Row(
       children: [
         Container(
