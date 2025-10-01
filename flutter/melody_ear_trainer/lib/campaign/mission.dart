@@ -23,10 +23,8 @@ class _MissionState extends State<Mission> {
         ModalRoute.of(context)!.settings.arguments as MissionInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
     final generalProvider = Provider.of<missionSettingsProvider>(context);
-    String missionTitle = missionInfo.MissionName;
-    String mode = missionInfo.MissionMode;
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
-    String thisMissionStatus = getThisMissionStatus(levels);
+    String thisMissionStatus = getMissionStatus(mappingProvider, missionInfo);
     objectBox.updateMissionPassed(
       missionInfo.MissionID,
       generalProvider.getSelectedKey,
@@ -45,15 +43,9 @@ class _MissionState extends State<Mission> {
               children: [
                 campaignHeader(mappingProvider.campaigns[missionInfo.CampaignID]!),
                 verticalSpacer(),
-                TextRow("Mission: " + missionTitle),
+                missionHeader(mappingProvider, missionInfo),
                 verticalSpacer(),
-                subHeadingRow("Mode: " + mode),
-                verticalSpacer(),
-                TextRow("Mission main page"),
-                verticalSpacer(),
-                statusRow(thisMissionStatus),
-                verticalSpacer(),
-                subHeadingRow("Notes to learn in this level:"),
+                subHeadingRow("Notes to learn in this mission:"),
                 verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,
@@ -200,14 +192,13 @@ class _MissionState extends State<Mission> {
   }
 
   Row statusRow(String mls) {
-    Color myColor = missionLevelStatusColor(mls);
     return Row(
       children: [
         Container(
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.9,
           ),
-          color: myColor,
+          color: missionLevelStatusColor(mls),
           width: double.infinity,
           padding: EdgeInsets.all(12),
           child: Center(
@@ -254,33 +245,33 @@ class _MissionState extends State<Mission> {
     );
   }
 
-  String getThisMissionStatus(List<LevelInfo> levels) {
-    LevelInfo lastLevel = levels.last;
-    String statusOfLastLevel = objectBox.levelStatus(
-      lastLevel.LevelID,
-      lastLevel.PassingScore,
-      lastLevel.NumTests,
-    );
-    String thisMissionStatus = statusOfLastLevel;
+  // String getThisMissionStatus(List<LevelInfo> levels) {
+  //   LevelInfo lastLevel = levels.last;
+  //   String statusOfLastLevel = objectBox.levelStatus(
+  //     lastLevel.LevelID,
+  //     lastLevel.PassingScore,
+  //     lastLevel.NumTests,
+  //   );
+  //   String thisMissionStatus = statusOfLastLevel;
 
-    if (statusOfLastLevel == "Not started yet") {
-      // the last level is not started, so the mission is definitey not passed
-      // check all the other levels to see whether any of them are started yet
-      // if any are started or passed, then the mission is in progress
-      // none of them are started or passed, then the mission is Not Started
-      for (var level in levels) {
-        String currentLevelStatus = objectBox.levelStatus(
-          level.LevelID,
-          level.PassingScore,
-          level.NumTests,
-        );
-        if (currentLevelStatus == "In progress" ||
-            currentLevelStatus == "Passed!") {
-          return "In progress";
-        }
-      }
-    }
-    // if the last level is passed or in progress then the whole mission is automatically the same
-    return thisMissionStatus;
-  }
+  //   if (statusOfLastLevel == "Not started yet") {
+  //     // the last level is not started, so the mission is definitey not passed
+  //     // check all the other levels to see whether any of them are started yet
+  //     // if any are started or passed, then the mission is in progress
+  //     // none of them are started or passed, then the mission is Not Started
+  //     for (var level in levels) {
+  //       String currentLevelStatus = objectBox.levelStatus(
+  //         level.LevelID,
+  //         level.PassingScore,
+  //         level.NumTests,
+  //       );
+  //       if (currentLevelStatus == "In progress" ||
+  //           currentLevelStatus == "Passed!") {
+  //         return "In progress";
+  //       }
+  //     }
+  //   }
+  //   // if the last level is passed or in progress then the whole mission is automatically the same
+  //   return thisMissionStatus;
+  // }
 }

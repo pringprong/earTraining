@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/main.dart';
 import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import 'colors.dart';
 import 'dart:collection';
 import 'package:objectbox/objectbox.dart';
 import '../objectbox.g.dart';
-
 
 SizedBox verticalSpacer() {
   return SizedBox(height: 8);
@@ -322,40 +322,6 @@ Widget buildSelectedChordButtonsHelper(
   );
 }
 
-// Widget optionalChordButtons(
-//   GeneralProvider gp,
-//   MappingProvider mp,
-//   bool tapToSelect,
-// ) {
-//   if (gp.selectedChords.isNotEmpty && gp.chordFrequency != "Never") {
-//     return buildSelectedChordButtonsHelper(gp, mp);
-//   }
-//   return SizedBox.shrink();
-// }
-
-// Widget optionalNoteButtons(
-//   GeneralProvider gp,
-//   MappingProvider mp,
-//   bool tapToSelect, [
-//   String octave = "All octaves",
-//   String scaleSet = "Chromatic",
-//   int numNotesInOctave = 12,
-//   List<String> newNotes = const [],
-// ]) {
-//   if (gp.getSelectedNotes().isNotEmpty && gp.chordFrequency != "Every note") {
-//     return buildNotesGrid(
-//       gp,
-//       mp,
-//       tapToSelect,
-//       octave,
-//       scaleSet,
-//       numNotesInOctave,
-//       newNotes,
-//     );
-//   }
-//   return SizedBox.shrink();
-// }
-
 Widget campaignHeader(CampaignInfo campArgs) {
   return Row(
     children: [
@@ -376,13 +342,251 @@ Widget campaignHeader(CampaignInfo campArgs) {
               child: Wrap(
                 children: [
                   Text(
-                  campArgs.CampaignName,
-                  style: TextStyle(
-                    fontSize: 20,
-                    color:getCampaignColor(campArgs.CampaignID) ,
+                    campArgs.CampaignName,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: getCampaignColor(campArgs.CampaignID),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
+                ],
+              ),
+            ),
+          ),
+        )),
+      ),
+    ],
+  );
+}
+
+Widget missionHeader(MappingProvider mappingProvider, MissionInfo missionInfo) {
+  return Row(
+    children: [
+      Expanded(
+        child: (Card(
+          color: colorMap["buttonForegroundColor"] ?? Colors.white,
+          borderOnForeground: true,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: getModeColor(missionInfo.MissionMode),
+              width: 1.0,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Wrap(
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "Mission: " + missionInfo.MissionName,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: getModeColor(missionInfo.MissionMode),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        missionInfo.MissionMode,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: getModeColor(missionInfo.MissionMode),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      verticalSpacer(),
+                      missionStatusBanner(mappingProvider, missionInfo),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )),
+      ),
+    ],
+  );
+}
+
+Widget missionStatusBanner(
+  MappingProvider mappingProvider,
+  MissionInfo missionInfo,
+) {
+  String mls = getMissionStatus(mappingProvider, missionInfo);
+  return Row(
+    children: [
+      Expanded(
+        child: (Card(
+          color: colorMap["buttonForegroundColor"] ?? Colors.white,
+          borderOnForeground: true,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: missionLevelStatusColor(mls), width: 2.0),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Wrap(
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "Status: " + mls,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: missionLevelStatusColor(mls),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )),
+      ),
+    ],
+  );
+}
+
+String getMissionStatus(
+  MappingProvider mappingProvider,
+  MissionInfo missionInfo,
+) {
+  final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
+  LevelInfo lastLevel = levels.last;
+  String statusOfLastLevel = objectBox.levelStatus(
+    lastLevel.LevelID,
+    lastLevel.PassingScore,
+    lastLevel.NumTests,
+  );
+  String thisMissionStatus = statusOfLastLevel;
+
+  if (statusOfLastLevel == "Not started yet") {
+    // the last level is not started, so the mission is definitey not passed
+    // check all the other levels to see whether any of them are started yet
+    // if any are started or passed, then the mission is in progress
+    // none of them are started or passed, then the mission is Not Started
+    for (var level in levels) {
+      String currentLevelStatus = objectBox.levelStatus(
+        level.LevelID,
+        level.PassingScore,
+        level.NumTests,
+      );
+      if (currentLevelStatus == "In progress" ||
+          currentLevelStatus == "Passed!") {
+        return "In progress";
+      }
+    }
+  }
+  // if the last level is passed or in progress then the whole mission is automatically the same
+  return thisMissionStatus;
+}
+
+String getLevelStatus(int numPassedTests, LevelInfo levelInfo) {
+  return numPassedTests >= levelInfo.NumTests
+      ? "Passed!"
+      : numPassedTests > 0
+      ? "In progress"
+      : "Not started yet";
+}
+
+Widget levelHeader(LevelInfo levelInfo) {
+  int numPassedTests = objectBox.numPassedTestsForLevel(
+    levelInfo.LevelID,
+    levelInfo.PassingScore,
+  );
+  String levelStatus = getLevelStatus(numPassedTests, levelInfo);
+  return Row(
+    children: [
+      Expanded(
+        child: (Card(
+          color: colorMap["buttonForegroundColor"] ?? Colors.white,
+          borderOnForeground: true,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: missionLevelStatusColor(levelStatus),
+              width: 1.0,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Wrap(
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        levelInfo.LevelName,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: missionLevelStatusColor(levelStatus),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      verticalSpacer(),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: (Card(
+                              color:
+                                  colorMap["buttonForegroundColor"] ??
+                                  Colors.white,
+                              borderOnForeground: true,
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: missionLevelStatusColor(levelStatus),
+                                  width: 2.0,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Wrap(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                            "Status: " + levelStatus,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: missionLevelStatusColor(
+                                                levelStatus,
+                                              ),
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                  "Number of tests passed so far: " +
+                      numPassedTests.toString() +
+                      " / " +
+                      levelInfo.NumTests.toString(),
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: missionLevelStatusColor(
+                                                levelStatus,
+                                              ),
+                                            ),
+                                            textAlign: TextAlign.center,
                 ),
+
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -449,17 +653,6 @@ int chordNameSort(String? a, String? b) {
   }
   return 0;
 }
-
-// enum missionLevelStatus {
-//   notStarted("Not started yet", Color.fromARGB(255, 176, 204, 231)),
-//   inProgress("In progress", Color.fromARGB(255, 121, 185, 245)),
-//   Passed("Passed!", Color.fromARGB(255, 191, 220, 158));
-
-//   final Color statusColor;
-//   final String text;
-
-//   const missionLevelStatus(this.text, this.statusColor);
-// }
 
 class CampaignInfo {
   final String CampaignID;

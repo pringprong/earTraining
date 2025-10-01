@@ -194,6 +194,24 @@ Color getCampaignColor(String CampaignID) {
   return Colors.grey;
 }
 
+Color getModeColor(String mode) {
+  switch (mode) {
+    case "Melody ID":
+      return colorMap["c2f4"] ?? Colors.white;
+    case "Melody singing":
+      return colorMap["c2f2"] ?? Colors.white;
+    case "Chord ID":
+      return colorMap["c4f4"] ?? Colors.white;
+    case "Chord singing":
+      return colorMap["c4f2"] ?? Colors.white;
+    case "Chord melody ID":
+      return colorMap["c3f4"] ?? Colors.white;
+    case "Chord melody singing":
+      return colorMap["c3f2"] ?? Colors.white;
+  }
+  return Colors.grey;  
+}
+
 Color getChordButtonColor(String chordName) {
   String c = chordName;
   if (c.endsWith("00_Rt")) return colorMap["c1f1"] ?? Colors.white;

@@ -22,24 +22,11 @@ class _LevelState extends State<Level> {
   Widget build(BuildContext context) {
     final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
-    String missionTitle = mappingProvider.getMissionName(levelInfo.MissionID);
     String missionMode = mappingProvider.getMissionMode(levelInfo.MissionID);
-    String levelTitle = levelInfo.LevelName;
     final generalProvider = Provider.of<missionSettingsProvider>(context);
     List<LevelTestResults> ltrList = objectBox.getLevelTestResultsByLevelID(
       levelInfo.LevelID,
     );
-    int numPassedTests = objectBox.numPassedTestsForLevel(
-      levelInfo.LevelID,
-      levelInfo.PassingScore,
-    );
-    String levelStatus =
-        numPassedTests >= levelInfo.NumTests
-            ? "Passed!"
-            : numPassedTests > 0
-            ? "In progress"
-            : "Not started yet";
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -51,13 +38,9 @@ class _LevelState extends State<Level> {
               children: [
                 campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
                 verticalSpacer(),
-                TextRow("Mission: " + missionTitle),
+                missionHeader(mappingProvider, mappingProvider.missions[levelInfo.MissionID]!),
                 verticalSpacer(),
-                TextRow("Level: " + levelTitle),
-                verticalSpacer(),
-                TextRow("Level main page"),
-                verticalSpacer(),
-                statusRow(levelStatus),
+                levelHeader(levelInfo),
                 verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,
@@ -197,21 +180,6 @@ class _LevelState extends State<Level> {
                       ),
                     ),
                   ],
-                ),
-                verticalSpacer(),
-                TextRow("Level status:"),
-                verticalSpacer(),
-                plainText(
-                  "Number of tests passed so far: " +
-                      numPassedTests.toString() +
-                      " / " +
-                      levelInfo.NumTests.toString(),
-                ),
-                plainText(
-                  "Passing score for each test: " +
-                      levelInfo.PassingScore.toString() +
-                      " / " +
-                      levelInfo.NumQuestions.toString(),
                 ),
                 verticalSpacer(),
                 TextRow("Test history"),

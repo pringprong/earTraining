@@ -29,6 +29,8 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
           child: Column(
             children: [
               campaignHeader(mappingProvider.campaigns[missionInfo.CampaignID]!),
+                verticalSpacer(),
+                missionHeader(mappingProvider, missionInfo),
               verticalSpacer(),
               subHeadingRow("Playback settings:"),
               Row(

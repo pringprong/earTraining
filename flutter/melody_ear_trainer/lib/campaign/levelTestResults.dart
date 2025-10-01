@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/campaign/levelMelodyIDtest.dart';
-import 'package:melody_ear_trainer/main.dart';
 import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/colors.dart';
@@ -20,20 +19,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     final levelTestResults =
         ModalRoute.of(context)!.settings.arguments as LevelTestResults;
     final mappingProvider = Provider.of<MappingProvider>(context);
-    MissionInfo mi = mappingProvider.getMissions[levelTestResults.MissionID]!;
     LevelInfo levelInfo = mappingProvider.getLevelInfo(levelTestResults.LevelID);
-    String missionTitle = mi.MissionName;
-    String levelTitle = levelInfo.LevelName;
-    int numPassedTests = objectBox.numPassedTestsForLevel(
-      levelInfo.LevelID,
-      levelInfo.PassingScore,
-    );
-    String levelStatus =
-        numPassedTests >= levelInfo.NumTests
-            ? "Passed!"
-            : numPassedTests > 0
-            ? "In progress"
-            : "Not started yet";
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -44,22 +30,9 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
             children: [
               campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
-              TextRow("Mission: " + missionTitle),
-              verticalSpacer(),
-              TextRow("Level: " + levelTitle),
-              verticalSpacer(),
-              TextRow("Level status:"),
-              verticalSpacer(),
-              statusRow(levelStatus),
-              plainText(
-                "Number of passed tests: " +
-                    numPassedTests.toString() +
-                    " /  " +
-                    levelInfo.NumTests.toString(),
-              ),
-              plainText(
-                "Passing score for each test: " + levelInfo.PassingScore.toString(),
-              ),
+              missionHeader(mappingProvider, mappingProvider.getMissions[levelTestResults.MissionID]!),
+                verticalSpacer(),
+                levelHeader(levelInfo),
               verticalSpacer(),
               TextRow(
                 "your score: " +

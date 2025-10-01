@@ -57,13 +57,10 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
             children: [
               campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
-              TextRow(
-                "Mission: " +
-                    mappingProvider.getMissionName(levelInfo.MissionID),
-              ),
+              missionHeader(mappingProvider, mappingProvider.missions[levelInfo.MissionID]!),
               verticalSpacer(),
-              TextRow("Level: " + levelInfo.LevelName),
-              verticalSpacer(),
+                verticalSpacer(),
+                levelHeader(levelInfo),
               plainText(
                 "Passing score: " +
                     levelInfo.PassingScore.toString() +

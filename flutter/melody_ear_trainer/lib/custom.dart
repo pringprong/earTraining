@@ -25,7 +25,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: colorMap["c2f4"],
+                        color: getModeColor("Melody ID"),
                         child: SizedBox(
                           height: 100,
                           child: Center(
@@ -51,7 +51,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: colorMap["c2f2"],
+                        color: getModeColor("Melody singing"),
                         child: SizedBox(
                           height: 100,
                           child: Center(
@@ -82,7 +82,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: colorMap["c4f4"],
+                        color: getModeColor("Chord ID"),
                         child: SizedBox(
                           height: 100,
                           child: Center(
@@ -108,7 +108,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: colorMap["c4f2"],
+                        color: getModeColor("Chord singing"),
                         child: SizedBox(
                           height: 100,
                           child: Center(
@@ -139,7 +139,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: colorMap["c3f4"],
+                        color: getModeColor("Chord melody ID"),
                         child: SizedBox(
                           height: 100,
                           child: Center(
@@ -165,7 +165,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: colorMap["c3f2"],
+                        color: getModeColor("Chord melody singing"),
                         child: SizedBox(
                           height: 100,
                           child: Center(
