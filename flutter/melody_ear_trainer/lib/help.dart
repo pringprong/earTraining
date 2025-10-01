@@ -513,7 +513,7 @@ class _HelpPageState extends State<HelpPage> {
                     child: FittedBox(
                       fit: BoxFit.fill,
                       child: Text(
-                        "Reset all settings to default - do not click!",
+                        "WARNING: Reset all settings",
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -537,7 +537,7 @@ class _HelpPageState extends State<HelpPage> {
                     child: FittedBox(
                       fit: BoxFit.fill,
                       child: Text(
-                        "Delete all results from database - do not click!",
+                        "WARNING: Delete all results",
                         style: TextStyle(fontSize: 20),
                       ),
                     ),

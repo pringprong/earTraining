@@ -1,0 +1,42 @@
+{
+    "nodes": [
+        {
+            "id": 1,
+            "shape": "Rectangle",
+            "label": "",
+            "missionid": "c0m01"
+        },
+        {
+            "id": 2,
+            "shape": "Rectangle",
+            "label": "",
+            "missionid": "c0m02",
+			"unlockedby": 
+				[
+					"c0m01"
+				],
+			"unlockedbyrelationship": "AND"
+        },
+        {
+            "id": 3,
+            "shape": "Circle",
+            "label": "Campaign hub",
+            "missionid": "",
+			"unlockedby": 
+				[
+					"c0m02"
+				],
+			"unlockedbyrelationship": "AND"
+        }
+	],
+    "edges": [
+        {
+            "from": 1,
+            "to": 2
+        },
+        {
+            "from": 2,
+            "to": 3
+        }
+    ]
+}
