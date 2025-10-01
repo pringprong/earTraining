@@ -62,7 +62,7 @@ class _LevelState extends State<Level> {
                 verticalSpacer(),
                 statusRow(levelStatus),
                 verticalSpacer(),
-                optionalNoteButtons(
+                buildNotesGrid(
                   generalProvider,
                   mappingProvider,
                   false,
@@ -72,9 +72,10 @@ class _LevelState extends State<Level> {
                     levelInfo.CampaignID,
                   ),
                   levelInfo.NewNotes,
+                  true
                 ),
                 verticalSpacer(),
-                optionalChordButtons(generalProvider, mappingProvider, false),
+                buildSelectedChordButtonsHelper(generalProvider, mappingProvider, optional: true),
                 verticalSpacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,

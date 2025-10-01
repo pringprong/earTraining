@@ -309,10 +309,6 @@ class MappingProvider extends ChangeNotifier {
       String missionID = item['MissionID'];
       String missionName = item['MissionName'];
       String missionMode = item['MissionMode'];
-      String mnnStr = item['MissionNewNotes'];
-      List<String> missionNewNotes =
-          mnnStr.split(',').map((s) => s.trim()).toList();
-
       String levelID = item['LevelID'];
       String levelName = item['LevelName'];
       String notesStr = item['Notes'];
@@ -355,11 +351,12 @@ class MappingProvider extends ChangeNotifier {
           missionName,
           missionMode,
         );
-        mi.setMissionNewNotes(missionNewNotes);
+        mi.addMissionNewNotes(newNotes);
         missions[missionID] = mi;
       }
       if (missions.containsKey(missionID)) {
         missions[missionID]!.addLevelID(levelID);
+        missions[missionID]!.addMissionNewNotes(newNotes);
       }
 
       LevelInfo levelInfo = LevelInfo(
@@ -381,13 +378,12 @@ class MappingProvider extends ChangeNotifier {
         passingScore,
       );
       levelInfo.setNotes(notes);
-      levelInfo.setNewNotes(newNotes);
+      levelInfo.addNewNotes(newNotes);
 
       if (levelID.isNotEmpty && !levels.containsKey(levelID)) {
         levels[levelID] = levelInfo;
       }
     }
-
     notifyListeners();
   }
 }

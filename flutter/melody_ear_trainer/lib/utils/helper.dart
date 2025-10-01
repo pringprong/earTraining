@@ -28,8 +28,14 @@ Widget buildNotesGrid(
   String octave = "All octaves",
   String scaleSet = "Chromatic",
   int numNotesInOctave = 12,
-  List<String> newNotes = const [],
+  Set<String> newNotes = const {},
+  bool optional = false,
 ]) {
+  if (optional &&
+      (generalProvider.getSelectedNotes().isEmpty ||
+          generalProvider.chordFrequency == "Every note")) {
+    return SizedBox.shrink();
+  }
   final noteKeys =
       mappingProvider.getScalesMapping[octave]![scaleSet] ??
       mappingProvider.getNoteKeys;
@@ -191,8 +197,15 @@ Widget buildChordButtons(
 
 Widget buildSelectedChordButtonsHelper(
   GeneralProvider generalProvider,
-  MappingProvider mappingProvider,
-) {
+  MappingProvider mappingProvider, {
+  bool optional = false,
+}) {
+  if (optional &&
+      (generalProvider.getSelectedNotes().isEmpty ||
+          generalProvider.chordFrequency == "Every note")) {
+    return SizedBox.shrink();
+  }
+
   final selectedChords = generalProvider.getSelectedChords();
   selectedChords.sort((a, b) => chordNameSort(a, b));
   final chordFrequency = generalProvider.chordFrequency;
@@ -235,39 +248,39 @@ Widget buildSelectedChordButtonsHelper(
   );
 }
 
-Widget optionalChordButtons(
-  GeneralProvider gp,
-  MappingProvider mp,
-  bool tapToSelect,
-) {
-  if (gp.selectedChords.isNotEmpty && gp.chordFrequency != "Never") {
-    return buildSelectedChordButtonsHelper(gp, mp);
-  }
-  return SizedBox.shrink();
-}
+// Widget optionalChordButtons(
+//   GeneralProvider gp,
+//   MappingProvider mp,
+//   bool tapToSelect,
+// ) {
+//   if (gp.selectedChords.isNotEmpty && gp.chordFrequency != "Never") {
+//     return buildSelectedChordButtonsHelper(gp, mp);
+//   }
+//   return SizedBox.shrink();
+// }
 
-Widget optionalNoteButtons(
-  GeneralProvider gp,
-  MappingProvider mp,
-  bool tapToSelect, [
-  String octave = "All octaves",
-  String scaleSet = "Chromatic",
-  int numNotesInOctave = 12,
-  List<String> newNotes = const [],
-]) {
-  if (gp.getSelectedNotes().isNotEmpty && gp.chordFrequency != "Every note") {
-    return buildNotesGrid(
-      gp,
-      mp,
-      tapToSelect,
-      octave,
-      scaleSet,
-      numNotesInOctave,
-      newNotes,
-    );
-  }
-  return SizedBox.shrink();
-}
+// Widget optionalNoteButtons(
+//   GeneralProvider gp,
+//   MappingProvider mp,
+//   bool tapToSelect, [
+//   String octave = "All octaves",
+//   String scaleSet = "Chromatic",
+//   int numNotesInOctave = 12,
+//   List<String> newNotes = const [],
+// ]) {
+//   if (gp.getSelectedNotes().isNotEmpty && gp.chordFrequency != "Every note") {
+//     return buildNotesGrid(
+//       gp,
+//       mp,
+//       tapToSelect,
+//       octave,
+//       scaleSet,
+//       numNotesInOctave,
+//       newNotes,
+//     );
+//   }
+//   return SizedBox.shrink();
+// }
 
 RegExp chordNameParse = RegExp(
   r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',
@@ -337,7 +350,6 @@ int chordNameSort(String? a, String? b) {
 //   const missionLevelStatus(this.text, this.statusColor);
 // }
 
-
 class CampaignInfo {
   final String CampaignID;
   final String CampaignName;
@@ -366,7 +378,7 @@ class MissionInfo {
   final String MissionID;
   final String MissionName;
   final String MissionMode;
-  List<String> MissionNewNotes = [];
+  Set<String> MissionNewNotes = {};
   final LevelIDs = LinkedHashSet<String>();
 
   MissionInfo(
@@ -376,8 +388,8 @@ class MissionInfo {
     this.MissionMode,
   );
 
-  setMissionNewNotes(List<String> noteList) {
-    MissionNewNotes = noteList;
+  addMissionNewNotes(List<String> noteList) {
+    MissionNewNotes.addAll(noteList);
   }
 
   void addLevelID(String levelid) {
@@ -399,7 +411,7 @@ class LevelInfo {
   final String LevelID;
   final String LevelName;
   List<String> Notes = [];
-  List<String> NewNotes = [];
+  Set<String> NewNotes = {};
   final int NumNotes;
   final int MaxDistance;
   final bool AllowRepeatedNotes;
@@ -437,8 +449,8 @@ class LevelInfo {
     Notes = noteList;
   }
 
-  setNewNotes(List<String> noteList) {
-    NewNotes = noteList;
+  addNewNotes(List<String> noteList) {
+    NewNotes.addAll(noteList);
   }
 }
 
@@ -482,6 +494,5 @@ class MissionSavedSettings {
     required this.instrument,
     //   this.passedMission = false,
     this.status = "Not started yet",
-
   });
 }

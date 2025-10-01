@@ -59,7 +59,7 @@ class _MissionState extends State<Mission> {
                 verticalSpacer(),
                 plainText("Completed " + "X" + " / " + "Y" + " levels so far"),
                 verticalSpacer(),
-                optionalNoteButtons(
+                buildNotesGrid(
                   generalProvider,
                   mappingProvider,
                   false,
@@ -69,9 +69,10 @@ class _MissionState extends State<Mission> {
                     missionInfo.CampaignID,
                   ),
                   missionInfo.MissionNewNotes,
+                  true
                 ),
                 verticalSpacer(),
-                optionalChordButtons(generalProvider, mappingProvider, false),
+                buildSelectedChordButtonsHelper(generalProvider, mappingProvider, optional: true),
                 subHeadingRow("Select a level:"),
                 verticalSpacer(),
                 // Levels table
