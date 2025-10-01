@@ -89,7 +89,11 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
               verticalSpacer(),
               playMelodyButtons(generalProvider, mappingProvider, false),
               verticalSpacer(),
-              subHeadingRow("Enter the solfege for the melody (" + levelInfo.NumNotes.toString() + " notes):"),
+              subHeadingRow(
+                "Enter the solfege for the melody (" +
+                    levelInfo.NumNotes.toString() +
+                    " notes):",
+              ),
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
@@ -108,9 +112,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
   @override
   void finishTest() {
     // write a test-result row to the database, then navigate to results page
-    String timestamp = DateFormat(
-      'yyyy-MM-dd HH:MM',
-    ).format(DateTime.now());
+    String timestamp = DateFormat('yyyy-MM-dd HH:MM').format(DateTime.now());
 
     // insert and when done navigate to results pag
     LevelTestResults ltr = LevelTestResults(

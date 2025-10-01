@@ -35,7 +35,7 @@ Widget buildNotesGrid(
       mappingProvider.getNoteKeys;
   final noteColors = mappingProvider.getNoteColors;
   final noteColorFactor = mappingProvider.getNoteColorFactors;
-  final noteSelection = generalProvider.getNoteSelection;
+  final noteSelection = generalProvider.getSelectedNotes();
   List<Widget> rows = [];
 
   void onPressedFunction(GeneralProvider gp, String note) {
@@ -52,7 +52,7 @@ Widget buildNotesGrid(
     List<Widget> buttons = [];
     for (int i = start; i < end && i < noteKeys.length; i++) {
       final note = noteKeys[i];
-      final selected = noteSelection[note] ?? false;
+      final selected = noteSelection.contains(note);
       final String tempColor = noteColors[note].toString();
       final double tempFactor = noteColorFactor[note] ?? 1.0;
       final buttonColor = multiplyHexColor(tempColor, tempFactor);
@@ -336,6 +336,7 @@ int chordNameSort(String? a, String? b) {
 
 //   const missionLevelStatus(this.text, this.statusColor);
 // }
+
 
 class CampaignInfo {
   final String CampaignID;

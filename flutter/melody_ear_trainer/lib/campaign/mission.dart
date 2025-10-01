@@ -23,23 +23,13 @@ class _MissionState extends State<Mission> {
         ModalRoute.of(context)!.settings.arguments as MissionInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
     final generalProvider = Provider.of<missionSettingsProvider>(context);
-    MissionSavedSettings? mss = objectBox.getMissionSavedSettingsByMissionID(
-      missionInfo.MissionID,
-    );
-    if (mss != null) {
-      generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
-    }
+
     String campaignTitle = mappingProvider.getCampaignName(
       missionInfo.CampaignID,
     );
     String missionTitle = missionInfo.MissionName;
     String mode = missionInfo.MissionMode;
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
-    LevelInfo lastLevel = levels.last;
-    generalProvider.setNoteSelection(
-      selectedKeys: lastLevel.Notes,
-      notify: false,
-    );
     String thisMissionStatus = getThisMissionStatus(levels);
     objectBox.updateMissionPassed(
       missionInfo.MissionID,
@@ -136,6 +126,19 @@ class _MissionState extends State<Mission> {
                             ),
                           ),
                           onTap: () {
+                            generalProvider.setLevelDetails(
+                              lvl.Notes,
+                              lvl.NumNotes,
+                              lvl.MaxDistance,
+                              lvl.AllowRepeatedNotes,
+                              lvl.PlaybackSpeed,
+                              lvl.StartWithDo,
+                              lvl.EndWithDo,
+                              lvl.StartingDo,
+                              lvl.EndingDo,
+                              lvl.ChordFrequency,
+                            );
+                            setState(() {});
                             Navigator.pushNamed(
                               context,
                               Level.routeName,

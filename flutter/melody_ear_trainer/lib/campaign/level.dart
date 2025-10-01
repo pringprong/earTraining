@@ -29,19 +29,6 @@ class _LevelState extends State<Level> {
     String missionMode = mappingProvider.getMissionMode(levelInfo.MissionID);
     String levelTitle = levelInfo.LevelName;
     final generalProvider = Provider.of<missionSettingsProvider>(context);
-    // update the settings to reflect the details of this level
-    generalProvider.setLevelDetails(
-      levelInfo.Notes,
-      levelInfo.NumNotes,
-      levelInfo.MaxDistance,
-      levelInfo.AllowRepeatedNotes,
-      levelInfo.PlaybackSpeed,
-      levelInfo.StartWithDo,
-      levelInfo.EndWithDo,
-      levelInfo.StartingDo,
-      levelInfo.EndingDo,
-      levelInfo.ChordFrequency,
-    );
     List<LevelTestResults> ltrList = objectBox.getLevelTestResultsByLevelID(
       levelInfo.LevelID,
     );
@@ -166,6 +153,9 @@ class _LevelState extends State<Level> {
                         ),
                         onPressed: () {
                           if (missionMode == "Melody ID") {
+                            generalProvider.setNoteSelection(
+                              selectedKeys: levelInfo.Notes,
+                            );
                             Navigator.pushNamed(
                               context,
                               LevelMelodyIDTest.routeName,

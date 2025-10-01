@@ -68,6 +68,8 @@ abstract class GeneralProvider extends ChangeNotifier {
   void setKeyAndInstrument(String newKey, String newInstrument) {
     selectedKey = newKey;
     selectedInstrument = newInstrument;
+    saveSettings();
+    notifyListeners();
   }
 
   // Settings that will be fixed by the level
@@ -142,8 +144,8 @@ abstract class GeneralProvider extends ChangeNotifier {
     endingDo = newEndingDo;
     chordFrequency = newChordFrequency;
 
-    //saveSettings();
-    //notifyListeners();
+    saveSettings();
+    notifyListeners();
   }
 
   // only for levels that have chords:
@@ -310,16 +312,14 @@ abstract class GeneralProvider extends ChangeNotifier {
   /// 1. Set all values of the map at once
   void setNoteSelection({
     required List<String> selectedKeys,
-    bool notify = true,
   }) async {
     for (var key in noteKeys) {
       noteSelection[key] = selectedKeys.contains(key);
     }
     saveSettings();
-    if (notify) {
       notifyListeners();
-    }
   }
+
 
   /// 2. Toggle one value of the map
   void toggleNoteSelection({required String key}) async {

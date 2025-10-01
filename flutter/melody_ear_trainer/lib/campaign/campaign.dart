@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'mission.dart';
 import '../providers/mapping_provider.dart';
+import '../providers/general_provider.dart';
 import '../providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -89,6 +90,7 @@ class _campaignTreeState extends State<campaignTree> {
   Widget build(BuildContext context) {
     final campArgs = ModalRoute.of(context)!.settings.arguments as CampaignInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
+    final generalProvider = Provider.of<missionSettingsProvider>(context);
     final Map<String, MissionInfo> missions = mappingProvider.getMissions;
     //final themeProvider = Provider.of<ThemeProvider>(context);
 
@@ -202,6 +204,7 @@ class _campaignTreeState extends State<campaignTree> {
                             return rectangleWidget(
                               context,
                               missionInfo,
+                              generalProvider,
                               mappingProvider,
                               unlocked,
                             );
@@ -241,6 +244,7 @@ class _campaignTreeState extends State<campaignTree> {
   Widget rectangleWidget(
     BuildContext context,
     MissionInfo missionInfo,
+    GeneralProvider generalProvider,
     MappingProvider mappingProvider,
     bool unlocked,
   ) {
@@ -268,6 +272,16 @@ class _campaignTreeState extends State<campaignTree> {
 
     return InkWell(
       onTap: () {
+        MissionSavedSettings? mss = objectBox
+            .getMissionSavedSettingsByMissionID(missionInfo.MissionID);
+        if (mss != null) {
+          generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
+        }
+        final lastLevel =
+            mappingProvider.getLevelsForMission(missionInfo.MissionID).last;
+        generalProvider.setNoteSelection(
+          selectedKeys: lastLevel.Notes
+        );
         // create MissionArguments and navigate to Mission page
         Navigator.pushNamed(context, Mission.routeName, arguments: missionInfo);
       },

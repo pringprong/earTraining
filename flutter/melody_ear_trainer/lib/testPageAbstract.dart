@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'package:melody_ear_trainer/utils/helper.dart';
-//import '../audio/audio_controller.dart';
 import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import '../utils/colors.dart';
-//import '../utils/chordMelody.dart';
 import 'melodyPageAbstract.dart';
 
 abstract class TestPageAbstract extends MelodyPageAbstract {
@@ -36,7 +33,10 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              currentRound++;
+              currentRound = 1;
+              correctAnswers = 0;
+              completedQuestions = 0;
+              previousQuestionResultText = "";
               newGenerateChordMelody(
                 generalProvider,
                 mappingProvider,
