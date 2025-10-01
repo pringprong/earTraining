@@ -44,7 +44,7 @@
     },
     {
       "id": "2:5420111329682083104",
-      "lastPropertyId": "5:4773569153967267474",
+      "lastPropertyId": "6:8200161028818130265",
       "name": "MissionSavedSettings",
       "properties": [
         {
@@ -69,9 +69,9 @@
           "type": 9
         },
         {
-          "id": "5:4773569153967267474",
-          "name": "passedMission",
-          "type": 1
+          "id": "6:8200161028818130265",
+          "name": "status",
+          "type": 9
         }
       ],
       "relations": []
@@ -85,7 +85,9 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    4773569153967267474
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

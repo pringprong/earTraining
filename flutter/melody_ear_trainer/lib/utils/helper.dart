@@ -60,7 +60,7 @@ Widget buildNotesGrid(
           colorMap["noteButtonForegroundColor"] ?? Colors.white;
       if (newNotes.contains(note)) {
         foregroundColor =
-          colorMap["newNoteButtonForegroundColor"] ?? Colors.white;
+            colorMap["newNoteButtonForegroundColor"] ?? Colors.white;
       }
       buttons.add(
         Expanded(
@@ -263,7 +263,7 @@ Widget optionalNoteButtons(
       octave,
       scaleSet,
       numNotesInOctave,
-      newNotes
+      newNotes,
     );
   }
   return SizedBox.shrink();
@@ -325,6 +325,17 @@ int chordNameSort(String? a, String? b) {
   }
   return 0;
 }
+
+// enum missionLevelStatus {
+//   notStarted("Not started yet", Color.fromARGB(255, 176, 204, 231)),
+//   inProgress("In progress", Color.fromARGB(255, 121, 185, 245)),
+//   Passed("Passed!", Color.fromARGB(255, 191, 220, 158));
+
+//   final Color statusColor;
+//   final String text;
+
+//   const missionLevelStatus(this.text, this.statusColor);
+// }
 
 class CampaignInfo {
   final String CampaignID;
@@ -455,13 +466,21 @@ class MissionSavedSettings {
   final String MissionID;
   String key;
   String instrument;
-  bool passedMission;
+  //  bool passedMission;
+  String status;
+  // enum did not work for this
+  // so we set the String to one of 3 values:
+  // "Not started yet"
+  // "In progress"
+  // "Passed!"
 
   MissionSavedSettings({
     this.id = 0,
     required this.MissionID,
     required this.key,
     required this.instrument,
-    this.passedMission = false,
+    //   this.passedMission = false,
+    this.status = "Not started yet",
+
   });
 }

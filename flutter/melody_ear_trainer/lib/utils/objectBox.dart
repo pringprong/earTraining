@@ -64,6 +64,37 @@ class ObjectBox {
     return ltrq >= numTests;
   }
 
+  String levelStatus(
+    String levelid,
+    int passingScore,
+    int numTests,
+  ) {
+    int attempted =
+        _levelTestResultsBox
+            .query(LevelTestResults_.LevelID.equals(levelid))
+            .build()
+            .count();
+    if (attempted == 0) {
+      return "Not started yet";
+    }
+    if (attempted < passingScore) {
+      return "In progress";
+    }
+    int ltrq =
+        _levelTestResultsBox
+            .query(
+              LevelTestResults_.LevelID.equals(
+                levelid,
+              ).and(LevelTestResults_.score.greaterOrEqual(passingScore)),
+            )
+            .build()
+            .count();
+    if (ltrq >= numTests) {
+      return "Passed!";
+    }
+    return "In progress";
+  }
+
   void removeAllLevelTestResults() {
     _levelTestResultsBox.removeAll();
   }
@@ -155,16 +186,28 @@ class ObjectBox {
             .build();
     List<MissionSavedSettings> queryResults = qmms.find();
     if (queryResults.isNotEmpty) {
-      return queryResults.first.passedMission;
+      return queryResults.first.status == "Passed!";
     }
     return false;
+  }
+
+  String missionStatus(String missionID) {
+    Query<MissionSavedSettings> qmms =
+        _missionSavedSettingsBox
+            .query(MissionSavedSettings_.MissionID.equals(missionID))
+            .build();
+    List<MissionSavedSettings> queryResults = qmms.find();
+    if (queryResults.isNotEmpty) {
+      return queryResults.first.status;
+    }
+    return "Not started yet";
   }
 
   void updateMissionPassed(
     String mid,
     String newkey,
     String newInstrument,
-    bool passed,
+    String newStatus,
   ) {
     Query<MissionSavedSettings> qmms =
         _missionSavedSettingsBox
@@ -175,7 +218,7 @@ class ObjectBox {
       MissionSavedSettings mss = queryResults.first;
       mss.key = newkey;
       mss.instrument = newInstrument;
-      mss.passedMission = passed;
+      mss.status = newStatus;
       _missionSavedSettingsBox.put(mss);
     } else {
       _missionSavedSettingsBox.put(
@@ -183,7 +226,7 @@ class ObjectBox {
           MissionID: mid,
           key: newkey,
           instrument: newInstrument,
-          passedMission: passed,
+          status: newStatus,
         ),
       );
     }

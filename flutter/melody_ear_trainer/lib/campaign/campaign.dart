@@ -262,20 +262,10 @@ class _campaignTreeState extends State<campaignTree> {
     }
 
     // Unlocked behaviour (existing code)
-    final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
-    LevelInfo lastLevel = levels.last;
-    String missionStatus =
-        objectBox.levelPassed(
-              lastLevel.LevelID,
-              lastLevel.PassingScore,
-              lastLevel.NumTests,
-            )
-            ? "Passed"
-            : "Not passed yet";
-    Color nodeColor =
-        missionStatus == "Passed"
-            ? colorMap["passedColor"] ?? Colors.white
-            : colorMap["notYetStartedColor"] ?? Colors.white;
+
+    String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+    Color nodeColor = missionLevelStatusColor(missionStatus);
+
     return InkWell(
       onTap: () {
         // create MissionArguments and navigate to Mission page

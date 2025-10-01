@@ -170,6 +170,14 @@ IconData waitingForGuessIcon = Icons.help_outline;
 IconData correctGuessIcon = Icons.check_circle;
 IconData incorrectGuessIcon = Icons.cancel;
 
+Color missionLevelStatusColor(String missionStatus) {
+  return missionStatus == "Passed!"
+      ? colorMap["passedColor"] ?? Colors.white
+      : missionStatus == "Not started yet"
+      ? colorMap["notYetStartedColor"] ?? Colors.white
+      : colorMap["inProgressColor"] ?? Colors.white;
+}
+
 Color getChordButtonColor(String chordName) {
   String c = chordName;
   if (c.endsWith("00_Rt")) return colorMap["c1f1"] ?? Colors.white;

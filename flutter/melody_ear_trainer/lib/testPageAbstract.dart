@@ -43,7 +43,6 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 setSolfegeText,
               );
               setState(() {
-                //solfegeText = ""; // Clear solfege area
                 setToWaitingForGuess();
               });
               generatedChordMelody.playChordMelody(

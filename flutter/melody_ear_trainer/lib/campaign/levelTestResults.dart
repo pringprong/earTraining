@@ -31,7 +31,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
       lvli.PassingScore,
     );
     String levelStatus =
-        numPassedTests >= lvli.NumTests ? "Passed" : "Not passed yet";
+        numPassedTests >= lvli.NumTests
+            ? "Passed!"
+            : numPassedTests > 0
+            ? "In progress"
+            : "Not started yet";
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -48,7 +52,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               verticalSpacer(),
               TextRow("Level status:"),
               verticalSpacer(),
-              statusRow(levelStatus, numPassedTests >= lvli.NumTests),
+              statusRow(levelStatus),
               plainText(
                 "Number of passed tests: " +
                     numPassedTests.toString() +
@@ -129,11 +133,8 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     );
   }
 
-  Row statusRow(String myText, bool passed) {
-    Color myColor =
-        passed
-            ? colorMap["passedColor"] ?? Colors.white
-            : colorMap["notYetStartedColor"] ?? Colors.white;
+  Row statusRow(String myText) {
+    Color myColor = missionLevelStatusColor(myText);
     return Row(
       children: [
         Container(

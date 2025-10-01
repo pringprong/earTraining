@@ -40,17 +40,12 @@ class _MissionState extends State<Mission> {
       selectedKeys: lastLevel.Notes,
       notify: false,
     );
-    bool status = objectBox.levelPassed(
-      lastLevel.LevelID,
-      lastLevel.PassingScore,
-      lastLevel.NumTests,
-    );
-    String missionStatus = status ? "Passed" : "Not passed yet";
+    String thisMissionStatus = getThisMissionStatus(levels);
     objectBox.updateMissionPassed(
       missionInfo.MissionID,
       generalProvider.getSelectedKey,
       generalProvider.getSelectedInstrument,
-      status,
+      thisMissionStatus,
     );
 
     return Scaffold(
@@ -70,7 +65,7 @@ class _MissionState extends State<Mission> {
                 verticalSpacer(),
                 TextRow("Mission main page"),
                 verticalSpacer(),
-                statusRow(missionStatus, status),
+                statusRow(thisMissionStatus),
                 verticalSpacer(),
                 plainText("Completed " + "X" + " / " + "Y" + " levels so far"),
                 verticalSpacer(),
@@ -103,32 +98,40 @@ class _MissionState extends State<Mission> {
                       final int rightIndex = leftIndex + 1;
                       final LevelInfo leftLvl = levels[leftIndex];
                       final LevelInfo? rightLvl =
-                          rightIndex < levels.length ? levels[rightIndex] : null;
+                          rightIndex < levels.length
+                              ? levels[rightIndex]
+                              : null;
 
                       Widget buildTile(LevelInfo lvl) {
                         int numPassedTests = objectBox.numPassedTestsForLevel(
                           lvl.LevelID,
                           lvl.PassingScore,
                         );
-                        Color tileColor = numPassedTests >= lvl.NumTests
-                            ? colorMap["passedColor"] ?? Colors.white
-                            : numPassedTests > 0
+                        Color tileColor =
+                            numPassedTests >= lvl.NumTests
+                                ? colorMap["passedColor"] ?? Colors.white
+                                : numPassedTests > 0
                                 ? colorMap["inProgressColor"] ?? Colors.white
-                                : colorMap["notYetStartedColor"] ?? Colors.white;
+                                : colorMap["notYetStartedColor"] ??
+                                    Colors.white;
                         return ListTile(
                           tileColor: tileColor,
                           dense: true,
                           title: Text(
                             lvl.LevelName,
                             style: TextStyle(
-                              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                              color:
+                                  colorMap["buttonForegroundColor"] ??
+                                  Colors.white,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           trailing: Text(
                             "${numPassedTests.toString()} / ${lvl.NumTests.toString()}",
                             style: TextStyle(
-                              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                              color:
+                                  colorMap["buttonForegroundColor"] ??
+                                  Colors.white,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -149,15 +152,17 @@ class _MissionState extends State<Mission> {
                             Expanded(child: buildTile(leftLvl)),
                             SizedBox(width: 8),
                             Expanded(
-                              child: rightLvl != null
-                                  ? buildTile(rightLvl)
-                                  : SizedBox.shrink(),
+                              child:
+                                  rightLvl != null
+                                      ? buildTile(rightLvl)
+                                      : SizedBox.shrink(),
                             ),
                           ],
                         ),
                       );
                     },
-                  ),                ],
+                  ),
+                ],
                 verticalSpacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -194,11 +199,8 @@ class _MissionState extends State<Mission> {
     );
   }
 
-  Row statusRow(String myText, bool passed) {
-    Color myColor =
-        passed
-            ? colorMap["passedColor"] ?? Colors.white
-            : colorMap["notYetStartedColor"] ?? Colors.white;
+  Row statusRow(String mls) {
+    Color myColor = missionLevelStatusColor(mls);
     return Row(
       children: [
         Container(
@@ -210,7 +212,7 @@ class _MissionState extends State<Mission> {
           padding: EdgeInsets.all(12),
           child: Center(
             child: Text(
-              "Mission status: " + myText,
+              "Mission status: " + mls,
               style: TextStyle(
                 fontSize: 22,
                 color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -250,5 +252,35 @@ class _MissionState extends State<Mission> {
         ),
       ],
     );
+  }
+
+  String getThisMissionStatus(List<LevelInfo> levels) {
+    LevelInfo lastLevel = levels.last;
+    String statusOfLastLevel = objectBox.levelStatus(
+      lastLevel.LevelID,
+      lastLevel.PassingScore,
+      lastLevel.NumTests,
+    );
+    String thisMissionStatus = statusOfLastLevel;
+
+    if (statusOfLastLevel == "Not started yet") {
+      // the last level is not started, so the mission is definitey not passed
+      // check all the other levels to see whether any of them are started yet
+      // if any are started or passed, then the mission is in progress
+      // none of them are started or passed, then the mission is Not Started
+      for (var level in levels) {
+        String currentLevelStatus = objectBox.levelStatus(
+          level.LevelID,
+          level.PassingScore,
+          level.NumTests,
+        );
+        if (currentLevelStatus == "In progress" ||
+            currentLevelStatus == "Passed!") {
+          return "In progress";
+        }
+      }
+    }
+    // if the last level is passed or in progress then the whole mission is automatically the same
+    return thisMissionStatus;
   }
 }
