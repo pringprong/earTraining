@@ -316,7 +316,8 @@ class _LevelState extends State<Level> {
               fit: BoxFit.fill,
               child: Text(
                 "Take a test for this level",
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 28,
+                fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -362,4 +363,5 @@ class _LevelState extends State<Level> {
       ],
     );
   }
+
 }

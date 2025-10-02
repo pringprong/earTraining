@@ -41,11 +41,15 @@ class _MissionState extends State<Mission> {
           child: Center(
             child: Column(
               children: [
-                campaignHeader(mappingProvider.campaigns[missionInfo.CampaignID]!),
+                campaignHeader(
+                  mappingProvider.campaigns[missionInfo.CampaignID]!,
+                ),
                 verticalSpacer(),
                 missionHeader(mappingProvider, missionInfo),
                 verticalSpacer(),
-                subHeadingRow("Notes you will learn in this mission (black=new):"),
+                subHeadingRow(
+                  "Notes you will learn in this mission (black=new):",
+                ),
                 verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,
@@ -57,129 +61,21 @@ class _MissionState extends State<Mission> {
                     missionInfo.CampaignID,
                   ),
                   missionInfo.MissionNewNotes,
-                  true
+                  true,
                 ),
                 verticalSpacer(),
-                buildSelectedChordButtonsHelper(generalProvider, mappingProvider, optional: true),
+                buildSelectedChordButtonsHelper(
+                  generalProvider,
+                  mappingProvider,
+                  optional: true,
+                ),
                 subHeadingRow("Select a level:"),
                 verticalSpacer(),
-                // Levels table
-                if (levels.isEmpty) ...[
-                  TextRow('No levels available'),
-                ] else ...[
-                  // Constrain list height to avoid overflow
-                  ListView.builder(
-                    itemCount: (levels.length + 1) ~/ 2, // number of pairs
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, pairIndex) {
-                      final int leftIndex = pairIndex * 2;
-                      final int rightIndex = leftIndex + 1;
-                      final LevelInfo leftLvl = levels[leftIndex];
-                      final LevelInfo? rightLvl =
-                          rightIndex < levels.length
-                              ? levels[rightIndex]
-                              : null;
-
-                      Widget buildTile(LevelInfo lvl) {
-                        int numPassedTests = objectBox.numPassedTestsForLevel(
-                          lvl.LevelID,
-                          lvl.PassingScore,
-                        );
-                        Color tileColor =
-                            numPassedTests >= lvl.NumTests
-                                ? colorMap["passedColor"] ?? Colors.white
-                                : numPassedTests > 0
-                                ? colorMap["inProgressColor"] ?? Colors.white
-                                : colorMap["notYetStartedColor"] ??
-                                    Colors.white;
-                        return ListTile(
-                          tileColor: tileColor,
-                          dense: true,
-                          title: Text(
-                            lvl.LevelName,
-                            style: TextStyle(
-                              color:
-                                  colorMap["buttonForegroundColor"] ??
-                                  Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          trailing: Text(
-                            "${numPassedTests.toString()} / ${lvl.NumTests.toString()}",
-                            style: TextStyle(
-                              color:
-                                  colorMap["buttonForegroundColor"] ??
-                                  Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            generalProvider.setLevelDetails(
-                              lvl.Notes,
-                              lvl.NumNotes,
-                              lvl.MaxDistance,
-                              lvl.AllowRepeatedNotes,
-                              lvl.PlaybackSpeed,
-                              lvl.StartWithDo,
-                              lvl.EndWithDo,
-                              lvl.StartingDo,
-                              lvl.EndingDo,
-                              lvl.ChordFrequency,
-                            );
-                            setState(() {});
-                            Navigator.pushNamed(
-                              context,
-                              Level.routeName,
-                              arguments: lvl,
-                            );
-                          },
-                        );
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2.0),
-                        child: Row(
-                          children: [
-                            Expanded(child: buildTile(leftLvl)),
-                            SizedBox(width: 8),
-                            Expanded(
-                              child:
-                                  rightLvl != null
-                                      ? buildTile(rightLvl)
-                                      : SizedBox.shrink(),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                ...levelButtons(levels, generalProvider),
                 verticalSpacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: getCampaignColor(missionInfo.CampaignID),
-                          foregroundColor:
-                              colorMap["buttonForegroundColor"] ?? Colors.white,
-                          padding: const EdgeInsets.all(12.0),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context); // pop to campaign tree
-                        },
-                        child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: Text(
-                            "Return to campaign tree",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                subHeadingRow("Navigation:"),
+                verticalSpacer(),
+                returnToCampaignButton(missionInfo.CampaignID),
                 verticalSpacer(),
                 settingsButton(missionInfo),
               ],
@@ -190,31 +86,6 @@ class _MissionState extends State<Mission> {
     );
   }
 
-  Row statusRow(String mls) {
-    return Row(
-      children: [
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
-          ),
-          color: missionLevelStatusColor(mls),
-          width: double.infinity,
-          padding: EdgeInsets.all(12),
-          child: Center(
-            child: Text(
-              "Mission status: " + mls,
-              style: TextStyle(
-                fontSize: 22,
-                color: colorMap["buttonForegroundColor"] ?? Colors.white,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Row settingsButton(MissionInfo missionInfo) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -222,7 +93,8 @@ class _MissionState extends State<Mission> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["waitingForGuessIconColor"] ?? Colors.white,
+              backgroundColor:
+                  colorMap["waitingForGuessIconColor"] ?? Colors.white,
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
@@ -244,33 +116,120 @@ class _MissionState extends State<Mission> {
     );
   }
 
-  // String getThisMissionStatus(List<LevelInfo> levels) {
-  //   LevelInfo lastLevel = levels.last;
-  //   String statusOfLastLevel = objectBox.levelStatus(
-  //     lastLevel.LevelID,
-  //     lastLevel.PassingScore,
-  //     lastLevel.NumTests,
-  //   );
-  //   String thisMissionStatus = statusOfLastLevel;
+  List<Widget> levelButtons(
+    List<LevelInfo> levels,
+    GeneralProvider generalProvider,
+  ) {
+    if (levels.isEmpty) {
+      return [TextRow('No levels available')];
+    } else {
+      return [
+        // Constrain list height to avoid overflow
+        ListView.builder(
+          itemCount: (levels.length + 1) ~/ 2, // number of pairs
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, pairIndex) {
+            final int leftIndex = pairIndex * 2;
+            final int rightIndex = leftIndex + 1;
+            final LevelInfo leftLvl = levels[leftIndex];
+            final LevelInfo? rightLvl =
+                rightIndex < levels.length ? levels[rightIndex] : null;
 
-  //   if (statusOfLastLevel == "Not started yet") {
-  //     // the last level is not started, so the mission is definitey not passed
-  //     // check all the other levels to see whether any of them are started yet
-  //     // if any are started or passed, then the mission is in progress
-  //     // none of them are started or passed, then the mission is Not Started
-  //     for (var level in levels) {
-  //       String currentLevelStatus = objectBox.levelStatus(
-  //         level.LevelID,
-  //         level.PassingScore,
-  //         level.NumTests,
-  //       );
-  //       if (currentLevelStatus == "In progress" ||
-  //           currentLevelStatus == "Passed!") {
-  //         return "In progress";
-  //       }
-  //     }
-  //   }
-  //   // if the last level is passed or in progress then the whole mission is automatically the same
-  //   return thisMissionStatus;
-  // }
+            Widget buildTile(LevelInfo lvl) {
+              int numPassedTests = objectBox.numPassedTestsForLevel(
+                lvl.LevelID,
+                lvl.PassingScore,
+              );
+              Color tileColor =
+                  numPassedTests >= lvl.NumTests
+                      ? colorMap["passedColor"] ?? Colors.white
+                      : numPassedTests > 0
+                      ? colorMap["inProgressColor"] ?? Colors.white
+                      : colorMap["notYetStartedColor"] ?? Colors.white;
+              return ListTile(
+                tileColor: tileColor,
+                dense: true,
+                title: Text(
+                  lvl.LevelName,
+                  style: TextStyle(
+                    color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                trailing: Text(
+                  "${numPassedTests.toString()} / ${lvl.NumTests.toString()}",
+                  style: TextStyle(
+                    color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                onTap: () {
+                  generalProvider.setLevelDetails(
+                    lvl.Notes,
+                    lvl.NumNotes,
+                    lvl.MaxDistance,
+                    lvl.AllowRepeatedNotes,
+                    lvl.PlaybackSpeed,
+                    lvl.StartWithDo,
+                    lvl.EndWithDo,
+                    lvl.StartingDo,
+                    lvl.EndingDo,
+                    lvl.ChordFrequency,
+                  );
+                  setState(() {});
+                  Navigator.pushNamed(context, Level.routeName, arguments: lvl);
+                },
+              );
+            }
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Row(
+                children: [
+                  Expanded(child: buildTile(leftLvl)),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child:
+                        rightLvl != null
+                            ? buildTile(rightLvl)
+                            : SizedBox.shrink(),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ];
+    }
+  }
+
+  Widget returnToCampaignButton(String campaignID) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: getCampaignColor(campaignID),
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
+              padding: const EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.pop(context); // pop to campaign tree
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text(
+                "Return to campaign tree",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 }
