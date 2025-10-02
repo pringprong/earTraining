@@ -36,13 +36,20 @@ class _LevelState extends State<Level> {
           child: Center(
             child: Column(
               children: [
-                campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
+                campaignHeader(
+                  mappingProvider.campaigns[levelInfo.CampaignID]!,
+                ),
                 verticalSpacer(),
-                missionHeader(mappingProvider, mappingProvider.missions[levelInfo.MissionID]!),
+                missionHeader(
+                  mappingProvider,
+                  mappingProvider.missions[levelInfo.MissionID]!,
+                ),
                 verticalSpacer(),
                 levelHeader(levelInfo),
                 verticalSpacer(),
-                subHeadingRow("Notes you will learn in this level (black=new):"),
+                subHeadingRow(
+                  "Notes you will learn in this level (black=new):",
+                ),
                 verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,
@@ -54,10 +61,14 @@ class _LevelState extends State<Level> {
                     levelInfo.CampaignID,
                   ),
                   levelInfo.NewNotes,
-                  true
+                  true,
                 ),
                 verticalSpacer(),
-                buildSelectedChordButtonsHelper(generalProvider, mappingProvider, optional: true),
+                buildSelectedChordButtonsHelper(
+                  generalProvider,
+                  mappingProvider,
+                  optional: true,
+                ),
                 verticalSpacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -170,6 +181,11 @@ class _LevelState extends State<Level> {
                           padding: const EdgeInsets.all(12.0),
                         ),
                         onPressed: () {
+                          resetMissionBeforeMissionPage(
+                            generalProvider,
+                            mappingProvider,
+                            mappingProvider.getMissions[levelInfo.MissionID]!,
+                          );
                           Navigator.pop(context);
                         },
                         child: FittedBox(
@@ -191,10 +207,12 @@ class _LevelState extends State<Level> {
                   itemBuilder: (context, index) {
                     final ltr = ltrList[index];
                     return ListTile(
-                      title: Text("Score: " 
-                      + ltr.score.toString() 
-                      + " / "
-                      + levelInfo.NumQuestions.toString()),
+                      title: Text(
+                        "Score: " +
+                            ltr.score.toString() +
+                            " / " +
+                            levelInfo.NumQuestions.toString(),
+                      ),
                       trailing: Text("Date: " + ltr.timestamp),
                       dense: true,
                     );

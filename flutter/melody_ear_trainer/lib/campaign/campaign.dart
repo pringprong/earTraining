@@ -272,16 +272,21 @@ class _campaignTreeState extends State<campaignTree> {
 
     return InkWell(
       onTap: () {
-        MissionSavedSettings? mss = objectBox
-            .getMissionSavedSettingsByMissionID(missionInfo.MissionID);
-        if (mss != null) {
-          generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
-        }
-        final lastLevel =
-            mappingProvider.getLevelsForMission(missionInfo.MissionID).last;
-        generalProvider.setNoteSelection(
-          selectedKeys: lastLevel.Notes
+        resetMissionBeforeMissionPage(
+          generalProvider,
+          mappingProvider,
+          missionInfo,
         );
+        // MissionSavedSettings? mss = objectBox
+        //     .getMissionSavedSettingsByMissionID(missionInfo.MissionID);
+        // if (mss != null) {
+        //   generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
+        // }
+        // final lastLevel =
+        //     mappingProvider.getLevelsForMission(missionInfo.MissionID).last;
+        // generalProvider.setNoteSelection(
+        //   selectedKeys: lastLevel.Notes
+        // );
         // create MissionArguments and navigate to Mission page
         Navigator.pushNamed(context, Mission.routeName, arguments: missionInfo);
       },

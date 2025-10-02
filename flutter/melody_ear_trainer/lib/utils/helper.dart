@@ -596,6 +596,23 @@ Widget levelHeader(LevelInfo levelInfo) {
   );
 }
 
+void resetMissionBeforeMissionPage(
+  GeneralProvider generalProvider,
+  MappingProvider mappingProvider,
+  MissionInfo missionInfo
+) {
+          MissionSavedSettings? mss = objectBox
+            .getMissionSavedSettingsByMissionID(missionInfo.MissionID);
+        if (mss != null) {
+          generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
+        }
+        final lastLevel =
+            mappingProvider.getLevelsForMission(missionInfo.MissionID).last;
+        generalProvider.setNoteSelection(
+          selectedKeys: lastLevel.Notes
+        );
+}
+
 RegExp chordNameParse = RegExp(
   r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',
 );

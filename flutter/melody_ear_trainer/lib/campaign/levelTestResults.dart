@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'levelMelodyIDtest.dart';
 import '../../main.dart';
 import '../../providers/mapping_provider.dart';
@@ -20,6 +21,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
   Widget build(BuildContext context) {
     final levelTestResults =
         ModalRoute.of(context)!.settings.arguments as LevelTestResults;
+   final generalProvider = Provider.of<missionSettingsProvider>(context);
     final mappingProvider = Provider.of<MappingProvider>(context);
     LevelInfo levelInfo = mappingProvider.getLevelInfo(
       levelTestResults.LevelID,
@@ -138,7 +140,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 ...optionalRedoTestButton(redoTest, levelInfo, context),
                 ...optionalLevelPageButton(returnToLevelPage, context),
                 ...optionalNextLevelButton(goToNextLevel, nextLevel, context),
-                ...optionalMissionPageButton(returnToMissionPage, context),
+                ...optionalMissionPageButton(returnToMissionPage, 
+                generalProvider,
+                mappingProvider,
+                levelInfo,
+                context),
                 ...optionalCampaignTreeButton(returnToCampaignTree, context),
               ],
             ),
@@ -387,7 +393,12 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     ];
   }
 
-  List<Widget> optionalMissionPageButton(bool showbutton, dynamic context) {
+  List<Widget> optionalMissionPageButton(
+    bool showbutton, 
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    LevelInfo levelInfo,
+    dynamic context) {
     if (!showbutton) {
       return [SizedBox(height: 0)];
     }
@@ -405,6 +416,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
+                resetMissionBeforeMissionPage(
+                  generalProvider,
+                  mappingProvider,
+                  mappingProvider.getMissions[levelInfo.MissionID]!,
+                          );
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
