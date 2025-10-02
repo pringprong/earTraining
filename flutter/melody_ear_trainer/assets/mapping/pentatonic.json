@@ -27,6 +27,17 @@
 					"c0m02"
 				],
 			"unlockedbyrelationship": "AND"
+        },
+        {
+            "id": 4,
+            "shape": "Diamond",
+            "label": "",
+            "missionid": "c0m03",
+			"unlockedby": 
+				[
+					"c0m02"
+				],
+			"unlockedbyrelationship": "AND"
         }
 	],
     "edges": [
@@ -37,6 +48,10 @@
         {
             "from": 2,
             "to": 3
+        },
+        {
+            "from": 3,
+            "to": 4
         }
     ]
 }

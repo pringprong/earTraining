@@ -127,7 +127,7 @@ class _MissionState extends State<Mission> {
       return [
         // Constrain list height to avoid overflow
         ListView.builder(
-          itemCount: (levels.length + 1) ~/ 3, // number of pairs
+          itemCount: (levels.length + 2) ~/ 3, // number of pairs
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, pairIndex) {

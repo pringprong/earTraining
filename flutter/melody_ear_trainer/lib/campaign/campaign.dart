@@ -3,6 +3,7 @@ import 'package:graphview/GraphView.dart';
 import 'package:melody_ear_trainer/main.dart';
 import 'package:melody_ear_trainer/utils/colors.dart';
 import '../utils/helper.dart';
+import '../utils/shapes.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'mission.dart';
@@ -197,6 +198,16 @@ class _campaignTreeState extends State<campaignTree> {
                           final label = nodeValue['label'] as String?;
                           if (shape.toLowerCase() == 'circle') {
                             return circleWidget(label, unlocked);
+                          } else if (shape.toLowerCase() == 'diamond') {
+                            MissionInfo missionInfo =
+                                missions[nodeValue['missionid']]!;
+                            return myDiamondWidget(
+                              context,
+                              missionInfo,
+                              generalProvider,
+                              mappingProvider,
+                              unlocked,
+                            );
                           } else {
                             // Rectangle: interactive — push Mission (if unlocked)
                             MissionInfo missionInfo =
@@ -239,6 +250,72 @@ class _campaignTreeState extends State<campaignTree> {
         style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
       ),
     );
+  }
+
+  Widget myDiamondWidget(
+    BuildContext context,
+    MissionInfo missionInfo,
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    bool unlocked,
+  ) {
+    String titleText =
+        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+    Color fill = unlocked ? Colors.black : Colors.grey;
+    if (!unlocked) {
+      return DiamondWidget(
+        child: Container(
+          color: fill,
+          width: 200,
+          height: 100,
+          child: Center(
+            child: Text(
+              titleText,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+            ),
+          ),
+        ),
+      );
+    } else {
+      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      Color nodeColor = missionLevelStatusColor(missionStatus);
+      return InkWell(
+        onTap: () {
+          resetMissionBeforeMissionPage(
+            generalProvider,
+            mappingProvider,
+            missionInfo,
+          );
+          Navigator.pushNamed(
+            context,
+            Mission.routeName,
+            arguments: missionInfo,
+          );
+        },
+        child: DiamondWidget(
+          child: Container(
+            color: nodeColor,
+            width: 250,
+            height: 150,
+            child: Center(
+              child: Text(
+          "Mission: " +
+              missionInfo.MissionName +
+              '\nMode: ' +
+              missionInfo.MissionMode +
+              '\nStatus ' +
+              missionStatus,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: colorMap["buttonForegroundColor"] ?? Colors.white,
+          ),
+        ),
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   Widget rectangleWidget(
