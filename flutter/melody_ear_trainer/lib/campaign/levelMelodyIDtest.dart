@@ -65,7 +65,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
                     levelInfo.PassingScore.toString() +
                     " / " +
                     levelInfo.NumQuestions.toString() +
-                "    Current score: " +
+                "    Current: " +
                     correctAnswers.toString() +
                     " / " +
                     completedQuestions.toString(),
@@ -82,7 +82,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
               playMelodyButtons(generalProvider, mappingProvider, false),
               verticalSpacer(),
               plainText(
-                "Enter the solfege for the melody (" +
+                "Enter the solfege (" +
                     levelInfo.NumNotes.toString() +
                     " notes):",
               ),
@@ -90,8 +90,8 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
               buildNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
               userWrittenSolfegeArea(),
-              verticalSpacer(),
-              clearAndBackspaceButtons(),
+              // verticalSpacer(),
+              // clearAndBackspaceButtons(),
               verticalSpacer(),
               enterGuessbutton(generalProvider, mappingProvider, false),
             ],

@@ -15,6 +15,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
   int numberOfQuestions = 0;
   int completedQuestions = 0;
   String previousQuestionResultText = "";
+  bool testStarted = false;
 
   Row startTestButton(
     GeneralProvider generalProvider,
@@ -32,11 +33,12 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
+              testStarted = true;
               currentRound = 1;
               correctAnswers = 0;
               completedQuestions = 0;
               previousQuestionResultText =
-                  "Current question: " + currentRound.toString();
+                  "Question " + currentRound.toString();
               newGenerateChordMelody(
                 generalProvider,
                 mappingProvider,
@@ -87,41 +89,45 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
               child: Text("Enter your guess", style: TextStyle(fontSize: 20)),
             ),
             onPressed: () {
-              setState(() {
-                completedQuestions++;
-                currentRound++;
-                // Compare writtenChordMelody with generated melody
-                melodiesSame = generatedChordMelody.sameAs(
-                  userWrittenChordMelody,
-                );
-                if (melodiesSame) {
-                  setToCorrectGuess();
-                  correctAnswers++;
-                  previousQuestionResultText = "Correct! Current question:" + currentRound.toString();
-                } else {
-                  setToIncorrectGuess();
-                  previousQuestionResultText = "Incorrect. Current question:" + currentRound.toString();
-                }
-              });
-              if (completedQuestions == numberOfQuestions) {
-                // override this method in the implementation
-                finishTest();
-              } else {
-                newGenerateChordMelody(
-                  generalProvider,
-                  mappingProvider,
-                  setSolfegeText,
-                );
+              if (testStarted) { // don't do anything if the test hasn't started yet
                 setState(() {
-                  //solfegeText = ""; // Clear solfege area
-                  setToWaitingForGuess();
+                  completedQuestions++;
+                  currentRound++;
+                  // Compare writtenChordMelody with generated melody
+                  melodiesSame = generatedChordMelody.sameAs(
+                    userWrittenChordMelody,
+                  );
+                  if (melodiesSame) {
+                    setToCorrectGuess();
+                    correctAnswers++;
+                    previousQuestionResultText =
+                        "Correct! Question " + currentRound.toString();
+                  } else {
+                    setToIncorrectGuess();
+                    previousQuestionResultText =
+                        "Incorrect. Question " + currentRound.toString();
+                  }
                 });
-                generatedChordMelody.playChordMelody(
-                  generalProvider.getSelectedInstrument,
-                  generalProvider,
-                  mappingProvider,
-                  widget,
-                );
+                if (completedQuestions == numberOfQuestions) {
+                  // override this method in the implementation
+                  finishTest();
+                } else {
+                  newGenerateChordMelody(
+                    generalProvider,
+                    mappingProvider,
+                    setSolfegeText,
+                  );
+                  setState(() {
+                    //solfegeText = ""; // Clear solfege area
+                    setToWaitingForGuess();
+                  });
+                  generatedChordMelody.playChordMelody(
+                    generalProvider.getSelectedInstrument,
+                    generalProvider,
+                    mappingProvider,
+                    widget,
+                  );
+                }
               }
             },
           ),

@@ -7,6 +7,7 @@ import 'dart:collection';
 import 'package:objectbox/objectbox.dart';
 import '../objectbox.g.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'dart:math';
 
 SizedBox verticalSpacer() {
   return SizedBox(height: 8);
@@ -361,14 +362,14 @@ Widget campaignHeader(CampaignInfo campArgs) {
 }
 
 Widget missionHeader(
-  MappingProvider mappingProvider, 
-  MissionInfo missionInfo,
-  {bool max = false}) {
+  MappingProvider mappingProvider,
+  MissionInfo missionInfo, {
+  bool max = false,
+}) {
   return Row(
     children: [
       Expanded(
-        child: (
-          Card(
+        child: (Card(
           color: colorMap["buttonForegroundColor"] ?? Colors.white,
           borderOnForeground: true,
           shape: RoundedRectangleBorder(
@@ -393,17 +394,18 @@ Widget missionHeader(
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      if (max) 
-                      Text(
-                        missionInfo.MissionMode,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: getModeColor(missionInfo.MissionMode),
+                      if (max)
+                        Text(
+                          missionInfo.MissionMode,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: getModeColor(missionInfo.MissionMode),
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
                       if (max) verticalSpacer(),
-                      if (max) missionStatusBanner(mappingProvider, missionInfo)
+                      if (max)
+                        missionStatusBanner(mappingProvider, missionInfo),
                     ],
                   ),
                 ],
@@ -517,8 +519,7 @@ Widget levelHeader(LevelInfo levelInfo) {
   return Row(
     children: [
       Expanded(
-        child: (
-          Card(
+        child: (Card(
           color: colorMap["buttonForegroundColor"] ?? Colors.white,
           borderOnForeground: true,
           shape: RoundedRectangleBorder(
@@ -548,12 +549,17 @@ Widget levelHeader(LevelInfo levelInfo) {
                     children: [
                       SizedBox(height: 4),
                       CircularPercentIndicator(
-                              radius: 10,
-                              lineWidth: 10,
-                              percent: numPassedTests / levelInfo.NumTests,
-                              progressColor: colorMap['correctGuessIconColor'] ?? Colors.white,
-                              backgroundColor: colorMap["waitingForGuessIconColor"] ?? Colors.white,
-                            ),
+                        radius: 10,
+                        lineWidth: 10,
+                        percent:
+                            min(numPassedTests, levelInfo.NumTests) /
+                            levelInfo.NumTests,
+                        progressColor:
+                            colorMap['correctGuessIconColor'] ?? Colors.white,
+                        backgroundColor:
+                            colorMap["waitingForGuessIconColor"] ??
+                            Colors.white,
+                      ),
                     ],
                   ),
                 ],

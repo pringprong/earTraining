@@ -8,6 +8,7 @@ import '../providers/general_provider.dart';
 import 'missionSettings.dart';
 import 'package:provider/provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'dart:math';
 
 class Mission extends StatefulWidget {
   const Mission({super.key});
@@ -46,11 +47,9 @@ class _MissionState extends State<Mission> {
                   mappingProvider.campaigns[missionInfo.CampaignID]!,
                 ),
                 verticalSpacer(),
-                missionHeader(mappingProvider, missionInfo, max:true),
+                missionHeader(mappingProvider, missionInfo, max: true),
                 verticalSpacer(),
-                plainText(
-                  "Notes in this mission (black=new):",
-                ),
+                plainText("Notes in this mission (black=new):"),
                 verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,
@@ -168,10 +167,7 @@ class _MissionState extends State<Mission> {
     }
   }
 
-  Widget buildTile(
-    LevelInfo lvl,
-    GeneralProvider generalProvider,
-    ) {
+  Widget buildTile(LevelInfo lvl, GeneralProvider generalProvider) {
     int numPassedTests = objectBox.numPassedTestsForLevel(
       lvl.LevelID,
       lvl.PassingScore,
@@ -184,10 +180,10 @@ class _MissionState extends State<Mission> {
             : colorMap["notYetStartedColor"] ?? Colors.white;
     return ListTile(
       tileColor: tileColor,
-                  shape: RoundedRectangleBorder(
-              side: BorderSide(color: tileColor, width: 0.0),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: tileColor, width: 0.0),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       title: Text(
         lvl.LevelName,
         style: TextStyle(
@@ -198,7 +194,7 @@ class _MissionState extends State<Mission> {
       trailing: CircularPercentIndicator(
         radius: 10,
         lineWidth: 10,
-        percent: numPassedTests / lvl.NumTests,
+        percent: min(numPassedTests, lvl.NumTests) / lvl.NumTests,
         progressColor: colorMap['correctGuessIconColor'] ?? Colors.white,
         backgroundColor: colorMap["waitingForGuessIconColor"] ?? Colors.white,
       ),

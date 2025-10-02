@@ -237,7 +237,7 @@ class _LevelState extends State<Level> {
             style: ElevatedButton.styleFrom(
               backgroundColor: colorMap['practiceButtonColor'],
               foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () {
               if (missionMode == "Melody ID") {
@@ -268,7 +268,7 @@ class _LevelState extends State<Level> {
               backgroundColor:
                   colorMap['handsFreePracticeButtonColor'] ?? Colors.white,
               foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () {
               if (missionMode == "Melody ID") {
