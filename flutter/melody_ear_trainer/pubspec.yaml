@@ -45,6 +45,7 @@ dependencies:
   intl: ^0.18.0 # Use the latest version
   objectbox: ^4.3.1
   objectbox_flutter_libs: any
+  percent_indicator: ^4.2.5
 
 dev_dependencies:
   flutter_test:

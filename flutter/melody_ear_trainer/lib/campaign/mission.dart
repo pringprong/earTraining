@@ -7,6 +7,7 @@ import '../providers/mapping_provider.dart';
 import '../providers/general_provider.dart';
 import 'missionSettings.dart';
 import 'package:provider/provider.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class Mission extends StatefulWidget {
   const Mission({super.key});
@@ -147,6 +148,7 @@ class _MissionState extends State<Mission> {
                       : numPassedTests > 0
                       ? colorMap["inProgressColor"] ?? Colors.white
                       : colorMap["notYetStartedColor"] ?? Colors.white;
+              Color pieChartBackgroundColor =colorMap["waitingForGuessIconColor"] ?? Colors.white;
               return ListTile(
                 tileColor: tileColor,
                 dense: true,
@@ -157,12 +159,13 @@ class _MissionState extends State<Mission> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                trailing: Text(
-                  "${numPassedTests.toString()} / ${lvl.NumTests.toString()}",
-                  style: TextStyle(
-                    color: colorMap["buttonForegroundColor"] ?? Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+                trailing: CircularPercentIndicator(
+                  radius: 10,
+                  lineWidth: 10,
+                  percent: numPassedTests / lvl.NumTests,
+                  progressColor:
+                      colorMap['correctGuessIconColor'] ?? Colors.white,
+                  backgroundColor: pieChartBackgroundColor,
                 ),
                 onTap: () {
                   generalProvider.setLevelDetails(
@@ -231,5 +234,4 @@ class _MissionState extends State<Mission> {
       ],
     );
   }
-
 }
