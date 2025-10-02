@@ -111,39 +111,37 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            children: [
-              campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
-              verticalSpacer(),
-              missionHeader(
-                mappingProvider,
-                mappingProvider.getMissions[levelTestResults.MissionID]!,
-              ),
-              verticalSpacer(),
-              levelHeader(levelInfo),
-              verticalSpacer(),
-              levelTestResultsCard(
-                levelTestResults,
-                levelInfo,
-                passOrFail,
-                myColor,
-              ),
-              verticalSpacer(),
-              assessmentCard(assessment),
-              verticalSpacer(),
-              optionalRedoTestButton(redoTest, levelInfo, context),
-              verticalSpacer(),
-              optionalLevelPageButton(returnToLevelPage, context),
-              verticalSpacer(),
-              optionalNextLevelButton(goToNextLevel, nextLevel, context),
-              verticalSpacer(),
-              optionalMissionPageButton(returnToMissionPage, context),
-              verticalSpacer(),
-              optionalCampaignTreeButton(returnToCampaignTree, context),
-            ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              children: [
+                campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
+                verticalSpacer(),
+                missionHeader(
+                  mappingProvider,
+                  mappingProvider.getMissions[levelTestResults.MissionID]!,
+                ),
+                verticalSpacer(),
+                levelHeader(levelInfo),
+                verticalSpacer(),
+                levelTestResultsCard(
+                  levelTestResults,
+                  levelInfo,
+                  passOrFail,
+                  myColor,
+                ),
+                verticalSpacer(),
+                assessmentCard(assessment),
+                verticalSpacer(),
+                ...optionalRedoTestButton(redoTest, levelInfo, context),
+                ...optionalLevelPageButton(returnToLevelPage, context),
+                ...optionalNextLevelButton(goToNextLevel, nextLevel, context),
+                ...optionalMissionPageButton(returnToMissionPage, context),
+                ...optionalCampaignTreeButton(returnToCampaignTree, context),
+              ],
+            ),
           ),
         ),
       ),
@@ -272,176 +270,191 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     );
   }
 
-  Widget optionalRedoTestButton(
+  List<Widget> optionalRedoTestButton(
     bool redoTest,
     LevelInfo levelInfo,
     dynamic context,
   ) {
     if (!redoTest) {
       // finished the level, so no need to repeat test
-      return SizedBox(height: 0);
+      return [SizedBox(height: 0)];
     }
     String buttonText = "Repeat test";
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["c2f3"] ?? Colors.white,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(
-                context,
-                LevelMelodyIDTest.routeName,
-                arguments: levelInfo,
-              );
-            },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text(buttonText, style: TextStyle(fontSize: 20)),
+    return [
+      verticalSpacer(),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                foregroundColor:
+                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(
+                  context,
+                  LevelMelodyIDTest.routeName,
+                  arguments: levelInfo,
+                );
+              },
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Text(buttonText, style: TextStyle(fontSize: 20)),
+              ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      ),
+    ];
   }
 
-  Widget optionalNextLevelButton(
+  List<Widget> optionalNextLevelButton(
     bool showbutton,
     LevelInfo? nextLevel,
     dynamic context,
   ) {
     if (!showbutton || nextLevel == null) {
-      return SizedBox(height: 0);
+      return [SizedBox(height: 0)];
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["c2f3"] ?? Colors.white,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.pop(context); // pops to level main page
-              Navigator.pop(context); // pops to mission main page
-              Navigator.pushNamed(
-                context,
-                Level.routeName,
-                arguments: nextLevel,
-              );
-            },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text("Next level", style: TextStyle(fontSize: 20)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget optionalLevelPageButton(bool showbutton, dynamic context) {
-    if (!showbutton) {
-      return SizedBox(height: 0);
-    }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["c2f3"] ?? Colors.white,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text(
-                "Return to level main page",
-                style: TextStyle(fontSize: 20),
+    return [
+      verticalSpacer(),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                foregroundColor:
+                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+              ),
+              onPressed: () {
+                Navigator.pop(context); // pops to level main page
+                Navigator.pop(context); // pops to mission main page
+                Navigator.pushNamed(
+                  context,
+                  Level.routeName,
+                  arguments: nextLevel,
+                );
+              },
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Text("Next level", style: TextStyle(fontSize: 20)),
               ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      ),
+    ];
   }
 
-  Widget optionalMissionPageButton(bool showbutton, dynamic context) {
+  List<Widget> optionalLevelPageButton(bool showbutton, dynamic context) {
     if (!showbutton) {
-      return SizedBox(height: 0);
+      return [SizedBox(height: 0)];
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["c2f3"] ?? Colors.white,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text(
-                "Return to mission main page",
-                style: TextStyle(fontSize: 20),
+    return [
+      verticalSpacer(),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                foregroundColor:
+                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Text(
+                  "Return to level main page",
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      ),
+    ];
   }
 
-  Widget optionalCampaignTreeButton(bool showbutton, dynamic context) {
+  List<Widget> optionalMissionPageButton(bool showbutton, dynamic context) {
     if (!showbutton) {
-      return SizedBox(height: 0);
+      return [SizedBox(height: 0)];
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["c2f3"] ?? Colors.white,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text(
-                "Return to campaign tree page",
-                style: TextStyle(fontSize: 20),
+    return [
+      verticalSpacer(),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                foregroundColor:
+                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Text(
+                  "Return to mission main page",
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      ),
+    ];
+  }
+
+  List<Widget> optionalCampaignTreeButton(bool showbutton, dynamic context) {
+    if (!showbutton) {
+      return [SizedBox(height: 0)];
+    }
+    return [
+      verticalSpacer(),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                foregroundColor:
+                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Text(
+                  "Return to campaign tree page",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
   }
 }

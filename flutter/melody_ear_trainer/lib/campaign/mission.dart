@@ -45,7 +45,7 @@ class _MissionState extends State<Mission> {
                 verticalSpacer(),
                 missionHeader(mappingProvider, missionInfo),
                 verticalSpacer(),
-                subHeadingRow("Notes to learn in this mission:"),
+                subHeadingRow("Notes you will learn in this mission (black=new):"),
                 verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,
@@ -136,7 +136,6 @@ class _MissionState extends State<Mission> {
                           },
                         );
                       }
-
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2.0),
                         child: Row(

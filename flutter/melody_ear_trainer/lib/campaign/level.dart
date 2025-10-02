@@ -42,6 +42,8 @@ class _LevelState extends State<Level> {
                 verticalSpacer(),
                 levelHeader(levelInfo),
                 verticalSpacer(),
+                subHeadingRow("Notes you will learn in this level (black=new):"),
+                verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,
                   mappingProvider,
@@ -189,8 +191,12 @@ class _LevelState extends State<Level> {
                   itemBuilder: (context, index) {
                     final ltr = ltrList[index];
                     return ListTile(
-                      title: Text("Score: " + ltr.score.toString()),
-                      subtitle: Text("Date: " + ltr.timestamp),
+                      title: Text("Score: " 
+                      + ltr.score.toString() 
+                      + " / "
+                      + levelInfo.NumQuestions.toString()),
+                      trailing: Text("Date: " + ltr.timestamp),
+                      dense: true,
                     );
                   },
                   shrinkWrap: true,
