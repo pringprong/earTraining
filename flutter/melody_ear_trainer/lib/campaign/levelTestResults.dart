@@ -320,7 +320,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context); // pop to level page
                 Navigator.pushNamed(
                   context,
                   LevelMelodyIDTest.routeName,
@@ -363,6 +363,8 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
+                Navigator.pop(context); // pop to level main page
+                Navigator.pop(context); // pop to mission main page
                 generalProvider.setLevelDetails(
                   nextLevel.Notes,
                   nextLevel.NumNotes,
@@ -375,8 +377,6 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                   nextLevel.EndingDo,
                   nextLevel.ChordFrequency,
                 );
-                Navigator.pop(context); // pops to level main page
-                Navigator.pop(context); // pops to mission main page
                 Navigator.pushNamed(
                   context,
                   Level.routeName,
@@ -415,7 +415,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context); // pop to level page
               },
               child: FittedBox(
                 fit: BoxFit.fill,
@@ -456,13 +456,13 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
+                Navigator.pop(context); // pop to level page
                 resetMissionBeforeMissionPage(
                   generalProvider,
                   mappingProvider,
                   mappingProvider.getMissions[levelInfo.MissionID]!,
                 );
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Navigator.pop(context); // pop to mission page
               },
               child: FittedBox(
                 fit: BoxFit.fill,
@@ -500,9 +500,9 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Navigator.pop(context); // pop to level page
+                Navigator.pop(context); // pop to mission page
+                Navigator.pop(context); // pop to campaign tree
               },
               child: FittedBox(
                 fit: BoxFit.fill,

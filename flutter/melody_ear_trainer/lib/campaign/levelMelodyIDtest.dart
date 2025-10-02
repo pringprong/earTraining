@@ -119,7 +119,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
       timestamp: timestamp,
     );
     objectBox.insertLevelTestResult(ltr);
-    Navigator.pop(context);
+    Navigator.pop(context); // pop to level page
     Navigator.pushNamed(
       context,
       LevelTestResultsPage.routeName,

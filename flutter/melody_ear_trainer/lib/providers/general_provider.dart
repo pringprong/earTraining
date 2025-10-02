@@ -76,7 +76,7 @@ abstract class GeneralProvider extends ChangeNotifier {
   // Either because they are related to melody difficulty
   // or because we don't want the user to be able to change them
   // in the missions
-  Map<String, bool> noteSelection = {};
+  Map<String, bool> _noteSelection = {};
 
   int numberOfNotesDefault = 5;
   int numberOfNotes = 5;
@@ -109,7 +109,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     String newChordFrequency,
   ) {
     for (var key in noteKeys) {
-      noteSelection[key] = newSelectedKeys.contains(key);
+      _noteSelection[key] = newSelectedKeys.contains(key);
     }
     numberOfNotes = newNumNotes;
     maxDistance = newMaxDistance;
@@ -221,7 +221,7 @@ abstract class GeneralProvider extends ChangeNotifier {
   }
 
   Map<String, bool> get getNoteSelection {
-    return noteSelection;
+    return _noteSelection;
   }
 
   String get getSelectedKey {
@@ -310,27 +310,24 @@ abstract class GeneralProvider extends ChangeNotifier {
   }
 
   /// 1. Set all values of the map at once
-  void setNoteSelection({
-    required List<String> selectedKeys,
-  }) async {
+  void setNoteSelection({required List<String> selectedKeys}) async {
     for (var key in noteKeys) {
-      noteSelection[key] = selectedKeys.contains(key);
+      _noteSelection[key] = selectedKeys.contains(key);
     }
     saveSettings();
-      notifyListeners();
+    notifyListeners();
   }
-
 
   /// 2. Toggle one value of the map
   void toggleNoteSelection({required String key}) async {
-    noteSelection[key] = !(noteSelection[key] ?? false);
+    _noteSelection[key] = !(_noteSelection[key] ?? false);
     saveSettings();
     notifyListeners();
   }
 
   /// 3. Get all values that are set to True as a list of Strings, in order
   List<String> getSelectedNotes() {
-    return noteKeys.where((key) => noteSelection[key] == true).toList();
+    return noteKeys.where((key) => _noteSelection[key] == true).toList();
   }
 
   void updateSelectedOctave({required String octave}) async {
@@ -532,7 +529,7 @@ abstract class GeneralProvider extends ChangeNotifier {
       'allowRepeatedChords': allowRepeatedChords,
       'chordSetRange': chordSetRange,
       'chordSet': chordSet,
-      'noteSelection': jsonEncode(noteSelection),
+      'noteSelection': jsonEncode(_noteSelection),
       'selectedChords': jsonEncode(selectedChords),
       'numberOfRounds': numberOfRounds,
       'melodyRepeats': melodyRepeats,
@@ -585,7 +582,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     allowRepeatedChords = settings['allowRepeatedChords'] ?? false;
     chordSetRange = settings['chordSetRange'] ?? "Middle";
     chordSet = settings['chordSet'] ?? "I_IV_V";
-    noteSelection = Map<String, bool>.from(
+    _noteSelection = Map<String, bool>.from(
       jsonDecode(
         settings['noteSelection'] ??
             '{"do":true,"re":true,"mi":true,"fa":true,"so":true,"la":true,"ti":true,"do1":true}',
@@ -631,7 +628,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     allowRepeatedChords = false;
     chordSetRange = "Middle";
     chordSet = "I_IV_V";
-    noteSelection = {for (var key in defaultNoteKeys) key: true};
+    _noteSelection = {for (var key in defaultNoteKeys) key: true};
     selectedChords = {
       for (var key in "I_Rt,IV0_Sec,V0_Fir".split(','))
         key: true, // Initialize all chords as not selected

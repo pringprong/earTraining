@@ -33,6 +33,9 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                 missionHeader(mappingProvider, missionInfo),
               verticalSpacer(),
               subHeadingRow("Playback settings:"),
+              verticalSpacer(),
+              plainText("These settings will be used for all levels in this mission"),
+              verticalSpacer(),
               Row(
                 children: [
                   Padding(

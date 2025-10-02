@@ -164,6 +164,10 @@ Map<String, Color> colorMap = {
   'noteButtonForegroundColor': Colors.white,
   'newNoteButtonForegroundColor': Colors.black,
   'clearButtonColor': Color.fromARGB(255, 176, 204, 231),
+
+  'practiceButtonColor': multiplyHexColor(color7, factor4),
+  'handsFreePracticeButtonColor': multiplyHexColor(color7, factor2),
+  'testButtonColor':multiplyHexColor(color7, factor0),
 };
 
 IconData waitingForGuessIcon = Icons.help_outline;

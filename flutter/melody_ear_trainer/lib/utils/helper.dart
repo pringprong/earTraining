@@ -496,9 +496,9 @@ String getLevelStatus(int numPassedTests, LevelInfo levelInfo) {
 
 String getLevelStatusWithQuery(LevelInfo levelInfo) {
   int numPassedTests = objectBox.numPassedTestsForLevel(
-      levelInfo.LevelID,
-      levelInfo.PassingScore,
-    );
+    levelInfo.LevelID,
+    levelInfo.PassingScore,
+  );
   return getLevelStatus(numPassedTests, levelInfo);
 }
 

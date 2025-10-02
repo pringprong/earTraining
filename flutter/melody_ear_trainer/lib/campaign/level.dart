@@ -30,7 +30,6 @@ class _LevelState extends State<Level> {
     );
     LevelInfo? nextLevel = mappingProvider.getNextLevelForMission(levelInfo);
     LevelInfo? prevLevel = mappingProvider.getPrevLevelForMission(levelInfo);
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -89,7 +88,7 @@ class _LevelState extends State<Level> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                            backgroundColor: colorMap['practiceButtonColor'],
                             foregroundColor:
                                 colorMap["buttonForegroundColor"] ??
                                 Colors.white,
@@ -122,7 +121,9 @@ class _LevelState extends State<Level> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                            backgroundColor:
+                                colorMap['handsFreePracticeButtonColor'] ??
+                                Colors.white,
                             foregroundColor:
                                 colorMap["buttonForegroundColor"] ??
                                 Colors.white,
@@ -155,7 +156,8 @@ class _LevelState extends State<Level> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                            backgroundColor:
+                                colorMap['testButtonColor'] ?? Colors.white,
                             foregroundColor:
                                 colorMap["buttonForegroundColor"] ??
                                 Colors.white,
@@ -163,9 +165,6 @@ class _LevelState extends State<Level> {
                           ),
                           onPressed: () {
                             if (missionMode == "Melody ID") {
-                              generalProvider.setNoteSelection(
-                                selectedKeys: levelInfo.Notes,
-                              );
                               Navigator.pushNamed(
                                 context,
                                 LevelMelodyIDTest.routeName,
@@ -209,7 +208,7 @@ class _LevelState extends State<Level> {
                               mappingProvider,
                               missionInfo,
                             );
-                            Navigator.pop(context);
+                            Navigator.pop(context); // pop to level page
                           },
                           child: FittedBox(
                             fit: BoxFit.fill,
@@ -278,6 +277,7 @@ class _LevelState extends State<Level> {
             ),
             onPressed: () {
               if (prevLevel != null) {
+                Navigator.pop(context); // pop to mission main page
                 generalProvider.setLevelDetails(
                   prevLevel.Notes,
                   prevLevel.NumNotes,
@@ -290,7 +290,6 @@ class _LevelState extends State<Level> {
                   prevLevel.EndingDo,
                   prevLevel.ChordFrequency,
                 );
-                Navigator.pop(context); // pops to mission main page
                 Navigator.pushNamed(
                   context,
                   Level.routeName,
@@ -315,6 +314,7 @@ class _LevelState extends State<Level> {
             ),
             onPressed: () {
               if (nextLevel != null) {
+                Navigator.pop(context); // pop to mission main page
                 generalProvider.setLevelDetails(
                   nextLevel.Notes,
                   nextLevel.NumNotes,
@@ -327,7 +327,6 @@ class _LevelState extends State<Level> {
                   nextLevel.EndingDo,
                   nextLevel.ChordFrequency,
                 );
-                Navigator.pop(context); // pops to mission main page
                 Navigator.pushNamed(
                   context,
                   Level.routeName,

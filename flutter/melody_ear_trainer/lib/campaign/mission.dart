@@ -167,7 +167,7 @@ class _MissionState extends State<Mission> {
                           padding: const EdgeInsets.all(12.0),
                         ),
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pop(context); // pop to campaign tree
                         },
                         child: FittedBox(
                           fit: BoxFit.fill,
