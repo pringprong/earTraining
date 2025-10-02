@@ -494,6 +494,14 @@ String getLevelStatus(int numPassedTests, LevelInfo levelInfo) {
       : "Not started yet";
 }
 
+String getLevelStatusWithQuery(LevelInfo levelInfo) {
+  int numPassedTests = objectBox.numPassedTestsForLevel(
+      levelInfo.LevelID,
+      levelInfo.PassingScore,
+    );
+  return getLevelStatus(numPassedTests, levelInfo);
+}
+
 Widget levelHeader(LevelInfo levelInfo) {
   int numPassedTests = objectBox.numPassedTestsForLevel(
     levelInfo.LevelID,
@@ -523,8 +531,9 @@ Widget levelHeader(LevelInfo levelInfo) {
                       Text(
                         levelInfo.LevelName,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 20,
                           color: missionLevelStatusColor(levelStatus),
+                          fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -562,7 +571,7 @@ Widget levelHeader(LevelInfo levelInfo) {
                                             textAlign: TextAlign.center,
                                           ),
                                           Text(
-                                            "Number of tests passed so far: " +
+                                            "Tests passed so far: " +
                                                 numPassedTests.toString() +
                                                 " / " +
                                                 levelInfo.NumTests.toString(),
@@ -599,18 +608,17 @@ Widget levelHeader(LevelInfo levelInfo) {
 void resetMissionBeforeMissionPage(
   GeneralProvider generalProvider,
   MappingProvider mappingProvider,
-  MissionInfo missionInfo
+  MissionInfo missionInfo,
 ) {
-          MissionSavedSettings? mss = objectBox
-            .getMissionSavedSettingsByMissionID(missionInfo.MissionID);
-        if (mss != null) {
-          generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
-        }
-        final lastLevel =
-            mappingProvider.getLevelsForMission(missionInfo.MissionID).last;
-        generalProvider.setNoteSelection(
-          selectedKeys: lastLevel.Notes
-        );
+  MissionSavedSettings? mss = objectBox.getMissionSavedSettingsByMissionID(
+    missionInfo.MissionID,
+  );
+  if (mss != null) {
+    generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
+  }
+  final lastLevel =
+      mappingProvider.getLevelsForMission(missionInfo.MissionID).last;
+  generalProvider.setNoteSelection(selectedKeys: lastLevel.Notes);
 }
 
 RegExp chordNameParse = RegExp(

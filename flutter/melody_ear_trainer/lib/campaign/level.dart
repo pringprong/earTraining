@@ -27,6 +27,9 @@ class _LevelState extends State<Level> {
     List<LevelTestResults> ltrList = objectBox.getLevelTestResultsByLevelID(
       levelInfo.LevelID,
     );
+    LevelInfo? nextLevel = mappingProvider.getNextLevelForMission(levelInfo);
+    LevelInfo? prevLevel = mappingProvider.getPrevLevelForMission(levelInfo);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -169,13 +172,15 @@ class _LevelState extends State<Level> {
                   ],
                 ),
                 verticalSpacer(),
+                prevAndNextLevelButtons(generalProvider, prevLevel, nextLevel),
+                verticalSpacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                          backgroundColor: getModeColor(missionMode),
                           foregroundColor:
                               colorMap["buttonForegroundColor"] ?? Colors.white,
                           padding: const EdgeInsets.all(12.0),
@@ -227,29 +232,122 @@ class _LevelState extends State<Level> {
     );
   }
 
-  Row statusRow(String myText) {
-    Color myColor = missionLevelStatusColor(myText);
+  Widget prevAndNextLevelButtons(
+    GeneralProvider generalProvider,
+    LevelInfo? prevLevel,
+    LevelInfo? nextLevel,
+  ) {
+    Color prevLevelColor = Colors.grey;
+    if (prevLevel != null) {
+      String levelStatus = getLevelStatusWithQuery(prevLevel);
+      prevLevelColor = missionLevelStatusColor(levelStatus);
+    }
+    Color nextLevelColor = Colors.grey;
+    if (nextLevel != null) {
+      String levelStatus = getLevelStatusWithQuery(nextLevel);
+      nextLevelColor = missionLevelStatusColor(levelStatus);    }
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: prevLevelColor,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
+            ),
+            onPressed: () {
+              if (prevLevel != null) {
+                generalProvider.setLevelDetails(
+                  prevLevel.Notes,
+                  prevLevel.NumNotes,
+                  prevLevel.MaxDistance,
+                  prevLevel.AllowRepeatedNotes,
+                  prevLevel.PlaybackSpeed,
+                  prevLevel.StartWithDo,
+                  prevLevel.EndWithDo,
+                  prevLevel.StartingDo,
+                  prevLevel.EndingDo,
+                  prevLevel.ChordFrequency,
+                );
+                Navigator.pop(context); // pops to mission main page
+                Navigator.pushNamed(
+                  context,
+                  Level.routeName,
+                  arguments: prevLevel,
+                );
+              }
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Previous level", style: TextStyle(fontSize: 20)),
+            ),
           ),
-          color: myColor,
-          width: double.infinity,
-          padding: EdgeInsets.all(12),
-          child: Center(
-            child: Text(
-              "Level status: " + myText,
-              style: TextStyle(
-                fontSize: 22,
-                color: colorMap["buttonForegroundColor"] ?? Colors.white,
-              ),
-              textAlign: TextAlign.center,
+        ),
+        horizontalSpacer(),
+        // Play Piano Melody Button
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: nextLevelColor,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
+            ),
+            onPressed: () {
+              if (nextLevel != null) {
+                generalProvider.setLevelDetails(
+                  nextLevel.Notes,
+                  nextLevel.NumNotes,
+                  nextLevel.MaxDistance,
+                  nextLevel.AllowRepeatedNotes,
+                  nextLevel.PlaybackSpeed,
+                  nextLevel.StartWithDo,
+                  nextLevel.EndWithDo,
+                  nextLevel.StartingDo,
+                  nextLevel.EndingDo,
+                  nextLevel.ChordFrequency,
+                );
+                Navigator.pop(context); // pops to mission main page
+                Navigator.pushNamed(
+                  context,
+                  Level.routeName,
+                  arguments: nextLevel,
+                );
+              }
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text("Next level", style: TextStyle(fontSize: 20)),
             ),
           ),
         ),
       ],
     );
   }
+
+  // Row statusRow(String myText) {
+  //   Color myColor = missionLevelStatusColor(myText);
+  //   return Row(
+  //     children: [
+  //       Container(
+  //         constraints: BoxConstraints(
+  //           maxWidth: MediaQuery.of(context).size.width * 0.9,
+  //         ),
+  //         color: myColor,
+  //         width: double.infinity,
+  //         padding: EdgeInsets.all(12),
+  //         child: Center(
+  //           child: Text(
+  //             "Level status: " + myText,
+  //             style: TextStyle(
+  //               fontSize: 22,
+  //               color: colorMap["buttonForegroundColor"] ?? Colors.white,
+  //             ),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  //}
 }

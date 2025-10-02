@@ -161,7 +161,7 @@ class _MissionState extends State<Mission> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                          backgroundColor: getCampaignColor(missionInfo.CampaignID),
                           foregroundColor:
                               colorMap["buttonForegroundColor"] ?? Colors.white,
                           padding: const EdgeInsets.all(12.0),
@@ -222,7 +222,7 @@ class _MissionState extends State<Mission> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["c2f3"] ?? Colors.white,
+              backgroundColor: colorMap["waitingForGuessIconColor"] ?? Colors.white,
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),

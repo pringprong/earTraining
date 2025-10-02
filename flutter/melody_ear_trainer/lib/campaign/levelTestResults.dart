@@ -21,7 +21,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
   Widget build(BuildContext context) {
     final levelTestResults =
         ModalRoute.of(context)!.settings.arguments as LevelTestResults;
-   final generalProvider = Provider.of<missionSettingsProvider>(context);
+    final generalProvider = Provider.of<missionSettingsProvider>(context);
     final mappingProvider = Provider.of<MappingProvider>(context);
     LevelInfo levelInfo = mappingProvider.getLevelInfo(
       levelTestResults.LevelID,
@@ -41,6 +41,9 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     String missionStatus = getMissionStatus(
       mappingProvider,
       mappingProvider.getMissions[levelTestResults.MissionID]!,
+    );
+    String missionMode = mappingProvider.getMissionMode(
+      levelTestResults.MissionID,
     );
     if (levelTestResults.score >= levelInfo.NumQuestions) {
       passOrFail = "PERFECT!";
@@ -72,10 +75,13 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
       returnToMissionPage = true;
       returnToCampaignTree = true;
     } else if (numPassedTests > 0) {
+      int remainingTests = levelInfo.NumTests - numPassedTests;
       assessment =
-          "Level in progress! You need to pass " +
-          (levelInfo.NumTests - numPassedTests).toString() +
-          " more tests to pass this level. Do another test!";
+          "Level in progress!\nYou need to pass " +
+          remainingTests.toString() +
+          " more test" +
+          (remainingTests > 1 ? "s" : "") +
+          " to pass this level.\nDo another test!";
       redoTest = true;
       goToNextLevel = false;
       returnToLevelPage = true;
@@ -119,7 +125,9 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           child: Center(
             child: Column(
               children: [
-                campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
+                campaignHeader(
+                  mappingProvider.campaigns[levelInfo.CampaignID]!,
+                ),
                 verticalSpacer(),
                 missionHeader(
                   mappingProvider,
@@ -138,14 +146,26 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 assessmentCard(assessment),
                 verticalSpacer(),
                 ...optionalRedoTestButton(redoTest, levelInfo, context),
-                ...optionalLevelPageButton(returnToLevelPage, context),
-                ...optionalNextLevelButton(goToNextLevel, nextLevel, context),
-                ...optionalMissionPageButton(returnToMissionPage, 
-                generalProvider,
-                mappingProvider,
-                levelInfo,
-                context),
-                ...optionalCampaignTreeButton(returnToCampaignTree, context),
+                ...optionalLevelPageButton(returnToLevelPage, levelStatus,context),
+                ...optionalNextLevelButton(
+                  goToNextLevel,
+                  generalProvider,
+                  nextLevel,
+                  context,
+                ),
+                ...optionalMissionPageButton(
+                  returnToMissionPage,
+                  generalProvider,
+                  mappingProvider,
+                  missionMode,
+                  levelInfo,
+                  context,
+                ),
+                ...optionalCampaignTreeButton(
+                  returnToCampaignTree,
+                  levelInfo.CampaignID,
+                  context,
+                ),
               ],
             ),
           ),
@@ -320,12 +340,15 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
 
   List<Widget> optionalNextLevelButton(
     bool showbutton,
+    GeneralProvider generalProvider,
     LevelInfo? nextLevel,
     dynamic context,
   ) {
     if (!showbutton || nextLevel == null) {
       return [SizedBox(height: 0)];
     }
+    String levelStatus = getLevelStatusWithQuery(nextLevel);
+    Color nextLevelColor = missionLevelStatusColor(levelStatus);   
     return [
       verticalSpacer(),
       Row(
@@ -334,12 +357,24 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                backgroundColor: nextLevelColor,
                 foregroundColor:
                     colorMap["buttonForegroundColor"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
+                generalProvider.setLevelDetails(
+                  nextLevel.Notes,
+                  nextLevel.NumNotes,
+                  nextLevel.MaxDistance,
+                  nextLevel.AllowRepeatedNotes,
+                  nextLevel.PlaybackSpeed,
+                  nextLevel.StartWithDo,
+                  nextLevel.EndWithDo,
+                  nextLevel.StartingDo,
+                  nextLevel.EndingDo,
+                  nextLevel.ChordFrequency,
+                );
                 Navigator.pop(context); // pops to level main page
                 Navigator.pop(context); // pops to mission main page
                 Navigator.pushNamed(
@@ -359,7 +394,10 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     ];
   }
 
-  List<Widget> optionalLevelPageButton(bool showbutton, dynamic context) {
+  List<Widget> optionalLevelPageButton(
+    bool showbutton, 
+    String levelStatus,
+    dynamic context) {
     if (!showbutton) {
       return [SizedBox(height: 0)];
     }
@@ -371,7 +409,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                backgroundColor: missionLevelStatusColor(levelStatus),
                 foregroundColor:
                     colorMap["buttonForegroundColor"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
@@ -394,11 +432,13 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
   }
 
   List<Widget> optionalMissionPageButton(
-    bool showbutton, 
+    bool showbutton,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    String mode,
     LevelInfo levelInfo,
-    dynamic context) {
+    dynamic context,
+  ) {
     if (!showbutton) {
       return [SizedBox(height: 0)];
     }
@@ -410,7 +450,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                backgroundColor: getModeColor(mode),
                 foregroundColor:
                     colorMap["buttonForegroundColor"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
@@ -420,7 +460,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                   generalProvider,
                   mappingProvider,
                   mappingProvider.getMissions[levelInfo.MissionID]!,
-                          );
+                );
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
@@ -438,7 +478,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     ];
   }
 
-  List<Widget> optionalCampaignTreeButton(bool showbutton, dynamic context) {
+  List<Widget> optionalCampaignTreeButton(
+    bool showbutton,
+    String campaignID,
+    dynamic context,
+  ) {
     if (!showbutton) {
       return [SizedBox(height: 0)];
     }
@@ -450,7 +494,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                backgroundColor: getCampaignColor(campaignID),
                 foregroundColor:
                     colorMap["buttonForegroundColor"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
