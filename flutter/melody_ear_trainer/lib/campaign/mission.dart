@@ -131,7 +131,7 @@ class _MissionState extends State<Mission> {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, pairIndex) {
-            final int leftIndex = pairIndex * 2;
+            final int leftIndex = pairIndex * 3;
             final int middleIndex = leftIndex + 1;
             final int rightIndex = leftIndex + 2;
             final LevelInfo leftLvl = levels[leftIndex];
@@ -141,7 +141,7 @@ class _MissionState extends State<Mission> {
                 rightIndex < levels.length ? levels[rightIndex] : null;
 
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              padding: const EdgeInsets.symmetric(vertical: 3.0),
               child: Row(
                 children: [
                   Expanded(child: buildTile(leftLvl, generalProvider)),
@@ -184,7 +184,10 @@ class _MissionState extends State<Mission> {
             : colorMap["notYetStartedColor"] ?? Colors.white;
     return ListTile(
       tileColor: tileColor,
-      dense: true,
+                  shape: RoundedRectangleBorder(
+              side: BorderSide(color: tileColor, width: 0.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
       title: Text(
         lvl.LevelName,
         style: TextStyle(
