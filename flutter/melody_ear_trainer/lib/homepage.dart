@@ -28,6 +28,8 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
           child: Center(
             child: Column(
               children: [
+                subHeadingRow("Campaigns"),
+                verticalSpacer(),
                 // generate one button per campaign entry
                 if (campaigns.isEmpty) ...[
                   TextRow('No campaigns available'),
@@ -69,6 +71,10 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     );
                     yield verticalSpacer();
                   }).toList(),
+                subHeadingRow("Custom practice"),
+                verticalSpacer(),
+                plainText("Set all settings manually"),
+                verticalSpacer(),
                 Row(
                   children: [
                     Expanded(
@@ -79,7 +85,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             height: 70,
                             child: Center(
                               child: Text(
-                                "Custom study",
+                                "Custom practice",
                                 style: TextStyle(
                                   fontSize: 20,
                                   color:
