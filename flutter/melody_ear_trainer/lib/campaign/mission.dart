@@ -127,75 +127,36 @@ class _MissionState extends State<Mission> {
       return [
         // Constrain list height to avoid overflow
         ListView.builder(
-          itemCount: (levels.length + 1) ~/ 2, // number of pairs
+          itemCount: (levels.length + 1) ~/ 3, // number of pairs
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, pairIndex) {
             final int leftIndex = pairIndex * 2;
-            final int rightIndex = leftIndex + 1;
+            final int middleIndex = leftIndex + 1;
+            final int rightIndex = leftIndex + 2;
             final LevelInfo leftLvl = levels[leftIndex];
+            final LevelInfo? middleLvl =
+                middleIndex < levels.length ? levels[middleIndex] : null;
             final LevelInfo? rightLvl =
                 rightIndex < levels.length ? levels[rightIndex] : null;
-
-            Widget buildTile(LevelInfo lvl) {
-              int numPassedTests = objectBox.numPassedTestsForLevel(
-                lvl.LevelID,
-                lvl.PassingScore,
-              );
-              Color tileColor =
-                  numPassedTests >= lvl.NumTests
-                      ? colorMap["passedColor"] ?? Colors.white
-                      : numPassedTests > 0
-                      ? colorMap["inProgressColor"] ?? Colors.white
-                      : colorMap["notYetStartedColor"] ?? Colors.white;
-              Color pieChartBackgroundColor =colorMap["waitingForGuessIconColor"] ?? Colors.white;
-              return ListTile(
-                tileColor: tileColor,
-                dense: true,
-                title: Text(
-                  lvl.LevelName,
-                  style: TextStyle(
-                    color: colorMap["buttonForegroundColor"] ?? Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                trailing: CircularPercentIndicator(
-                  radius: 10,
-                  lineWidth: 10,
-                  percent: numPassedTests / lvl.NumTests,
-                  progressColor:
-                      colorMap['correctGuessIconColor'] ?? Colors.white,
-                  backgroundColor: pieChartBackgroundColor,
-                ),
-                onTap: () {
-                  generalProvider.setLevelDetails(
-                    lvl.Notes,
-                    lvl.NumNotes,
-                    lvl.MaxDistance,
-                    lvl.AllowRepeatedNotes,
-                    lvl.PlaybackSpeed,
-                    lvl.StartWithDo,
-                    lvl.EndWithDo,
-                    lvl.StartingDo,
-                    lvl.EndingDo,
-                    lvl.ChordFrequency,
-                  );
-                  setState(() {});
-                  Navigator.pushNamed(context, Level.routeName, arguments: lvl);
-                },
-              );
-            }
 
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Row(
                 children: [
-                  Expanded(child: buildTile(leftLvl)),
-                  SizedBox(width: 8),
+                  Expanded(child: buildTile(leftLvl, generalProvider)),
+                  horizontalSpacer(),
+                  Expanded(
+                    child:
+                        middleLvl != null
+                            ? buildTile(middleLvl, generalProvider)
+                            : SizedBox.shrink(),
+                  ),
+                  horizontalSpacer(),
                   Expanded(
                     child:
                         rightLvl != null
-                            ? buildTile(rightLvl)
+                            ? buildTile(rightLvl, generalProvider)
                             : SizedBox.shrink(),
                   ),
                 ],
@@ -205,6 +166,56 @@ class _MissionState extends State<Mission> {
         ),
       ];
     }
+  }
+
+  Widget buildTile(
+    LevelInfo lvl,
+    GeneralProvider generalProvider,
+    ) {
+    int numPassedTests = objectBox.numPassedTestsForLevel(
+      lvl.LevelID,
+      lvl.PassingScore,
+    );
+    Color tileColor =
+        numPassedTests >= lvl.NumTests
+            ? colorMap["passedColor"] ?? Colors.white
+            : numPassedTests > 0
+            ? colorMap["inProgressColor"] ?? Colors.white
+            : colorMap["notYetStartedColor"] ?? Colors.white;
+    return ListTile(
+      tileColor: tileColor,
+      dense: true,
+      title: Text(
+        lvl.LevelName,
+        style: TextStyle(
+          color: colorMap["buttonForegroundColor"] ?? Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      trailing: CircularPercentIndicator(
+        radius: 10,
+        lineWidth: 10,
+        percent: numPassedTests / lvl.NumTests,
+        progressColor: colorMap['correctGuessIconColor'] ?? Colors.white,
+        backgroundColor: colorMap["waitingForGuessIconColor"] ?? Colors.white,
+      ),
+      onTap: () {
+        generalProvider.setLevelDetails(
+          lvl.Notes,
+          lvl.NumNotes,
+          lvl.MaxDistance,
+          lvl.AllowRepeatedNotes,
+          lvl.PlaybackSpeed,
+          lvl.StartWithDo,
+          lvl.EndWithDo,
+          lvl.StartingDo,
+          lvl.EndingDo,
+          lvl.ChordFrequency,
+        );
+        setState(() {});
+        Navigator.pushNamed(context, Level.routeName, arguments: lvl);
+      },
+    );
   }
 
   Widget returnToCampaignButton(String campaignID) {
