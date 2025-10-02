@@ -158,6 +158,20 @@ class MappingProvider extends ChangeNotifier {
     return list;
   }
 
+  LevelInfo? getNextLevelForMission(LevelInfo levelInfo) {
+    LinkedHashSet<String> levelIDs = missions[levelInfo.MissionID]!.LevelIDs;
+    String lastLevelID = levelIDs.last;
+    if (levelInfo.LevelID == lastLevelID) {
+      return null;
+    }
+    for (int i = 0; i < levelIDs.length; i++) {
+      if (levelIDs.elementAt(i) == levelInfo.LevelID) {
+        return levels[levelIDs.elementAt(i + 1)];
+      }
+    }
+    return null;
+  }
+
   Future<void> get loadMappingJSON async {
     final String jsonData = await rootBundle.loadString(
       'assets/mapping/Mapping.json',

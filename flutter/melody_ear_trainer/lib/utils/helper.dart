@@ -369,7 +369,7 @@ Widget missionHeader(MappingProvider mappingProvider, MissionInfo missionInfo) {
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: getModeColor(missionInfo.MissionMode),
-              width: 1.0,
+              width: 3.0,
             ),
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -422,7 +422,7 @@ Widget missionStatusBanner(
           color: colorMap["buttonForegroundColor"] ?? Colors.white,
           borderOnForeground: true,
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: missionLevelStatusColor(mls), width: 2.0),
+            side: BorderSide(color: missionLevelStatusColor(mls), width: 1.0),
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: Padding(
@@ -591,92 +591,6 @@ Widget levelHeader(LevelInfo levelInfo) {
             ),
           ),
         )),
-      ),
-    ],
-  );
-}
-
-Widget levelTestResultsCard(LevelTestResults ltr, LevelInfo levelInfo) {
-  String passOrFail = "";
-  Color myColor = Colors.white;
-  if (ltr.score >= levelInfo.NumQuestions) {
-    passOrFail = "PERFECT!";
-    myColor = colorMap['correctGuessIconColor'] ?? Colors.white;
-  } else if (ltr.score >= levelInfo.PassingScore) {
-    passOrFail = "Passed!";
-    myColor = colorMap['correctGuessButtonColor'] ?? Colors.white;
-  } else if (levelInfo.PassingScore - ltr.score <= 1) {
-    passOrFail = "Almost, keep trying!";
-    myColor = colorMap['incorrectGuessButtonColor'] ?? Colors.white;
-  } else {
-    passOrFail = "More practice needed";
-    myColor = colorMap['incorrectGuessIconColor'] ?? Colors.white;
-  }
-  return Row(
-    children: [
-      Expanded(
-        child: Card(
-            color: colorMap["buttonForegroundColor"] ?? Colors.white,
-            borderOnForeground: true,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: myColor, width: 3.0),
-              borderRadius: BorderRadius.circular(10.0),
-            ),          child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: (
-              Card(
-              color: colorMap["buttonForegroundColor"] ?? Colors.white,
-              borderOnForeground: true,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: myColor, width: 3.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Wrap(
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            "Test result:",
-                            style: TextStyle(fontSize: 24, color: myColor),
-                            textAlign: TextAlign.center,
-                          ),
-                          verticalSpacer(),
-                          Text(
-                            passOrFail,
-                            style: TextStyle(
-                              fontSize: 28,
-                              color: myColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          verticalSpacer(),
-                          Text(
-                            "Score: " +
-                                ltr.score.toString() +
-                                " / " +
-                                levelInfo.NumQuestions.toString(),
-                            style: TextStyle(fontSize: 22, color: myColor),
-                            textAlign: TextAlign.center,
-                          ),
-                          verticalSpacer(),
-                          Text(
-                            "Passing score: " + levelInfo.PassingScore.toString(),
-                            style: TextStyle(fontSize: 22, color: myColor),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-                        )),
-            ),
-        ),
       ),
     ],
   );
