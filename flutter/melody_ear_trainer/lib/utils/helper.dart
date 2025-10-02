@@ -6,6 +6,7 @@ import 'colors.dart';
 import 'dart:collection';
 import 'package:objectbox/objectbox.dart';
 import '../objectbox.g.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 SizedBox verticalSpacer() {
   return SizedBox(height: 8);
@@ -359,11 +360,15 @@ Widget campaignHeader(CampaignInfo campArgs) {
   );
 }
 
-Widget missionHeader(MappingProvider mappingProvider, MissionInfo missionInfo) {
+Widget missionHeader(
+  MappingProvider mappingProvider, 
+  MissionInfo missionInfo,
+  {bool max = false}) {
   return Row(
     children: [
       Expanded(
-        child: (Card(
+        child: (
+          Card(
           color: colorMap["buttonForegroundColor"] ?? Colors.white,
           borderOnForeground: true,
           shape: RoundedRectangleBorder(
@@ -388,6 +393,7 @@ Widget missionHeader(MappingProvider mappingProvider, MissionInfo missionInfo) {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      if (max) 
                       Text(
                         missionInfo.MissionMode,
                         style: TextStyle(
@@ -396,8 +402,8 @@ Widget missionHeader(MappingProvider mappingProvider, MissionInfo missionInfo) {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      verticalSpacer(),
-                      missionStatusBanner(mappingProvider, missionInfo),
+                      if (max) verticalSpacer(),
+                      if (max) missionStatusBanner(mappingProvider, missionInfo)
                     ],
                   ),
                 ],
@@ -511,7 +517,8 @@ Widget levelHeader(LevelInfo levelInfo) {
   return Row(
     children: [
       Expanded(
-        child: (Card(
+        child: (
+          Card(
           color: colorMap["buttonForegroundColor"] ?? Colors.white,
           borderOnForeground: true,
           shape: RoundedRectangleBorder(
@@ -522,77 +529,31 @@ Widget levelHeader(LevelInfo levelInfo) {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: Center(
               child: Wrap(
                 children: [
+                  Text(
+                    "Level " + levelInfo.LevelName,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: missionLevelStatusColor(levelStatus),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  horizontalSpacer(),
+                  horizontalSpacer(),
                   Column(
                     children: [
-                      Text(
-                        levelInfo.LevelName,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: missionLevelStatusColor(levelStatus),
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      verticalSpacer(),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: (Card(
-                              color:
-                                  colorMap["buttonForegroundColor"] ??
-                                  Colors.white,
-                              borderOnForeground: true,
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                  color: missionLevelStatusColor(levelStatus),
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Wrap(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Status: " + levelStatus,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: missionLevelStatusColor(
-                                                levelStatus,
-                                              ),
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          Text(
-                                            "Tests passed so far: " +
-                                                numPassedTests.toString() +
-                                                " / " +
-                                                levelInfo.NumTests.toString(),
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: missionLevelStatusColor(
-                                                levelStatus,
-                                              ),
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )),
-                          ),
-                        ],
-                      ),
+                      SizedBox(height: 4),
+                      CircularPercentIndicator(
+                              radius: 10,
+                              lineWidth: 10,
+                              percent: numPassedTests / levelInfo.NumTests,
+                              progressColor: colorMap['correctGuessIconColor'] ?? Colors.white,
+                              backgroundColor: colorMap["waitingForGuessIconColor"] ?? Colors.white,
+                            ),
                     ],
                   ),
                 ],

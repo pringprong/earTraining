@@ -55,12 +55,13 @@ class _LevelState extends State<Level> {
                   missionHeader(
                     mappingProvider,
                     mappingProvider.missions[levelInfo.MissionID]!,
+                    max :false
                   ),
                   verticalSpacer(),
                   levelHeader(levelInfo),
                   verticalSpacer(),
-                  subHeadingRow(
-                    "Notes you will learn in this level (black=new):",
+                  plainText(
+                    "Notes in this level (black=new):",
                   ),
                   verticalSpacer(),
                   buildNotesGrid(
@@ -80,10 +81,9 @@ class _LevelState extends State<Level> {
                     generalProvider,
                     mappingProvider,
                     optional: true,
-                  ),
-                  verticalSpacer(),
-                  subHeadingRow(
-                    "Practice and then take a test when you are ready:",
+                  ),                  
+                  plainText(
+                    "Practice and take a test when ready:",
                   ),
                   verticalSpacer(),
                   practiceButton(missionMode, levelInfo),
@@ -92,7 +92,7 @@ class _LevelState extends State<Level> {
                   verticalSpacer(),
                   takeTestButton(missionMode, levelInfo),
                   verticalSpacer(),
-                  subHeadingRow("Navigation:"),
+                  plainText("Navigation:"),
                   verticalSpacer(),
                   prevAndNextLevelButtons(
                     generalProvider,
@@ -107,7 +107,7 @@ class _LevelState extends State<Level> {
                     missionInfo
                   ),
                   verticalSpacer(),
-                  TextRow("Test history:"),
+                  plainText("Test history:"),
                   verticalSpacer(),
                   ListView.builder(
                     itemCount: ltrList.length,
@@ -184,7 +184,7 @@ class _LevelState extends State<Level> {
             },
             child: FittedBox(
               fit: BoxFit.fill,
-              child: Text("Previous level", style: TextStyle(fontSize: 20)),
+              child: Text("Previous level", style: TextStyle(fontSize: 18)),
             ),
           ),
         ),
@@ -220,7 +220,7 @@ class _LevelState extends State<Level> {
             },
             child: FittedBox(
               fit: BoxFit.fill,
-              child: Text("Next level", style: TextStyle(fontSize: 20)),
+              child: Text("Next level", style: TextStyle(fontSize: 18)),
             ),
           ),
         ),
@@ -250,7 +250,7 @@ class _LevelState extends State<Level> {
             },
             child: FittedBox(
               fit: BoxFit.fill,
-              child: Text("Practice", style: TextStyle(fontSize: 20)),
+              child: Text("Practice", style: TextStyle(fontSize: 18)),
             ),
           ),
         ),
@@ -283,7 +283,7 @@ class _LevelState extends State<Level> {
               fit: BoxFit.fill,
               child: Text(
                 "Hands free practice",
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
             ),
           ),
@@ -316,7 +316,7 @@ class _LevelState extends State<Level> {
               fit: BoxFit.fill,
               child: Text(
                 "Take a test for this level",
-                style: TextStyle(fontSize: 28,
+                style: TextStyle(fontSize: 20,
                 fontWeight: FontWeight.bold),
               ),
             ),
@@ -355,7 +355,7 @@ class _LevelState extends State<Level> {
               fit: BoxFit.fill,
               child: Text(
                 "Return to mission main page",
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
             ),
           ),

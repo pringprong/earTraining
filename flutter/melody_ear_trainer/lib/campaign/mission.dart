@@ -46,10 +46,10 @@ class _MissionState extends State<Mission> {
                   mappingProvider.campaigns[missionInfo.CampaignID]!,
                 ),
                 verticalSpacer(),
-                missionHeader(mappingProvider, missionInfo),
+                missionHeader(mappingProvider, missionInfo, max:true),
                 verticalSpacer(),
-                subHeadingRow(
-                  "Notes you will learn in this mission (black=new):",
+                plainText(
+                  "Notes in this mission (black=new):",
                 ),
                 verticalSpacer(),
                 buildNotesGrid(
@@ -70,11 +70,11 @@ class _MissionState extends State<Mission> {
                   mappingProvider,
                   optional: true,
                 ),
-                subHeadingRow("Select a level:"),
+                plainText("Select a level:"),
                 verticalSpacer(),
                 ...levelButtons(levels, generalProvider),
                 verticalSpacer(),
-                subHeadingRow("Navigation:"),
+                plainText("Navigation:"),
                 verticalSpacer(),
                 returnToCampaignButton(missionInfo.CampaignID),
                 verticalSpacer(),

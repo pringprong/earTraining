@@ -59,17 +59,13 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
               verticalSpacer(),
               missionHeader(mappingProvider, mappingProvider.missions[levelInfo.MissionID]!),
               verticalSpacer(),
-                verticalSpacer(),
                 levelHeader(levelInfo),
               plainText(
                 "Passing score: " +
                     levelInfo.PassingScore.toString() +
                     " / " +
-                    levelInfo.NumQuestions.toString(),
-              ),
-              verticalSpacer(),
-              plainText(
-                "Current score: " +
+                    levelInfo.NumQuestions.toString() +
+                "    Current score: " +
                     correctAnswers.toString() +
                     " / " +
                     completedQuestions.toString(),
@@ -78,14 +74,14 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
               startTestButton(generalProvider, mappingProvider, false),
               verticalSpacer(),
               previousQuestionResult(),
+              // verticalSpacer(),
+              // TextRow("Current question: " + currentRound.toString()),
               verticalSpacer(),
-              TextRow("Current question: " + currentRound.toString()),
-              verticalSpacer(),
-              subHeadingRow("Listen to melody again:"),
+              plainText("Listen to melody again:"),
               verticalSpacer(),
               playMelodyButtons(generalProvider, mappingProvider, false),
               verticalSpacer(),
-              subHeadingRow(
+              plainText(
                 "Enter the solfege for the melody (" +
                     levelInfo.NumNotes.toString() +
                     " notes):",

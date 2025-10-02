@@ -27,16 +27,16 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["c7f3"] ?? Colors.white,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
+              backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
+              foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
               currentRound = 1;
               correctAnswers = 0;
               completedQuestions = 0;
-              previousQuestionResultText = "";
+              previousQuestionResultText =
+                  "Current question: " + currentRound.toString();
               newGenerateChordMelody(
                 generalProvider,
                 mappingProvider,
@@ -97,10 +97,10 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 if (melodiesSame) {
                   setToCorrectGuess();
                   correctAnswers++;
-                  previousQuestionResultText = "Correct! Next question:";
+                  previousQuestionResultText = "Correct! Current question:" + currentRound.toString();
                 } else {
                   setToIncorrectGuess();
-                  previousQuestionResultText = "Incorrect. Next question:";
+                  previousQuestionResultText = "Incorrect. Current question:" + currentRound.toString();
                 }
               });
               if (completedQuestions == numberOfQuestions) {

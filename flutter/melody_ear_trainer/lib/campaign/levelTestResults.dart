@@ -132,6 +132,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 missionHeader(
                   mappingProvider,
                   mappingProvider.getMissions[levelTestResults.MissionID]!,
+                  max:true
                 ),
                 verticalSpacer(),
                 levelHeader(levelInfo),
@@ -208,33 +209,30 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                           children: [
                             Text(
                               "Test result:",
-                              style: TextStyle(fontSize: 24, color: myColor),
+                              style: TextStyle(fontSize: 16, color: myColor),
                               textAlign: TextAlign.center,
                             ),
-                            verticalSpacer(),
                             Text(
                               passOrFail,
                               style: TextStyle(
-                                fontSize: 28,
+                                fontSize: 22,
                                 color: myColor,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            verticalSpacer(),
                             Text(
                               "Score: " +
                                   ltr.score.toString() +
                                   " / " +
                                   levelInfo.NumQuestions.toString(),
-                              style: TextStyle(fontSize: 22, color: myColor),
+                              style: TextStyle(fontSize: 18, color: myColor),
                               textAlign: TextAlign.center,
                             ),
-                            verticalSpacer(),
                             Text(
                               "Passing score: " +
                                   levelInfo.PassingScore.toString(),
-                              style: TextStyle(fontSize: 22, color: myColor),
+                              style: TextStyle(fontSize: 18, color: myColor),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -272,15 +270,9 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                     children: [
                       Column(
                         children: [
-                          // Text(
-                          //   "Assessment:",
-                          //   style: TextStyle(fontSize: 20, color: myColor),
-                          //   textAlign: TextAlign.center,
-                          // ),
-                          // verticalSpacer(),
                           Text(
                             assessment,
-                            style: TextStyle(fontSize: 18, color: myColor),
+                            style: TextStyle(fontSize: 14, color: myColor),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -314,9 +306,8 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: colorMap["c2f3"] ?? Colors.white,
-                foregroundColor:
-                    colorMap["buttonForegroundColor"] ?? Colors.white,
+              backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
+              foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
@@ -329,7 +320,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               },
               child: FittedBox(
                 fit: BoxFit.fill,
-                child: Text(buttonText, style: TextStyle(fontSize: 20)),
+                child: Text(buttonText, style: TextStyle(fontSize: 18)),
               ),
             ),
           ),
@@ -385,7 +376,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               },
               child: FittedBox(
                 fit: BoxFit.fill,
-                child: Text("Next level", style: TextStyle(fontSize: 20)),
+                child: Text("Next level", style: TextStyle(fontSize: 18)),
               ),
             ),
           ),
@@ -421,7 +412,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 fit: BoxFit.fill,
                 child: Text(
                   "Return to level main page",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
             ),
@@ -468,7 +459,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 fit: BoxFit.fill,
                 child: Text(
                   "Return to mission main page",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
             ),
@@ -508,7 +499,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 fit: BoxFit.fill,
                 child: Text(
                   "Return to campaign tree page",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
             ),

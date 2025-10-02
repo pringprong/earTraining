@@ -43,7 +43,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                             child: Card(
                               color: getCampaignColor(campArgs.CampaignID),
                               child: SizedBox(
-                                height: 70,
+                                height: 50,
                                 child: Center(
                                   child: Text(
                                     campArgs.CampaignName,
@@ -82,7 +82,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         child: Card(
                           color: colorMap["c5f4"],
                           child: SizedBox(
-                            height: 70,
+                            height: 50,
                             child: Center(
                               child: Text(
                                 "Custom practice",
@@ -112,7 +112,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                         child: Card(
                           color: colorMap["c1f4"] ?? Colors.white,
                           child: SizedBox(
-                            height: 70,
+                            height: 50,
                             child: Center(
                               child: Text(
                                 "Help",
