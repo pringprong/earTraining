@@ -344,7 +344,7 @@ Widget campaignHeader(CampaignInfo campArgs) {
                   Text(
                     campArgs.CampaignName,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 16,
                       color: getCampaignColor(campArgs.CampaignID),
                     ),
                     textAlign: TextAlign.center,
@@ -383,7 +383,7 @@ Widget missionHeader(MappingProvider mappingProvider, MissionInfo missionInfo) {
                       Text(
                         "Mission: " + missionInfo.MissionName,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: getModeColor(missionInfo.MissionMode),
                         ),
                         textAlign: TextAlign.center,
@@ -391,7 +391,7 @@ Widget missionHeader(MappingProvider mappingProvider, MissionInfo missionInfo) {
                       Text(
                         missionInfo.MissionMode,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: getModeColor(missionInfo.MissionMode),
                         ),
                         textAlign: TextAlign.center,
@@ -435,7 +435,7 @@ Widget missionStatusBanner(
                       Text(
                         "Status: " + mls,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: missionLevelStatusColor(mls),
                         ),
                         textAlign: TextAlign.center,
@@ -523,7 +523,7 @@ Widget levelHeader(LevelInfo levelInfo) {
                       Text(
                         levelInfo.LevelName,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: missionLevelStatusColor(levelStatus),
                         ),
                         textAlign: TextAlign.center,
@@ -554,7 +554,7 @@ Widget levelHeader(LevelInfo levelInfo) {
                                           Text(
                                             "Status: " + levelStatus,
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 18,
                                               color: missionLevelStatusColor(
                                                 levelStatus,
                                               ),
@@ -562,19 +562,18 @@ Widget levelHeader(LevelInfo levelInfo) {
                                             textAlign: TextAlign.center,
                                           ),
                                           Text(
-                  "Number of tests passed so far: " +
-                      numPassedTests.toString() +
-                      " / " +
-                      levelInfo.NumTests.toString(),
+                                            "Number of tests passed so far: " +
+                                                numPassedTests.toString() +
+                                                " / " +
+                                                levelInfo.NumTests.toString(),
                                             style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               color: missionLevelStatusColor(
                                                 levelStatus,
                                               ),
                                             ),
                                             textAlign: TextAlign.center,
-                ),
-
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -592,6 +591,92 @@ Widget levelHeader(LevelInfo levelInfo) {
             ),
           ),
         )),
+      ),
+    ],
+  );
+}
+
+Widget levelTestResultsCard(LevelTestResults ltr, LevelInfo levelInfo) {
+  String passOrFail = "";
+  Color myColor = Colors.white;
+  if (ltr.score >= levelInfo.NumQuestions) {
+    passOrFail = "PERFECT!";
+    myColor = colorMap['correctGuessIconColor'] ?? Colors.white;
+  } else if (ltr.score >= levelInfo.PassingScore) {
+    passOrFail = "Passed!";
+    myColor = colorMap['correctGuessButtonColor'] ?? Colors.white;
+  } else if (levelInfo.PassingScore - ltr.score <= 1) {
+    passOrFail = "Almost, keep trying!";
+    myColor = colorMap['incorrectGuessButtonColor'] ?? Colors.white;
+  } else {
+    passOrFail = "More practice needed";
+    myColor = colorMap['incorrectGuessIconColor'] ?? Colors.white;
+  }
+  return Row(
+    children: [
+      Expanded(
+        child: Card(
+            color: colorMap["buttonForegroundColor"] ?? Colors.white,
+            borderOnForeground: true,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: myColor, width: 3.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),          child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: (
+              Card(
+              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+              borderOnForeground: true,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: myColor, width: 3.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Wrap(
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            "Test result:",
+                            style: TextStyle(fontSize: 24, color: myColor),
+                            textAlign: TextAlign.center,
+                          ),
+                          verticalSpacer(),
+                          Text(
+                            passOrFail,
+                            style: TextStyle(
+                              fontSize: 28,
+                              color: myColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          verticalSpacer(),
+                          Text(
+                            "Score: " +
+                                ltr.score.toString() +
+                                " / " +
+                                levelInfo.NumQuestions.toString(),
+                            style: TextStyle(fontSize: 22, color: myColor),
+                            textAlign: TextAlign.center,
+                          ),
+                          verticalSpacer(),
+                          Text(
+                            "Passing score: " + levelInfo.PassingScore.toString(),
+                            style: TextStyle(fontSize: 22, color: myColor),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+                        )),
+            ),
+        ),
       ),
     ],
   );

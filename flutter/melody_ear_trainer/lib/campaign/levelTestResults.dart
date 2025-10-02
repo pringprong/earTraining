@@ -19,7 +19,9 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     final levelTestResults =
         ModalRoute.of(context)!.settings.arguments as LevelTestResults;
     final mappingProvider = Provider.of<MappingProvider>(context);
-    LevelInfo levelInfo = mappingProvider.getLevelInfo(levelTestResults.LevelID);
+    LevelInfo levelInfo = mappingProvider.getLevelInfo(
+      levelTestResults.LevelID,
+    );
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -30,47 +32,16 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
             children: [
               campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
-              missionHeader(mappingProvider, mappingProvider.getMissions[levelTestResults.MissionID]!),
-                verticalSpacer(),
-                levelHeader(levelInfo),
-              verticalSpacer(),
-              TextRow(
-                "your score: " +
-                    levelTestResults.score.toString() +
-                    " / " +
-                    levelInfo.NumQuestions.toString(),
+              missionHeader(
+                mappingProvider,
+                mappingProvider.getMissions[levelTestResults.MissionID]!,
               ),
               verticalSpacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: colorMap["c2f3"] ?? Colors.white,
-                        foregroundColor:
-                            colorMap["buttonForegroundColor"] ?? Colors.white,
-                        padding: const EdgeInsets.all(12.0),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(
-                          context,
-                          LevelMelodyIDTest.routeName,
-                          arguments: levelInfo,
-                        );
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Text(
-                          "Level not passed yet? Do another test",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              levelHeader(levelInfo),
+              verticalSpacer(),
+              levelTestResultsCard(levelTestResults, levelInfo),
+              verticalSpacer(),
+              optionalRedoTestButton(levelTestResults, levelInfo),
               verticalSpacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -104,25 +75,35 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     );
   }
 
-  Row statusRow(String myText) {
-    Color myColor = missionLevelStatusColor(myText);
+  Widget optionalRedoTestButton(
+    LevelTestResults levelTestResults,
+    LevelInfo levelInfo,
+  ) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
-          ),
-          color: myColor,
-          width: double.infinity,
-          padding: EdgeInsets.all(12),
-          child: Center(
-            child: Text(
-              "Level status: " + myText,
-              style: TextStyle(
-                fontSize: 22,
-                color: colorMap["buttonForegroundColor"] ?? Colors.white,
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colorMap["c2f3"] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
+              padding: const EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(
+                context,
+                LevelMelodyIDTest.routeName,
+                arguments: levelInfo,
+              );
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text(
+                "Level not passed yet? Do another test",
+                style: TextStyle(fontSize: 20),
               ),
-              textAlign: TextAlign.center,
             ),
           ),
         ),
