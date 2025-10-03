@@ -131,9 +131,9 @@ class _campaignTreeState extends State<campaignTree> {
                           bool unlocked = getUnlocked(nodeValue);
                           final shape =
                               (nodeValue['shape'] ?? 'Rectangle').toString();
-                          final label = nodeValue['label'] as String?;
+                          //final label = nodeValue['label'] as String?;
                           if (shape.toLowerCase() == 'circle') {
-                            return circleWidget(label, unlocked);
+                            return circleWidget();
                           } else if (shape.toLowerCase() == 'diamond') {
                             MissionInfo missionInfo =
                                 missions[nodeValue['missionid']]!;
@@ -233,24 +233,15 @@ class _campaignTreeState extends State<campaignTree> {
     return unlocked;
   }
 
-  Widget circleWidget(String? title, bool unlocked) {
-    String titleText =
-        unlocked ? (title ?? 'no title') : 'Pass previous\nmissions first';
-    Color fill = unlocked ? Colors.black : Colors.grey;
+  Widget circleWidget() {
     return Container(
-      width: 100,
-      height: 100,
+      width: 30,
+      height: 30,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: fill,
-        boxShadow: [BoxShadow(color: Colors.blue, spreadRadius: 1)],
-      ),
-      padding: EdgeInsets.all(8),
-      child: Text(
-        titleText,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+        color: Colors.black,
+        boxShadow: [BoxShadow(color: Colors.grey, spreadRadius: 1)],
       ),
     );
   }
