@@ -351,17 +351,21 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
     return Row(
       // Solfege Text Area
       children: [
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
+        Expanded(
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.9,
+            ),
+            width: double.infinity,
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: colorMap["borderColor"] ?? Colors.white,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(solfegeText, style: TextStyle(fontSize: 18)),
           ),
-          width: double.infinity,
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            border: Border.all(color: colorMap["borderColor"] ?? Colors.white),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(solfegeText, style: TextStyle(fontSize: 18)),
         ),
       ],
     );
@@ -699,21 +703,33 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
     setState(() {});
   }
 
-  Row instructionRow(String myText) {
+  Row instructionRow(String myText, {bool small = true}) {
+    double fontSize = 22;
+    double padding = 16;
+    if (small) {
+      fontSize = 16;
+      padding = 8;
+    }
     return Row(
       children: [
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
-          ),
-          color: colorMap["c6f3"] ?? Colors.white,
-          width: double.infinity,
-          padding: EdgeInsets.all(12),
-          child: Text(
-            myText,
-            style: TextStyle(
-              fontSize: 22,
-              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+        Expanded(
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.9,
+            ),
+            color: colorMap["c6f3"] ?? Colors.white,
+            width: double.infinity,
+            padding: EdgeInsets.all(padding),
+            child: Wrap(
+              children: [
+                Text(
+                  myText,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
