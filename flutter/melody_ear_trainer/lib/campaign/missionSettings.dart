@@ -40,7 +40,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback key:'),
+                    child: Text('Key:'),
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback key'),
@@ -73,7 +73,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback instrument:'),
+                    child: Text('Instrument:'),
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback instrument'),
