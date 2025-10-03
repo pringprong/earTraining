@@ -494,28 +494,30 @@ class _HelpPageState extends State<HelpPage> {
                 children: [
                       Row(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorMap["c2f3"] ?? Colors.white,
-                      foregroundColor:
-                          colorMap["buttonForegroundColor"] ?? Colors.white,
-                      padding: const EdgeInsets.all(12.0),
-                    ),
-                    onPressed: () {
-                      deleteAllPreferences();
-                      melodyIDProvider.loadSettings();
-                      melodySingingProvider.loadSettings();
-                      chordIDProvider.loadSettings();
-                      chordSingingProvider.loadSettings();
-                      chordMelodyIDProvider.loadSettings();
-                      chordMelodySingingProvider.loadSettings();
-                      setState(() {});
-                    },
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Text(
-                        "WARNING: Reset all settings",
-                        style: TextStyle(fontSize: 20),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorMap["c2f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
+                        padding: const EdgeInsets.all(12.0),
+                      ),
+                      onPressed: () {
+                        deleteAllPreferences();
+                        melodyIDProvider.loadSettings();
+                        melodySingingProvider.loadSettings();
+                        chordIDProvider.loadSettings();
+                        chordSingingProvider.loadSettings();
+                        chordMelodyIDProvider.loadSettings();
+                        chordMelodySingingProvider.loadSettings();
+                        setState(() {});
+                      },
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text(
+                          "WARNING: Reset all settings",
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
                     ),
                   ),
@@ -524,22 +526,24 @@ class _HelpPageState extends State<HelpPage> {
               verticalSpacer(),
               Row(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorMap["c3f3"] ?? Colors.white,
-                      foregroundColor:
-                          colorMap["buttonForegroundColor"] ?? Colors.white,
-                      padding: const EdgeInsets.all(12.0),
-                    ),
-                    onPressed: () {
-                      objectBox.removeAllLevelTestResults();
-                      objectBox.removeAllMissionSavedSettings();
-                    },
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Text(
-                        "WARNING: Delete all results",
-                        style: TextStyle(fontSize: 20),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        foregroundColor:
+                            colorMap["buttonForegroundColor"] ?? Colors.white,
+                        padding: const EdgeInsets.all(12.0),
+                      ),
+                      onPressed: () {
+                        objectBox.removeAllLevelTestResults();
+                        objectBox.removeAllMissionSavedSettings();
+                      },
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text(
+                          "WARNING: Delete all results",
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
                     ),
                   ),

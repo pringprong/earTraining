@@ -39,9 +39,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               subHeadingRow("Melody notes:"),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Octave:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Octave:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value:
@@ -76,9 +78,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Scale:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Scale:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().selectedScale,
@@ -132,9 +136,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               subHeadingRow("Melody settings:"),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Number of notes in melody:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Number of notes in melody:'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value: context.watch<chordMelodyIDSettings>().numberOfNotes,
@@ -160,9 +166,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Max distance between adjacent notes:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Max distance between adjacent notes:'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value: context.watch<chordMelodyIDSettings>().maxDistance,
@@ -188,9 +196,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Allow repeated notes:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Allow repeated notes:'),
+                    ),
                   ),
                   Checkbox(
                     value:
@@ -207,9 +217,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Chord frequency:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Chord frequency:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value:
@@ -239,9 +251,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Allow repeated chords:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Allow repeated chords:'),
+                    ),
                   ),
                   Checkbox(
                     value:
@@ -260,9 +274,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               subHeadingRow("Playback settings:"),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback key:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Playback key:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback key'),
@@ -288,9 +304,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback instrument:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Playback instrument:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback instrument'),
@@ -319,9 +337,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback speed:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Playback speed:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().playbackSpeed,
@@ -378,9 +398,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Arpeggiate chord delay - Guitar (ms):'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Arpeggiate chord delay - Guitar (ms):'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value:
@@ -415,9 +437,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Arpeggiate chord delay - Piano (ms):'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Arpeggiate chord delay - Piano (ms):'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value:
@@ -452,9 +476,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Arpeggiate chord delay - Solfege (ms):'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Arpeggiate chord delay - Solfege (ms):'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value:
@@ -489,9 +515,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Arpeggiate chord delay - Spoken (ms):'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Arpeggiate chord delay - Spoken (ms):'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value:
@@ -526,9 +554,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Arpeggiation order:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Arpeggiation order:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value:
@@ -581,9 +611,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                     },
                   ),
                   // Starting note dropdown
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Tonic note:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Tonic note:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().startingDo,
@@ -637,9 +669,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                     },
                   ),
                   // Ending note dropdown
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Ending note:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Ending note:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().endingDo,
@@ -864,9 +898,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               subHeadingRow("Chord settings:"),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Range:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Range:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().chordSetRange,
@@ -902,9 +938,11 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Set:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Set:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<chordMelodyIDSettings>().chordSet,

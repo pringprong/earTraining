@@ -34,9 +34,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
               subHeadingRow("Melody notes:"),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Octave:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Octave:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value:
@@ -71,9 +73,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Scale:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Scale:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodySingingSettings>().selectedScale,
@@ -127,9 +131,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
               subHeadingRow("Melody settings:"),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Number of notes in melody:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Number of notes in melody:'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value: context.watch<MelodySingingSettings>().numberOfNotes,
@@ -155,9 +161,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Max distance between adjacent notes:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Max distance between adjacent notes:'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value: context.watch<MelodySingingSettings>().maxDistance,
@@ -183,9 +191,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Allow repeated notes:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Allow repeated notes:'),
+                    ),
                   ),
                   Checkbox(
                     value:
@@ -204,9 +214,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
               subHeadingRow("Playback settings:"),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback key:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Playback key:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback key'),
@@ -232,9 +244,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback instrument:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Playback instrument:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback instrument'),
@@ -263,9 +277,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback speed:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Playback speed:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodySingingSettings>().playbackSpeed,
@@ -345,9 +361,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                     },
                   ),
                   // Starting note dropdown
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Tonic note:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Tonic note:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodySingingSettings>().startingDo,
@@ -395,9 +413,11 @@ class _MelodySingingSettingsPageState extends State<MelodySingingSettingsPage> {
                     },
                   ),
                   // Ending note dropdown
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Ending note:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Ending note:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodySingingSettings>().endingDo,

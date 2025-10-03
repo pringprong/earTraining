@@ -33,9 +33,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
               subHeadingRow("Melody notes:"),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Octave:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Octave:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodyIDSettings>().selectedOctave,
@@ -69,9 +71,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Scale:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Scale:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: context.watch<MelodyIDSettings>().selectedScale,
@@ -153,9 +157,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Max distance between adjacent notes:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Max distance between adjacent notes:'),
+                    ),
                   ),
                   DropdownButton<int>(
                     value: context.watch<MelodyIDSettings>().maxDistance,
@@ -227,9 +233,11 @@ class _MelodyIDSettingsPageState extends State<MelodyIDSettingsPage> {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Playback instrument:'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Playback instrument:'),
+                    ),
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback instrument'),
