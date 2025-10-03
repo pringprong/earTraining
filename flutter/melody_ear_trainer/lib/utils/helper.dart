@@ -82,12 +82,10 @@ Row plainText(String myText) {
   );
 }
 
-// Add this utility function to your file (e.g., below the listEquals function or anywhere in your class/file):
 String chordMelodySolfegeToString(List<List<String>> data) {
   return data.map((inner) => inner.join('-')).join(' ');
 }
 
-// Helper for list comparison
 bool listEquals<T>(List<T>? a, List<T>? b) {
   if (a == null || b == null) return false;
   if (a.length != b.length) return false;
@@ -587,6 +585,17 @@ void resetMissionBeforeMissionPage(
       mappingProvider.getLevelsForMission(missionInfo.MissionID).last;
   generalProvider.setNoteSelection(selectedKeys: lastLevel.Notes);
 }
+
+const Map<String, String> campaignTreeShapes = {
+  "Melody ID": "rectangle",
+  "Melody singing": "diamond",
+  "Chord ID": "hexagon",
+  "Chord singing": "trapezoid",
+  "Chord melody ID": "octagon",
+  "Chord melody singing": "houseshape",
+  "Bonus": "starshape",
+  "": "circle"
+};
 
 RegExp chordNameParse = RegExp(
   r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',

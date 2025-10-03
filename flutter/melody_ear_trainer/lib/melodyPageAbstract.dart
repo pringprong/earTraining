@@ -373,8 +373,15 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
 
   Row sayTheSolfegeButton(
     GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
-  ) {
+    MappingProvider mappingProvider, {
+    bool compact = false,
+  }) {
+    double insets = 12;
+    double fontsize = 20;
+    if (compact) {
+      insets = 8;
+      fontsize = 16;
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -384,7 +391,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
               backgroundColor: colorMap["c1f3"] ?? Colors.white,
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
+              padding: EdgeInsets.all(insets),
             ),
             onPressed: () {
               generatedChordMelody.playSpoken(
@@ -395,7 +402,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             },
             child: FittedBox(
               fit: BoxFit.fill,
-              child: Text("Say the solfege", style: TextStyle(fontSize: 20)),
+              child: Text("Say the solfege", style: TextStyle(fontSize: fontsize)),
             ),
           ),
         ),
