@@ -128,71 +128,7 @@ class _campaignTreeState extends State<campaignTree> {
                           var nodeValue = nodesList.firstWhere(
                             (element) => element['id'] == a,
                           );
-                          // put new code here
-                          // nodeValue['unlockedby'] may return a list of missionIDs
-                          // and if so ['unlockedbyrelationship'] will be set
-                          // to either "AND" or "OR"
-                          // if these two values are set, then we need to look up all the
-                          // items in the "unlockedby" list in bool objectBox.isMissionPassed(String missionID)
-                          // which will produce a true or false result for each missionID
-                          // the boolean values should then be combined into one final result
-                          // using AND or OR depending on the value of "unlockedbyrelationship"
-                          // we pass the result to the widget constructor
-                          // if the value is true, then the widget is unlocked and
-                          // we use the current code.
-                          // if the value is false, the widget is locked, the widget constructor should:
-                          // not display the label, just a "Mission Locked"
-                          // set the color of the widget to grey
-                          // and have no OnPressed reaction
-
-                          // Evaluate unlocked state (optional keys: unlockedby, unlockedbyrelationship)
-                          bool unlocked = true;
-                          if (!context.watch<ThemeProvider>().unlockall) {
-                            if (nodeValue.containsKey('unlockedby')) {
-                              try {
-                                final raw = nodeValue['unlockedby'];
-                                final List<String> unlockedList =
-                                    (raw is List)
-                                        ? raw.map((e) => e.toString()).toList()
-                                        : [raw.toString()];
-                                final relationship =
-                                    (nodeValue['unlockedbyrelationship'] ??
-                                            'AND')
-                                        .toString()
-                                        .toUpperCase();
-
-                                // Lookup each mission id via global objectBox.isMissionPassed(...) (synchronous)
-                                List<bool> results = [];
-                                for (final mid in unlockedList) {
-                                  bool passed = false;
-                                  try {
-                                    passed = objectBox.isMissionPassed(mid);
-                                  } catch (e) {
-                                    // lookup failure -> treat as not passed
-                                    debugPrint(
-                                      'campaign.dart: isMissionPassed lookup error for "$mid": $e',
-                                    );
-                                    passed = false;
-                                  }
-                                  results.add(passed);
-                                }
-                                if (results.isEmpty) {
-                                  unlocked = true;
-                                } else if (relationship == 'AND') {
-                                  unlocked = results.every((b) => b);
-                                } else {
-                                  // default OR
-                                  unlocked = results.any((b) => b);
-                                }
-                              } catch (e) {
-                                debugPrint(
-                                  'campaign.dart: error evaluating unlockedby for node $nodeValue: $e',
-                                );
-                                unlocked =
-                                    true; // fail-open to avoid accidentally hiding content
-                              }
-                            }
-                          }
+                          bool unlocked = getUnlocked(nodeValue);
                           final shape =
                               (nodeValue['shape'] ?? 'Rectangle').toString();
                           final label = nodeValue['label'] as String?;
@@ -228,6 +164,73 @@ class _campaignTreeState extends State<campaignTree> {
               )
               : Center(child: CircularProgressIndicator()),
     );
+  }
+
+  bool getUnlocked(dynamic nodeValue) {
+    // put new code here
+    // nodeValue['unlockedby'] may return a list of missionIDs
+    // and if so ['unlockedbyrelationship'] will be set
+    // to either "AND" or "OR"
+    // if these two values are set, then we need to look up all the
+    // items in the "unlockedby" list in bool objectBox.isMissionPassed(String missionID)
+    // which will produce a true or false result for each missionID
+    // the boolean values should then be combined into one final result
+    // using AND or OR depending on the value of "unlockedbyrelationship"
+    // we pass the result to the widget constructor
+    // if the value is true, then the widget is unlocked and
+    // we use the current code.
+    // if the value is false, the widget is locked, the widget constructor should:
+    // not display the label, just a "Mission Locked"
+    // set the color of the widget to grey
+    // and have no OnPressed reaction
+
+    // Evaluate unlocked state (optional keys: unlockedby, unlockedbyrelationship)
+    bool unlocked = true;
+    if (!context.watch<ThemeProvider>().unlockall) {
+      if (nodeValue.containsKey('unlockedby')) {
+        try {
+          final raw = nodeValue['unlockedby'];
+          final List<String> unlockedList =
+              (raw is List)
+                  ? raw.map((e) => e.toString()).toList()
+                  : [raw.toString()];
+          final relationship =
+              (nodeValue['unlockedbyrelationship'] ?? 'AND')
+                  .toString()
+                  .toUpperCase();
+
+          // Lookup each mission id via global objectBox.isMissionPassed(...) (synchronous)
+          List<bool> results = [];
+          for (final mid in unlockedList) {
+            bool passed = false;
+            try {
+              passed = objectBox.isMissionPassed(mid);
+            } catch (e) {
+              // lookup failure -> treat as not passed
+              debugPrint(
+                'campaign.dart: isMissionPassed lookup error for "$mid": $e',
+              );
+              passed = false;
+            }
+            results.add(passed);
+          }
+          if (results.isEmpty) {
+            unlocked = true;
+          } else if (relationship == 'AND') {
+            unlocked = results.every((b) => b);
+          } else {
+            // default OR
+            unlocked = results.any((b) => b);
+          }
+        } catch (e) {
+          debugPrint(
+            'campaign.dart: error evaluating unlockedby for node $nodeValue: $e',
+          );
+          unlocked = true; // fail-open to avoid accidentally hiding content
+        }
+      }
+    }
+    return unlocked;
   }
 
   Widget circleWidget(String? title, bool unlocked) {
@@ -300,17 +303,17 @@ class _campaignTreeState extends State<campaignTree> {
             height: 150,
             child: Center(
               child: Text(
-          "Mission: " +
-              missionInfo.MissionName +
-              '\nMode: ' +
-              missionInfo.MissionMode +
-              '\nStatus ' +
-              missionStatus,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: colorMap["buttonForegroundColor"] ?? Colors.white,
-          ),
-        ),
+                "Mission: " +
+                    missionInfo.MissionName +
+                    '\nMode: ' +
+                    missionInfo.MissionMode +
+                    '\nStatus ' +
+                    missionStatus,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                ),
+              ),
             ),
           ),
         ),
