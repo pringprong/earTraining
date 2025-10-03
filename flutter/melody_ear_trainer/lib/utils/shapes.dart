@@ -140,19 +140,19 @@ class StarShapeClipper extends CustomClipper<Path> {
     final path = Path();
     path.moveTo(size.width / 2, 0); // Top point
     path.lineTo(size.width *5/8, size.height*1/10); // Right point
-    path.lineTo(size.width *6/8, size.height*1/10); // Right point
-    path.lineTo(size.width * 7/8, size.height*3/10); // Right point
+    path.lineTo(size.width *9/10, size.height*1/10); // Right point
+    path.lineTo(size.width * 9/10, size.height*3/10); // Right point
     path.lineTo(size.width, size.height/ 2); // Right point
-    path.lineTo(size.width *7/8, size.height*7/10); // Right point
-    path.lineTo(size.width *6/8, size.height*9/10); // Right point
+    path.lineTo(size.width *9/10, size.height*7/10); // Right point
+    path.lineTo(size.width *9/10, size.height*9/10); // Right point
     path.lineTo(size.width *5/8, size.height*9/10); // Right point
     path.lineTo(size.width/2, size.height); // Right point
     path.lineTo(size.width *3/8, size.height*9/10); // Right point
-    path.lineTo(size.width *2/8, size.height*9/10); // Right point
-    path.lineTo(size.width *1/8, size.height*7/10); // Right point
+    path.lineTo(size.width *1/10, size.height*9/10); // Right point
+    path.lineTo(size.width *1/10, size.height*7/10); // Right point
     path.lineTo(0, size.height/2); // Right point
-    path.lineTo(size.width *1/8, size.height*3/10); // Right point
-    path.lineTo(size.width *2/8, size.height*1/10); // Right point
+    path.lineTo(size.width *1/10, size.height*3/10); // Right point
+    path.lineTo(size.width *1/10, size.height*1/10); // Right point
     path.lineTo(size.width *3/8, size.height*1/10); // Right point
     path.close();
     return path;
