@@ -36,6 +36,7 @@ import 'campaign/levelTestResults.dart';
 import 'utils/objectBox.dart';
 import 'campaign/levelMelodySinging.dart';
 import 'campaign/levelMelodySinginghandsfree.dart';
+import 'campaign/levelMelodySingingtest.dart';
 
 late ObjectBox objectBox;
 final String versionNumber = "3.0";
@@ -210,7 +211,11 @@ class MelodyEarTrainerApp extends StatelessWidget {
         LevelMelodySinging.routeName:
             (context) => LevelMelodySinging(audioController: audioController),
         LevelMelodySingingHandsFree.routeName:
-            (context) => LevelMelodySingingHandsFree(audioController: audioController),
+            (context) =>
+                LevelMelodySingingHandsFree(audioController: audioController),
+        LevelMelodySingingTest.routeName:
+            (context) =>
+                LevelMelodySingingTest(audioController: audioController),
 
         // Add other routes here
       },

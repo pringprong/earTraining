@@ -10,6 +10,7 @@ import 'levelMelodyIDhandsfree.dart';
 import 'levelMelodyIDtest.dart';
 import 'levelMelodySinging.dart';
 import 'levelMelodySinginghandsfree.dart';
+import 'levelMelodySingingtest.dart';
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -316,6 +317,12 @@ class _LevelState extends State<Level> {
                 Navigator.pushNamed(
                   context,
                   LevelMelodyIDTest.routeName,
+                  arguments: levelInfo,
+                );
+              } else if (missionMode == "Melody singing") {
+                Navigator.pushNamed(
+                  context,
+                  LevelMelodySingingTest.routeName,
                   arguments: levelInfo,
                 );
               }

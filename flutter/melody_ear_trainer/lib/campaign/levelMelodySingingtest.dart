@@ -9,16 +9,16 @@ import 'levelTestResults.dart';
 import 'package:intl/intl.dart';
 //import '../utils/resultsDB.dart';
 
-class LevelMelodyIDTest extends TestPageAbstract {
-  const LevelMelodyIDTest({super.key, required super.audioController})
+class LevelMelodySingingTest extends TestPageAbstract {
+  const LevelMelodySingingTest({super.key, required super.audioController})
     : super();
 
-  static const String routeName = '/levelmelodyidtest';
+  static const String routeName = '/levelmelodysingingtest';
   @override
-  LevelMelodyIDTestState createState() => LevelMelodyIDTestState();
+  LevelMelodySingingTestState createState() => LevelMelodySingingTestState();
 }
 
-class LevelMelodyIDTestState extends TestPageAbstractState {
+class LevelMelodySingingTestState extends TestPageAbstractState {
   LevelInfo levelInfo = LevelInfo(
     "",
     "",
@@ -57,9 +57,12 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
             children: [
               campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
-              missionHeader(mappingProvider, mappingProvider.missions[levelInfo.MissionID]!),
+              missionHeader(
+                mappingProvider,
+                mappingProvider.missions[levelInfo.MissionID]!,
+              ),
               verticalSpacer(),
-                levelHeader(levelInfo),
+              levelHeader(levelInfo),
               plainText(
                 "Current score: " +
                     correctAnswers.toString() +
@@ -72,29 +75,28 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
                     " to pass" 
               ),
               verticalSpacer(),
-              startTestButton(generalProvider, mappingProvider, false),
+              startTestButtonSinging(generalProvider, mappingProvider, true),
               verticalSpacer(),
               previousQuestionResult(),
-              // verticalSpacer(),
-              // TextRow("Current question: " + currentRound.toString()),
               verticalSpacer(),
-              plainText("Listen to melody again:"),
+              plainText("Sing the melody below"),
+              plainText("based on the first note:"),
               verticalSpacer(),
-              playMelodyButtons(generalProvider, mappingProvider, false),
+              solfegeTextArea(),
               verticalSpacer(),
-              plainText(
-                "Enter the solfege (" +
-                    levelInfo.NumNotes.toString() +
-                    " notes):",
-              ),
+              plainText("Listen to first note again"),
               verticalSpacer(),
-              buildNoteButtons(generalProvider, mappingProvider),
+              playFirstNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
-              userWrittenSolfegeArea(),
-              // verticalSpacer(),
-              // clearAndBackspaceButtons(),
+              sayTheSolfegeButton(generalProvider, mappingProvider),
               verticalSpacer(),
-              enterGuessbutton(generalProvider, mappingProvider, false),
+              plainText("Listen to melody to check:"),
+              verticalSpacer(),
+              playMelodyButtons(generalProvider, mappingProvider, true),
+              verticalSpacer(),
+              plainText("Did you sing it correctly?"),
+              verticalSpacer(),
+              reportWhetherCorrect(generalProvider, mappingProvider)
             ],
           ),
         ),
