@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class DiamondClipper extends CustomClipper<Path> {
   @override
@@ -29,29 +28,21 @@ class DiamondWidget extends StatelessWidget {
 class OctagonClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = Path();
-    double radius = size.shortestSide / 2;
-    Offset center = Offset(size.width / 2, size.height / 2);
-
-    // Calculate the points of the octagon
-    for (int i = 0; i < 8; i++) {
-      double angle = (pi * 2 / 8) * i; // Angle for each vertex
-      double x = center.dx + radius * cos(angle);
-      double y = center.dy + radius * sin(angle);
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
-    }
+    final path = Path();
+    path.moveTo(size.width / 4, 0); // Top point
+    path.lineTo(size.width * 3/4, 0); // Right point
+    path.lineTo(size.width, size.height/4); // Right point
+    path.lineTo(size.width, size.height *3/4); // Right point
+    path.lineTo(size.width * 3/4, size.height); // Right point
+    path.lineTo(size.width /4, size.height); // Right point
+    path.lineTo(0, size.height *3/4); // Right point
+    path.lineTo(0, size.height /4); // Right point
     path.close();
     return path;
   }
 
   @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false; // Only reclip if the shape changes
-  }
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
 
 class OctagonWidget extends StatelessWidget {
@@ -62,3 +53,123 @@ class OctagonWidget extends StatelessWidget {
     return ClipPath(clipper: OctagonClipper(), child: child);
   }
 }
+
+class HexagonClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(size.width / 10, 0); // Top point
+    path.lineTo(size.width * 9/10, 0); // Right point
+    path.lineTo(size.width, size.height /2); // Right point
+    path.lineTo(size.width * 9/10, size.height); // Right point
+    path.lineTo(size.width /10, size.height); // Right point
+    path.lineTo(0, size.height /2); // Right point
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+class HexagonWidget extends StatelessWidget {
+  final Widget child;
+  const HexagonWidget({Key? key, required this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ClipPath(clipper: HexagonClipper(), child: child);
+  }
+}
+
+class TrapezoidClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(size.width / 10, 0); // Top point
+    path.lineTo(size.width * 9/10, 0); // Right point
+    path.lineTo(size.width, size.height); // Right point
+    path.lineTo(0, size.height ); // Right point
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+class TrapezoidWidget extends StatelessWidget {
+  final Widget child;
+  const TrapezoidWidget({Key? key, required this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ClipPath(clipper: TrapezoidClipper(), child: child);
+  }
+}
+
+
+class HouseShapeClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(size.width / 2, 0); // Top point
+    path.lineTo(size.width, size.height/ 6); // Right point
+    path.lineTo(size.width, size.height); // Right point
+    path.lineTo(0, size.height ); // Right point
+    path.lineTo(0, size.height/6 ); // Right point
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+class HouseShapeWidget extends StatelessWidget {
+  final Widget child;
+  const HouseShapeWidget({Key? key, required this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ClipPath(clipper: HouseShapeClipper(), child: child);
+  }
+}
+
+
+class StarShapeClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(size.width / 2, 0); // Top point
+    path.lineTo(size.width *5/8, size.height*1/10); // Right point
+    path.lineTo(size.width *6/8, size.height*1/10); // Right point
+    path.lineTo(size.width * 7/8, size.height*3/10); // Right point
+    path.lineTo(size.width, size.height/ 2); // Right point
+    path.lineTo(size.width *7/8, size.height*7/10); // Right point
+    path.lineTo(size.width *6/8, size.height*9/10); // Right point
+    path.lineTo(size.width *5/8, size.height*9/10); // Right point
+    path.lineTo(size.width/2, size.height); // Right point
+    path.lineTo(size.width *3/8, size.height*9/10); // Right point
+    path.lineTo(size.width *2/8, size.height*9/10); // Right point
+    path.lineTo(size.width *1/8, size.height*7/10); // Right point
+    path.lineTo(0, size.height/2); // Right point
+    path.lineTo(size.width *1/8, size.height*3/10); // Right point
+    path.lineTo(size.width *2/8, size.height*1/10); // Right point
+    path.lineTo(size.width *3/8, size.height*1/10); // Right point
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+class StarShapeWidget extends StatelessWidget {
+  final Widget child;
+  const StarShapeWidget({Key? key, required this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ClipPath(clipper: StarShapeClipper(), child: child);
+  }
+}
+
+
+

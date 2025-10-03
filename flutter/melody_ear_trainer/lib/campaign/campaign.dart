@@ -131,7 +131,6 @@ class _campaignTreeState extends State<campaignTree> {
                           bool unlocked = getUnlocked(nodeValue);
                           final shape =
                               (nodeValue['shape'] ?? 'Rectangle').toString();
-                          //final label = nodeValue['label'] as String?;
                           if (shape.toLowerCase() == 'circle') {
                             return circleWidget();
                           } else if (shape.toLowerCase() == 'diamond') {
@@ -144,8 +143,57 @@ class _campaignTreeState extends State<campaignTree> {
                               mappingProvider,
                               unlocked,
                             );
+                          } else if (shape.toLowerCase() == 'hexagon') {
+                            MissionInfo missionInfo =
+                                missions[nodeValue['missionid']]!;
+                            return myHexagonWidget(
+                              context,
+                              missionInfo,
+                              generalProvider,
+                              mappingProvider,
+                              unlocked,
+                            );
+                          } else if (shape.toLowerCase() == 'octagon') {
+                            MissionInfo missionInfo =
+                                missions[nodeValue['missionid']]!;
+                            return myOctagonWidget(
+                              context,
+                              missionInfo,
+                              generalProvider,
+                              mappingProvider,
+                              unlocked,
+                            );
+                          } else if (shape.toLowerCase() == 'trapezoid') {
+                            MissionInfo missionInfo =
+                                missions[nodeValue['missionid']]!;
+                            return myTrapezoidWidget(
+                              context,
+                              missionInfo,
+                              generalProvider,
+                              mappingProvider,
+                              unlocked,
+                            );
+                          } else if (shape.toLowerCase() == 'houseshape') {
+                            MissionInfo missionInfo =
+                                missions[nodeValue['missionid']]!;
+                            return myHouseShapeWidget(
+                              context,
+                              missionInfo,
+                              generalProvider,
+                              mappingProvider,
+                              unlocked,
+                            );
+                          } else if (shape.toLowerCase() == 'starshape') {
+                            MissionInfo missionInfo =
+                                missions[nodeValue['missionid']]!;
+                            return myStarShapeWidget(
+                              context,
+                              missionInfo,
+                              generalProvider,
+                              mappingProvider,
+                              unlocked,
+                            );
                           } else {
-                            // Rectangle: interactive — push Mission (if unlocked)
                             MissionInfo missionInfo =
                                 missions[nodeValue['missionid']]!;
                             return rectangleWidget(
@@ -312,6 +360,346 @@ class _campaignTreeState extends State<campaignTree> {
     }
   }
 
+  Widget myOctagonWidget(
+    BuildContext context,
+    MissionInfo missionInfo,
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    bool unlocked,
+  ) {
+    String titleText =
+        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+    Color fill = unlocked ? Colors.black : Colors.grey;
+    double mywidth = 200;
+    double myheight = 80;
+    if (!unlocked) {
+      return OctagonWidget(
+        child: Container(
+          color: fill,
+          width: mywidth,
+          height: myheight,
+          child: Center(
+            child: Text(
+              titleText,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+            ),
+          ),
+        ),
+      );
+    } else {
+      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      Color nodeColor = missionLevelStatusColor(missionStatus);
+      return InkWell(
+        onTap: () {
+          resetMissionBeforeMissionPage(
+            generalProvider,
+            mappingProvider,
+            missionInfo,
+          );
+          Navigator.pushNamed(
+            context,
+            Mission.routeName,
+            arguments: missionInfo,
+          );
+        },
+        child: OctagonWidget(
+          child: Container(
+            color: nodeColor,
+            width: mywidth,
+            height: myheight,
+            child: Center(
+              child: Text(
+                "Mission: " +
+                    missionInfo.MissionName +
+                    '\nMode: ' +
+                    missionInfo.MissionMode +
+                    '\nStatus ' +
+                    missionStatus,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget myHexagonWidget(
+    BuildContext context,
+    MissionInfo missionInfo,
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    bool unlocked,
+  ) {
+    String titleText =
+        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+    Color fill = unlocked ? Colors.black : Colors.grey;
+    double mywidth = 200;
+    double myheight = 80;
+    if (!unlocked) {
+      return HexagonWidget(
+        child: Container(
+          color: fill,
+          width: mywidth,
+          height: myheight,
+          child: Center(
+            child: Text(
+              titleText,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+            ),
+          ),
+        ),
+      );
+    } else {
+      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      Color nodeColor = missionLevelStatusColor(missionStatus);
+      return InkWell(
+        onTap: () {
+          resetMissionBeforeMissionPage(
+            generalProvider,
+            mappingProvider,
+            missionInfo,
+          );
+          Navigator.pushNamed(
+            context,
+            Mission.routeName,
+            arguments: missionInfo,
+          );
+        },
+        child: HexagonWidget(
+          child: Container(
+            color: nodeColor,
+            width: mywidth,
+            height: myheight,
+            child: Center(
+              child: Text(
+                "Mission: " +
+                    missionInfo.MissionName +
+                    '\nMode: ' +
+                    missionInfo.MissionMode +
+                    '\nStatus ' +
+                    missionStatus,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget myTrapezoidWidget(
+    BuildContext context,
+    MissionInfo missionInfo,
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    bool unlocked,
+  ) {
+    String titleText =
+        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+    Color fill = unlocked ? Colors.black : Colors.grey;
+    double mywidth = 200;
+    double myheight = 80;
+    if (!unlocked) {
+      return TrapezoidWidget(
+        child: Container(
+          color: fill,
+          width: mywidth,
+          height: myheight,
+          child: Center(
+            child: Text(
+              titleText,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+            ),
+          ),
+        ),
+      );
+    } else {
+      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      Color nodeColor = missionLevelStatusColor(missionStatus);
+      return InkWell(
+        onTap: () {
+          resetMissionBeforeMissionPage(
+            generalProvider,
+            mappingProvider,
+            missionInfo,
+          );
+          Navigator.pushNamed(
+            context,
+            Mission.routeName,
+            arguments: missionInfo,
+          );
+        },
+        child: TrapezoidWidget(
+          child: Container(
+            color: nodeColor,
+            width: mywidth,
+            height: myheight,
+            child: Center(
+              child: Text(
+                "Mission: " +
+                    missionInfo.MissionName +
+                    '\nMode: ' +
+                    missionInfo.MissionMode +
+                    '\nStatus ' +
+                    missionStatus,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+  
+  Widget myHouseShapeWidget(
+    BuildContext context,
+    MissionInfo missionInfo,
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    bool unlocked,
+  ) {
+    String titleText =
+        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+    Color fill = unlocked ? Colors.black : Colors.grey;
+    double mywidth = 200;
+    double myheight = 80;
+    if (!unlocked) {
+      return HouseShapeWidget(
+        child: Container(
+          color: fill,
+          width: mywidth,
+          height: myheight,
+          child: Center(
+            child: Text(
+              titleText,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+            ),
+          ),
+        ),
+      );
+    } else {
+      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      Color nodeColor = missionLevelStatusColor(missionStatus);
+      return InkWell(
+        onTap: () {
+          resetMissionBeforeMissionPage(
+            generalProvider,
+            mappingProvider,
+            missionInfo,
+          );
+          Navigator.pushNamed(
+            context,
+            Mission.routeName,
+            arguments: missionInfo,
+          );
+        },
+        child: HouseShapeWidget(
+          child: Container(
+            color: nodeColor,
+            width: mywidth,
+            height: myheight,
+            child: Center(
+              child: Text(
+                "Mission: " +
+                    missionInfo.MissionName +
+                    '\nMode: ' +
+                    missionInfo.MissionMode +
+                    '\nStatus ' +
+                    missionStatus,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+ 
+ Widget myStarShapeWidget(
+    BuildContext context,
+    MissionInfo missionInfo,
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    bool unlocked,
+  ) {
+    String titleText =
+        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+    Color fill = unlocked ? Colors.black : Colors.grey;
+    double mywidth = 250;
+    double myheight = 90;
+    if (!unlocked) {
+      return StarShapeWidget(
+        child: Container(
+          color: fill,
+          width: mywidth,
+          height: myheight,
+          child: Center(
+            child: Text(
+              titleText,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+            ),
+          ),
+        ),
+      );
+    } else {
+      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      Color nodeColor = missionLevelStatusColor(missionStatus);
+      return InkWell(
+        onTap: () {
+          resetMissionBeforeMissionPage(
+            generalProvider,
+            mappingProvider,
+            missionInfo,
+          );
+          Navigator.pushNamed(
+            context,
+            Mission.routeName,
+            arguments: missionInfo,
+          );
+        },
+        child: StarShapeWidget(
+          child: Container(
+            color: nodeColor,
+            width: mywidth,
+            height: myheight,
+            child: Center(
+              child: Text(
+                "Mission: " +
+                    missionInfo.MissionName +
+                    '\nMode: ' +
+                    missionInfo.MissionMode +
+                    '\nStatus ' +
+                    missionStatus,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
   Widget rectangleWidget(
     BuildContext context,
     MissionInfo missionInfo,
@@ -335,12 +723,8 @@ class _campaignTreeState extends State<campaignTree> {
         ),
       );
     }
-
-    // Unlocked behaviour (existing code)
-
     String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
     Color nodeColor = missionLevelStatusColor(missionStatus);
-
     return InkWell(
       onTap: () {
         resetMissionBeforeMissionPage(

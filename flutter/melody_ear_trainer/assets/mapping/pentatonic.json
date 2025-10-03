@@ -2,14 +2,12 @@
     "nodes": [
         {
             "id": 1,
-            "shape": "Rectangle",
-            "label": "",
+            "shape": "starshape",
             "missionid": "c0m01"
         },
         {
             "id": 2,
             "shape": "Rectangle",
-            "label": "",
             "missionid": "c0m02",
 			"unlockedby": 
 				[
@@ -20,7 +18,6 @@
         {
             "id": 3,
             "shape": "Circle",
-            "label": "Campaign hub",
             "missionid": "",
 			"unlockedby": 
 				[
@@ -30,8 +27,7 @@
         },
         {
             "id": 4,
-            "shape": "Diamond",
-            "label": "",
+            "shape": "starshape",
             "missionid": "c0m03",
 			"unlockedby": 
 				[
