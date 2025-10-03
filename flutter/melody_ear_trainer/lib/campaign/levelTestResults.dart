@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../utils/helper.dart';
 import 'level.dart';
+import 'mission.dart';
+import 'campaign.dart';
 
 class LevelTestResultsPage extends StatefulWidget {
   const LevelTestResultsPage({super.key});
@@ -132,7 +134,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 missionHeader(
                   mappingProvider,
                   mappingProvider.getMissions[levelTestResults.MissionID]!,
-                  max:true
+                  max: true,
                 ),
                 verticalSpacer(),
                 levelHeader(levelInfo),
@@ -147,7 +149,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 assessmentCard(assessment),
                 verticalSpacer(),
                 ...optionalRedoTestButton(redoTest, levelInfo, context),
-                ...optionalLevelPageButton(returnToLevelPage, levelStatus,context),
+                ...optionalLevelPageButton(
+                  returnToLevelPage,
+                  levelStatus,
+                  context,
+                ),
                 ...optionalNextLevelButton(
                   goToNextLevel,
                   generalProvider,
@@ -306,13 +312,12 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
+                backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
+                foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                Navigator.pop(context); // pop to level page
-                Navigator.pushNamed(
+                Navigator.pushReplacementNamed(
                   context,
                   LevelMelodyIDTest.routeName,
                   arguments: levelInfo,
@@ -339,7 +344,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
       return [SizedBox(height: 0)];
     }
     String levelStatus = getLevelStatusWithQuery(nextLevel);
-    Color nextLevelColor = missionLevelStatusColor(levelStatus);   
+    Color nextLevelColor = missionLevelStatusColor(levelStatus);
     return [
       verticalSpacer(),
       Row(
@@ -354,8 +359,10 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                Navigator.pop(context); // pop to level main page
-                Navigator.pop(context); // pop to mission main page
+                Navigator.popUntil(
+                  context,
+                  ModalRoute.withName(Mission.routeName),
+                );
                 generalProvider.setLevelDetails(
                   nextLevel.Notes,
                   nextLevel.NumNotes,
@@ -386,9 +393,10 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
   }
 
   List<Widget> optionalLevelPageButton(
-    bool showbutton, 
+    bool showbutton,
     String levelStatus,
-    dynamic context) {
+    dynamic context,
+  ) {
     if (!showbutton) {
       return [SizedBox(height: 0)];
     }
@@ -447,13 +455,15 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                Navigator.pop(context); // pop to level page
                 resetMissionBeforeMissionPage(
                   generalProvider,
                   mappingProvider,
                   mappingProvider.getMissions[levelInfo.MissionID]!,
                 );
-                Navigator.pop(context); // pop to mission page
+                Navigator.popUntil(
+                  context,
+                  ModalRoute.withName(Mission.routeName),
+                );
               },
               child: FittedBox(
                 fit: BoxFit.fill,
@@ -491,9 +501,10 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                Navigator.pop(context); // pop to level page
-                Navigator.pop(context); // pop to mission page
-                Navigator.pop(context); // pop to campaign tree
+                Navigator.popUntil(
+                  context,
+                  ModalRoute.withName(campaignTree.routeName)
+                );
               },
               child: FittedBox(
                 fit: BoxFit.fill,

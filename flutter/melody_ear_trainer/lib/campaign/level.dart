@@ -162,7 +162,6 @@ class _LevelState extends State<Level> {
             ),
             onPressed: () {
               if (prevLevel != null) {
-                Navigator.pop(context); // pop to mission main page
                 generalProvider.setLevelDetails(
                   prevLevel.Notes,
                   prevLevel.NumNotes,
@@ -175,7 +174,7 @@ class _LevelState extends State<Level> {
                   prevLevel.EndingDo,
                   prevLevel.ChordFrequency,
                 );
-                Navigator.pushNamed(
+                Navigator.pushReplacementNamed(
                   context,
                   Level.routeName,
                   arguments: prevLevel,
@@ -198,7 +197,6 @@ class _LevelState extends State<Level> {
             ),
             onPressed: () {
               if (nextLevel != null) {
-                Navigator.pop(context); // pop to mission main page
                 generalProvider.setLevelDetails(
                   nextLevel.Notes,
                   nextLevel.NumNotes,
@@ -211,7 +209,7 @@ class _LevelState extends State<Level> {
                   nextLevel.EndingDo,
                   nextLevel.ChordFrequency,
                 );
-                Navigator.pushNamed(
+                Navigator.pushReplacementNamed(
                   context,
                   Level.routeName,
                   arguments: nextLevel,
@@ -349,7 +347,7 @@ class _LevelState extends State<Level> {
                 mappingProvider,
                 missionInfo,
               );
-              Navigator.pop(context); // pop to level page
+              Navigator.pop(context); // pop to mission page
             },
             child: FittedBox(
               fit: BoxFit.fill,
