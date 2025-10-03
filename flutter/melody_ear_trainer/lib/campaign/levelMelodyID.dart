@@ -180,31 +180,4 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
     );
   }
 
-  Widget returnToLevelButton(String levelStatus) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: missionLevelStatusColor(levelStatus),
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.pop(context); // pop to level page
-            },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text(
-                "Return to level main page",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

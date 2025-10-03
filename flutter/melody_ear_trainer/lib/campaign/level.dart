@@ -9,6 +9,7 @@ import 'levelMelodyID.dart';
 import 'levelMelodyIDhandsfree.dart';
 import 'levelMelodyIDtest.dart';
 import 'levelMelodySinging.dart';
+import 'levelMelodySinginghandsfree.dart';
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -56,14 +57,12 @@ class _LevelState extends State<Level> {
                   missionHeader(
                     mappingProvider,
                     mappingProvider.missions[levelInfo.MissionID]!,
-                    max :false
+                    max: false,
                   ),
                   verticalSpacer(),
                   levelHeader(levelInfo),
                   verticalSpacer(),
-                  plainText(
-                    "Notes in this level (black=new):",
-                  ),
+                  plainText("Notes in this level (black=new):"),
                   verticalSpacer(),
                   buildNotesGrid(
                     generalProvider,
@@ -82,10 +81,8 @@ class _LevelState extends State<Level> {
                     generalProvider,
                     mappingProvider,
                     optional: true,
-                  ),                  
-                  plainText(
-                    "Practice and take a test when ready:",
                   ),
+                  plainText("Practice and take a test when ready:"),
                   verticalSpacer(),
                   practiceButton(missionMode, levelInfo),
                   verticalSpacer(),
@@ -105,7 +102,7 @@ class _LevelState extends State<Level> {
                     generalProvider,
                     mappingProvider,
                     missionMode,
-                    missionInfo
+                    missionInfo,
                   ),
                   verticalSpacer(),
                   plainText("Test history:"),
@@ -282,6 +279,12 @@ class _LevelState extends State<Level> {
                   LevelMelodyIDHandsFree.routeName,
                   arguments: levelInfo,
                 );
+              } else if (missionMode == "Melody singing") {
+                Navigator.pushNamed(
+                  context,
+                  LevelMelodySingingHandsFree.routeName,
+                  arguments: levelInfo,
+                );
               }
             },
             child: FittedBox(
@@ -321,8 +324,7 @@ class _LevelState extends State<Level> {
               fit: BoxFit.fill,
               child: Text(
                 "Take a test for this level",
-                style: TextStyle(fontSize: 20,
-                fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -335,7 +337,7 @@ class _LevelState extends State<Level> {
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
     String missionMode,
-    MissionInfo missionInfo
+    MissionInfo missionInfo,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -368,5 +370,4 @@ class _LevelState extends State<Level> {
       ],
     );
   }
-
 }

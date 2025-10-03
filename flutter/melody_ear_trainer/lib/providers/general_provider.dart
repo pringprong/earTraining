@@ -891,3 +891,42 @@ class missionSettingsProvider extends GeneralProvider {
   @override
   int solfegeRepeatsDefault = 1;
 }
+
+// this is really only for the handsfree part of the mission-level section
+class missionSingingSettings extends GeneralProvider {
+  @override
+  String saveName = "mission_singing_settings";
+
+  @override
+  int numberOfNotesDefault = 4;
+
+  @override
+  String startingDoDefault = "do";
+
+  @override
+  String endingDoDefault = "do";
+
+  @override
+  String startingDo = "do";
+
+  @override
+  String endingDo = "do";
+
+  @override
+  int arpeggiateChordDelayGuitarDefault = 200;
+
+  @override
+  int arpeggiateChordDelayPianoDefault = 300;
+
+  @override
+  String chordFrequencyDefault = "Every 4 notes";
+
+  @override
+  int melodyRepeatsDefault = 1;
+
+  @override
+  int spokenRepeatsDefault = 1;
+
+  @override
+  int solfegeRepeatsDefault = 1;
+}

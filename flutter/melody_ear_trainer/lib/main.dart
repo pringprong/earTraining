@@ -35,6 +35,7 @@ import 'campaign/levelMelodyIDtest.dart';
 import 'campaign/levelTestResults.dart';
 import 'utils/objectBox.dart';
 import 'campaign/levelMelodySinging.dart';
+import 'campaign/levelMelodySinginghandsfree.dart';
 
 late ObjectBox objectBox;
 final String versionNumber = "3.0";
@@ -124,6 +125,12 @@ Future main() async {
             return msp;
           },
         ),
+        ChangeNotifierProvider<missionSingingSettings>(
+          create: (context) {
+            final mss = missionSingingSettings();
+            return mss;
+          },
+        ),
       ],
       child: MelodyEarTrainerApp(audioController: audioController),
     ),
@@ -202,6 +209,8 @@ class MelodyEarTrainerApp extends StatelessWidget {
             (context) => LevelMelodyIDTest(audioController: audioController),
         LevelMelodySinging.routeName:
             (context) => LevelMelodySinging(audioController: audioController),
+        LevelMelodySingingHandsFree.routeName:
+            (context) => LevelMelodySingingHandsFree(audioController: audioController),
 
         // Add other routes here
       },
