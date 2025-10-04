@@ -462,6 +462,7 @@ String getMissionStatus(
   MappingProvider mappingProvider,
   MissionInfo missionInfo,
 ) {
+
   final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
   LevelInfo lastLevel = levels.last;
   String statusOfLastLevel = objectBox.levelStatus(
@@ -470,7 +471,6 @@ String getMissionStatus(
     lastLevel.NumTests,
   );
   String thisMissionStatus = statusOfLastLevel;
-
   if (statusOfLastLevel == "Not started yet") {
     // the last level is not started, so the mission is definitey not passed
     // check all the other levels to see whether any of them are started yet

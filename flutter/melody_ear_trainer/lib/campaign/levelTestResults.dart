@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:melody_ear_trainer/campaign/levelMelodySingingtest.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'levelMelodyIDtest.dart';
 import '../../main.dart';
@@ -148,7 +149,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 verticalSpacer(),
                 assessmentCard(assessment),
                 verticalSpacer(),
-                ...optionalRedoTestButton(redoTest, levelInfo, context),
+                ...optionalRedoTestButton(redoTest, levelInfo, missionMode, context),
                 ...optionalLevelPageButton(
                   returnToLevelPage,
                   levelStatus,
@@ -297,6 +298,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
   List<Widget> optionalRedoTestButton(
     bool redoTest,
     LevelInfo levelInfo,
+    String missionMode,
     dynamic context,
   ) {
     if (!redoTest) {
@@ -317,11 +319,19 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                Navigator.pushReplacementNamed(
-                  context,
-                  LevelMelodyIDTest.routeName,
-                  arguments: levelInfo,
-                );
+                if (missionMode == "Melody ID") {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    LevelMelodyIDTest.routeName,
+                    arguments: levelInfo,
+                  );
+                } else if (missionMode == "Melody singing") {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    LevelMelodySingingTest.routeName,
+                    arguments: levelInfo,
+                  );                  
+                }
               },
               child: FittedBox(
                 fit: BoxFit.fill,
@@ -503,7 +513,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               onPressed: () {
                 Navigator.popUntil(
                   context,
-                  ModalRoute.withName(campaignTree.routeName)
+                  ModalRoute.withName(campaignTree.routeName),
                 );
               },
               child: FittedBox(

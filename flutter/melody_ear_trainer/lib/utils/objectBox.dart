@@ -64,11 +64,7 @@ class ObjectBox {
     return ltrq >= numTests;
   }
 
-  String levelStatus(
-    String levelid,
-    int passingScore,
-    int numTests,
-  ) {
+  String levelStatus(String levelid, int passingScore, int numTests) {
     int attempted =
         _levelTestResultsBox
             .query(LevelTestResults_.LevelID.equals(levelid))
@@ -77,7 +73,7 @@ class ObjectBox {
     if (attempted == 0) {
       return "Not started yet";
     }
-    if (attempted < passingScore) {
+    if (attempted < numTests) {
       return "In progress";
     }
     int ltrq =

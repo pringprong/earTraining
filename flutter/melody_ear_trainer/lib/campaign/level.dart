@@ -83,7 +83,7 @@ class _LevelState extends State<Level> {
                     mappingProvider,
                     optional: true,
                   ),
-                  plainText("Practice and take a test when ready:"),
+                  plainText("Practice & take a test (" + levelInfo.NumTests.toString() + " required):"),
                   verticalSpacer(),
                   practiceButton(missionMode, levelInfo),
                   verticalSpacer(),

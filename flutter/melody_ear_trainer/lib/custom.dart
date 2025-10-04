@@ -34,7 +34,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 color:
-                                    colorMap["buttonForegroundColor"] ??
+                                    colorMap["noteButtonForegroundColor"] ??
                                     Colors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -60,7 +60,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 color:
-                                    colorMap["buttonForegroundColor"] ??
+                                    colorMap["noteButtonForegroundColor"] ??
                                     Colors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -91,7 +91,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 color:
-                                    colorMap["buttonForegroundColor"] ??
+                                    colorMap["noteButtonForegroundColor"] ??
                                     Colors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -117,7 +117,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 color:
-                                    colorMap["buttonForegroundColor"] ??
+                                    colorMap["noteButtonForegroundColor"] ??
                                     Colors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -148,7 +148,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 color:
-                                    colorMap["buttonForegroundColor"] ??
+                                    colorMap["noteButtonForegroundColor"] ??
                                     Colors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -174,7 +174,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 color:
-                                    colorMap["buttonForegroundColor"] ??
+                                    colorMap["noteButtonForegroundColor"] ??
                                     Colors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -204,7 +204,7 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 color:
-                                    colorMap["buttonForegroundColor"] ??
+                                    colorMap["noteButtonForegroundColor"] ??
                                     Colors.white,
                               ),
                               textAlign: TextAlign.center,

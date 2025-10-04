@@ -185,15 +185,17 @@ Color missionLevelStatusColor(String missionStatus) {
 Color getCampaignColor(String CampaignID) {
   switch (CampaignID) {
     case "c0":
-      return colorMap['c5f2'] ?? Colors.white;
+      return colorMap['c5f4'] ?? Colors.white;
     case "c1":
-      return colorMap['c1f2'] ?? Colors.white;
+      return colorMap['c1f4'] ?? Colors.white;
     case "c2":
-      return colorMap['c2f2'] ?? Colors.white;
+      return colorMap['c2f4'] ?? Colors.white;
     case "c3":
-      return colorMap['c3f2'] ?? Colors.white;
+      return colorMap['c3f4'] ?? Colors.white;
     case "c4":
-      return colorMap['c4f2'] ?? Colors.white;
+      return colorMap['c4f4'] ?? Colors.white;
+    case "c5":
+      return colorMap['c6f4'] ?? Colors.white;
   }
   return Colors.grey;
 }
@@ -201,17 +203,17 @@ Color getCampaignColor(String CampaignID) {
 Color getModeColor(String mode) {
   switch (mode) {
     case "Melody ID":
-      return colorMap["c2f4"] ?? Colors.white;
-    case "Melody singing":
       return colorMap["c2f2"] ?? Colors.white;
+    case "Melody singing":
+      return colorMap["c2f0"] ?? Colors.white;
     case "Chord ID":
-      return colorMap["c4f4"] ?? Colors.white;
-    case "Chord singing":
       return colorMap["c4f2"] ?? Colors.white;
+    case "Chord singing":
+      return colorMap["c4f0"] ?? Colors.white;
     case "Chord melody ID":
-      return colorMap["c3f4"] ?? Colors.white;
-    case "Chord melody singing":
       return colorMap["c3f2"] ?? Colors.white;
+    case "Chord melody singing":
+      return colorMap["c3f0"] ?? Colors.white;
   }
   return Colors.grey;  
 }

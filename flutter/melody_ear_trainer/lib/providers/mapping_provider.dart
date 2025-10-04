@@ -256,7 +256,7 @@ class MappingProvider extends ChangeNotifier {
       String set = item['Set'];
       String chordSet = item['Chords'];
       List<String> chordSets =
-          chordSet.split(',').map((s) => s.trim()).toList();
+        chordSet.split(',').map((s) => s.trim()).toList();
 
       chordSetsMapping[rangeValue] ??= {};
       chordSetsMapping[rangeValue]![set] = chordSets;
@@ -342,7 +342,7 @@ class MappingProvider extends ChangeNotifier {
       if (unlockedByStr != "") {
         missionUnlockedBy =
             unlockedByStr.split(',').map((s) => s.trim()).toList();
-      } 
+      }
       String missionUnlockedByRelationship =
           item['MissionUnlockedByRelationship'];
 

@@ -2,27 +2,35 @@
     "nodes": [
         {
             "id": 1,
-            "missionid": ""
-        },
-        {
-            "id": 2,
             "missionid": "c1m01"
         },
         {
-            "id": 3,
+            "id": 2,
             "missionid": ""
         },
         {
-            "id": 4,
+            "id": 3,
             "missionid": "c1m02"
         },
         {
-            "id": 5,
+            "id": 4,
             "missionid": "c1m03"
         },
         {
+            "id": 5,
+            "missionid": "c1m04"
+        },
+        {
             "id": 6,
-            "missionid": ""
+            "missionid": "c1m05"
+        },
+        {
+            "id": 7,
+            "missionid": "c1m06"
+        },
+        {
+            "id": 8,
+            "missionid": "c1m07"
         }
     ],
     "edges": [
@@ -35,7 +43,7 @@
             "to": 3
         },
         {
-            "from": 3,
+            "from": 2,
             "to": 4
         },
         {
@@ -47,8 +55,12 @@
             "to": 6
         },
         {
-            "from": 5,
-            "to": 6
+            "from": 2,
+            "to": 7
+        },
+        {
+            "from": 7,
+            "to": 8
         }
     ]
 }

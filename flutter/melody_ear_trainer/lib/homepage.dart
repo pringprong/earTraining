@@ -18,7 +18,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
     // obtain campaigns map from MappingProvider
     final mappingProvider = Provider.of<MappingProvider>(context);
     final Map<String, CampaignInfo> campaigns = mappingProvider.getCampaigns;
-
+    double fontsize = 20;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
@@ -45,15 +45,21 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                               child: SizedBox(
                                 height: 50,
                                 child: Center(
-                                  child: Text(
-                                    campArgs.CampaignName,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color:
-                                          colorMap["buttonForegroundColor"] ??
-                                          Colors.white,
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        campArgs.CampaignName,
+                                        style: TextStyle(
+                                          fontSize: fontsize,
+                                          color:
+                                              colorMap["buttonForegroundColor"] ??
+                                              Colors.white,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               ),
@@ -80,7 +86,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     Expanded(
                       child: GestureDetector(
                         child: Card(
-                          color: colorMap["c5f4"],
+                          color: colorMap["c5f0"],
                           child: SizedBox(
                             height: 50,
                             child: Center(
@@ -89,7 +95,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   color:
-                                      colorMap["buttonForegroundColor"] ??
+                                      colorMap["noteButtonForegroundColor"] ??
                                       Colors.white,
                                 ),
                                 textAlign: TextAlign.center,
@@ -110,7 +116,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                     Expanded(
                       child: GestureDetector(
                         child: Card(
-                          color: colorMap["c1f4"] ?? Colors.white,
+                          color: colorMap["c1f0"] ?? Colors.white,
                           child: SizedBox(
                             height: 50,
                             child: Center(
@@ -119,7 +125,7 @@ class _MelodyHomePageState extends State<MelodyHomePage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   color:
-                                      colorMap["buttonForegroundColor"] ??
+                                      colorMap["noteButtonForegroundColor"] ??
                                       Colors.white,
                                 ),
                                 textAlign: TextAlign.center,
