@@ -128,14 +128,21 @@ class _campaignTreeState extends State<campaignTree> {
                           var nodeValue = nodesList.firstWhere(
                             (element) => element['id'] == a,
                           );
-                          bool unlocked = getUnlocked(nodeValue);
-                          final shape =
-                              (nodeValue['shape'] ?? 'Rectangle').toString();
-                          if (shape.toLowerCase() == 'circle') {
+                          final String missionid =
+                              (nodeValue['missionid'] ?? "").toString();
+                          MissionInfo? missionInfo =
+                              (missionid == "")
+                                  ? null
+                                  : missions[nodeValue['missionid']]!;
+                          final String shape =
+                              (missionInfo == null)
+                                  ? campaignTreeShapes[""] ?? "circle"
+                                  : campaignTreeShapes[missionInfo.MissionMode] ?? "circle";
+                          if (shape.toLowerCase() == 'circle' || missionInfo == null) {
                             return circleWidget();
-                          } else if (shape.toLowerCase() == 'diamond') {
-                            MissionInfo missionInfo =
-                                missions[nodeValue['missionid']]!;
+                          } 
+                          bool unlocked = getUnlocked(nodeValue);
+                          if (shape.toLowerCase() == 'diamond') {
                             return myDiamondWidget(
                               context,
                               missionInfo,
@@ -346,7 +353,7 @@ class _campaignTreeState extends State<campaignTree> {
                     missionInfo.MissionName +
                     '\nMode: ' +
                     missionInfo.MissionMode +
-                    '\nStatus ' +
+                    '\nStatus: ' +
                     missionStatus,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -414,7 +421,7 @@ class _campaignTreeState extends State<campaignTree> {
                     missionInfo.MissionName +
                     '\nMode: ' +
                     missionInfo.MissionMode +
-                    '\nStatus ' +
+                    '\nStatus: ' +
                     missionStatus,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -482,7 +489,7 @@ class _campaignTreeState extends State<campaignTree> {
                     missionInfo.MissionName +
                     '\nMode: ' +
                     missionInfo.MissionMode +
-                    '\nStatus ' +
+                    '\nStatus: ' +
                     missionStatus,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -550,7 +557,7 @@ class _campaignTreeState extends State<campaignTree> {
                     missionInfo.MissionName +
                     '\nMode: ' +
                     missionInfo.MissionMode +
-                    '\nStatus ' +
+                    '\nStatus: ' +
                     missionStatus,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -563,7 +570,7 @@ class _campaignTreeState extends State<campaignTree> {
       );
     }
   }
-  
+
   Widget myHouseShapeWidget(
     BuildContext context,
     MissionInfo missionInfo,
@@ -618,7 +625,7 @@ class _campaignTreeState extends State<campaignTree> {
                     missionInfo.MissionName +
                     '\nMode: ' +
                     missionInfo.MissionMode +
-                    '\nStatus ' +
+                    '\nStatus: ' +
                     missionStatus,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -631,8 +638,8 @@ class _campaignTreeState extends State<campaignTree> {
       );
     }
   }
- 
- Widget myStarShapeWidget(
+
+  Widget myStarShapeWidget(
     BuildContext context,
     MissionInfo missionInfo,
     GeneralProvider generalProvider,
@@ -686,7 +693,7 @@ class _campaignTreeState extends State<campaignTree> {
                     missionInfo.MissionName +
                     '\nMode: ' +
                     missionInfo.MissionMode +
-                    '\nStatus ' +
+                    '\nStatus: ' +
                     missionStatus,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -745,7 +752,7 @@ class _campaignTreeState extends State<campaignTree> {
               missionInfo.MissionName +
               '\nMode: ' +
               missionInfo.MissionMode +
-              '\nStatus ' +
+              '\nStatus: ' +
               missionStatus,
           textAlign: TextAlign.center,
           style: TextStyle(

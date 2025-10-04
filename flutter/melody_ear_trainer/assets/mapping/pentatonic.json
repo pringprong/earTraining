@@ -2,12 +2,10 @@
     "nodes": [
         {
             "id": 1,
-            "shape": "starshape",
             "missionid": "c0m01"
         },
         {
             "id": 2,
-            "shape": "Rectangle",
             "missionid": "c0m02",
 			"unlockedby": 
 				[
@@ -17,7 +15,6 @@
         },
         {
             "id": 3,
-            "shape": "Circle",
             "missionid": "",
 			"unlockedby": 
 				[
@@ -27,7 +24,6 @@
         },
         {
             "id": 4,
-            "shape": "starshape",
             "missionid": "c0m03",
 			"unlockedby": 
 				[
