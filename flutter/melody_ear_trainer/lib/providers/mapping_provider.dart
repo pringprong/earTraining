@@ -337,6 +337,15 @@ class MappingProvider extends ChangeNotifier {
       String missionID = item['MissionID'];
       String missionName = item['MissionName'];
       String missionMode = item['MissionMode'];
+      String unlockedByStr = item['MissionUnlockedBy'];
+      List<String> missionUnlockedBy = [];
+      if (unlockedByStr != "") {
+        missionUnlockedBy =
+            unlockedByStr.split(',').map((s) => s.trim()).toList();
+      } 
+      String missionUnlockedByRelationship =
+          item['MissionUnlockedByRelationship'];
+
       String levelID = item['LevelID'];
       String levelName = item['LevelName'];
       String notesStr = item['Notes'];
@@ -378,8 +387,10 @@ class MappingProvider extends ChangeNotifier {
           missionID,
           missionName,
           missionMode,
+          missionUnlockedByRelationship,
         );
         mi.addMissionNewNotes(newNotes);
+        mi.setMissionUnlockedBy(missionUnlockedBy);
         missions[missionID] = mi;
       }
       if (missions.containsKey(missionID)) {

@@ -137,11 +137,14 @@ class _campaignTreeState extends State<campaignTree> {
                           final String shape =
                               (missionInfo == null)
                                   ? campaignTreeShapes[""] ?? "circle"
-                                  : campaignTreeShapes[missionInfo.MissionMode] ?? "circle";
-                          if (shape.toLowerCase() == 'circle' || missionInfo == null) {
+                                  : campaignTreeShapes[missionInfo
+                                          .MissionMode] ??
+                                      "circle";
+                          if (shape.toLowerCase() == 'circle' ||
+                              missionInfo == null) {
                             return circleWidget();
-                          } 
-                          bool unlocked = getUnlocked(nodeValue);
+                          }
+                          bool unlocked = getUnlocked(missionInfo);
                           if (shape.toLowerCase() == 'diamond') {
                             return myDiamondWidget(
                               context,
@@ -221,7 +224,7 @@ class _campaignTreeState extends State<campaignTree> {
     );
   }
 
-  bool getUnlocked(dynamic nodeValue) {
+  bool getUnlocked(MissionInfo missionInfo) {
     // put new code here
     // nodeValue['unlockedby'] may return a list of missionIDs
     // and if so ['unlockedbyrelationship'] will be set
@@ -241,49 +244,33 @@ class _campaignTreeState extends State<campaignTree> {
 
     // Evaluate unlocked state (optional keys: unlockedby, unlockedbyrelationship)
     bool unlocked = true;
-    if (!context.watch<ThemeProvider>().unlockall) {
-      if (nodeValue.containsKey('unlockedby')) {
-        try {
-          final raw = nodeValue['unlockedby'];
-          final List<String> unlockedList =
-              (raw is List)
-                  ? raw.map((e) => e.toString()).toList()
-                  : [raw.toString()];
-          final relationship =
-              (nodeValue['unlockedbyrelationship'] ?? 'AND')
-                  .toString()
-                  .toUpperCase();
-
-          // Lookup each mission id via global objectBox.isMissionPassed(...) (synchronous)
-          List<bool> results = [];
-          for (final mid in unlockedList) {
-            bool passed = false;
-            try {
-              passed = objectBox.isMissionPassed(mid);
-            } catch (e) {
-              // lookup failure -> treat as not passed
-              debugPrint(
-                'campaign.dart: isMissionPassed lookup error for "$mid": $e',
-              );
-              passed = false;
-            }
-            results.add(passed);
-          }
-          if (results.isEmpty) {
-            unlocked = true;
-          } else if (relationship == 'AND') {
-            unlocked = results.every((b) => b);
-          } else {
-            // default OR
-            unlocked = results.any((b) => b);
-          }
-        } catch (e) {
-          debugPrint(
-            'campaign.dart: error evaluating unlockedby for node $nodeValue: $e',
-          );
-          unlocked = true; // fail-open to avoid accidentally hiding content
-        }
+    if (context.watch<ThemeProvider>().unlockall) {
+      return true;
+    }
+    final List<String> unlockedList = missionInfo.getMissionUnlockedBy();
+    final relationship = missionInfo.getMissionUnlockedByRelationship();
+    // Lookup each mission id via global objectBox.isMissionPassed(...) (synchronous)
+    List<bool> results = [];
+    for (final mid in unlockedList) {
+      bool passed = false;
+      try {
+        passed = objectBox.isMissionPassed(mid);
+      } catch (e) {
+        // lookup failure -> treat as not passed
+        debugPrint(
+          'campaign.dart: isMissionPassed lookup error for "$mid": $e',
+        );
+        passed = false;
       }
+      results.add(passed);
+    }
+    if (results.isEmpty) {
+      unlocked = true;
+    } else if (relationship == 'AND') {
+      unlocked = results.every((b) => b);
+    } else {
+      // default OR
+      unlocked = results.any((b) => b);
     }
     return unlocked;
   }

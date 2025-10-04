@@ -2,20 +2,14 @@
     "nodes": [
         {
             "id": 1,
-            "shape": "Circle",
-            "label": "Start",
             "missionid": ""
         },
         {
             "id": 2,
-            "shape": "Rectangle",
-            "label": "Mission 1",
             "missionid": "c4m01"
         },
         {
             "id": 3,
-            "shape": "Circle",
-            "label": "Campaign hub",
             "missionid": ""
         }
     ],

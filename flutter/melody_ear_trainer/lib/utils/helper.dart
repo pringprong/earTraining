@@ -594,7 +594,7 @@ const Map<String, String> campaignTreeShapes = {
   "Chord melody ID": "octagon",
   "Chord melody singing": "houseshape",
   "Bonus": "starshape",
-  "": "circle"
+  "": "circle",
 };
 
 RegExp chordNameParse = RegExp(
@@ -682,6 +682,8 @@ class MissionInfo {
   final String MissionID;
   final String MissionName;
   final String MissionMode;
+  List<String> MissionUnlockedBy = [];
+  final String MissionUnlockedByRelationship;
   Set<String> MissionNewNotes = {};
   final LevelIDs = LinkedHashSet<String>();
 
@@ -690,7 +692,20 @@ class MissionInfo {
     this.MissionID,
     this.MissionName,
     this.MissionMode,
+    this.MissionUnlockedByRelationship,
   );
+
+  setMissionUnlockedBy(List<String> unlockedby) {
+    MissionUnlockedBy = unlockedby;
+  }
+
+  List<String> getMissionUnlockedBy() {
+    return MissionUnlockedBy;
+  }
+
+  String getMissionUnlockedByRelationship() {
+    return MissionUnlockedByRelationship;
+  }
 
   addMissionNewNotes(List<String> noteList) {
     MissionNewNotes.addAll(noteList);

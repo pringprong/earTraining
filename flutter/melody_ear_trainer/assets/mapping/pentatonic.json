@@ -6,30 +6,15 @@
         },
         {
             "id": 2,
-            "missionid": "c0m02",
-			"unlockedby": 
-				[
-					"c0m01"
-				],
-			"unlockedbyrelationship": "AND"
+            "missionid": "c0m02"
         },
         {
             "id": 3,
-            "missionid": "",
-			"unlockedby": 
-				[
-					"c0m02"
-				],
-			"unlockedbyrelationship": "AND"
+            "missionid": ""
         },
         {
             "id": 4,
-            "missionid": "c0m03",
-			"unlockedby": 
-				[
-					"c0m02"
-				],
-			"unlockedbyrelationship": "AND"
+            "missionid": "c0m03"
         }
 	],
     "edges": [
