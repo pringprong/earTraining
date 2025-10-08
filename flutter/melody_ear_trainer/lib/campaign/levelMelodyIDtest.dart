@@ -57,9 +57,12 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
             children: [
               campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
-              missionHeader(mappingProvider, mappingProvider.missions[levelInfo.MissionID]!),
+              missionHeader(
+                mappingProvider,
+                mappingProvider.missions[levelInfo.MissionID]!,
+              ),
               verticalSpacer(),
-                levelHeader(levelInfo),
+              levelHeader(levelInfo),
               plainText(
                 "Current score: " +
                     correctAnswers.toString() +
@@ -69,7 +72,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
                     levelInfo.PassingScore.toString() +
                     "/" +
                     levelInfo.NumQuestions.toString() +
-                    " to pass" 
+                    " to pass",
               ),
               verticalSpacer(),
               startTestButton(generalProvider, mappingProvider, false),
@@ -117,11 +120,11 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
     );
     objectBox.insertLevelTestResult(ltr);
 
-    String thisMissionStatus = getMissionStatus(mappingProvider, levelInfo.MissionID);
-    objectBox.updateMissionStatus(
+    String thisMissionStatus = getDeepMissionStatus(
+      mappingProvider,
       levelInfo.MissionID,
-      thisMissionStatus
     );
+    objectBox.updateMissionStatus(levelInfo.MissionID, thisMissionStatus);
     Navigator.pushReplacementNamed(
       context,
       LevelTestResultsPage.routeName,

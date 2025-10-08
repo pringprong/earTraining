@@ -420,7 +420,8 @@ Widget missionStatusBanner(
   MappingProvider mappingProvider,
   MissionInfo missionInfo,
 ) {
-  String mls = getMissionStatus(mappingProvider, missionInfo.MissionID);
+  //String mls = getDeepMissionStatus(mappingProvider, missionInfo.MissionID);
+  String mls = objectBox.getSavedMissionStatus(missionInfo.MissionID);
   return Row(
     children: [
       Expanded(
@@ -458,10 +459,7 @@ Widget missionStatusBanner(
   );
 }
 
-String getMissionStatus(
-  MappingProvider mappingProvider,
-  String missionID,
-) {
+String getDeepMissionStatus(MappingProvider mappingProvider, String missionID) {
   final levels = mappingProvider.getLevelsForMission(missionID);
   LevelInfo lastLevel = levels.last;
   String statusOfLastLevel = objectBox.levelStatus(

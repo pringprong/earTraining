@@ -41,10 +41,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
       levelInfo.PassingScore,
     );
     String levelStatus = getLevelStatus(numPassedTests, levelInfo);
-    String missionStatus = getMissionStatus(
-      mappingProvider,
-      levelTestResults.MissionID,
-    );
+    // String missionStatus = getDeepMissionStatus(
+    //   mappingProvider,
+    //   levelTestResults.MissionID,
+    // );
+    String missionStatus = objectBox.getSavedMissionStatus(levelTestResults.MissionID);
     String missionMode = mappingProvider.getMissionMode(
       levelTestResults.MissionID,
     );
@@ -149,7 +150,12 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 verticalSpacer(),
                 assessmentCard(assessment),
                 verticalSpacer(),
-                ...optionalRedoTestButton(redoTest, levelInfo, missionMode, context),
+                ...optionalRedoTestButton(
+                  redoTest,
+                  levelInfo,
+                  missionMode,
+                  context,
+                ),
                 ...optionalLevelPageButton(
                   returnToLevelPage,
                   levelStatus,
@@ -330,7 +336,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                     context,
                     LevelMelodySingingTest.routeName,
                     arguments: levelInfo,
-                  );                  
+                  );
                 }
               },
               child: FittedBox(

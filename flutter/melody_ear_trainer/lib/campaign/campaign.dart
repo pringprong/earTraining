@@ -314,7 +314,9 @@ class _campaignTreeState extends State<campaignTree> {
         ),
       );
     } else {
-      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      String missionStatus = objectBox.getSavedMissionStatus(
+        missionInfo.MissionID,
+      );
       Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
@@ -336,9 +338,8 @@ class _campaignTreeState extends State<campaignTree> {
             height: 150,
             child: Center(
               child: Text(
-                missionInfo.MissionName
+                missionInfo.MissionName,
                 //  + '\n' + missionStatus
-                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -379,7 +380,9 @@ class _campaignTreeState extends State<campaignTree> {
         ),
       );
     } else {
-      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      String missionStatus = objectBox.getSavedMissionStatus(
+        missionInfo.MissionID,
+      );
       Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
@@ -400,10 +403,9 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(                
-                missionInfo.MissionName
+              child: Text(
+                missionInfo.MissionName,
                 //  + '\n' + missionStatus
-                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -444,7 +446,9 @@ class _campaignTreeState extends State<campaignTree> {
         ),
       );
     } else {
-      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      String missionStatus = objectBox.getSavedMissionStatus(
+        missionInfo.MissionID,
+      );
       Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
@@ -465,10 +469,9 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(             
-                missionInfo.MissionName
+              child: Text(
+                missionInfo.MissionName,
                 //  + '\n' + missionStatus
-                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -509,7 +512,9 @@ class _campaignTreeState extends State<campaignTree> {
         ),
       );
     } else {
-      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      String missionStatus = objectBox.getSavedMissionStatus(
+        missionInfo.MissionID,
+      );
       Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
@@ -530,10 +535,9 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(             
-                missionInfo.MissionName
+              child: Text(
+                missionInfo.MissionName,
                 //  + '\n' + missionStatus
-                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -574,7 +578,9 @@ class _campaignTreeState extends State<campaignTree> {
         ),
       );
     } else {
-      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      String missionStatus = objectBox.getSavedMissionStatus(
+        missionInfo.MissionID,
+      );
       Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
@@ -595,10 +601,9 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(             
-                missionInfo.MissionName
+              child: Text(
+                missionInfo.MissionName,
                 //  + '\n' + missionStatus
-                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -639,7 +644,9 @@ class _campaignTreeState extends State<campaignTree> {
         ),
       );
     } else {
-      String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+      String missionStatus = objectBox.getSavedMissionStatus(
+        missionInfo.MissionID,
+      );
       Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
@@ -660,10 +667,9 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(                
-                missionInfo.MissionName
+              child: Text(
+                missionInfo.MissionName,
                 //  + '\n' + missionStatus
-                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -692,8 +698,8 @@ class _campaignTreeState extends State<campaignTree> {
       // Locked appearance: no interaction, greyed out, label "Mission Locked"
       return Container(
         padding: EdgeInsets.all(8),
-          width: mywidth,
-          height: myheight,
+        width: mywidth,
+        height: myheight,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: fill,
@@ -708,7 +714,9 @@ class _campaignTreeState extends State<campaignTree> {
         ),
       );
     }
-    String missionStatus = objectBox.missionStatus(missionInfo.MissionID);
+    String missionStatus = objectBox.getSavedMissionStatus(
+      missionInfo.MissionID,
+    );
     Color nodeColor = missionLevelStatusColor(missionStatus);
     return InkWell(
       onTap: () {
@@ -720,8 +728,8 @@ class _campaignTreeState extends State<campaignTree> {
         Navigator.pushNamed(context, Mission.routeName, arguments: missionInfo);
       },
       child: Container(
-          width: mywidth,
-          height: myheight,
+        width: mywidth,
+        height: myheight,
         padding: EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
@@ -729,9 +737,8 @@ class _campaignTreeState extends State<campaignTree> {
         ),
         child: Center(
           child: Text(
-                missionInfo.MissionName
-                //  + '\n' + missionStatus
-                ,
+            missionInfo.MissionName,
+            //  + '\n' + missionStatus
             textAlign: TextAlign.center,
             style: TextStyle(
               color: colorMap["buttonForegroundColor"] ?? Colors.white,

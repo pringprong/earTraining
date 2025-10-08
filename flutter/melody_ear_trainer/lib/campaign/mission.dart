@@ -26,12 +26,15 @@ class _MissionState extends State<Mission> {
     final mappingProvider = Provider.of<MappingProvider>(context);
     final generalProvider = Provider.of<missionSettingsProvider>(context);
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
-    String thisMissionStatus = getMissionStatus(mappingProvider, missionInfo.MissionID);
+    // String thisMissionStatus = getDeepMissionStatus(
+    //   mappingProvider,
+    //   missionInfo.MissionID,
+    // );
     objectBox.createOrUpdateMissionDetails(
       missionInfo.MissionID,
       generalProvider.getSelectedKey,
       generalProvider.getSelectedInstrument,
-      thisMissionStatus,
+      //thisMissionStatus,
     );
 
     return Scaffold(

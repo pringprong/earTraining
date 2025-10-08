@@ -59,10 +59,9 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                         context
                             .read<missionSettingsProvider>()
                             .updateSelectedKey(newkey: newValue);
-                        objectBox.updateKeyAndInstrument(
+                        objectBox.updateKey(
                           missionInfo.MissionID,
                           newValue,
-                          context.read<missionSettingsProvider>().selectedInstrument
                           );
                       }
                     },
@@ -95,9 +94,8 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                         context
                             .read<missionSettingsProvider>()
                             .updateSelectedInstrument(instrument: newValue);
-                        objectBox.updateKeyAndInstrument(
+                        objectBox.updateInstrument(
                           missionInfo.MissionID, 
-                          context.read<missionSettingsProvider>().selectedKey,
                           newValue);
                       }
                     },

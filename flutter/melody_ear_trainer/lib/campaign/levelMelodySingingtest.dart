@@ -72,7 +72,7 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
                     levelInfo.PassingScore.toString() +
                     "/" +
                     levelInfo.NumQuestions.toString() +
-                    " to pass" 
+                    " to pass",
               ),
               verticalSpacer(),
               startTestButtonSinging(generalProvider, mappingProvider, true),
@@ -83,7 +83,11 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
               verticalSpacer(),
               solfegeTextArea(),
               verticalSpacer(),
-              sayTheSolfegeButton(generalProvider, mappingProvider, compact:true),
+              sayTheSolfegeButton(
+                generalProvider,
+                mappingProvider,
+                compact: true,
+              ),
               verticalSpacer(),
               plainText("Listen to first note again:"),
               verticalSpacer(),
@@ -95,7 +99,7 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
               verticalSpacer(),
               plainText("Did you sing it correctly?"),
               verticalSpacer(),
-              reportWhetherCorrect(generalProvider, mappingProvider)
+              reportWhetherCorrect(generalProvider, mappingProvider),
             ],
           ),
         ),
@@ -117,11 +121,11 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
       timestamp: timestamp,
     );
     objectBox.insertLevelTestResult(ltr);
-    String thisMissionStatus = getMissionStatus(mappingProvider, levelInfo.MissionID);
-    objectBox.updateMissionStatus(
+    String thisMissionStatus = getDeepMissionStatus(
+      mappingProvider,
       levelInfo.MissionID,
-      thisMissionStatus
     );
+    objectBox.updateMissionStatus(levelInfo.MissionID, thisMissionStatus);
     Navigator.pushReplacementNamed(
       context,
       LevelTestResultsPage.routeName,

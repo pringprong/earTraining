@@ -149,27 +149,27 @@ class ObjectBox {
     }
   }
 
-  void updateKeyAndInstrument(String mid, String newkey, String newInstrument) {
-    Query<MissionSavedSettings> qmms =
-        _missionSavedSettingsBox
-            .query(MissionSavedSettings_.MissionID.equals(mid))
-            .build();
-    List<MissionSavedSettings> queryResults = qmms.find();
-    if (queryResults.isNotEmpty) {
-      MissionSavedSettings mss = queryResults.first;
-      mss.key = newkey;
-      mss.instrument = newInstrument;
-      _missionSavedSettingsBox.put(mss);
-    } else {
-      _missionSavedSettingsBox.put(
-        MissionSavedSettings(
-          MissionID: mid,
-          key: newkey,
-          instrument: newInstrument,
-        ),
-      );
-    }
-  }
+  // void updateKeyAndInstrument(String mid, String newkey, String newInstrument) {
+  //   Query<MissionSavedSettings> qmms =
+  //       _missionSavedSettingsBox
+  //           .query(MissionSavedSettings_.MissionID.equals(mid))
+  //           .build();
+  //   List<MissionSavedSettings> queryResults = qmms.find();
+  //   if (queryResults.isNotEmpty) {
+  //     MissionSavedSettings mss = queryResults.first;
+  //     mss.key = newkey;
+  //     mss.instrument = newInstrument;
+  //     _missionSavedSettingsBox.put(mss);
+  //   } else {
+  //     _missionSavedSettingsBox.put(
+  //       MissionSavedSettings(
+  //         MissionID: mid,
+  //         key: newkey,
+  //         instrument: newInstrument,
+  //       ),
+  //     );
+  //   }
+  // }
 
   void removeAllMissionSavedSettings() {
     _missionSavedSettingsBox.removeAll();
@@ -187,7 +187,7 @@ class ObjectBox {
     return false;
   }
 
-  String missionStatus(String missionID) {
+  String getSavedMissionStatus(String missionID) {
     Query<MissionSavedSettings> qmms =
         _missionSavedSettingsBox
             .query(MissionSavedSettings_.MissionID.equals(missionID))
@@ -203,7 +203,6 @@ class ObjectBox {
     String mid,
     String newkey,
     String newInstrument,
-    String newStatus,
   ) {
     Query<MissionSavedSettings> qmms =
         _missionSavedSettingsBox
@@ -214,24 +213,21 @@ class ObjectBox {
       MissionSavedSettings mss = queryResults.first;
       mss.key = newkey;
       mss.instrument = newInstrument;
-      mss.status = newStatus;
       _missionSavedSettingsBox.put(mss);
     } else {
+      // mission is not in there yet
       _missionSavedSettingsBox.put(
         MissionSavedSettings(
           MissionID: mid,
           key: newkey,
           instrument: newInstrument,
-          status: newStatus,
+          status: "Not started yet",
         ),
       );
     }
   }
 
-  void updateMissionStatus(
-    String mid,
-    String newStatus,
-  ) {
+  void updateMissionStatus(String mid, String newStatus) {
     Query<MissionSavedSettings> qmms =
         _missionSavedSettingsBox
             .query(MissionSavedSettings_.MissionID.equals(mid))
@@ -241,6 +237,6 @@ class ObjectBox {
       MissionSavedSettings mss = queryResults.first;
       mss.status = newStatus;
       _missionSavedSettingsBox.put(mss);
-    } 
+    }
   }
 }
