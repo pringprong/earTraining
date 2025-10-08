@@ -104,6 +104,7 @@ Widget buildNotesGrid(
   int numNotesInOctave = 12,
   Set<String> newNotes = const {},
   bool optional = false,
+  bool reversedColors = false,
 ]) {
   if (optional &&
       (generalProvider.getSelectedNotes().isEmpty ||
@@ -135,30 +136,48 @@ Widget buildNotesGrid(
       final selected = noteSelection.contains(note);
       final String tempColor = noteColors[note].toString();
       final double tempFactor = noteColorFactor[note] ?? 1.0;
-      final buttonColor = multiplyHexColor(tempColor, tempFactor);
+      Color buttonColor = multiplyHexColor(tempColor, tempFactor);
+      Color borderColor = buttonColor;
       Color foregroundColor =
           colorMap["noteButtonForegroundColor"] ?? Colors.white;
+      Color selectedForegroundColor = foregroundColor;
+      Color unSelectedBackgroundColor = colorMap["borderColor"] ?? Colors.white;
+      Color unSelectedBorderColor = unSelectedBackgroundColor;
       if (newNotes.contains(note)) {
-        foregroundColor =
+        selectedForegroundColor =
             colorMap["newNoteButtonForegroundColor"] ?? Colors.white;
+      }
+      if (reversedColors) {
+        foregroundColor = colorMap["borderColor"] ?? Colors.white;
+        selectedForegroundColor =
+            colorMap["noteButtonForegroundColor"] ?? Colors.white;
+        if (newNotes.contains(note)) {
+          selectedForegroundColor = buttonColor;
+        }
+        buttonColor = colorMap["buttonForegroundColor"] ?? Colors.white;
+        unSelectedBackgroundColor =
+            colorMap["buttonForegroundColor"] ?? Colors.white;
+        unSelectedBorderColor = colorMap["borderColor"] ?? Colors.white;
       }
       buttons.add(
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(1.0),
+            padding: const EdgeInsets.all(2.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor:
-                    selected
-                        ? buttonColor
-                        : colorMap["borderColor"] ?? Colors.white,
+                    selected ? buttonColor : unSelectedBackgroundColor,
                 //minimumSize: Size(40, 40),
                 padding: EdgeInsets.zero,
-                textStyle: TextStyle(
-                  fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                ),
+                // textStyle: TextStyle(
+                //   fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                // ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
+                  side: BorderSide(
+                    color: selected ? borderColor : unSelectedBorderColor,
+                    width: 2.0,
+                  ),
                 ),
               ),
               onPressed: () {
@@ -171,7 +190,7 @@ Widget buildNotesGrid(
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                    color: foregroundColor,
+                    color: selected ? selectedForegroundColor : foregroundColor,
                   ),
                 ),
               ),

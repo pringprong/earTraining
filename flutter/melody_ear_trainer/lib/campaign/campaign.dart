@@ -297,7 +297,10 @@ class _campaignTreeState extends State<campaignTree> {
   ) {
     String titleText =
         unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill = unlocked ? Colors.black : Colors.grey;
+    Color fill =
+        unlocked
+            ? Colors.black
+            : colorMap['lockedMissionColor'] ?? Colors.white;
     if (!unlocked) {
       return DiamondWidget(
         child: Container(
@@ -361,7 +364,10 @@ class _campaignTreeState extends State<campaignTree> {
   ) {
     String titleText =
         unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill = unlocked ? Colors.black : Colors.grey;
+    Color fill =
+        unlocked
+            ? Colors.black
+            : colorMap['lockedMissionColor'] ?? Colors.white;
     double mywidth = 200;
     double myheight = 80;
     if (!unlocked) {
@@ -427,7 +433,10 @@ class _campaignTreeState extends State<campaignTree> {
   ) {
     String titleText =
         unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill = unlocked ? Colors.black : Colors.grey;
+    Color fill =
+        unlocked
+            ? Colors.black
+            : colorMap['lockedMissionColor'] ?? Colors.white;
     double mywidth = 200;
     double myheight = 80;
     if (!unlocked) {
@@ -493,7 +502,10 @@ class _campaignTreeState extends State<campaignTree> {
   ) {
     String titleText =
         unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill = unlocked ? Colors.black : Colors.grey;
+    Color fill =
+        unlocked
+            ? Colors.black
+            : colorMap['lockedMissionColor'] ?? Colors.white;
     double mywidth = 200;
     double myheight = 80;
     if (!unlocked) {
@@ -559,7 +571,10 @@ class _campaignTreeState extends State<campaignTree> {
   ) {
     String titleText =
         unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill = unlocked ? Colors.black : Colors.grey;
+    Color fill =
+        unlocked
+            ? Colors.black
+            : colorMap['lockedMissionColor'] ?? Colors.white;
     double mywidth = 150;
     double myheight = 60;
     if (!unlocked) {
@@ -625,7 +640,10 @@ class _campaignTreeState extends State<campaignTree> {
   ) {
     String titleText =
         unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill = unlocked ? Colors.black : Colors.grey;
+    Color fill =
+        unlocked
+            ? Colors.black
+            : colorMap['lockedMissionColor'] ?? Colors.white;
     double mywidth = 250;
     double myheight = 90;
     if (!unlocked) {
@@ -691,7 +709,10 @@ class _campaignTreeState extends State<campaignTree> {
   ) {
     String titleText =
         unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill = unlocked ? Colors.black : Colors.grey;
+    Color fill =
+        unlocked
+            ? Colors.black
+            : colorMap['lockedMissionColor'] ?? Colors.white;
     double mywidth = 150;
     double myheight = 60;
     if (!unlocked) {

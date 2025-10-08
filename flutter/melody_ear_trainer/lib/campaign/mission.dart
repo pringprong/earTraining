@@ -52,7 +52,7 @@ class _MissionState extends State<Mission> {
                 verticalSpacer(),
                 missionHeader(mappingProvider, missionInfo, max: true),
                 verticalSpacer(),
-                plainText("Notes in this mission (black=new):"),
+                plainText("Notes (colorful text=new):"),
                 verticalSpacer(),
                 buildNotesGrid(
                   generalProvider,
@@ -64,6 +64,7 @@ class _MissionState extends State<Mission> {
                     missionInfo.CampaignID,
                   ),
                   missionInfo.MissionNewNotes,
+                  true,
                   true,
                 ),
                 verticalSpacer(),

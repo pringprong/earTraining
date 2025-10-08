@@ -168,6 +168,8 @@ Map<String, Color> colorMap = {
   'practiceButtonColor': multiplyHexColor(color7, factor4),
   'handsFreePracticeButtonColor': multiplyHexColor(color7, factor2),
   'testButtonColor':multiplyHexColor(color7, factor0),
+
+  'lockedMissionColor' : Colors.grey.shade600,
 };
 
 IconData waitingForGuessIcon = Icons.help_outline;

@@ -63,7 +63,7 @@ class _LevelState extends State<Level> {
                   verticalSpacer(),
                   levelHeader(levelInfo),
                   verticalSpacer(),
-                  plainText("Notes in this level (black=new):"),
+                  plainText("Notes (colorful text=new):"),
                   verticalSpacer(),
                   buildNotesGrid(
                     generalProvider,
@@ -75,6 +75,7 @@ class _LevelState extends State<Level> {
                       levelInfo.CampaignID,
                     ),
                     levelInfo.NewNotes,
+                    true,
                     true,
                   ),
                   verticalSpacer(),
