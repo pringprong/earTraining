@@ -104,7 +104,7 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
   }
 
   @override
-  void finishTest() {
+  void finishTest(MappingProvider mappingProvider) {
     // write a test-result row to the database, then navigate to results page
     String timestamp = DateFormat('yyyy-MM-dd HH:MM').format(DateTime.now());
 
@@ -117,6 +117,11 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
       timestamp: timestamp,
     );
     objectBox.insertLevelTestResult(ltr);
+    String thisMissionStatus = getMissionStatus(mappingProvider, levelInfo.MissionID);
+    objectBox.updateMissionStatus(
+      levelInfo.MissionID,
+      thisMissionStatus
+    );
     Navigator.pushReplacementNamed(
       context,
       LevelTestResultsPage.routeName,

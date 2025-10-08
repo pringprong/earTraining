@@ -199,7 +199,7 @@ class ObjectBox {
     return "Not started yet";
   }
 
-  void updateMissionPassed(
+  void createOrUpdateMissionDetails(
     String mid,
     String newkey,
     String newInstrument,
@@ -226,5 +226,21 @@ class ObjectBox {
         ),
       );
     }
+  }
+
+  void updateMissionStatus(
+    String mid,
+    String newStatus,
+  ) {
+    Query<MissionSavedSettings> qmms =
+        _missionSavedSettingsBox
+            .query(MissionSavedSettings_.MissionID.equals(mid))
+            .build();
+    List<MissionSavedSettings> queryResults = qmms.find();
+    if (queryResults.isNotEmpty) {
+      MissionSavedSettings mss = queryResults.first;
+      mss.status = newStatus;
+      _missionSavedSettingsBox.put(mss);
+    } 
   }
 }

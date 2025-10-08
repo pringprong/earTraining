@@ -45,24 +45,24 @@ class _HelpPageState extends State<HelpPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextRow("Display settings"),
-              verticalSpacer(),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Light theme:'),
-                  ),
-                  Checkbox(
-                    value: context.watch<ThemeProvider>().darkModeBool,
-                    onChanged: (bool? newValue) {
-                      if (newValue != null) {
-                        context.read<ThemeProvider>().setDarkMode(newValue);
-                      }
-                    },
-                  ),
-                ],
-              ),
+              // TextRow("Display settings"),
+              // verticalSpacer(),
+              // Row(
+              //   children: [
+              //     Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Text('Light theme:'),
+              //     ),
+              //     Checkbox(
+              //       value: context.watch<ThemeProvider>().darkModeBool,
+              //       onChanged: (bool? newValue) {
+              //         if (newValue != null) {
+              //           context.read<ThemeProvider>().setDarkMode(newValue);
+              //         }
+              //       },
+              //     ),
+              //   ],
+              // ),
               verticalSpacer(),
               verticalSpacer(),
               sectionBox(

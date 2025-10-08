@@ -43,7 +43,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     String levelStatus = getLevelStatus(numPassedTests, levelInfo);
     String missionStatus = getMissionStatus(
       mappingProvider,
-      mappingProvider.getMissions[levelTestResults.MissionID]!,
+      levelTestResults.MissionID,
     );
     String missionMode = mappingProvider.getMissionMode(
       levelTestResults.MissionID,

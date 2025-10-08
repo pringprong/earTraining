@@ -336,12 +336,9 @@ class _campaignTreeState extends State<campaignTree> {
             height: 150,
             child: Center(
               child: Text(
-                "Mission: " +
-                    missionInfo.MissionName +
-                    '\nMode: ' +
-                    missionInfo.MissionMode +
-                    '\nStatus: ' +
-                    missionStatus,
+                missionInfo.MissionName
+                //  + '\n' + missionStatus
+                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -403,13 +400,10 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(
-                "Mission: " +
-                    missionInfo.MissionName +
-                    '\nMode: ' +
-                    missionInfo.MissionMode +
-                    '\nStatus: ' +
-                    missionStatus,
+              child: Text(                
+                missionInfo.MissionName
+                //  + '\n' + missionStatus
+                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -471,13 +465,10 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(
-                "Mission: " +
-                    missionInfo.MissionName +
-                    '\nMode: ' +
-                    missionInfo.MissionMode +
-                    '\nStatus: ' +
-                    missionStatus,
+              child: Text(             
+                missionInfo.MissionName
+                //  + '\n' + missionStatus
+                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -539,13 +530,10 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(
-                "Mission: " +
-                    missionInfo.MissionName +
-                    '\nMode: ' +
-                    missionInfo.MissionMode +
-                    '\nStatus: ' +
-                    missionStatus,
+              child: Text(             
+                missionInfo.MissionName
+                //  + '\n' + missionStatus
+                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -568,8 +556,8 @@ class _campaignTreeState extends State<campaignTree> {
     String titleText =
         unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
     Color fill = unlocked ? Colors.black : Colors.grey;
-    double mywidth = 200;
-    double myheight = 80;
+    double mywidth = 150;
+    double myheight = 60;
     if (!unlocked) {
       return HouseShapeWidget(
         child: Container(
@@ -607,13 +595,10 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(
-                "Mission: " +
-                    missionInfo.MissionName +
-                    '\nMode: ' +
-                    missionInfo.MissionMode +
-                    '\nStatus: ' +
-                    missionStatus,
+              child: Text(             
+                missionInfo.MissionName
+                //  + '\n' + missionStatus
+                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -675,13 +660,10 @@ class _campaignTreeState extends State<campaignTree> {
             width: mywidth,
             height: myheight,
             child: Center(
-              child: Text(
-                "Mission: " +
-                    missionInfo.MissionName +
-                    '\nMode: ' +
-                    missionInfo.MissionMode +
-                    '\nStatus: ' +
-                    missionStatus,
+              child: Text(                
+                missionInfo.MissionName
+                //  + '\n' + missionStatus
+                ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: colorMap["buttonForegroundColor"] ?? Colors.white,
@@ -701,19 +683,28 @@ class _campaignTreeState extends State<campaignTree> {
     MappingProvider mappingProvider,
     bool unlocked,
   ) {
+    String titleText =
+        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+    Color fill = unlocked ? Colors.black : Colors.grey;
+    double mywidth = 150;
+    double myheight = 60;
     if (!unlocked) {
       // Locked appearance: no interaction, greyed out, label "Mission Locked"
       return Container(
         padding: EdgeInsets.all(8),
+          width: mywidth,
+          height: myheight,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: Colors.grey,
-          boxShadow: [BoxShadow(color: Colors.grey.shade700, spreadRadius: 1)],
+          color: fill,
+          boxShadow: [BoxShadow(color: fill, spreadRadius: 1)],
         ),
-        child: Text(
-          "Pass previous\nmissions first",
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white70),
+        child: Center(
+          child: Text(
+            titleText,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white70),
+          ),
         ),
       );
     }
@@ -729,21 +720,22 @@ class _campaignTreeState extends State<campaignTree> {
         Navigator.pushNamed(context, Mission.routeName, arguments: missionInfo);
       },
       child: Container(
+          width: mywidth,
+          height: myheight,
         padding: EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           boxShadow: [BoxShadow(color: nodeColor, spreadRadius: 1)],
         ),
-        child: Text(
-          "Mission: " +
-              missionInfo.MissionName +
-              '\nMode: ' +
-              missionInfo.MissionMode +
-              '\nStatus: ' +
-              missionStatus,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: colorMap["buttonForegroundColor"] ?? Colors.white,
+        child: Center(
+          child: Text(
+                missionInfo.MissionName
+                //  + '\n' + missionStatus
+                ,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+            ),
           ),
         ),
       ),

@@ -106,7 +106,6 @@ class TrapezoidWidget extends StatelessWidget {
   }
 }
 
-
 class HouseShapeClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -132,7 +131,6 @@ class HouseShapeWidget extends StatelessWidget {
     return ClipPath(clipper: HouseShapeClipper(), child: child);
   }
 }
-
 
 class StarShapeClipper extends CustomClipper<Path> {
   @override

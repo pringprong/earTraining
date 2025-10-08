@@ -159,7 +159,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 });
                 if (completedQuestions == numberOfQuestions) {
                   // override this method in the implementation
-                  finishTest();
+                  finishTest(mappingProvider);
                 } else {
                   newGenerateChordMelody(
                     generalProvider,
@@ -225,7 +225,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 });
                 if (completedQuestions == numberOfQuestions) {
                   // override this method in the implementation
-                  finishTest();
+                  finishTest(mappingProvider);
                 } else {
                   newGenerateChordMelody(
                     generalProvider,
@@ -283,7 +283,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 });
                 if (completedQuestions == numberOfQuestions) {
                   // override this method in the implementation
-                  finishTest();
+                  finishTest(mappingProvider);
                 } else {
                   newGenerateChordMelody(
                     generalProvider,
@@ -337,7 +337,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
     );
   }
 
-  void finishTest() {
+  void finishTest(MappingProvider mappingProvider) {
     // override this in the implementation
   }
 }

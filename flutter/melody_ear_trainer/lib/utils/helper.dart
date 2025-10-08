@@ -420,7 +420,7 @@ Widget missionStatusBanner(
   MappingProvider mappingProvider,
   MissionInfo missionInfo,
 ) {
-  String mls = getMissionStatus(mappingProvider, missionInfo);
+  String mls = getMissionStatus(mappingProvider, missionInfo.MissionID);
   return Row(
     children: [
       Expanded(
@@ -460,10 +460,9 @@ Widget missionStatusBanner(
 
 String getMissionStatus(
   MappingProvider mappingProvider,
-  MissionInfo missionInfo,
+  String missionID,
 ) {
-
-  final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
+  final levels = mappingProvider.getLevelsForMission(missionID);
   LevelInfo lastLevel = levels.last;
   String statusOfLastLevel = objectBox.levelStatus(
     lastLevel.LevelID,
@@ -588,11 +587,11 @@ void resetMissionBeforeMissionPage(
 
 const Map<String, String> campaignTreeShapes = {
   "Melody ID": "rectangle",
-  "Melody singing": "diamond",
+  "Melody singing": "houseshape",
   "Chord ID": "hexagon",
   "Chord singing": "trapezoid",
   "Chord melody ID": "octagon",
-  "Chord melody singing": "houseshape",
+  "Chord melody singing": "diamond",
   "Bonus": "starshape",
   "": "circle",
 };
