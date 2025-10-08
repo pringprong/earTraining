@@ -815,7 +815,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             style: ElevatedButton.styleFrom(
               backgroundColor: missionLevelStatusColor(levelStatus),
               foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
+                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {

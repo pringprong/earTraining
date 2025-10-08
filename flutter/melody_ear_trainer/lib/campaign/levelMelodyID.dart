@@ -100,7 +100,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["c2f3"] ?? Colors.white,
+              backgroundColor: colorMap["practiceButtonColor"] ?? Colors.white,
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),

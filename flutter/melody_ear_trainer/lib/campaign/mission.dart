@@ -100,7 +100,7 @@ class _MissionState extends State<Mission> {
               backgroundColor:
                   colorMap["waitingForGuessIconColor"] ?? Colors.white,
               foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
+                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -230,7 +230,7 @@ class _MissionState extends State<Mission> {
             style: ElevatedButton.styleFrom(
               backgroundColor: getCampaignColor(campaignID),
               foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
+                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {

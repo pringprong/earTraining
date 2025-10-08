@@ -11,6 +11,8 @@ import 'levelMelodyIDtest.dart';
 import 'levelMelodySinging.dart';
 import 'levelMelodySinginghandsfree.dart';
 import 'levelMelodySingingtest.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'dart:math';
 
 class Level extends StatefulWidget {
   const Level({super.key});
@@ -84,7 +86,11 @@ class _LevelState extends State<Level> {
                     mappingProvider,
                     optional: true,
                   ),
-                  plainText("Practice & take a test (" + levelInfo.NumTests.toString() + " required):"),
+                  plainText(
+                    "Practice & take a test (" +
+                        levelInfo.NumTests.toString() +
+                        " required):",
+                  ),
                   verticalSpacer(),
                   practiceButton(missionMode, levelInfo),
                   verticalSpacer(),
@@ -141,26 +147,59 @@ class _LevelState extends State<Level> {
     LevelInfo? nextLevel,
   ) {
     Color prevLevelColor = Colors.grey;
+    int prevNumPassedTests = 0;
+    int prevNumTests = 1;
+    int nextNumPassedTests = 0;
+    int nextNumTests = 1;
     if (prevLevel != null) {
       String levelStatus = getLevelStatusWithQuery(prevLevel);
       prevLevelColor = missionLevelStatusColor(levelStatus);
+      prevNumPassedTests = objectBox.numPassedTestsForLevel(
+        prevLevel.LevelID,
+        prevLevel.PassingScore,
+      );
+      prevNumTests = prevLevel.NumTests;
     }
     Color nextLevelColor = Colors.grey;
     if (nextLevel != null) {
       String levelStatus = getLevelStatusWithQuery(nextLevel);
       nextLevelColor = missionLevelStatusColor(levelStatus);
+      nextNumPassedTests = objectBox.numPassedTestsForLevel(
+        nextLevel.LevelID,
+        nextLevel.PassingScore,
+      );
+      nextNumTests = nextLevel.NumTests;
     }
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: prevLevelColor,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
+          child: ListTile(
+            tileColor: prevLevelColor,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: prevLevelColor, width: 0.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            onPressed: () {
+            leading: Icon(
+              prevLevelIcon,
+              color: colorMap['buttonForegroundColor'] ?? Colors.white,
+            ),
+            title: Text(
+              prevLevel?.LevelName ?? "",
+              style: TextStyle(
+                color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            trailing: CircularPercentIndicator(
+              radius: 10,
+              lineWidth: 10,
+              percent: min(prevNumPassedTests, prevNumTests) / prevNumTests,
+              progressColor: colorMap['correctGuessIconColor'] ?? Colors.white,
+              backgroundColor:
+                  colorMap["waitingForGuessIconColor"] ?? Colors.white,
+            ),
+            onTap: () {
               if (prevLevel != null) {
                 generalProvider.setLevelDetails(
                   prevLevel.Notes,
@@ -181,21 +220,36 @@ class _LevelState extends State<Level> {
                 );
               }
             },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text("Previous level", style: TextStyle(fontSize: 18)),
-            ),
           ),
         ),
         horizontalSpacer(),
         Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: nextLevelColor,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
+          child: ListTile(
+            tileColor: nextLevelColor,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: nextLevelColor, width: 0.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            onPressed: () {
+            trailing: Icon(
+              nextLevelIcon,
+              color: colorMap['buttonForegroundColor'] ?? Colors.white,
+            ),
+            title: Text(
+              nextLevel?.LevelName ?? "",
+              style: TextStyle(
+                color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            leading: CircularPercentIndicator(
+              radius: 10,
+              lineWidth: 10,
+              percent: min(nextNumPassedTests, nextNumTests) / nextNumTests,
+              progressColor: colorMap['correctGuessIconColor'] ?? Colors.white,
+              backgroundColor:
+                  colorMap["waitingForGuessIconColor"] ?? Colors.white,
+            ),
+            onTap: () {
               if (nextLevel != null) {
                 generalProvider.setLevelDetails(
                   nextLevel.Notes,
@@ -216,10 +270,6 @@ class _LevelState extends State<Level> {
                 );
               }
             },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text("Next level", style: TextStyle(fontSize: 18)),
-            ),
           ),
         ),
       ],
@@ -234,7 +284,7 @@ class _LevelState extends State<Level> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: colorMap['practiceButtonColor'],
-              foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
+              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () {
@@ -271,7 +321,7 @@ class _LevelState extends State<Level> {
             style: ElevatedButton.styleFrom(
               backgroundColor:
                   colorMap['handsFreePracticeButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
+              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () {
@@ -310,9 +360,14 @@ class _LevelState extends State<Level> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
+              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+                          side: BorderSide(
+              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+              width: 3.0,
             ),
+            ),
+            
             onPressed: () {
               if (missionMode == "Melody ID") {
                 Navigator.pushNamed(
@@ -355,7 +410,7 @@ class _LevelState extends State<Level> {
             style: ElevatedButton.styleFrom(
               backgroundColor: getModeColor(missionMode),
               foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
+                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {

@@ -162,7 +162,7 @@ Widget buildNotesGrid(
       buttons.add(
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.all(1.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor:
@@ -185,12 +185,15 @@ Widget buildNotesGrid(
               },
               child: FittedBox(
                 fit: BoxFit.fill,
-                child: Text(
-                  note,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                    color: selected ? selectedForegroundColor : foregroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(
+                    note,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                      color: selected ? selectedForegroundColor : foregroundColor,
+                    ),
                   ),
                 ),
               ),
@@ -533,7 +536,8 @@ Widget levelHeader(LevelInfo levelInfo) {
   return Row(
     children: [
       Expanded(
-        child: (Card(
+        child: (
+          Card(
           color: colorMap["buttonForegroundColor"] ?? Colors.white,
           borderOnForeground: true,
           shape: RoundedRectangleBorder(

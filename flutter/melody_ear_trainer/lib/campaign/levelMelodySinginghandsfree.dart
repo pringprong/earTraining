@@ -477,7 +477,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
             style: ElevatedButton.styleFrom(
               backgroundColor: missionLevelStatusColor(levelStatus),
               foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
+                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {

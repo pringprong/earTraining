@@ -31,7 +31,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
+              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -78,7 +78,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
+              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {

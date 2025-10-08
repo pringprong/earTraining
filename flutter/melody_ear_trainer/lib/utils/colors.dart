@@ -95,7 +95,8 @@ const color3 = "#bcae9a"; // greeny beige, tan khaki _Sec
 const color4 = "#c3b2b7"; // pinky beige _Thr
 const color5 = "#d0a89b"; // reddish brown _All
 const color6 = "#84b6d4"; // grey blue
-const color7 = "#0664c0"; // royal blue
+//const color7 = "#0664c0"; // royal blue
+const color7 = "#0a7ff2";
 
 const factor0 = 0.7;
 const factor1 = 0.8;
@@ -165,16 +166,18 @@ Map<String, Color> colorMap = {
   'newNoteButtonForegroundColor': Colors.black,
   'clearButtonColor': Color.fromARGB(255, 176, 204, 231),
 
-  'practiceButtonColor': multiplyHexColor(color7, factor4),
+  'practiceButtonColor': multiplyHexColor(color7, factor0),
   'handsFreePracticeButtonColor': multiplyHexColor(color7, factor2),
-  'testButtonColor':multiplyHexColor(color7, factor0),
+  'testButtonColor': multiplyHexColor(color7, factor4),
 
-  'lockedMissionColor' : Colors.grey.shade600,
+  'lockedMissionColor': Colors.grey.shade600,
 };
 
 IconData waitingForGuessIcon = Icons.help_outline;
 IconData correctGuessIcon = Icons.check_circle;
 IconData incorrectGuessIcon = Icons.cancel;
+IconData prevLevelIcon = Icons.arrow_left;
+IconData nextLevelIcon = Icons.arrow_right;
 
 Color missionLevelStatusColor(String missionStatus) {
   return missionStatus == "Passed!"
@@ -217,7 +220,7 @@ Color getModeColor(String mode) {
     case "Chord melody singing":
       return colorMap["c3f0"] ?? Colors.white;
   }
-  return Colors.grey;  
+  return Colors.grey;
 }
 
 Color getChordButtonColor(String chordName) {

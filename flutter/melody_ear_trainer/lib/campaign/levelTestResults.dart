@@ -321,7 +321,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
-                foregroundColor: colorMap["yetAnotherGrey"] ?? Colors.white,
+                foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
@@ -426,7 +426,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: missionLevelStatusColor(levelStatus),
                 foregroundColor:
-                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                    colorMap["noteButtonForegroundColor"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
@@ -467,7 +467,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: getModeColor(mode),
                 foregroundColor:
-                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                    colorMap["noteButtonForegroundColor"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
@@ -513,7 +513,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: getCampaignColor(campaignID),
                 foregroundColor:
-                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                    colorMap["noteButtonForegroundColor"] ?? Colors.white,
                 padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
