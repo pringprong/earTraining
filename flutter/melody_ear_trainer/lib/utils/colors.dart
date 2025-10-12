@@ -157,8 +157,8 @@ Map<String, Color> colorMap = {
   'incorrectGuessButtonColor': Color.fromARGB(255, 240, 128, 128),
 
   'passedColor': Color.fromARGB(255, 0, 163, 104),
-  'notYetStartedColor': Color.fromARGB(255, 0, 136, 191),
-  'inProgressColor': Color.fromARGB(255, 0, 178, 176),
+  'inProgressColor': Color.fromARGB(255, 0, 157, 184),
+  'notYetStartedColor': Color.fromARGB(255, 98, 69, 121),
 
   'borderColor': Colors.grey,
   'yetAnotherGrey': Color.fromARGB(255, 181, 196, 212),
@@ -171,9 +171,7 @@ Map<String, Color> colorMap = {
   'testButtonColor': multiplyHexColor(color7, factor4),
 
   'lockedMissionColor': Colors.grey.shade600,
-
-  'greyBackground': Colors.grey, // for inactive buttons
-  'brightBackground': Color.fromARGB(255, 176, 204, 231), // for buttons that further the mission
+  'brightBackground':Colors.grey.shade300, // for buttons that further the mission
   'darkBackground': Colors.grey.shade700, // for navigation buttons
 };
 

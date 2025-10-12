@@ -106,6 +106,28 @@ class RectangleWidget extends StatelessWidget {
   }
 }
 
+class BorderPainter extends CustomPainter {
+  final Path path;
+  final Color borderColor;
+  final double borderWidth;
+
+  BorderPainter({required this.path, this.borderColor = Colors.black, this.borderWidth = 5.0});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = borderWidth;
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
 class TrapezoidClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

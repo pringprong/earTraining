@@ -620,7 +620,7 @@ const Map<String, String> campaignTreeShapes = {
 
 const Map<String, double> campaignTreeHeight = {
   "rectangle": 60,
-  "houseshape": 60,
+  "houseshape": 80,
   "hexagon": 80,
   "trapezoid": 200,
   "octagon": 80,
@@ -628,7 +628,6 @@ const Map<String, double> campaignTreeHeight = {
   "starshape": 90,
   "": 30,
 };
-
 
 const Map<String, double> campaignTreeWidth = {
   "rectangle": 150,
@@ -640,7 +639,6 @@ const Map<String, double> campaignTreeWidth = {
   "starshape": 250,
   "": 30,
 };
-
 
 RegExp chordNameParse = RegExp(
   r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',
