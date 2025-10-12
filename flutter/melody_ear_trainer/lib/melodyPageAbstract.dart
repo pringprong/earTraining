@@ -53,7 +53,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   Row generateMelodyButton(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    bool setSolfegeText,
+    bool setSolfegeText,{
+    Set<String> newNotes = const {},
+  }
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -71,6 +73,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 generalProvider,
                 mappingProvider,
                 setSolfegeText,
+                newNotes: newNotes
               );
               setState(() {
                 //solfegeText = ""; // Clear solfege area
@@ -689,7 +692,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   void newGenerateChordMelody(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    bool setSolfegeText,
+    bool setSolfegeText,{
+    Set<String> newNotes = const {},
+  }
   ) {
     userWrittenChordMelody.clear();
     melodiesSame = false;
@@ -697,6 +702,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
     String result = generatedChordMelody.generateChordMelody(
       generalProvider,
       mappingProvider,
+      newNotes: newNotes
     );
     if (result.isNotEmpty) {
       ScaffoldMessenger.of(

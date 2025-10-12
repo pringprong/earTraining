@@ -24,7 +24,8 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
     GeneralProvider generalProvider = Provider.of<missionSettingsProvider>(
       context,
     );
-    newGenerateChordMelody(generalProvider, mappingProvider, true);
+    final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
+    newGenerateChordMelody(generalProvider, mappingProvider, true, newNotes: levelInfo.NewNotes);
     ChordMelody fn = ChordMelody.singleChord(
       generatedChordMelody.getFirstNoteOrChord_Melody(),
       generatedChordMelody.getFirstNoteOrChord_Solfege(),
@@ -80,7 +81,7 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
               verticalSpacer(),
               instructionRow("Did you sing it correctly?", small:true),
               verticalSpacer(),
-              generateMelodyButton(generalProvider, mappingProvider, false),
+              generateMelodyButton(generalProvider, mappingProvider, false, newNotes: levelInfo.NewNotes),
               verticalSpacer(),
               plainText("Notes for reference:"),
               verticalSpacer(),
@@ -106,7 +107,9 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
   Row generateMelodyButton(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    bool setSolfegeText,
+    bool setSolfegeText,{
+    Set<String> newNotes = const {},
+  }
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -124,7 +127,11 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
               ),
             ),
             onPressed: () {
-              newGenerateChordMelody(generalProvider, mappingProvider, true);
+              newGenerateChordMelody(
+                generalProvider, 
+                mappingProvider, 
+                true,
+                newNotes: newNotes);
               ChordMelody fn = ChordMelody.singleChord(
                 generatedChordMelody.getFirstNoteOrChord_Melody(),
                 generatedChordMelody.getFirstNoteOrChord_Solfege(),

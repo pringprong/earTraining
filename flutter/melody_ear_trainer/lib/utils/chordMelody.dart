@@ -1,4 +1,5 @@
 //import 'package:flutter/material.dart';
+//import 'package:flutter/foundation.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'dart:math';
@@ -33,7 +34,7 @@ class ChordMelody {
   }
 
   bool sameAs(ChordMelody other) {
-    return listEquals(this.chordMelody, other.getChordMelody());
+    return myListEquals(this.chordMelody, other.getChordMelody());
   }
 
   addNote(String note) {
@@ -71,8 +72,9 @@ class ChordMelody {
 
   String generateChordMelody(
     GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
-  ) {
+    MappingProvider mappingProvider, {
+    Set<String> newNotes = const {},
+  }) {
     final chordMap = mappingProvider.getChordMap;
     chordMelody.clear();
     chordMelodySolfege.clear();
@@ -89,6 +91,11 @@ class ChordMelody {
     final chords = generalProvider.getSelectedChords();
     final allowRepeatedChords = generalProvider.allowRepeatedChords;
     String previousChord = "";
+    List<String> newNotesList = [];
+    if (newNotes.isNotEmpty) {
+      newNotesList = newNotes.toList();
+    }
+    int factor = 4;
 
     int chordStartOffset = 2;
     if (chordFrequency == "Every 3 notes") {
@@ -206,9 +213,23 @@ class ChordMelody {
                 availableNotes.where((note) => note != startingDo).toList(),
               );
             }
+            if (newNotesList.isNotEmpty) {
+              // bias the candidates in favor of the new notes
+              int currLength = candidates.length;
+              for (int i = 0; i < currLength / factor; i++) {
+                candidates.addAll(newNotesList);
+              }
+            }
           } else {
             candidates =
                 availableNotes.where((note) => note != startingDo).toList();
+            if (newNotesList.isNotEmpty) {
+              // bias the candidates in favor of the new notes
+              int currLength = candidates.length;
+              for (int i = 0; i < currLength / factor; i++) {
+                candidates.addAll(newNotesList);
+              }
+            }
           }
         } else {
           // third or later note of melody: need to check distance from previous note
@@ -255,8 +276,32 @@ class ChordMelody {
             if (candidates.isNotEmpty && candidates.length < 8) {
               candidates.addAll(nonRepeatedCandidates);
             }
+            if (newNotesList.isNotEmpty) {
+              // bias the candidates in favor of the new notes
+              int currLength = candidates.length;
+              int numNewNotes = newNotesList.length;
+              for (int i = 0; i < currLength / factor; i++) {
+                for (int j = 0; j < numNewNotes; j++) {
+                  if (candidates.contains(newNotesList[j])) {
+                    candidates.add(newNotesList[j]);
+                  }
+                }
+              }
+            }
           } else {
             candidates = nonRepeatedCandidates;
+            if (newNotesList.isNotEmpty) {
+              // bias the candidates in favor of the new notes
+              int currLength = candidates.length;
+              int numNewNotes = newNotesList.length;
+              for (int i = 0; i < currLength / factor; i++) {
+                for (int j = 0; j < numNewNotes; j++) {
+                  if (candidates.contains(newNotesList[j])) {
+                    candidates.add(newNotesList[j]);
+                  }
+                }
+              }
+            }
           }
         }
         if (candidates.isEmpty) {

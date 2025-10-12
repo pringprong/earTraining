@@ -258,6 +258,7 @@ class _LevelMelodySingingHandsFreeState
                             context.read<missionSingingSettings>(),
                             context.read<MappingProvider>(),
                             nestedMapping,
+                            levelInfo
                           );
                         }
                       },
@@ -389,6 +390,7 @@ class _LevelMelodySingingHandsFreeState
     // number of {rounds, spoken, solfege, instrument}, timebetween, and getInstrument
     MappingProvider mappingProvider,
     Map<String, Map<String, Map<String, String>>> nestedMapping,
+    LevelInfo levelInfo
   ) async {
     // while currentRound < numberOfRounds and notPaused = true
     // carry out the following steps:
@@ -407,6 +409,7 @@ class _LevelMelodySingingHandsFreeState
       String result = chordMelody.generateChordMelody(
         generalProvider,
         mappingProvider,
+        newNotes: levelInfo.NewNotes
       );
       if (result.isNotEmpty) {
         ScaffoldMessenger.of(

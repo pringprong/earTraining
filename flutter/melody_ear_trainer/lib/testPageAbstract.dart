@@ -25,6 +25,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
     bool setSolfegeText,
+    LevelInfo levelInfo
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -52,6 +53,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 generalProvider,
                 mappingProvider,
                 setSolfegeText,
+                newNotes:levelInfo.NewNotes
               );
               setState(() {
                 setToWaitingForGuess();
@@ -79,6 +81,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
     bool setSolfegeText,
+    LevelInfo levelInfo
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -102,7 +105,11 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
               completedQuestions = 0;
               previousQuestionResultText =
                   "Question " + currentRound.toString();
-              newGenerateChordMelody(generalProvider, mappingProvider, true);
+              newGenerateChordMelody(
+                generalProvider, 
+                mappingProvider, 
+                true,
+                newNotes: levelInfo.NewNotes);
               setState(() {
                 startButtonBackgroundColor =
                     colorMap["lockedMissionColor"] ?? Colors.white;
@@ -132,6 +139,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
     bool setSolfegeText,
+    LevelInfo levelInfo
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -182,6 +190,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider,
                     mappingProvider,
                     setSolfegeText,
+                    newNotes: levelInfo.NewNotes
                   );
                   setState(() {
                     //solfegeText = ""; // Clear solfege area
@@ -204,8 +213,10 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
 
   Row reportWhetherCorrect(
     GeneralProvider generalProvider,
-    MappingProvider mappingProvider, {
+    MappingProvider mappingProvider, 
+    LevelInfo levelInfo, {
     bool setSolfegeText = true,
+    
   }) {
     return Row(
       children: [
@@ -248,6 +259,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider,
                     mappingProvider,
                     true,
+                    newNotes: levelInfo.NewNotes
                   );
                   solfegeText = generatedChordMelody.getChordMelody().join(' ');
                   setState(() {});
@@ -306,6 +318,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider,
                     mappingProvider,
                     true,
+                    newNotes: levelInfo.NewNotes
                   );
                   setState(() {});
                   ChordMelody fn = ChordMelody.singleChord(

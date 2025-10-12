@@ -23,7 +23,8 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
     GeneralProvider generalProvider = Provider.of<missionSettingsProvider>(
       context,
     );
-    newGenerateChordMelody(generalProvider, mappingProvider, false);
+    final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
+    newGenerateChordMelody(generalProvider, mappingProvider, false, newNotes:levelInfo.NewNotes);
     generatedChordMelody.playChordMelody(
       generalProvider.getSelectedInstrument,
       generalProvider,
@@ -75,7 +76,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
               verticalSpacer(),
               compareButton2(generalProvider, mappingProvider),
               verticalSpacer(),
-              generateMelodyButton(generalProvider, mappingProvider, false),
+              generateMelodyButton(generalProvider, mappingProvider, false, newNotes: levelInfo.NewNotes),
               verticalSpacer(),
               plainText("Listen to your melody:"),
               verticalSpacer(),
@@ -97,7 +98,9 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
   Row generateMelodyButton(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    bool setSolfegeText,
+    bool setSolfegeText,{
+    Set<String> newNotes = const {},
+  }
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -119,6 +122,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
                 generalProvider,
                 mappingProvider,
                 setSolfegeText,
+                newNotes: newNotes
               );
               generatedChordMelody.playChordMelody(
                 generalProvider.getSelectedInstrument,

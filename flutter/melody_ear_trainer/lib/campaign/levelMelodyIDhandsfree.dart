@@ -255,6 +255,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                             context.read<missionSettingsProvider>(),
                             context.read<MappingProvider>(),
                             nestedMapping,
+                            levelInfo
                           );
                         }
                       },
@@ -382,6 +383,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
     Map<String, Map<String, Map<String, String>>> nestedMapping,
+    LevelInfo levelInfo
   ) async {
     // while currentRound < numberOfRounds and notPaused = true
     // carry out the following steps:
@@ -401,6 +403,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
       String result = chordMelody.generateChordMelody(
         generalProvider,
         mappingProvider,
+        newNotes :levelInfo.NewNotes
       );
       if (result.isNotEmpty) {
         ScaffoldMessenger.of(
