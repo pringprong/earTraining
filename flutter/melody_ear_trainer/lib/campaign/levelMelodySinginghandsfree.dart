@@ -26,6 +26,7 @@ class _LevelMelodySingingHandsFreeState
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
   String currentInstrument = "Piano";
+  Color startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +238,7 @@ class _LevelMelodySingingHandsFreeState
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        backgroundColor: startButtonBackgroundColor,
                         foregroundColor:
                             colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
@@ -246,6 +247,8 @@ class _LevelMelodySingingHandsFreeState
                           setState(() {
                             solfegeText = "";
                             notPaused = true;
+                            startButtonBackgroundColor =
+                                colorMap["lockedMissionColor"] ?? Colors.white;
                           });
                           running = true;
                           currentRound = 0;
@@ -283,6 +286,8 @@ class _LevelMelodySingingHandsFreeState
                           solfegeText = "";
                           currentRound = 0;
                           widget.audioController.refresh();
+                          startButtonBackgroundColor =
+                              colorMap["c3f3"] ?? Colors.white;
                         });
                       },
                       child: FittedBox(
@@ -395,7 +400,8 @@ class _LevelMelodySingingHandsFreeState
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    while (currentRound < missionSingingSettings.getNumberOfRounds && notPaused) {
+    while (currentRound < missionSingingSettings.getNumberOfRounds &&
+        notPaused) {
       solfegeText = "";
       setState(() {});
       String result = chordMelody.generateChordMelody(
@@ -410,7 +416,11 @@ class _LevelMelodySingingHandsFreeState
       }
       solfegeText = chordMelody.getChordMelody().join(' ');
       setState(() {});
-      for (int n = 0; n < missionSingingSettings.getSpokenRepeats && notPaused; n++) {
+      for (
+        int n = 0;
+        n < missionSingingSettings.getSpokenRepeats && notPaused;
+        n++
+      ) {
         await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
         await Future.delayed(Duration(seconds: 1));
         ChordMelody firstNote = ChordMelody.singleChord(
@@ -430,7 +440,11 @@ class _LevelMelodySingingHandsFreeState
           Duration(seconds: missionSingingSettings.getTimeDelayRepeat),
         );
       }
-      for (int j = 0; j < missionSingingSettings.getSolfegeRepeats && notPaused; j++) {
+      for (
+        int j = 0;
+        j < missionSingingSettings.getSolfegeRepeats && notPaused;
+        j++
+      ) {
         await chordMelody.playChordMelody(
           "Solfege",
           generalProvider,
@@ -444,7 +458,11 @@ class _LevelMelodySingingHandsFreeState
           Duration(seconds: missionSingingSettings.getTimeDelayRepeat),
         );
       }
-      for (int i = 0; i < missionSingingSettings.getMelodyRepeats && notPaused; i++) {
+      for (
+        int i = 0;
+        i < missionSingingSettings.getMelodyRepeats && notPaused;
+        i++
+      ) {
         await chordMelody.playChordMelody(
           getInstrument(missionSingingSettings.handsfreeInstrument),
           generalProvider,
@@ -465,6 +483,9 @@ class _LevelMelodySingingHandsFreeState
       setState(() {});
     }
     running = false;
+    setState(() {
+      startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
+    });
   }
 
   Widget returnToLevelButton(String levelStatus) {

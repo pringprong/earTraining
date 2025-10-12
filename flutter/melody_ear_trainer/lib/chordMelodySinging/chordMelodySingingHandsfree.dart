@@ -25,6 +25,8 @@ class _chordMelodySingingHandsFreeState
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
   String currentInstrument = "Piano";
+  Color startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
+
   @override
   Widget build(BuildContext context) {
     final nestedMapping = context.read<MappingProvider>().getNestedMapping;
@@ -230,7 +232,7 @@ class _chordMelodySingingHandsFreeState
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        backgroundColor: startButtonBackgroundColor,
                         foregroundColor:
                             colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
@@ -239,6 +241,8 @@ class _chordMelodySingingHandsFreeState
                           setState(() {
                             solfegeText = "";
                             notPaused = true;
+                            startButtonBackgroundColor =
+                                colorMap["lockedMissionColor"] ?? Colors.white;
                           });
                           running = true;
                           currentRound = 0;
@@ -275,6 +279,8 @@ class _chordMelodySingingHandsFreeState
                           solfegeText = "";
                           currentRound = 0;
                           widget.audioController.refresh();
+                          startButtonBackgroundColor =
+                              colorMap["c3f3"] ?? Colors.white;
                         });
                       },
                       child: FittedBox(
@@ -451,5 +457,8 @@ class _chordMelodySingingHandsFreeState
       setState(() {});
     }
     running = false;
+    setState(() {
+      startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
+    });
   }
 }

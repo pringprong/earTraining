@@ -24,6 +24,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
   String currentInstrument = "Piano";
+  Color startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +43,12 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
             children: [
               campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
               verticalSpacer(),
-              missionHeader(mappingProvider, mappingProvider.missions[levelInfo.MissionID]!),
-                verticalSpacer(),
-                levelHeader(levelInfo),
+              missionHeader(
+                mappingProvider,
+                mappingProvider.missions[levelInfo.MissionID]!,
+              ),
+              verticalSpacer(),
+              levelHeader(levelInfo),
               verticalSpacer(),
               subHeadingRow("Settings:"),
               Row(
@@ -232,7 +236,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        backgroundColor: startButtonBackgroundColor,
                         foregroundColor:
                             colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
@@ -241,6 +245,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                           setState(() {
                             solfegeText = "";
                             notPaused = true;
+                            startButtonBackgroundColor =
+                                colorMap["lockedMissionColor"] ?? Colors.white;
                           });
                           running = true;
                           currentRound = 0;
@@ -274,6 +280,8 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                         setState(() {
                           notPaused = false;
                           running = false;
+                          startButtonBackgroundColor =
+                              colorMap["c3f3"] ?? Colors.white;
                           solfegeText = "";
                           currentRound = 0;
                           widget.audioController.refresh();
@@ -332,7 +340,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
                 ],
               ),
               verticalSpacer(),
-              returnToLevelButton(levelStatus)
+              returnToLevelButton(levelStatus),
             ], // Children of Column
           ),
         ),
@@ -469,6 +477,9 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
       setState(() {});
     }
     running = false;
+    setState(() {
+      startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
+    });
   }
 
   Widget returnToLevelButton(String levelStatus) {

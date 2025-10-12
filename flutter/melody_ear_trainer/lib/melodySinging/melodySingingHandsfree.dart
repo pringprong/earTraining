@@ -23,6 +23,8 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
   String solfegeText = "";
   ChordMelody chordMelody = ChordMelody();
   String currentInstrument = "Piano";
+  Color startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
+
   @override
   Widget build(BuildContext context) {
     final nestedMapping = context.read<MappingProvider>().getNestedMapping;
@@ -218,7 +220,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: colorMap["c3f3"] ?? Colors.white,
+                        backgroundColor: startButtonBackgroundColor,
                         foregroundColor:
                             colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
@@ -227,6 +229,8 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                           setState(() {
                             solfegeText = "";
                             notPaused = true;
+                            startButtonBackgroundColor =
+                                colorMap["lockedMissionColor"] ?? Colors.white;
                           });
                           running = true;
                           currentRound = 0;
@@ -263,6 +267,8 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
                           solfegeText = "";
                           currentRound = 0;
                           widget.audioController.refresh();
+                          startButtonBackgroundColor =
+                              colorMap["c3f3"] ?? Colors.white;
                         });
                       },
                       child: FittedBox(
@@ -439,5 +445,8 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
       setState(() {});
     }
     running = false;
+    setState(() {
+      startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
+    });
   }
 }

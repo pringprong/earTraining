@@ -18,6 +18,8 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
   int completedQuestions = 0;
   String previousQuestionResultText = "";
   bool testStarted = false;
+  Color startButtonBackgroundColor =
+      colorMap['brightBackground'] ?? Colors.white;
 
   Row startTestButton(
     GeneralProvider generalProvider,
@@ -30,7 +32,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['brightBackground'] ?? Colors.white,
+              backgroundColor: startButtonBackgroundColor,
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
@@ -53,6 +55,8 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
               );
               setState(() {
                 setToWaitingForGuess();
+                startButtonBackgroundColor =
+                    colorMap["lockedMissionColor"] ?? Colors.white;
               });
               generatedChordMelody.playChordMelody(
                 generalProvider.getSelectedInstrument,
@@ -81,8 +85,8 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
       children: [
         Expanded(
           child: ElevatedButton(
-             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['brightBackground'] ?? Colors.white,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: startButtonBackgroundColor,
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
@@ -99,8 +103,10 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
               previousQuestionResultText =
                   "Question " + currentRound.toString();
               newGenerateChordMelody(generalProvider, mappingProvider, true);
-              //solfegeText = generatedChordMelody.getChordMelody().join(' ');
-                  setState(() {});
+              setState(() {
+                startButtonBackgroundColor =
+                    colorMap["lockedMissionColor"] ?? Colors.white;
+              });
               ChordMelody fn = ChordMelody.singleChord(
                 generatedChordMelody.getFirstNoteOrChord_Melody(),
                 generatedChordMelody.getFirstNoteOrChord_Solfege(),
