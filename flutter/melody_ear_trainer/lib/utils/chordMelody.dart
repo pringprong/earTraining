@@ -92,7 +92,7 @@ class ChordMelody {
     final allowRepeatedChords = generalProvider.allowRepeatedChords;
     String previousChord = "";
     List<String> newNotesList = [];
-    if (newNotes.isNotEmpty) {
+    if (newNotes.isNotEmpty && newNotes.first != "") {
       newNotesList = newNotes.toList();
     }
     int factor = 4;
