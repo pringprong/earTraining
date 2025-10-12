@@ -478,10 +478,14 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: missionLevelStatusColor(levelStatus),
+              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
               foregroundColor:
                   colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: missionLevelStatusColor(levelStatus),
+                width: borderWidth,
+              ),
             ),
             onPressed: () {
               Navigator.pop(context); // pop to level page

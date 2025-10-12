@@ -30,9 +30,14 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
+              backgroundColor: colorMap['brightBackground'] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: colorMap["testButtonColor"] ?? Colors.white,
+                width: borderWidth,
+              ),
             ),
             onPressed: () {
               testStarted = true;
@@ -76,10 +81,15 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
       children: [
         Expanded(
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
+             style: ElevatedButton.styleFrom(
+              backgroundColor: colorMap['brightBackground'] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: colorMap["testButtonColor"] ?? Colors.white,
+                width: borderWidth,
+              ),
             ),
             onPressed: () {
               testStarted = true;
@@ -123,13 +133,14 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
         Expanded(
           child: ElevatedButton.icon(
             icon: Icon(comparisonIcon, color: comparisonIconColor),
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(comparisonColor),
-              foregroundColor: WidgetStateProperty.all<Color>(
-                colorMap["buttonForegroundColor"] ?? Colors.white,
-              ),
-              padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                const EdgeInsets.all(12.0),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colorMap['brightBackground'],
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
+              padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: colorMap["waitingForGuessIconColor"] ?? Colors.white,
+                width: borderWidth,
               ),
             ),
             label: FittedBox(

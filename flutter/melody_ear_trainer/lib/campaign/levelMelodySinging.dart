@@ -114,10 +114,14 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap["practiceButtonColor"] ?? Colors.white,
+              backgroundColor: colorMap['brightBackground'],
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: colorMap["practiceButtonColor"] ?? Colors.white,
+                width: borderWidth,
+              ),
             ),
             onPressed: () {
               newGenerateChordMelody(generalProvider, mappingProvider, true);

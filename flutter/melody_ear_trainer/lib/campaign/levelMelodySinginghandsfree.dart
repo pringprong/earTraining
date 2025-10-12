@@ -242,7 +242,6 @@ class _LevelMelodySingingHandsFreeState
                             colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
-                        print("start singing");
                         if (!running) {
                           setState(() {
                             solfegeText = "";
@@ -412,7 +411,6 @@ class _LevelMelodySingingHandsFreeState
       solfegeText = chordMelody.getChordMelody().join(' ');
       setState(() {});
       for (int n = 0; n < missionSingingSettings.getSpokenRepeats && notPaused; n++) {
-        print("playing the spoken");
         await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
         await Future.delayed(Duration(seconds: 1));
         ChordMelody firstNote = ChordMelody.singleChord(
@@ -476,10 +474,14 @@ class _LevelMelodySingingHandsFreeState
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: missionLevelStatusColor(levelStatus),
+              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
               foregroundColor:
                   colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: missionLevelStatusColor(levelStatus),
+                width: borderWidth,
+              ),
             ),
             onPressed: () {
               Navigator.pop(context); // pop to level page

@@ -336,14 +336,12 @@ class _LevelState extends State<Level> {
             ),
             onPressed: () {
               if (missionMode == "Melody ID") {
-                print("id");
                 Navigator.pushNamed(
                   context,
                   LevelMelodyIDHandsFree.routeName,
                   arguments: levelInfo,
                 );
               } else if (missionMode == "Melody singing") {
-                print("singing");
                 Navigator.pushNamed(
                   context,
                   LevelMelodySingingHandsFree.routeName,
@@ -380,7 +378,6 @@ class _LevelState extends State<Level> {
                 width: borderWidth,
               ),
             ),
-
             onPressed: () {
               if (missionMode == "Melody ID") {
                 Navigator.pushNamed(
