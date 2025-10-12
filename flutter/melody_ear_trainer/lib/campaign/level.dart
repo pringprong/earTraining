@@ -175,19 +175,19 @@ class _LevelState extends State<Level> {
       children: [
         Expanded(
           child: ListTile(
-            tileColor: prevLevelColor,
+            tileColor: colorMap['darkBackground'] ?? Colors.white,
             shape: RoundedRectangleBorder(
-              side: BorderSide(color: prevLevelColor, width: 0.0),
+              side: BorderSide(color: prevLevelColor, width: borderWidth),
               borderRadius: BorderRadius.circular(10.0),
             ),
             leading: Icon(
               prevLevelIcon,
-              color: colorMap['buttonForegroundColor'] ?? Colors.white,
+              color: colorMap['noteButtonForegroundColor'] ?? Colors.white,
             ),
             title: Text(
               prevLevel?.LevelName ?? "",
               style: TextStyle(
-                color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                color: colorMap["noteButtonForegroundColor"] ?? Colors.white,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -225,19 +225,19 @@ class _LevelState extends State<Level> {
         horizontalSpacer(),
         Expanded(
           child: ListTile(
-            tileColor: nextLevelColor,
+            tileColor: colorMap['darkBackground'] ?? Colors.white,
             shape: RoundedRectangleBorder(
-              side: BorderSide(color: nextLevelColor, width: 0.0),
+              side: BorderSide(color: nextLevelColor, width: borderWidth),
               borderRadius: BorderRadius.circular(10.0),
             ),
             trailing: Icon(
               nextLevelIcon,
-              color: colorMap['buttonForegroundColor'] ?? Colors.white,
+              color: colorMap['noteButtonForegroundColor'] ?? Colors.white,
             ),
             title: Text(
               nextLevel?.LevelName ?? "",
               style: TextStyle(
-                color: colorMap["buttonForegroundColor"] ?? Colors.white,
+                color: colorMap["noteButtonForegroundColor"] ?? Colors.white,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -283,9 +283,14 @@ class _LevelState extends State<Level> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['practiceButtonColor'],
-              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
+              backgroundColor: colorMap['brightBackground'],
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(8.0),
+              side: BorderSide(
+                color: colorMap["practiceButtonColor"] ?? Colors.white,
+                width: borderWidth,
+              ),
             ),
             onPressed: () {
               if (missionMode == "Melody ID") {
@@ -320,18 +325,25 @@ class _LevelState extends State<Level> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor:
-                  colorMap['handsFreePracticeButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
+                  colorMap['brightBackground'] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(8.0),
+              side: BorderSide(
+                color: colorMap["handsFreePracticeButtonColor"] ?? Colors.white,
+                width: borderWidth,
+              ),
             ),
             onPressed: () {
               if (missionMode == "Melody ID") {
+                print("id");
                 Navigator.pushNamed(
                   context,
                   LevelMelodyIDHandsFree.routeName,
                   arguments: levelInfo,
                 );
               } else if (missionMode == "Melody singing") {
+                print("singing");
                 Navigator.pushNamed(
                   context,
                   LevelMelodySingingHandsFree.routeName,
@@ -359,15 +371,16 @@ class _LevelState extends State<Level> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
-              foregroundColor: colorMap["buttonForegroundColor"] ?? Colors.white,
+              backgroundColor: colorMap['brightBackground'] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
-                          side: BorderSide(
-              color: colorMap["buttonForegroundColor"] ?? Colors.white,
-              width: 3.0,
+              side: BorderSide(
+                color: colorMap["testButtonColor"] ?? Colors.white,
+                width: borderWidth,
+              ),
             ),
-            ),
-            
+
             onPressed: () {
               if (missionMode == "Melody ID") {
                 Navigator.pushNamed(
@@ -408,10 +421,14 @@ class _LevelState extends State<Level> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: getModeColor(missionMode),
+              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
               foregroundColor:
                   colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: getModeColor(missionMode),
+                width: borderWidth,
+              )
             ),
             onPressed: () {
               resetMissionBeforeMissionPage(

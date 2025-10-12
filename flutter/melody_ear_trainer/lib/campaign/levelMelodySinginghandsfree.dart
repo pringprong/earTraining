@@ -14,10 +14,12 @@ class LevelMelodySingingHandsFree extends StatefulWidget {
   static const String routeName = '/levelmelodysinginghandsfree';
 
   @override
-  State<LevelMelodySingingHandsFree> createState() => _LevelMelodySingingHandsFreeState();
+  State<LevelMelodySingingHandsFree> createState() =>
+      _LevelMelodySingingHandsFreeState();
 }
 
-class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFree> {
+class _LevelMelodySingingHandsFreeState
+    extends State<LevelMelodySingingHandsFree> {
   int currentRound = 0;
   bool notPaused = true;
   bool running = false;
@@ -58,9 +60,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                   ),
                   DropdownButton<int>(
                     value:
-                        context
-                            .watch<missionSingingSettings>()
-                            .numberOfRounds,
+                        context.watch<missionSingingSettings>().numberOfRounds,
                     items:
                         [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
                           int value,
@@ -88,9 +88,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                   ),
                   DropdownButton<int>(
                     value:
-                        context
-                            .watch<missionSingingSettings>()
-                            .spokenRepeats,
+                        context.watch<missionSingingSettings>().spokenRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -102,9 +100,9 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<missionSingingSettings>()
-                            .setSpokenRepeats(repeats: newValue);
+                        context.read<missionSingingSettings>().setSpokenRepeats(
+                          repeats: newValue,
+                        );
                       }
                     },
                     //               },
@@ -119,9 +117,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                   ),
                   DropdownButton<int>(
                     value:
-                        context
-                            .watch<missionSingingSettings>()
-                            .solfegeRepeats,
+                        context.watch<missionSingingSettings>().solfegeRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -149,9 +145,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                   ),
                   DropdownButton<int>(
                     value:
-                        context
-                            .watch<missionSingingSettings>()
-                            .melodyRepeats,
+                        context.watch<missionSingingSettings>().melodyRepeats,
                     items:
                         [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
                           int value,
@@ -163,9 +157,9 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                         }).toList(),
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        context
-                            .read<missionSingingSettings>()
-                            .setMelodyRepeats(repeats: newValue);
+                        context.read<missionSingingSettings>().setMelodyRepeats(
+                          repeats: newValue,
+                        );
                       }
                     },
                   ),
@@ -248,6 +242,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                             colorMap["buttonForegroundColor"] ?? Colors.white,
                       ),
                       onPressed: () {
+                        print("start singing");
                         if (!running) {
                           setState(() {
                             solfegeText = "";
@@ -258,6 +253,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                           chordMelody = ChordMelody();
                           playFunction(
                             context.read<missionSettingsProvider>(),
+                            context.read<missionSingingSettings>(),
                             context.read<MappingProvider>(),
                             nestedMapping,
                           );
@@ -343,7 +339,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
                 ],
               ),
               verticalSpacer(),
-              returnToLevelButton(levelStatus)
+              returnToLevelButton(levelStatus),
             ], // Children of Column
           ),
         ),
@@ -383,6 +379,10 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
 
   playFunction(
     GeneralProvider generalProvider,
+    // generalProvider is for the melody settings
+    GeneralProvider missionSingingSettings,
+    // missionSingingSettings is only used for the handsfree settings
+    // number of {rounds, spoken, solfege, instrument}, timebetween, and getInstrument
     MappingProvider mappingProvider,
     Map<String, Map<String, Map<String, String>>> nestedMapping,
   ) async {
@@ -396,7 +396,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
     // wait for timeDelay seconds before starting the next round
     // increment currentRound by 1
     // keep checking if paused is true, if so, exit the function
-    while (currentRound < generalProvider.getNumberOfRounds && notPaused) {
+    while (currentRound < missionSingingSettings.getNumberOfRounds && notPaused) {
       solfegeText = "";
       setState(() {});
       String result = chordMelody.generateChordMelody(
@@ -411,7 +411,8 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
       }
       solfegeText = chordMelody.getChordMelody().join(' ');
       setState(() {});
-      for (int n = 0; n < generalProvider.getSpokenRepeats && notPaused; n++) {
+      for (int n = 0; n < missionSingingSettings.getSpokenRepeats && notPaused; n++) {
+        print("playing the spoken");
         await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
         await Future.delayed(Duration(seconds: 1));
         ChordMelody firstNote = ChordMelody.singleChord(
@@ -428,10 +429,10 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(seconds: generalProvider.getTimeDelayRepeat),
+          Duration(seconds: missionSingingSettings.getTimeDelayRepeat),
         );
       }
-      for (int j = 0; j < generalProvider.getSolfegeRepeats && notPaused; j++) {
+      for (int j = 0; j < missionSingingSettings.getSolfegeRepeats && notPaused; j++) {
         await chordMelody.playChordMelody(
           "Solfege",
           generalProvider,
@@ -442,12 +443,12 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(seconds: generalProvider.getTimeDelayRepeat),
+          Duration(seconds: missionSingingSettings.getTimeDelayRepeat),
         );
       }
-      for (int i = 0; i < generalProvider.getMelodyRepeats && notPaused; i++) {
+      for (int i = 0; i < missionSingingSettings.getMelodyRepeats && notPaused; i++) {
         await chordMelody.playChordMelody(
-          getInstrument(generalProvider.handsfreeInstrument),
+          getInstrument(missionSingingSettings.handsfreeInstrument),
           generalProvider,
           mappingProvider,
           widget,
@@ -456,7 +457,7 @@ class _LevelMelodySingingHandsFreeState extends State<LevelMelodySingingHandsFre
           return; // Exit if paused
         }
         await Future.delayed(
-          Duration(seconds: generalProvider.getTimeDelayRepeat),
+          Duration(seconds: missionSingingSettings.getTimeDelayRepeat),
         );
       }
       if (!notPaused) {

@@ -156,9 +156,9 @@ Map<String, Color> colorMap = {
   'incorrectGuessIconColor': Colors.red,
   'incorrectGuessButtonColor': Color.fromARGB(255, 240, 128, 128),
 
-  'passedColor': Color.fromARGB(255, 191, 220, 158),
-  'notYetStartedColor': Color.fromARGB(255, 176, 204, 231),
-  'inProgressColor': Color.fromARGB(255, 121, 185, 245),
+  'passedColor': Color.fromARGB(255, 0, 163, 104),
+  'notYetStartedColor': Color.fromARGB(255, 0, 136, 191),
+  'inProgressColor': Color.fromARGB(255, 0, 178, 176),
 
   'borderColor': Colors.grey,
   'yetAnotherGrey': Color.fromARGB(255, 181, 196, 212),
@@ -171,6 +171,10 @@ Map<String, Color> colorMap = {
   'testButtonColor': multiplyHexColor(color7, factor4),
 
   'lockedMissionColor': Colors.grey.shade600,
+
+  'greyBackground': Colors.grey, // for inactive buttons
+  'brightBackground': Color.fromARGB(255, 176, 204, 231), // for buttons that further the mission
+  'darkBackground': Colors.grey.shade700, // for navigation buttons
 };
 
 IconData waitingForGuessIcon = Icons.help_outline;
@@ -178,6 +182,8 @@ IconData correctGuessIcon = Icons.check_circle;
 IconData incorrectGuessIcon = Icons.cancel;
 IconData prevLevelIcon = Icons.arrow_left;
 IconData nextLevelIcon = Icons.arrow_right;
+
+double borderWidth = 4.0;
 
 Color missionLevelStatusColor(String missionStatus) {
   return missionStatus == "Passed!"
@@ -190,17 +196,17 @@ Color missionLevelStatusColor(String missionStatus) {
 Color getCampaignColor(String CampaignID) {
   switch (CampaignID) {
     case "c0":
-      return colorMap['c5f4'] ?? Colors.white;
+      return colorMap['c5f2'] ?? Colors.white;
     case "c1":
-      return colorMap['c1f4'] ?? Colors.white;
+      return colorMap['c1f2'] ?? Colors.white;
     case "c2":
-      return colorMap['c2f4'] ?? Colors.white;
+      return colorMap['c2f2'] ?? Colors.white;
     case "c3":
-      return colorMap['c3f4'] ?? Colors.white;
+      return colorMap['c3f2'] ?? Colors.white;
     case "c4":
-      return colorMap['c4f4'] ?? Colors.white;
+      return colorMap['c4f2'] ?? Colors.white;
     case "c5":
-      return colorMap['c6f4'] ?? Colors.white;
+      return colorMap['c6f2'] ?? Colors.white;
   }
   return Colors.grey;
 }

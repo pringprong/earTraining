@@ -98,10 +98,14 @@ class _MissionState extends State<Mission> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor:
-                  colorMap["waitingForGuessIconColor"] ?? Colors.white,
+                  colorMap["darkBackground"] ?? Colors.white,
               foregroundColor:
                   colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: colorMap["waitingForGuessIconColor"] ?? Colors.white,
+                width: borderWidth,
+              )
             ),
             onPressed: () {
               Navigator.pushNamed(
@@ -183,9 +187,9 @@ class _MissionState extends State<Mission> {
             ? colorMap["inProgressColor"] ?? Colors.white
             : colorMap["notYetStartedColor"] ?? Colors.white;
     return ListTile(
-      tileColor: tileColor,
+      tileColor: colorMap["brightBackground"] ?? Colors.white,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: tileColor, width: 0.0),
+        side: BorderSide(color: tileColor, width: borderWidth),
         borderRadius: BorderRadius.circular(10.0),
       ),
       title: Text(
@@ -228,10 +232,14 @@ class _MissionState extends State<Mission> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: getCampaignColor(campaignID),
+              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
               foregroundColor:
                   colorMap["noteButtonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: getCampaignColor(campaignID),
+                width: borderWidth,
+              )
             ),
             onPressed: () {
               Navigator.pop(context); // pop to campaign tree

@@ -5,6 +5,8 @@ import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import '../utils/colors.dart';
 import '../utils/chordMelody.dart';
+import 'campaign/levelMelodyIDtest.dart';
+import 'campaign/levelMelodySingingtest.dart';
 
 abstract class MelodyPageAbstract extends StatefulWidget {
   const MelodyPageAbstract({super.key, required this.audioController});
@@ -826,6 +828,51 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
               child: Text(
                 "Return to level main page",
                 style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget takeTestButton(String missionMode, LevelInfo levelInfo) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colorMap['testButtonColor'] ?? Colors.white,
+              foregroundColor:
+                  colorMap["buttonForegroundColor"] ?? Colors.white,
+              padding: const EdgeInsets.all(12.0),
+              side: BorderSide(
+                color: colorMap["yetAnotherGrey"] ?? Colors.white,
+                width: 3.0,
+              ),
+            ),
+
+            onPressed: () {
+              if (missionMode == "Melody ID") {
+                Navigator.pushNamed(
+                  context,
+                  LevelMelodyIDTest.routeName,
+                  arguments: levelInfo,
+                );
+              } else if (missionMode == "Melody singing") {
+                Navigator.pushNamed(
+                  context,
+                  LevelMelodySingingTest.routeName,
+                  arguments: levelInfo,
+                );
+              }
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Text(
+                "Take a test for this level",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
           ),

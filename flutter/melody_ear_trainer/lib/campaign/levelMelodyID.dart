@@ -6,6 +6,7 @@ import '../melodyPageAbstract.dart';
 import '../utils/helper.dart';
 import '../utils/colors.dart';
 
+
 class LevelMelodyID extends MelodyPageAbstract {
   const LevelMelodyID({super.key, required super.audioController}) : super();
 
@@ -60,9 +61,11 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
               verticalSpacer(),
               playMelodyButtons(generalProvider, mappingProvider, false),
               verticalSpacer(),
-              plainText("Play the melody back (" +
+              plainText(
+                "Play the melody back (" +
                     levelInfo.NumNotes.toString() +
-                    " notes):"),
+                    " notes):",
+              ),
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
@@ -80,7 +83,9 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
               verticalSpacer(),
               solfegeExpansionTile(generalProvider, mappingProvider),
               verticalSpacer(),
-              returnToLevelButton(levelStatus)
+              returnToLevelButton(levelStatus),
+              verticalSpacer(),
+              takeTestButton(mappingProvider.missions[levelInfo.MissionID]!.MissionMode, levelInfo),
             ],
           ),
         ),
@@ -179,5 +184,6 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
       ],
     );
   }
+
 
 }

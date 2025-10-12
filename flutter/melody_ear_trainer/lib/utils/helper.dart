@@ -176,7 +176,7 @@ Widget buildNotesGrid(
                   borderRadius: BorderRadius.circular(5),
                   side: BorderSide(
                     color: selected ? borderColor : unSelectedBorderColor,
-                    width: 2.0,
+                    width: 3.0,
                   ),
                 ),
               ),
@@ -191,8 +191,10 @@ Widget buildNotesGrid(
                     note,
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                      color: selected ? selectedForegroundColor : foregroundColor,
+                      fontWeight:
+                          selected ? FontWeight.bold : FontWeight.normal,
+                      color:
+                          selected ? selectedForegroundColor : foregroundColor,
                     ),
                   ),
                 ),
@@ -536,8 +538,7 @@ Widget levelHeader(LevelInfo levelInfo) {
   return Row(
     children: [
       Expanded(
-        child: (
-          Card(
+        child: (Card(
           color: colorMap["buttonForegroundColor"] ?? Colors.white,
           borderOnForeground: true,
           shape: RoundedRectangleBorder(
@@ -616,6 +617,30 @@ const Map<String, String> campaignTreeShapes = {
   "Bonus": "starshape",
   "": "circle",
 };
+
+const Map<String, double> campaignTreeHeight = {
+  "rectangle": 60,
+  "houseshape": 60,
+  "hexagon": 80,
+  "trapezoid": 200,
+  "octagon": 80,
+  "diamond": 100,
+  "starshape": 90,
+  "": 30,
+};
+
+
+const Map<String, double> campaignTreeWidth = {
+  "rectangle": 150,
+  "houseshape": 150,
+  "hexagon": 200,
+  "trapezoid": 200,
+  "octagon": 200,
+  "diamond": 200,
+  "starshape": 250,
+  "": 30,
+};
+
 
 RegExp chordNameParse = RegExp(
   r'([IVivd7]{1,4})([01]{0,2})_(Rt|Fir|Sec|Thr|All)',

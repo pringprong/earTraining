@@ -93,6 +93,8 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
               buildSelectedChordButtons(generalProvider, mappingProvider),
               verticalSpacer(),
               returnToLevelButton(levelStatus),
+              verticalSpacer(),
+              takeTestButton(mappingProvider.missions[levelInfo.MissionID]!.MissionMode, levelInfo),
             ],
           ),
         ),

@@ -140,77 +140,88 @@ class _campaignTreeState extends State<campaignTree> {
                                   : campaignTreeShapes[missionInfo
                                           .MissionMode] ??
                                       "circle";
+                          final double width =
+                              (missionInfo == null)
+                                  ? campaignTreeWidth[""] ?? 100
+                                  : campaignTreeWidth[shape] ??
+                                      100;
+                          final double height =
+                              (missionInfo == null)
+                                  ? campaignTreeHeight[""] ?? 100
+                                  : campaignTreeHeight[shape] ??
+                                      100;
                           if (shape.toLowerCase() == 'circle' ||
                               missionInfo == null) {
                             return circleWidget();
                           }
                           bool unlocked = getUnlocked(missionInfo);
+                          Widget internalContainer = internalWidget(
+                            missionInfo,
+                            unlocked,
+                            width,
+                            height
+                          );
                           if (shape.toLowerCase() == 'diamond') {
                             return myDiamondWidget(
-                              context,
                               missionInfo,
+                              context,
                               generalProvider,
                               mappingProvider,
+                              internalContainer,
                               unlocked,
                             );
                           } else if (shape.toLowerCase() == 'hexagon') {
-                            MissionInfo missionInfo =
-                                missions[nodeValue['missionid']]!;
                             return myHexagonWidget(
-                              context,
                               missionInfo,
+                              context,
                               generalProvider,
                               mappingProvider,
+                              internalContainer,
                               unlocked,
                             );
                           } else if (shape.toLowerCase() == 'octagon') {
-                            MissionInfo missionInfo =
-                                missions[nodeValue['missionid']]!;
                             return myOctagonWidget(
-                              context,
                               missionInfo,
+                              context,
                               generalProvider,
                               mappingProvider,
+                              internalContainer,
                               unlocked,
                             );
                           } else if (shape.toLowerCase() == 'trapezoid') {
-                            MissionInfo missionInfo =
-                                missions[nodeValue['missionid']]!;
                             return myTrapezoidWidget(
-                              context,
                               missionInfo,
+                              context,
                               generalProvider,
                               mappingProvider,
+                              internalContainer,
                               unlocked,
                             );
                           } else if (shape.toLowerCase() == 'houseshape') {
-                            MissionInfo missionInfo =
-                                missions[nodeValue['missionid']]!;
                             return myHouseShapeWidget(
-                              context,
                               missionInfo,
+                              context,
                               generalProvider,
                               mappingProvider,
+                              internalContainer,
                               unlocked,
                             );
                           } else if (shape.toLowerCase() == 'starshape') {
-                            MissionInfo missionInfo =
-                                missions[nodeValue['missionid']]!;
                             return myStarShapeWidget(
-                              context,
                               missionInfo,
+                              context,
                               generalProvider,
                               mappingProvider,
+                              internalContainer,
                               unlocked,
                             );
                           } else {
-                            MissionInfo missionInfo =
-                                missions[nodeValue['missionid']]!;
-                            return rectangleWidget(
-                              context,
+                            return myRectangleWidget(
                               missionInfo,
+                              context,
                               generalProvider,
                               mappingProvider,
+                              internalContainer,
                               unlocked,
                             );
                           }
@@ -288,31 +299,22 @@ class _campaignTreeState extends State<campaignTree> {
     );
   }
 
-  Widget myDiamondWidget(
-    BuildContext context,
+  Widget internalWidget(
     MissionInfo missionInfo,
-    GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
     bool unlocked,
+    double width,
+    double height,
   ) {
-    String titleText =
-        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill =
-        unlocked
-            ? Colors.black
-            : colorMap['lockedMissionColor'] ?? Colors.white;
     if (!unlocked) {
-      return DiamondWidget(
-        child: Container(
-          color: fill,
-          width: 200,
-          height: 100,
-          child: Center(
-            child: Text(
-              titleText,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
-            ),
+      return Container(
+        color: colorMap['lockedMissionColor'] ?? Colors.white,
+        width: width,
+        height: height,
+        child: Center(
+          child: Text(
+            'Pass previous\nmissions first',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
           ),
         ),
       );
@@ -321,6 +323,37 @@ class _campaignTreeState extends State<campaignTree> {
         missionInfo.MissionID,
       );
       Color nodeColor = missionLevelStatusColor(missionStatus);
+      return Container(
+        color: nodeColor,
+        width: width,
+        height: height,
+        child: Center(
+          child: Text(
+            missionInfo.MissionName,
+            //  + '\n' + missionStatus
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: colorMap["buttonForegroundColor"] ?? Colors.white,
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget myDiamondWidget(
+    MissionInfo missionInfo,
+    BuildContext context,
+    GeneralProvider generalProvider,
+    MappingProvider mappingProvider,
+    Widget internal,
+    bool unlocked,
+  ) {
+    if (!unlocked) {
+      return DiamondWidget(
+        child: internal
+      );
+    } else {
       return InkWell(
         onTap: () {
           resetMissionBeforeMissionPage(
@@ -335,61 +368,92 @@ class _campaignTreeState extends State<campaignTree> {
           );
         },
         child: DiamondWidget(
-          child: Container(
-            color: nodeColor,
-            width: 250,
-            height: 150,
-            child: Center(
-              child: Text(
-                missionInfo.MissionName,
-                //  + '\n' + missionStatus
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
-                ),
-              ),
-            ),
-          ),
+          child: internal
         ),
       );
     }
   }
 
+  // Widget myDiamondWidgetOld(
+  //   BuildContext context,
+  //   MissionInfo missionInfo,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   bool unlocked,
+  // ) {
+  //   String titleText =
+  //       unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+  //   Color fill =
+  //       unlocked
+  //           ? Colors.black
+  //           : colorMap['lockedMissionColor'] ?? Colors.white;
+  //   if (!unlocked) {
+  //     return DiamondWidget(
+  //       child: Container(
+  //         color: fill,
+  //         width: 200,
+  //         height: 100,
+  //         child: Center(
+  //           child: Text(
+  //             titleText,
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     String missionStatus = objectBox.getSavedMissionStatus(
+  //       missionInfo.MissionID,
+  //     );
+  //     Color nodeColor = missionLevelStatusColor(missionStatus);
+  //     return InkWell(
+  //       onTap: () {
+  //         resetMissionBeforeMissionPage(
+  //           generalProvider,
+  //           mappingProvider,
+  //           missionInfo,
+  //         );
+  //         Navigator.pushNamed(
+  //           context,
+  //           Mission.routeName,
+  //           arguments: missionInfo,
+  //         );
+  //       },
+  //       child: DiamondWidget(
+  //         child: Container(
+  //           color: nodeColor,
+  //           width: 250,
+  //           height: 150,
+  //           child: Center(
+  //             child: Text(
+  //               missionInfo.MissionName,
+  //               //  + '\n' + missionStatus
+  //               textAlign: TextAlign.center,
+  //               style: TextStyle(
+  //                 color: colorMap["buttonForegroundColor"] ?? Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
+
   Widget myOctagonWidget(
-    BuildContext context,
     MissionInfo missionInfo,
+    BuildContext context,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    Widget internal,
     bool unlocked,
   ) {
-    String titleText =
-        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill =
-        unlocked
-            ? Colors.black
-            : colorMap['lockedMissionColor'] ?? Colors.white;
-    double mywidth = 200;
-    double myheight = 80;
     if (!unlocked) {
       return OctagonWidget(
-        child: Container(
-          color: fill,
-          width: mywidth,
-          height: myheight,
-          child: Center(
-            child: Text(
-              titleText,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
-            ),
-          ),
-        ),
+        child: internal
       );
     } else {
-      String missionStatus = objectBox.getSavedMissionStatus(
-        missionInfo.MissionID,
-      );
-      Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
           resetMissionBeforeMissionPage(
@@ -404,61 +468,93 @@ class _campaignTreeState extends State<campaignTree> {
           );
         },
         child: OctagonWidget(
-          child: Container(
-            color: nodeColor,
-            width: mywidth,
-            height: myheight,
-            child: Center(
-              child: Text(
-                missionInfo.MissionName,
-                //  + '\n' + missionStatus
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
-                ),
-              ),
-            ),
-          ),
+          child: internal
         ),
       );
     }
   }
 
+  // Widget myOctagonWidgetOld(
+  //   BuildContext context,
+  //   MissionInfo missionInfo,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   bool unlocked,
+  // ) {
+  //   String titleText =
+  //       unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+  //   Color fill =
+  //       unlocked
+  //           ? Colors.black
+  //           : colorMap['lockedMissionColor'] ?? Colors.white;
+  //   double mywidth = 200;
+  //   double myheight = 80;
+  //   if (!unlocked) {
+  //     return OctagonWidget(
+  //       child: Container(
+  //         color: fill,
+  //         width: mywidth,
+  //         height: myheight,
+  //         child: Center(
+  //           child: Text(
+  //             titleText,
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     String missionStatus = objectBox.getSavedMissionStatus(
+  //       missionInfo.MissionID,
+  //     );
+  //     Color nodeColor = missionLevelStatusColor(missionStatus);
+  //     return InkWell(
+  //       onTap: () {
+  //         resetMissionBeforeMissionPage(
+  //           generalProvider,
+  //           mappingProvider,
+  //           missionInfo,
+  //         );
+  //         Navigator.pushNamed(
+  //           context,
+  //           Mission.routeName,
+  //           arguments: missionInfo,
+  //         );
+  //       },
+  //       child: OctagonWidget(
+  //         child: Container(
+  //           color: nodeColor,
+  //           width: mywidth,
+  //           height: myheight,
+  //           child: Center(
+  //             child: Text(
+  //               missionInfo.MissionName,
+  //               //  + '\n' + missionStatus
+  //               textAlign: TextAlign.center,
+  //               style: TextStyle(
+  //                 color: colorMap["buttonForegroundColor"] ?? Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
   Widget myHexagonWidget(
-    BuildContext context,
     MissionInfo missionInfo,
+    BuildContext context,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    Widget internal,
     bool unlocked,
   ) {
-    String titleText =
-        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill =
-        unlocked
-            ? Colors.black
-            : colorMap['lockedMissionColor'] ?? Colors.white;
-    double mywidth = 200;
-    double myheight = 80;
     if (!unlocked) {
       return HexagonWidget(
-        child: Container(
-          color: fill,
-          width: mywidth,
-          height: myheight,
-          child: Center(
-            child: Text(
-              titleText,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
-            ),
-          ),
-        ),
+        child: internal
       );
     } else {
-      String missionStatus = objectBox.getSavedMissionStatus(
-        missionInfo.MissionID,
-      );
-      Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
           resetMissionBeforeMissionPage(
@@ -473,61 +569,94 @@ class _campaignTreeState extends State<campaignTree> {
           );
         },
         child: HexagonWidget(
-          child: Container(
-            color: nodeColor,
-            width: mywidth,
-            height: myheight,
-            child: Center(
-              child: Text(
-                missionInfo.MissionName,
-                //  + '\n' + missionStatus
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
-                ),
-              ),
-            ),
-          ),
+          child: internal
         ),
       );
     }
   }
 
+  // Widget myHexagonWidget(
+  //   BuildContext context,
+  //   MissionInfo missionInfo,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   bool unlocked,
+  // ) {
+  //   String titleText =
+  //       unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+  //   Color fill =
+  //       unlocked
+  //           ? Colors.black
+  //           : colorMap['lockedMissionColor'] ?? Colors.white;
+  //   double mywidth = 200;
+  //   double myheight = 80;
+  //   if (!unlocked) {
+  //     return HexagonWidget(
+  //       child: Container(
+  //         color: fill,
+  //         width: mywidth,
+  //         height: myheight,
+  //         child: Center(
+  //           child: Text(
+  //             titleText,
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     String missionStatus = objectBox.getSavedMissionStatus(
+  //       missionInfo.MissionID,
+  //     );
+  //     Color nodeColor = missionLevelStatusColor(missionStatus);
+  //     return InkWell(
+  //       onTap: () {
+  //         resetMissionBeforeMissionPage(
+  //           generalProvider,
+  //           mappingProvider,
+  //           missionInfo,
+  //         );
+  //         Navigator.pushNamed(
+  //           context,
+  //           Mission.routeName,
+  //           arguments: missionInfo,
+  //         );
+  //       },
+  //       child: HexagonWidget(
+  //         child: Container(
+  //           color: nodeColor,
+  //           width: mywidth,
+  //           height: myheight,
+  //           child: Center(
+  //             child: Text(
+  //               missionInfo.MissionName,
+  //               //  + '\n' + missionStatus
+  //               textAlign: TextAlign.center,
+  //               style: TextStyle(
+  //                 color: colorMap["buttonForegroundColor"] ?? Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
+
   Widget myTrapezoidWidget(
-    BuildContext context,
     MissionInfo missionInfo,
+    BuildContext context,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    Widget internal,
     bool unlocked,
   ) {
-    String titleText =
-        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill =
-        unlocked
-            ? Colors.black
-            : colorMap['lockedMissionColor'] ?? Colors.white;
-    double mywidth = 200;
-    double myheight = 80;
     if (!unlocked) {
       return TrapezoidWidget(
-        child: Container(
-          color: fill,
-          width: mywidth,
-          height: myheight,
-          child: Center(
-            child: Text(
-              titleText,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
-            ),
-          ),
-        ),
+        child: internal
       );
     } else {
-      String missionStatus = objectBox.getSavedMissionStatus(
-        missionInfo.MissionID,
-      );
-      Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
           resetMissionBeforeMissionPage(
@@ -542,61 +671,94 @@ class _campaignTreeState extends State<campaignTree> {
           );
         },
         child: TrapezoidWidget(
-          child: Container(
-            color: nodeColor,
-            width: mywidth,
-            height: myheight,
-            child: Center(
-              child: Text(
-                missionInfo.MissionName,
-                //  + '\n' + missionStatus
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
-                ),
-              ),
-            ),
-          ),
+          child: internal
         ),
       );
     }
   }
 
+  // Widget myTrapezoidWidget(
+  //   BuildContext context,
+  //   MissionInfo missionInfo,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   bool unlocked,
+  // ) {
+  //   String titleText =
+  //       unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+  //   Color fill =
+  //       unlocked
+  //           ? Colors.black
+  //           : colorMap['lockedMissionColor'] ?? Colors.white;
+  //   double mywidth = 200;
+  //   double myheight = 80;
+  //   if (!unlocked) {
+  //     return TrapezoidWidget(
+  //       child: Container(
+  //         color: fill,
+  //         width: mywidth,
+  //         height: myheight,
+  //         child: Center(
+  //           child: Text(
+  //             titleText,
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     String missionStatus = objectBox.getSavedMissionStatus(
+  //       missionInfo.MissionID,
+  //     );
+  //     Color nodeColor = missionLevelStatusColor(missionStatus);
+  //     return InkWell(
+  //       onTap: () {
+  //         resetMissionBeforeMissionPage(
+  //           generalProvider,
+  //           mappingProvider,
+  //           missionInfo,
+  //         );
+  //         Navigator.pushNamed(
+  //           context,
+  //           Mission.routeName,
+  //           arguments: missionInfo,
+  //         );
+  //       },
+  //       child: TrapezoidWidget(
+  //         child: Container(
+  //           color: nodeColor,
+  //           width: mywidth,
+  //           height: myheight,
+  //           child: Center(
+  //             child: Text(
+  //               missionInfo.MissionName,
+  //               //  + '\n' + missionStatus
+  //               textAlign: TextAlign.center,
+  //               style: TextStyle(
+  //                 color: colorMap["buttonForegroundColor"] ?? Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
+
   Widget myHouseShapeWidget(
-    BuildContext context,
     MissionInfo missionInfo,
+    BuildContext context,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    Widget internal,
     bool unlocked,
-  ) {
-    String titleText =
-        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill =
-        unlocked
-            ? Colors.black
-            : colorMap['lockedMissionColor'] ?? Colors.white;
-    double mywidth = 150;
-    double myheight = 60;
+   ) {
     if (!unlocked) {
       return HouseShapeWidget(
-        child: Container(
-          color: fill,
-          width: mywidth,
-          height: myheight,
-          child: Center(
-            child: Text(
-              titleText,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
-            ),
-          ),
-        ),
+        child: internal
       );
     } else {
-      String missionStatus = objectBox.getSavedMissionStatus(
-        missionInfo.MissionID,
-      );
-      Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
           resetMissionBeforeMissionPage(
@@ -611,61 +773,94 @@ class _campaignTreeState extends State<campaignTree> {
           );
         },
         child: HouseShapeWidget(
-          child: Container(
-            color: nodeColor,
-            width: mywidth,
-            height: myheight,
-            child: Center(
-              child: Text(
-                missionInfo.MissionName,
-                //  + '\n' + missionStatus
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
-                ),
-              ),
-            ),
-          ),
+          child: internal
         ),
       );
     }
   }
 
+  // Widget myHouseShapeWidget(
+  //   BuildContext context,
+  //   MissionInfo missionInfo,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   bool unlocked,
+  // ) {
+  //   String titleText =
+  //       unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+  //   Color fill =
+  //       unlocked
+  //           ? Colors.black
+  //           : colorMap['lockedMissionColor'] ?? Colors.white;
+  //   double mywidth = 150;
+  //   double myheight = 60;
+  //   if (!unlocked) {
+  //     return HouseShapeWidget(
+  //       child: Container(
+  //         color: fill,
+  //         width: mywidth,
+  //         height: myheight,
+  //         child: Center(
+  //           child: Text(
+  //             titleText,
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     String missionStatus = objectBox.getSavedMissionStatus(
+  //       missionInfo.MissionID,
+  //     );
+  //     Color nodeColor = missionLevelStatusColor(missionStatus);
+  //     return InkWell(
+  //       onTap: () {
+  //         resetMissionBeforeMissionPage(
+  //           generalProvider,
+  //           mappingProvider,
+  //           missionInfo,
+  //         );
+  //         Navigator.pushNamed(
+  //           context,
+  //           Mission.routeName,
+  //           arguments: missionInfo,
+  //         );
+  //       },
+  //       child: HouseShapeWidget(
+  //         child: Container(
+  //           color: nodeColor,
+  //           width: mywidth,
+  //           height: myheight,
+  //           child: Center(
+  //             child: Text(
+  //               missionInfo.MissionName,
+  //               //  + '\n' + missionStatus
+  //               textAlign: TextAlign.center,
+  //               style: TextStyle(
+  //                 color: colorMap["buttonForegroundColor"] ?? Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
+
   Widget myStarShapeWidget(
-    BuildContext context,
     MissionInfo missionInfo,
+    BuildContext context,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    Widget internal,
     bool unlocked,
   ) {
-    String titleText =
-        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill =
-        unlocked
-            ? Colors.black
-            : colorMap['lockedMissionColor'] ?? Colors.white;
-    double mywidth = 250;
-    double myheight = 90;
     if (!unlocked) {
       return StarShapeWidget(
-        child: Container(
-          color: fill,
-          width: mywidth,
-          height: myheight,
-          child: Center(
-            child: Text(
-              titleText,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
-            ),
-          ),
-        ),
+        child: internal
       );
     } else {
-      String missionStatus = objectBox.getSavedMissionStatus(
-        missionInfo.MissionID,
-      );
-      Color nodeColor = missionLevelStatusColor(missionStatus);
       return InkWell(
         onTap: () {
           resetMissionBeforeMissionPage(
@@ -680,93 +875,181 @@ class _campaignTreeState extends State<campaignTree> {
           );
         },
         child: StarShapeWidget(
-          child: Container(
-            color: nodeColor,
-            width: mywidth,
-            height: myheight,
-            child: Center(
-              child: Text(
-                missionInfo.MissionName,
-                //  + '\n' + missionStatus
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colorMap["buttonForegroundColor"] ?? Colors.white,
-                ),
-              ),
-            ),
-          ),
+          child: internal
         ),
       );
     }
   }
 
-  Widget rectangleWidget(
-    BuildContext context,
+  //   Widget myStarShapeWidget(
+  //   BuildContext context,
+  //   MissionInfo missionInfo,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   bool unlocked,
+  // ) {
+  //   String titleText =
+  //       unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+  //   Color fill =
+  //       unlocked
+  //           ? Colors.black
+  //           : colorMap['lockedMissionColor'] ?? Colors.white;
+  //   double mywidth = 250;
+  //   double myheight = 90;
+  //   if (!unlocked) {
+  //     return StarShapeWidget(
+  //       child: Container(
+  //         color: fill,
+  //         width: mywidth,
+  //         height: myheight,
+  //         child: Center(
+  //           child: Text(
+  //             titleText,
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(color: unlocked ? Colors.white : Colors.white70),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     String missionStatus = objectBox.getSavedMissionStatus(
+  //       missionInfo.MissionID,
+  //     );
+  //     Color nodeColor = missionLevelStatusColor(missionStatus);
+  //     return InkWell(
+  //       onTap: () {
+  //         resetMissionBeforeMissionPage(
+  //           generalProvider,
+  //           mappingProvider,
+  //           missionInfo,
+  //         );
+  //         Navigator.pushNamed(
+  //           context,
+  //           Mission.routeName,
+  //           arguments: missionInfo,
+  //         );
+  //       },
+  //       child: StarShapeWidget(
+  //         child: Container(
+  //           color: nodeColor,
+  //           width: mywidth,
+  //           height: myheight,
+  //           child: Center(
+  //             child: Text(
+  //               missionInfo.MissionName,
+  //               //  + '\n' + missionStatus
+  //               textAlign: TextAlign.center,
+  //               style: TextStyle(
+  //                 color: colorMap["buttonForegroundColor"] ?? Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  Widget myRectangleWidget(
     MissionInfo missionInfo,
+    BuildContext context,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
+    Widget internal,
     bool unlocked,
   ) {
-    String titleText =
-        unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
-    Color fill =
-        unlocked
-            ? Colors.black
-            : colorMap['lockedMissionColor'] ?? Colors.white;
-    double mywidth = 150;
-    double myheight = 60;
     if (!unlocked) {
-      // Locked appearance: no interaction, greyed out, label "Mission Locked"
-      return Container(
-        padding: EdgeInsets.all(8),
-        width: mywidth,
-        height: myheight,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: fill,
-          boxShadow: [BoxShadow(color: fill, spreadRadius: 1)],
-        ),
-        child: Center(
-          child: Text(
-            titleText,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white70),
-          ),
+      return RectangleWidget(
+        child: internal
+      );
+    } else {
+      return InkWell(
+        onTap: () {
+          resetMissionBeforeMissionPage(
+            generalProvider,
+            mappingProvider,
+            missionInfo,
+          );
+          Navigator.pushNamed(
+            context,
+            Mission.routeName,
+            arguments: missionInfo,
+          );
+        },
+        child: RectangleWidget(
+          child: internal
         ),
       );
     }
-    String missionStatus = objectBox.getSavedMissionStatus(
-      missionInfo.MissionID,
-    );
-    Color nodeColor = missionLevelStatusColor(missionStatus);
-    return InkWell(
-      onTap: () {
-        resetMissionBeforeMissionPage(
-          generalProvider,
-          mappingProvider,
-          missionInfo,
-        );
-        Navigator.pushNamed(context, Mission.routeName, arguments: missionInfo);
-      },
-      child: Container(
-        width: mywidth,
-        height: myheight,
-        padding: EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: [BoxShadow(color: nodeColor, spreadRadius: 1)],
-        ),
-        child: Center(
-          child: Text(
-            missionInfo.MissionName,
-            //  + '\n' + missionStatus
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: colorMap["buttonForegroundColor"] ?? Colors.white,
-            ),
-          ),
-        ),
-      ),
-    );
   }
+
+  // Widget rectangleWidget(
+  //   BuildContext context,
+  //   MissionInfo missionInfo,
+  //   GeneralProvider generalProvider,
+  //   MappingProvider mappingProvider,
+  //   bool unlocked,
+  // ) {
+  //   String titleText =
+  //       unlocked ? (missionInfo.MissionName) : 'Pass previous\nmissions first';
+  //   Color fill =
+  //       unlocked
+  //           ? Colors.black
+  //           : colorMap['lockedMissionColor'] ?? Colors.white;
+  //   double mywidth = 150;
+  //   double myheight = 60;
+  //   if (!unlocked) {
+  //     // Locked appearance: no interaction, greyed out, label "Mission Locked"
+  //     return Container(
+  //       padding: EdgeInsets.all(8),
+  //       width: mywidth,
+  //       height: myheight,
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(4),
+  //         color: fill,
+  //         boxShadow: [BoxShadow(color: fill, spreadRadius: 1)],
+  //       ),
+  //       child: Center(
+  //         child: Text(
+  //           titleText,
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(color: Colors.white70),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  //   String missionStatus = objectBox.getSavedMissionStatus(
+  //     missionInfo.MissionID,
+  //   );
+  //   Color nodeColor = missionLevelStatusColor(missionStatus);
+  //   return InkWell(
+  //     onTap: () {
+  //       resetMissionBeforeMissionPage(
+  //         generalProvider,
+  //         mappingProvider,
+  //         missionInfo,
+  //       );
+  //       Navigator.pushNamed(context, Mission.routeName, arguments: missionInfo);
+  //     },
+  //     child: Container(
+  //       width: mywidth,
+  //       height: myheight,
+  //       padding: EdgeInsets.all(4),
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(4),
+  //         boxShadow: [BoxShadow(color: nodeColor, spreadRadius: 1)],
+  //       ),
+  //       child: Center(
+  //         child: Text(
+  //           missionInfo.MissionName,
+  //           //  + '\n' + missionStatus
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(
+  //             color: colorMap["buttonForegroundColor"] ?? Colors.white,
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

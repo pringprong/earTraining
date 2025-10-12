@@ -81,6 +81,31 @@ class HexagonWidget extends StatelessWidget {
   }
 }
 
+class RectangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(0, 0); 
+    path.lineTo(size.width, 0); 
+    path.lineTo(size.width, size.height); 
+    path.lineTo(0, size.height); 
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+class RectangleWidget extends StatelessWidget {
+  final Widget child;
+  const RectangleWidget({Key? key, required this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ClipPath(clipper: RectangleClipper(), child: child);
+  }
+}
+
 class TrapezoidClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
