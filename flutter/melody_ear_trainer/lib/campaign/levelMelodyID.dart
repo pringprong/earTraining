@@ -161,7 +161,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
               side: BorderSide(
-                color: colorMap["waitingForGuessIconColor"] ?? Colors.white,
+                color: comparisonIconColor,
                 width: borderWidth,
               ),
             ),

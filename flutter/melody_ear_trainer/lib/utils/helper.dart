@@ -253,7 +253,7 @@ Widget buildChordButtons(
                   decoration: BoxDecoration(
                     color:
                         selected
-                            ? getChordButtonColor2(chordName)
+                            ? getChordButtonColor(chordName)
                             : colorMap["yetAnotherGrey"] ?? Colors.white,
                     borderRadius: BorderRadius.circular(6),
                   ),
@@ -316,7 +316,7 @@ Widget buildSelectedChordButtonsHelper(
     runSpacing: 4,
     children:
         selectedChords.map((chord) {
-          final color = getChordButtonColor2(chord);
+          final color = getChordButtonColor(chord);
           final notes = chordMap[chord] ?? [];
           return Tooltip(
             message: notes.join(' '),

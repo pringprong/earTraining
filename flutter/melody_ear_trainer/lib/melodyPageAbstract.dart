@@ -53,10 +53,9 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   Row generateMelodyButton(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    bool setSolfegeText,{
+    bool setSolfegeText, {
     Set<String> newNotes = const {},
-  }
-  ) {
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -73,7 +72,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 generalProvider,
                 mappingProvider,
                 setSolfegeText,
-                newNotes: newNotes
+                newNotes: newNotes,
               );
               setState(() {
                 //solfegeText = ""; // Clear solfege area
@@ -407,7 +406,10 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             },
             child: FittedBox(
               fit: BoxFit.fill,
-              child: Text("Say the solfege", style: TextStyle(fontSize: fontsize)),
+              child: Text(
+                "Say the solfege",
+                style: TextStyle(fontSize: fontsize),
+              ),
             ),
           ),
         ),
@@ -692,17 +694,16 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   void newGenerateChordMelody(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    bool setSolfegeText,{
+    bool setSolfegeText, {
     Set<String> newNotes = const {},
-  }
-  ) {
+  }) {
     userWrittenChordMelody.clear();
     melodiesSame = false;
 
     String result = generatedChordMelody.generateChordMelody(
       generalProvider,
       mappingProvider,
-      newNotes: newNotes
+      newNotes: newNotes,
     );
     if (result.isNotEmpty) {
       ScaffoldMessenger.of(
@@ -768,7 +769,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
       runSpacing: 4,
       children:
           selectedChords.map((chord) {
-            final color = getChordButtonColor2(chord);
+            final color = getChordButtonColor(chord);
             final notes = chordMap[chord] ?? [];
             return Tooltip(
               message: notes.join(' '),

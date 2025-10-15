@@ -883,10 +883,10 @@ class missionSettingsProvider extends GeneralProvider {
   String chordFrequencyDefault = "Never";
 
   @override
-  int melodyRepeatsDefault = 1;
+  int melodyRepeatsDefault = 2;
 
   @override
-  int spokenRepeatsDefault = 1;
+  int spokenRepeatsDefault = 0;
 
   @override
   int solfegeRepeatsDefault = 1;

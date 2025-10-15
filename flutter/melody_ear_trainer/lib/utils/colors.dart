@@ -156,9 +156,9 @@ Map<String, Color> colorMap = {
   'incorrectGuessIconColor': Colors.red,
   'incorrectGuessButtonColor': Color.fromARGB(255, 240, 128, 128),
 
-  'passedColor': Color.fromARGB(255, 0, 163, 104),
-  'inProgressColor': Color.fromARGB(255, 0, 157, 184),
-  'notYetStartedColor': Color.fromARGB(255, 98, 69, 121),
+  'passedColor': multiplyHexColor(color2, factor4),
+  'inProgressColor': multiplyHexColor(color7, factor4),
+  'notYetStartedColor': multiplyHexColor(color1, factor4),
 
   'borderColor': Colors.grey,
   'yetAnotherGrey': Color.fromARGB(255, 181, 196, 212),
@@ -171,7 +171,8 @@ Map<String, Color> colorMap = {
   'testButtonColor': multiplyHexColor(color7, factor4),
 
   'lockedMissionColor': Colors.grey.shade600,
-  'brightBackground':Colors.grey.shade300, // for buttons that further the mission
+  'brightBackground':
+      Colors.grey.shade300, // for buttons that further the mission
   'darkBackground': Colors.grey.shade700, // for navigation buttons
 };
 
@@ -194,17 +195,17 @@ Color missionLevelStatusColor(String missionStatus) {
 Color getCampaignColor(String CampaignID) {
   switch (CampaignID) {
     case "c0":
-      return colorMap['c5f2'] ?? Colors.white;
+      return colorMap['c5f4'] ?? Colors.white;
     case "c1":
-      return colorMap['c1f2'] ?? Colors.white;
+      return colorMap['c1f4'] ?? Colors.white;
     case "c2":
-      return colorMap['c2f2'] ?? Colors.white;
+      return colorMap['c2f4'] ?? Colors.white;
     case "c3":
-      return colorMap['c3f2'] ?? Colors.white;
+      return colorMap['c3f4'] ?? Colors.white;
     case "c4":
-      return colorMap['c4f2'] ?? Colors.white;
+      return colorMap['c4f4'] ?? Colors.white;
     case "c5":
-      return colorMap['c6f2'] ?? Colors.white;
+      return colorMap['c6f4'] ?? Colors.white;
   }
   return Colors.grey;
 }
@@ -228,33 +229,6 @@ Color getModeColor(String mode) {
 }
 
 Color getChordButtonColor(String chordName) {
-  String c = chordName;
-  if (c.endsWith("00_Rt")) return colorMap["c1f1"] ?? Colors.white;
-  if (c.endsWith("0_Rt")) return colorMap["c1f2"] ?? Colors.white;
-  if (c.endsWith("1_Rt")) return colorMap["c1f4"] ?? Colors.white;
-  if (c.endsWith("_Rt")) return colorMap["c1f3"] ?? Colors.white;
-
-  if (c.endsWith("00_Fir")) return colorMap["c2f1"] ?? Colors.white;
-  if (c.endsWith("0_Fir")) return colorMap["c2f2"] ?? Colors.white;
-  if (c.endsWith("1_Fir")) return colorMap["c2f4"] ?? Colors.white;
-  if (c.endsWith("_Fir")) return colorMap["c2f3"] ?? Colors.white;
-
-  if (c.endsWith("00_Sec")) return colorMap["c3f1"] ?? Colors.white;
-  if (c.endsWith("0_Sec")) return colorMap["c3f2"] ?? Colors.white;
-  if (c.endsWith("1_Sec")) return colorMap["c3f4"] ?? Colors.white;
-  if (c.endsWith("_Sec")) return colorMap["c3f3"] ?? Colors.white;
-
-  if (c.endsWith("00_Thr")) return colorMap["c4f1"] ?? Colors.white;
-  if (c.endsWith("0_Thr")) return colorMap["c4f2"] ?? Colors.white;
-  if (c.endsWith("1_Thr")) return colorMap["c4f4"] ?? Colors.white;
-  if (c.endsWith("_Thr")) return colorMap["c4f3"] ?? Colors.white;
-
-  if (c.endsWith("_All")) return colorMap["c5f2"] ?? Colors.white;
-
-  return colorMap["c6f2"] ?? Colors.white;
-}
-
-Color getChordButtonColor2(String chordName) {
   String c = chordName;
   if (c.toLowerCase().startsWith("vii") & c.endsWith("_Rt"))
     return colorMap["c5f0"] ?? Colors.white;
@@ -291,8 +265,6 @@ Color getChordButtonColor2(String chordName) {
 
   if (c.toLowerCase().startsWith("iv") & c.endsWith("_Rt"))
     return colorMap["c6f0"] ?? Colors.white;
-  colorMap["c6f1"] ?? Colors.white;
-  colorMap["c6f2"] ?? Colors.white;
   if (c.toLowerCase().startsWith("iv") & c.endsWith("_Fir"))
     return colorMap["c6f1"] ?? Colors.white;
   if (c.toLowerCase().startsWith("iv") & c.endsWith("_Sec"))

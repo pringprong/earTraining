@@ -106,16 +106,17 @@ class _campaignTreeState extends State<campaignTree> {
                   verticalSpacer(),
                   Expanded(
                     child: InteractiveViewer(
-                      constrained: false,
-                      boundaryMargin: EdgeInsets.all(100),
+                      constrained: true,
+                      boundaryMargin: EdgeInsets.all(5.0),
                       minScale: 0.01,
                       maxScale: 5.6,
-                      child: GraphView(
+                      child: GraphView.builder(
                         graph: graph,
                         algorithm: BuchheimWalkerAlgorithm(
                           builder,
                           TreeEdgeRenderer(builder),
                         ),
+                        initialNode: ValueKey(1),
                         paint:
                             Paint()
                               ..color = Colors.white

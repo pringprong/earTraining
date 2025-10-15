@@ -195,9 +195,9 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                   Expanded(
                     child: GestureDetector(
                       child: Card(
-                        color: colorMap["c1f4"],
+                        color: colorMap["c1f3"],
                         child: SizedBox(
-                          height: 100,
+                          height: 60,
                           child: Center(
                             child: Text(
                               "Help",
@@ -214,6 +214,36 @@ class _CustomFrontPageState extends State<CustomFrontPage> {
                       ),
                       onTap: () {
                         Navigator.pushNamed(context, '/help');
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              verticalSpacer(),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      child: Card(
+                        color: colorMap["c6f2"],
+                        child: SizedBox(
+                          height: 60,
+                          child: Center(
+                            child: Text(
+                              "Back to front page",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color:
+                                    colorMap["noteButtonForegroundColor"] ??
+                                    Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
                       },
                     ),
                   ),
