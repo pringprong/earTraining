@@ -34,8 +34,6 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     bool goToNextLevel = false;
     bool returnToMissionPage = false;
     bool returnToCampaignTree = false;
-    String passOrFail = "";
-    Color myColor = Colors.white;
     int numPassedTests = objectBox.numPassedTestsForLevel(
       levelInfo.LevelID,
       levelInfo.PassingScore,
@@ -45,23 +43,22 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     //   mappingProvider,
     //   levelTestResults.MissionID,
     // );
-    String missionStatus = objectBox.getSavedMissionStatus(levelTestResults.MissionID);
+    String missionStatus = objectBox.getSavedMissionStatus(
+      levelTestResults.MissionID,
+    );
     String missionMode = mappingProvider.getMissionMode(
       levelTestResults.MissionID,
     );
-    if (levelTestResults.score >= levelInfo.NumQuestions) {
-      passOrFail = "PERFECT!";
-      myColor = colorMap['correctGuessIconColor'] ?? Colors.white;
-    } else if (levelTestResults.score >= levelInfo.PassingScore) {
-      passOrFail = "Passed!";
-      myColor = colorMap['correctGuessButtonColor'] ?? Colors.white;
-    } else if (levelInfo.PassingScore - levelTestResults.score <= 1) {
-      passOrFail = "Almost, keep trying!";
-      myColor = colorMap['incorrectGuessButtonColor'] ?? Colors.white;
-    } else {
-      passOrFail = "More practice needed";
-      myColor = colorMap['incorrectGuessIconColor'] ?? Colors.white;
-    }
+    String passOrFail = getTestResultString(
+      levelTestResults.score,
+      levelInfo.NumQuestions,
+      levelInfo.PassingScore,
+    );
+    Color myColor = getTestResultColor(
+      levelTestResults.score,
+      levelInfo.NumQuestions,
+      levelInfo.PassingScore,
+    );
 
     String assessment = "";
     if (missionStatus == "Passed!") {
@@ -319,16 +316,16 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
         children: [
           Expanded(
             child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['brightBackground'] ?? Colors.white,
-              foregroundColor:
-                  colorMap["buttonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              side: BorderSide(
-                color: colorMap["testButtonColor"] ?? Colors.white,
-                width: borderWidth,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap['brightBackground'] ?? Colors.white,
+                foregroundColor:
+                    colorMap["buttonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+                side: BorderSide(
+                  color: colorMap["testButtonColor"] ?? Colors.white,
+                  width: borderWidth,
+                ),
               ),
-            ),
               onPressed: () {
                 if (missionMode == "Melody ID") {
                   Navigator.pushReplacementNamed(
@@ -373,16 +370,13 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
         children: [
           Expanded(
             child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
-              foregroundColor:
-                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              side: BorderSide(
-                color: nextLevelColor,
-                width: borderWidth,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap['darkBackground'] ?? Colors.white,
+                foregroundColor:
+                    colorMap["noteButtonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+                side: BorderSide(color: nextLevelColor, width: borderWidth),
               ),
-            ),
               onPressed: () {
                 Navigator.popUntil(
                   context,
@@ -432,16 +426,16 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
         children: [
           Expanded(
             child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
-              foregroundColor:
-                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              side: BorderSide(
-                color: missionLevelStatusColor(levelStatus),
-                width: borderWidth,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap['darkBackground'] ?? Colors.white,
+                foregroundColor:
+                    colorMap["noteButtonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+                side: BorderSide(
+                  color: missionLevelStatusColor(levelStatus),
+                  width: borderWidth,
+                ),
               ),
-            ),
               onPressed: () {
                 Navigator.pop(context); // pop to level page
               },
@@ -477,16 +471,13 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
         children: [
           Expanded(
             child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
-              foregroundColor:
-                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              side: BorderSide(
-                color: getModeColor(mode),
-                width: borderWidth,
-              )
-            ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap['darkBackground'] ?? Colors.white,
+                foregroundColor:
+                    colorMap["noteButtonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+                side: BorderSide(color: getModeColor(mode), width: borderWidth),
+              ),
               onPressed: () {
                 resetMissionBeforeMissionPage(
                   generalProvider,
@@ -527,16 +518,16 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
         children: [
           Expanded(
             child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
-              foregroundColor:
-                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              side: BorderSide(
-                color: getCampaignColor(campaignID),
-                width: borderWidth,
-              )
-            ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorMap['darkBackground'] ?? Colors.white,
+                foregroundColor:
+                    colorMap["noteButtonForegroundColor"] ?? Colors.white,
+                padding: const EdgeInsets.all(12.0),
+                side: BorderSide(
+                  color: getCampaignColor(campaignID),
+                  width: borderWidth,
+                ),
+              ),
               onPressed: () {
                 Navigator.popUntil(
                   context,

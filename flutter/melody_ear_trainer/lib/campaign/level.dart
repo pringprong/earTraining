@@ -119,12 +119,21 @@ class _LevelState extends State<Level> {
                     itemCount: ltrList.length,
                     itemBuilder: (context, index) {
                       final ltr = ltrList[index];
+                      Color myColor = getTestResultColor(
+                        ltr.score,
+                        levelInfo.NumQuestions,
+                        levelInfo.PassingScore,
+                      );
                       return ListTile(
                         title: Text(
                           "Score: " +
                               ltr.score.toString() +
                               " / " +
                               levelInfo.NumQuestions.toString(),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color:myColor
+                              ),
                         ),
                         trailing: Text("Date: " + ltr.timestamp),
                         dense: true,
@@ -324,8 +333,7 @@ class _LevelState extends State<Level> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  colorMap['brightBackground'] ?? Colors.white,
+              backgroundColor: colorMap['brightBackground'] ?? Colors.white,
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(8.0),
@@ -425,7 +433,7 @@ class _LevelState extends State<Level> {
               side: BorderSide(
                 color: getModeColor(missionMode),
                 width: borderWidth,
-              )
+              ),
             ),
             onPressed: () {
               resetMissionBeforeMissionPage(

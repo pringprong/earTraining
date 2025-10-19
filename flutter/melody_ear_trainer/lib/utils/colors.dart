@@ -309,3 +309,26 @@ Color getChordButtonColor(String chordName) {
 
   return colorMap["yetAnotherGrey"] ?? Colors.white;
 }
+
+Color getTestResultColor(int testScore, int numQuestions, int passingScore) {
+  if (testScore >= numQuestions) {
+    return colorMap['correctGuessIconColor'] ?? Colors.white;
+  } else if (testScore >= passingScore) {
+    return colorMap['correctGuessButtonColor'] ?? Colors.white;
+  } else if (passingScore - testScore <= 1) {
+    return colorMap['incorrectGuessButtonColor'] ?? Colors.white;
+  } 
+  return colorMap['incorrectGuessIconColor'] ?? Colors.white;
+}
+
+String getTestResultString(int testScore, int numQuestions, int passingScore) {
+  if (testScore >= numQuestions) {
+    return "PERFECT!";
+  } else if (testScore >= passingScore) {
+    return "Passed!";
+  } else if (passingScore - testScore <= 1) {
+    return "Almost, keep trying!";
+  } 
+  return "More practice needed";
+}
+

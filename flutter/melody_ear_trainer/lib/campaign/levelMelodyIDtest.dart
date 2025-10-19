@@ -108,7 +108,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
   @override
   void finishTest(MappingProvider mappingProvider) {
     // write a test-result row to the database, then navigate to results page
-    String timestamp = DateFormat('yyyy-MM-dd HH:MM').format(DateTime.now());
+    String timestamp = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
 
     // insert and when done navigate to results pag
     LevelTestResults ltr = LevelTestResults(
