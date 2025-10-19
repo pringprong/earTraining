@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'helper.dart';
+import 'dart:math' as math;
 
 class ScatterPlot extends StatelessWidget {
   final List<LevelTestResults> results;
@@ -79,16 +80,8 @@ class _ScatterPlotPainter extends CustomPainter {
     final height = size.height;
     if (points.isEmpty) return;
 
-    // compute x range
+    // Sort points by timestamp to preserve chronological order
     points.sort((a, b) => a.dt.compareTo(b.dt));
-    DateTime minX = points.first.dt;
-    DateTime maxX = points.last.dt;
-    if (minX == maxX) {
-      // make a tiny range
-      minX = minX.subtract(Duration(minutes: 1));
-      maxX = maxX.add(Duration(minutes: 1));
-    }
-    final totalSeconds = maxX.difference(minX).inSeconds.toDouble();
 
     // compute y range
     final yMax =
@@ -101,7 +94,8 @@ class _ScatterPlotPainter extends CustomPainter {
     final left = padding;
     final right = width - padding;
     final top = padding;
-    final bottom = height - padding;
+    final bottom =
+        height - padding - 20; // leave extra space for vertical labels
 
     // X axis
     canvas.drawLine(Offset(left, bottom), Offset(right, bottom), paintAxis);
@@ -125,14 +119,14 @@ class _ScatterPlotPainter extends CustomPainter {
       tp.paint(canvas, Offset(4, dy - tp.height / 2));
     }
 
-    // Precompute point positions
+    // Precompute point positions: evenly distribute along X axis (index-based)
     final List<Offset> positions = [];
-    for (final p in points) {
-      final xFrac =
-          p.dt.difference(minX).inSeconds.toDouble() /
-          (totalSeconds == 0 ? 1 : totalSeconds);
-      final x = left + xFrac * (right - left);
-      final yFrac = (p.y - yMin) / ((yMax - yMin) == 0 ? 1 : (yMax - yMin));
+    final int n = points.length;
+    for (int i = 0; i < n; i++) {
+      final double frac = (n == 1) ? 0.5 : (i / (n - 1));
+      final x = left + frac * (right - left);
+      final yFrac =
+          (points[i].y - yMin) / ((yMax - yMin) == 0 ? 1 : (yMax - yMin));
       final y = bottom - yFrac * (bottom - top);
       positions.add(Offset(x, y));
     }
@@ -168,22 +162,27 @@ class _ScatterPlotPainter extends CustomPainter {
       );
     }
 
-    // draw earliest/latest labels
-    final DateFormat df = DateFormat('yyyy-MM-dd HH:mm');
-    final earliest = df.format(points.first.dt.toLocal());
-    final latest = df.format(points.last.dt.toLocal());
-    final tp1 = TextPainter(
-      text: TextSpan(text: earliest, style: axisLabelStyle),
-      textDirection: ui.TextDirection.ltr,
-    );
-    tp1.layout(maxWidth: width / 2);
-    tp1.paint(canvas, Offset(left, bottom + 4));
-    final tp2 = TextPainter(
-      text: TextSpan(text: latest, style: axisLabelStyle),
-      textDirection: ui.TextDirection.ltr,
-    );
-    tp2.layout(maxWidth: width / 2);
-    tp2.paint(canvas, Offset(right - tp2.width, bottom + 4));
+    // draw vertical x-axis labels for each point (evenly spaced)
+    final DateFormat df = DateFormat('yyyy-MM-dd\nHH:mm');
+    for (int i = 0; i < points.length; i++) {
+      final pos = positions[i];
+      final label = df.format(points[i].dt.toLocal());
+      final tp = TextPainter(
+        text: TextSpan(text: label, style: axisLabelStyle),
+        textDirection: ui.TextDirection.ltr,
+        textAlign: TextAlign.center,
+      );
+      tp.layout(maxWidth: 80);
+
+      // rotate text to vertical by rotating -90 degrees and paint centered under the x-position
+      canvas.save();
+      // translate to point just below axis
+      canvas.translate(pos.dx, bottom + 6 + tp.width / 2);
+      canvas.rotate(-math.pi / 2);
+      // draw centered
+      tp.paint(canvas, Offset(-tp.width / 2, 0));
+      canvas.restore();
+    }
 
     // Y-axis title
     final tpY = TextPainter(
