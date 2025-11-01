@@ -865,13 +865,13 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
             ),
             onPressed: () {
               if (missionMode == "Melody ID") {
-                Navigator.pushNamed(
+                Navigator.pushReplacementNamed(
                   context,
                   LevelMelodyIDTest.routeName,
                   arguments: levelInfo,
                 );
               } else if (missionMode == "Melody singing") {
-                Navigator.pushNamed(
+                Navigator.pushReplacementNamed(
                   context,
                   LevelMelodySingingTest.routeName,
                   arguments: levelInfo,

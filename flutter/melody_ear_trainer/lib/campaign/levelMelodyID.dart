@@ -6,7 +6,6 @@ import '../melodyPageAbstract.dart';
 import '../utils/helper.dart';
 import '../utils/colors.dart';
 
-
 class LevelMelodyID extends MelodyPageAbstract {
   const LevelMelodyID({super.key, required super.audioController}) : super();
 
@@ -16,21 +15,35 @@ class LevelMelodyID extends MelodyPageAbstract {
 }
 
 class LevelMelodyIDState extends MelodyPageAbstractState {
+  bool _initialized = false; // Add this flag
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    MappingProvider mappingProvider = Provider.of<MappingProvider>(context);
-    GeneralProvider generalProvider = Provider.of<missionSettingsProvider>(
-      context,
-    );
-    final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    newGenerateChordMelody(generalProvider, mappingProvider, false, newNotes:levelInfo.NewNotes);
-    generatedChordMelody.playChordMelody(
-      generalProvider.getSelectedInstrument,
-      generalProvider,
-      mappingProvider,
-      widget,
-    );
+
+    // Only run on first load
+    if (!_initialized) {
+      MappingProvider mappingProvider = Provider.of<MappingProvider>(context);
+      GeneralProvider generalProvider = Provider.of<missionSettingsProvider>(
+        context,
+      );
+      final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
+
+      newGenerateChordMelody(
+        generalProvider,
+        mappingProvider,
+        false,
+        newNotes: levelInfo.NewNotes,
+      );
+      generatedChordMelody.playChordMelody(
+        generalProvider.getSelectedInstrument,
+        generalProvider,
+        mappingProvider,
+        widget,
+      );
+
+      _initialized = true; // Set flag after first run
+    }
   }
 
   @override
@@ -76,7 +89,12 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
               verticalSpacer(),
               compareButton2(generalProvider, mappingProvider),
               verticalSpacer(),
-              generateMelodyButton(generalProvider, mappingProvider, false, newNotes: levelInfo.NewNotes),
+              generateMelodyButton(
+                generalProvider,
+                mappingProvider,
+                false,
+                newNotes: levelInfo.NewNotes,
+              ),
               verticalSpacer(),
               plainText("Listen to your melody:"),
               verticalSpacer(),
@@ -86,7 +104,10 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
               verticalSpacer(),
               returnToLevelButton(levelStatus),
               verticalSpacer(),
-              takeTestButton(mappingProvider.missions[levelInfo.MissionID]!.MissionMode, levelInfo),
+              takeTestButton(
+                mappingProvider.missions[levelInfo.MissionID]!.MissionMode,
+                levelInfo,
+              ),
             ],
           ),
         ),
@@ -98,10 +119,9 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
   Row generateMelodyButton(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    bool setSolfegeText,{
+    bool setSolfegeText, {
     Set<String> newNotes = const {},
-  }
-  ) {
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -122,7 +142,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
                 generalProvider,
                 mappingProvider,
                 setSolfegeText,
-                newNotes: newNotes
+                newNotes: newNotes,
               );
               generatedChordMelody.playChordMelody(
                 generalProvider.getSelectedInstrument,
@@ -160,10 +180,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
               foregroundColor:
                   colorMap["buttonForegroundColor"] ?? Colors.white,
               padding: const EdgeInsets.all(12.0),
-              side: BorderSide(
-                color: comparisonIconColor,
-                width: borderWidth,
-              ),
+              side: BorderSide(color: comparisonIconColor, width: borderWidth),
             ),
             label: FittedBox(
               fit: BoxFit.fill,
@@ -196,5 +213,4 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
       ],
     );
   }
-
 }
