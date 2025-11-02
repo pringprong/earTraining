@@ -16,6 +16,10 @@ class LevelMelodyID extends MelodyPageAbstract {
 
 class LevelMelodyIDState extends MelodyPageAbstractState {
   bool _initialized = false; // Add this flag
+  // Add class-level fields to store the providers and info
+  late final MappingProvider mappingProvider;
+  late final missionSettingsProvider generalProvider;
+  late final LevelInfo levelInfo;
 
   @override
   void didChangeDependencies() {
@@ -23,11 +27,11 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
 
     // Only run on first load
     if (!_initialized) {
-      MappingProvider mappingProvider = Provider.of<MappingProvider>(context);
-      GeneralProvider generalProvider = Provider.of<missionSettingsProvider>(
+      mappingProvider = Provider.of<MappingProvider>(context);
+      generalProvider = Provider.of<missionSettingsProvider>(
         context,
       );
-      final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
+      levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
 
       newGenerateChordMelody(
         generalProvider,
@@ -48,9 +52,9 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
 
   @override
   Widget build(BuildContext context) {
-    final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    final mappingProvider = Provider.of<MappingProvider>(context);
-    final generalProvider = Provider.of<missionSettingsProvider>(context);
+    // final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
+    // final mappingProvider = Provider.of<MappingProvider>(context);
+    // final generalProvider = Provider.of<missionSettingsProvider>(context);
     String levelStatus = getLevelStatusWithQuery(levelInfo);
 
     return Scaffold(

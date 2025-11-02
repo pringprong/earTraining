@@ -17,26 +17,38 @@ class LevelMelodySinging extends MelodyPageAbstract {
 }
 
 class LevelMelodySingingState extends MelodyPageAbstractState {
+  bool _initialized = false; // Add this flag
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    MappingProvider mappingProvider = Provider.of<MappingProvider>(context);
-    GeneralProvider generalProvider = Provider.of<missionSettingsProvider>(
-      context,
-    );
-    final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    newGenerateChordMelody(generalProvider, mappingProvider, true, newNotes: levelInfo.NewNotes);
-    ChordMelody fn = ChordMelody.singleChord(
-      generatedChordMelody.getFirstNoteOrChord_Melody(),
-      generatedChordMelody.getFirstNoteOrChord_Solfege(),
-    );
-    fn.playChordMelody(
-      generalProvider.getSelectedInstrument,
-      generalProvider,
-      mappingProvider,
-      widget,
-    );
-    solfegeText = generatedChordMelody.getChordMelody().join(' ');
+    // Only run on first load
+    if (!_initialized) {
+      MappingProvider mappingProvider = Provider.of<MappingProvider>(context);
+      GeneralProvider generalProvider = Provider.of<missionSettingsProvider>(
+        context,
+      );
+      final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
+      newGenerateChordMelody(
+        generalProvider,
+        mappingProvider,
+        true,
+        newNotes: levelInfo.NewNotes,
+      );
+      ChordMelody fn = ChordMelody.singleChord(
+        generatedChordMelody.getFirstNoteOrChord_Melody(),
+        generatedChordMelody.getFirstNoteOrChord_Solfege(),
+      );
+      fn.playChordMelody(
+        generalProvider.getSelectedInstrument,
+        generalProvider,
+        mappingProvider,
+        widget,
+      );
+      solfegeText = generatedChordMelody.getChordMelody().join(' ');
+
+      _initialized = true; // Set flag after first run
+    }
   }
 
   @override
@@ -73,19 +85,29 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
               verticalSpacer(),
               playFirstNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
-              instructionRow("Now try to sing the melody out loud...", small:true),
+              instructionRow(
+                "Now try to sing the melody out loud...",
+                small: true,
+              ),
               verticalSpacer(),
               plainText("Listen to the melody for comparison:"),
               verticalSpacer(),
               playMelodyButtons(generalProvider, mappingProvider, true),
               verticalSpacer(),
-              instructionRow("Did you sing it correctly?", small:true),
+              instructionRow("Did you sing it correctly?", small: true),
               verticalSpacer(),
-              generateMelodyButton(generalProvider, mappingProvider, false, newNotes: levelInfo.NewNotes),
+              generateMelodyButton(
+                generalProvider,
+                mappingProvider,
+                false,
+                newNotes: levelInfo.NewNotes,
+              ),
               verticalSpacer(),
               plainText("Notes for reference:"),
               verticalSpacer(),
-              plainText("Note: Change the key in Mission settings if not in your singing range"),
+              plainText(
+                "Note: Change the key in Mission settings if not in your singing range",
+              ),
               verticalSpacer(),
               buildNoteButtons(generalProvider, mappingProvider),
               verticalSpacer(),
@@ -95,7 +117,10 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
               verticalSpacer(),
               returnToLevelButton(levelStatus),
               verticalSpacer(),
-              takeTestButton(mappingProvider.missions[levelInfo.MissionID]!.MissionMode, levelInfo),
+              takeTestButton(
+                mappingProvider.missions[levelInfo.MissionID]!.MissionMode,
+                levelInfo,
+              ),
             ],
           ),
         ),
@@ -107,10 +132,9 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
   Row generateMelodyButton(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    bool setSolfegeText,{
+    bool setSolfegeText, {
     Set<String> newNotes = const {},
-  }
-  ) {
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -128,10 +152,11 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
             ),
             onPressed: () {
               newGenerateChordMelody(
-                generalProvider, 
-                mappingProvider, 
+                generalProvider,
+                mappingProvider,
                 true,
-                newNotes: newNotes);
+                newNotes: newNotes,
+              );
               ChordMelody fn = ChordMelody.singleChord(
                 generatedChordMelody.getFirstNoteOrChord_Melody(),
                 generatedChordMelody.getFirstNoteOrChord_Solfege(),
@@ -205,6 +230,4 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
       ],
     );
   }
-
-
 }
