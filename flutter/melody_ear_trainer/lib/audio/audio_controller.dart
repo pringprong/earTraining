@@ -6,6 +6,9 @@ class AudioController {
   static final Logger _log = Logger('AudioController');
   SoLoud? _soloud;
   SoundHandle? _musicHandle;
+  // Handles of one-shot sounds started by this controller, so they can be
+  // stopped without deinitialising the shared audio engine.
+  final List<SoundHandle> _activeHandles = [];
 
   Future<void> initialize() async {
     _soloud = SoLoud.instance;
@@ -25,7 +28,8 @@ class AudioController {
   Future<void> playSound(String assetKey) async {
     try {
       final source = await _soloud!.loadAsset(assetKey);
-      _soloud!.play(source);
+      final handle = await _soloud!.play(source);
+      _trackHandle(handle);
     } on SoLoudException catch (e) {
       _log.severe("Cannot play sound '$assetKey'. Ignoring.", e);
     }
@@ -35,6 +39,7 @@ class AudioController {
     try {
       final source = await _soloud!.loadAsset(assetKey);
       final myhandle = await _soloud!.play(source);
+      _trackHandle(myhandle);
       await Future.delayed(Duration(milliseconds: dur));
       _soloud!.fadeVolume(
         myhandle,
@@ -82,6 +87,26 @@ class AudioController {
     const length = Duration(seconds: 5);
     _soloud!.fadeVolume(_musicHandle!, 0, length);
     _soloud!.scheduleStop(_musicHandle!, length);
+  }
+
+  void _trackHandle(SoundHandle handle) {
+    // Prune handles whose voices have already finished naturally.
+    _activeHandles.removeWhere((h) => !_soloud!.getIsValidVoiceHandle(h));
+    _activeHandles.add(handle);
+  }
+
+  /// Stops every one-shot sound currently playing without deinitialising the
+  /// engine. Safe to call when leaving a page that may still be playing
+  /// audio; the shared engine stays usable for other pages.
+  Future<void> stopAll() async {
+    final soloud = _soloud;
+    if (soloud == null) return;
+    for (final handle in List<SoundHandle>.from(_activeHandles)) {
+      if (soloud.getIsValidVoiceHandle(handle)) {
+        await soloud.stop(handle);
+      }
+    }
+    _activeHandles.clear();
   }
 
   void applyFilter() {

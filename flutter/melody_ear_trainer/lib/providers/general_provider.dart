@@ -18,6 +18,14 @@ abstract class GeneralProvider extends ChangeNotifier {
     "do1",
   ];
 
+  /// Chord IDs selected by default. Must match "Chord Set" values in
+  /// assets/mapping/Chords.json.
+  static const List<String> defaultChordKeys = [
+    "I_Rt",
+    "IV0_Sec",
+    "V0_Fir",
+  ];
+
   static const List<String> noteKeys = [
     "do0",
     "ga0",
@@ -166,10 +174,10 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   // --- Selected Chords Map ---
   Map<String, bool> selectedChords = {
-    for (var key in "I_Rt,IV0_Sec,V0_Fir".split(',')) key: true,
+    for (var key in defaultChordKeys) key: true,
   };
 
-  voidSetChordDetails(
+  void setChordDetails(
     int newArpeggiateChordDelayGuitar,
     int newArpeggiateChordDelayPiano,
     int newArpeggiateChordDelaySolfege,
@@ -588,11 +596,10 @@ abstract class GeneralProvider extends ChangeNotifier {
             '{"do":true,"re":true,"mi":true,"fa":true,"so":true,"la":true,"ti":true,"do1":true}',
       ),
     );
-    selectedChords = Map<String, bool>.from(
-      jsonDecode(
-        settings['selectedChords'] ?? '{"I_Rt":true,"IV_Rt":true,"V_Rt":true}',
-      ),
-    );
+    selectedChords =
+        settings['selectedChords'] != null
+            ? Map<String, bool>.from(jsonDecode(settings['selectedChords']))
+            : {for (var key in defaultChordKeys) key: true};
     numberOfRounds = settings['numberOfRounds'] ?? 5;
     melodyRepeats = settings['melodyRepeats'] ?? melodyRepeatsDefault;
     spokenRepeats = settings['spokenRepeats'] ?? spokenRepeatsDefault;
@@ -629,10 +636,7 @@ abstract class GeneralProvider extends ChangeNotifier {
     chordSetRange = "Middle";
     chordSet = "I_IV_V";
     _noteSelection = {for (var key in defaultNoteKeys) key: true};
-    selectedChords = {
-      for (var key in "I_Rt,IV0_Sec,V0_Fir".split(','))
-        key: true, // Initialize all chords as not selected
-    };
+    selectedChords = {for (var key in defaultChordKeys) key: true};
     numberOfRounds = 5;
     melodyRepeats = melodyRepeatsDefault;
     spokenRepeats = spokenRepeatsDefault;

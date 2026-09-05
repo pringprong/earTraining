@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'utils/colors.dart';
-import '../utils/helper.dart';
+import 'utils/helper.dart';
 
 class CustomFrontPage extends StatefulWidget {
   const CustomFrontPage({super.key});

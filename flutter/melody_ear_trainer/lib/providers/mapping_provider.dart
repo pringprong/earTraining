@@ -6,12 +6,19 @@ import 'dart:collection';
 
 class MappingProvider extends ChangeNotifier {
   MappingProvider() {
-    loadMappingJSON;
-    loadSpokenJSON;
-    loadChordSetsJSON;
-    loadScalesJSON;
-    loadNotesJSON;
-    loadMissionsJSON;
+    // Fire-and-forget fallback. main() awaits [loadAll] before runApp so the
+    // UI never renders with empty mapping data.
+    loadAll();
+  }
+
+  /// Loads every JSON mapping asset. Await this before using the provider.
+  Future<void> loadAll() async {
+    await loadMappingJSON;
+    await loadSpokenJSON;
+    await loadChordSetsJSON;
+    await loadScalesJSON;
+    await loadNotesJSON;
+    await loadMissionsJSON;
   }
 
   // These are from Mapping.json
@@ -203,7 +210,7 @@ class MappingProvider extends ChangeNotifier {
       if (key.isNotEmpty && !mappingKeys.contains(key)) {
         mappingKeys.add(key);
       }
-      if (instrument.length > 1 && !instruments.contains(instrument)) {
+      if (instrument.isNotEmpty && !instruments.contains(instrument)) {
         instruments.add(instrument);
       }
     }

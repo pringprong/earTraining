@@ -346,7 +346,8 @@ class _chordMelodySingingHandsFreeState
   void dispose() {
     notPaused = false;
     running = false;
-    widget.audioController.dispose();
+    // Stop this page's sounds without deinitialising the shared audio engine.
+    widget.audioController.stopAll();
     super.dispose();
   }
 

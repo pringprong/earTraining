@@ -68,6 +68,10 @@ Future main() async {
   //final database = openDatabase(join(await getDatabasesPath(),'test_results.db'));
   final audioController = AudioController();
   await audioController.initialize();
+  // Load all mapping JSON assets before the first frame so the UI never
+  // renders with empty campaign/scale/chord data.
+  final mappingProvider = MappingProvider();
+  await mappingProvider.loadAll();
   runApp(
     MultiProvider(
       providers: [
@@ -77,12 +81,7 @@ Future main() async {
             return themeProvider;
           },
         ),
-        ChangeNotifierProvider<MappingProvider>(
-          create: (context) {
-            final mappingProvider = MappingProvider();
-            return mappingProvider;
-          },
-        ),
+        ChangeNotifierProvider<MappingProvider>.value(value: mappingProvider),
         ChangeNotifierProvider<MelodyIDSettings>(
           create: (context) {
             final melodyIDSettingsProvider = MelodyIDSettings();
