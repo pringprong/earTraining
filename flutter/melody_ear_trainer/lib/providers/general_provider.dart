@@ -515,11 +515,11 @@ abstract class GeneralProvider extends ChangeNotifier {
       'playbackSpeed': playbackSpeed,
       'startWithDo': startWithDo,
       'endWithDo': endWithDo,
-      'startingDo': startingDoDefault,
-      'endingDo': endingDoDefault,
+      'startingDo': startingDo,
+      'endingDo': endingDo,
       'selectedOctave': selectedOctave,
       'selectedScale': selectedScale,
-      'chordFrequency': chordFrequencyDefault,
+      'chordFrequency': chordFrequency,
       'displayChordNames': displayChordNames,
       'arpeggiateChordDelayGuitar': arpeggiateChordDelayGuitar,
       'arpeggiateChordDelayPiano': arpeggiateChordDelayPiano,
@@ -667,6 +667,9 @@ class MelodyIDSettings extends GeneralProvider {
   String chordFrequencyDefault = "Never";
 
   @override
+  String chordFrequency = "Never";
+
+  @override
   int melodyRepeatsDefault = 3;
 
   @override
@@ -699,6 +702,9 @@ class MelodySingingSettings extends GeneralProvider {
   String chordFrequencyDefault = "Never";
 
   @override
+  String chordFrequency = "Never";
+
+  @override
   int melodyRepeatsDefault = 1;
 
   @override
@@ -717,6 +723,9 @@ class chordIDSettings extends GeneralProvider {
 
   @override
   String chordFrequencyDefault = "Every note";
+
+  @override
+  String chordFrequency = "Every note";
 
   @override
   int arpeggiateChordDelayGuitarDefault = 0;
@@ -755,6 +764,9 @@ class chordSingingSettings extends GeneralProvider {
 
   @override
   String chordFrequencyDefault = "Every note";
+
+  @override
+  String chordFrequency = "Every note";
 
   @override
   int arpeggiateChordDelayGuitarDefault = 200;
@@ -813,6 +825,9 @@ class chordMelodyIDSettings extends GeneralProvider {
   String chordFrequencyDefault = "Every 4 notes";
 
   @override
+  String chordFrequency = "Every 4 notes";
+
+  @override
   int melodyRepeatsDefault = 3;
 
   @override
@@ -851,6 +866,9 @@ class chordMelodySingingSettings extends GeneralProvider {
   String chordFrequencyDefault = "Every 4 notes";
 
   @override
+  String chordFrequency = "Every 4 notes";
+
+  @override
   int melodyRepeatsDefault = 1;
 
   @override
@@ -881,6 +899,9 @@ class missionSettingsProvider extends GeneralProvider {
 
   @override
   String chordFrequencyDefault = "Never";
+
+  @override
+  String chordFrequency = "Never";
 
   @override
   int melodyRepeatsDefault = 2;
@@ -920,6 +941,9 @@ class missionSingingSettings extends GeneralProvider {
 
   @override
   String chordFrequencyDefault = "Every 4 notes";
+
+  @override
+  String chordFrequency = "Every 4 notes";
 
   @override
   int melodyRepeatsDefault = 1;
