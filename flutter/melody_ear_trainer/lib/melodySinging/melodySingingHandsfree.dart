@@ -392,7 +392,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
       solfegeText = chordMelody.getChordMelody().join(' ');
       setState(() {});
       for (int n = 0; n < generalProvider.getSpokenRepeats && notPaused; n++) {
-        await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
+        await chordMelody.playSpoken(generalProvider, mappingProvider, widget.audioController);
         await Future.delayed(Duration(seconds: 1));
         ChordMelody firstNote = ChordMelody.singleChord(
           chordMelody.getFirstNoteOrChord_Melody(),
@@ -402,7 +402,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
           "Solfege",
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -416,7 +416,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
           "Solfege",
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -430,7 +430,7 @@ class _MelodySingingHandsFreeState extends State<MelodySingingHandsFree> {
           getInstrument(generalProvider.handsfreeInstrument),
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused

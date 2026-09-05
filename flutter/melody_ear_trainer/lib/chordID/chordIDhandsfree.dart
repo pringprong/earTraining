@@ -387,7 +387,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
           getInstrument(context.read<chordIDSettings>().handsfreeInstrument),
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -407,7 +407,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
           "Solfege",
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -421,7 +421,7 @@ class _chordIDHandsFreeState extends State<chordIDHandsFree> {
         k < context.read<chordIDSettings>().getSpokenRepeats && notPaused;
         k++
       ) {
-        await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
+        await chordMelody.playSpoken(generalProvider, mappingProvider, widget.audioController);
         if (!notPaused) {
           return; // Exit if paused
         }

@@ -81,6 +81,9 @@ Future main() async {
             return themeProvider;
           },
         ),
+        // Expose the shared audio engine so any widget can access it without
+        // threading it through constructors and playback helpers.
+        Provider<AudioController>.value(value: audioController),
         ChangeNotifierProvider<MappingProvider>.value(value: mappingProvider),
         ChangeNotifierProvider<MelodyIDSettings>(
           create: (context) {

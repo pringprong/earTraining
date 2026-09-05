@@ -43,7 +43,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
         generalProvider.getSelectedInstrument,
         generalProvider,
         mappingProvider,
-        widget,
+        widget.audioController,
       );
 
       _initialized = true; // Set flag after first run
@@ -152,7 +152,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
                 generalProvider.getSelectedInstrument,
                 generalProvider,
                 mappingProvider,
-                widget,
+                widget.audioController,
               );
               setState(() {
                 //solfegeText = ""; // Clear solfege area
@@ -205,7 +205,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
                     "Solfege",
                     generalProvider,
                     mappingProvider,
-                    widget,
+                    widget.audioController,
                   );
                 } else {
                   setToIncorrectGuess();

@@ -783,7 +783,7 @@ class _chordMelodySingingSettingsPageState
                             "Guitar",
                             generalProvider,
                             mappingProvider,
-                            widget,
+                            widget.audioController,
                           );
                         }
                       },
@@ -847,7 +847,7 @@ class _chordMelodySingingSettingsPageState
                             "Piano",
                             generalProvider,
                             mappingProvider,
-                            widget,
+                            widget.audioController,
                           );
                         }
                       },
@@ -911,7 +911,7 @@ class _chordMelodySingingSettingsPageState
                             "Solfege",
                             generalProvider,
                             mappingProvider,
-                            widget,
+                            widget.audioController,
                           );
                         }
                       },

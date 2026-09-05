@@ -43,7 +43,7 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
         generalProvider.getSelectedInstrument,
         generalProvider,
         mappingProvider,
-        widget,
+        widget.audioController,
       );
       solfegeText = generatedChordMelody.getChordMelody().join(' ');
 
@@ -165,7 +165,7 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
                 generalProvider.getSelectedInstrument,
                 generalProvider,
                 mappingProvider,
-                widget,
+                widget.audioController,
               );
               solfegeText = generatedChordMelody.getChordMelody().join(' ');
               // setState(() {
@@ -218,7 +218,7 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
                     "Solfege",
                     generalProvider,
                     mappingProvider,
-                    widget,
+                    widget.audioController,
                   );
                 } else {
                   setToIncorrectGuess();

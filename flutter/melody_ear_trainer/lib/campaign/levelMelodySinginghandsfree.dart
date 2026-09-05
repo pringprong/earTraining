@@ -425,7 +425,7 @@ class _LevelMelodySingingHandsFreeState
         n < missionSingingSettings.getSpokenRepeats && notPaused;
         n++
       ) {
-        await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
+        await chordMelody.playSpoken(generalProvider, mappingProvider, widget.audioController);
         await Future.delayed(Duration(seconds: 1));
         ChordMelody firstNote = ChordMelody.singleChord(
           chordMelody.getFirstNoteOrChord_Melody(),
@@ -435,7 +435,7 @@ class _LevelMelodySingingHandsFreeState
           "Solfege",
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -453,7 +453,7 @@ class _LevelMelodySingingHandsFreeState
           "Solfege",
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -471,7 +471,7 @@ class _LevelMelodySingingHandsFreeState
           getInstrument(missionSingingSettings.handsfreeInstrument),
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused

@@ -755,7 +755,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                             "Guitar",
                             generalProvider,
                             mappingProvider,
-                            widget,
+                            widget.audioController,
                           );
                         }
                       },
@@ -817,7 +817,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                             "Piano",
                             generalProvider,
                             mappingProvider,
-                            widget,
+                            widget.audioController,
                           );
                         }
                       },
@@ -879,7 +879,7 @@ class _chordMelodyIDSettingsPageState extends State<chordMelodyIDSettingsPage> {
                             "Solfege",
                             generalProvider,
                             mappingProvider,
-                            widget,
+                            widget.audioController,
                           );
                         }
                       },

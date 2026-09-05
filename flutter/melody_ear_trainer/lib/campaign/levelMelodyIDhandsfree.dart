@@ -424,7 +424,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
           ),
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -447,7 +447,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
           "Solfege",
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -464,7 +464,7 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
             notPaused;
         k++
       ) {
-        await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
+        await chordMelody.playSpoken(generalProvider, mappingProvider, widget.audioController);
         if (!notPaused) {
           return; // Exit if paused
         }

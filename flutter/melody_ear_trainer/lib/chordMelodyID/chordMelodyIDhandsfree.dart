@@ -402,7 +402,7 @@ class _chordMelodyIDHandsFreeState extends State<chordMelodyIDHandsFree> {
           ),
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -425,7 +425,7 @@ class _chordMelodyIDHandsFreeState extends State<chordMelodyIDHandsFree> {
           "Solfege",
           generalProvider,
           mappingProvider,
-          widget,
+          widget.audioController,
         );
         if (!notPaused) {
           return; // Exit if paused
@@ -441,7 +441,7 @@ class _chordMelodyIDHandsFreeState extends State<chordMelodyIDHandsFree> {
         k < context.read<chordMelodyIDSettings>().getSpokenRepeats && notPaused;
         k++
       ) {
-        await chordMelody.playSpoken(generalProvider, mappingProvider, widget);
+        await chordMelody.playSpoken(generalProvider, mappingProvider, widget.audioController);
         if (!notPaused) {
           return; // Exit if paused
         }

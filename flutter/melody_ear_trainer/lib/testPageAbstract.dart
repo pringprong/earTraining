@@ -64,7 +64,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 generalProvider.getSelectedInstrument,
                 generalProvider,
                 mappingProvider,
-                widget,
+                widget.audioController,
               );
             },
             child: FittedBox(
@@ -122,7 +122,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 generalProvider.getSelectedInstrument,
                 generalProvider,
                 mappingProvider,
-                widget,
+                widget.audioController,
               );
             },
             child: FittedBox(
@@ -200,7 +200,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider.getSelectedInstrument,
                     generalProvider,
                     mappingProvider,
-                    widget,
+                    widget.audioController,
                   );
                 }
               }
@@ -271,7 +271,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider.getSelectedInstrument,
                     generalProvider,
                     mappingProvider,
-                    widget,
+                    widget.audioController,
                   );
                 }
               }
@@ -329,7 +329,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider.getSelectedInstrument,
                     generalProvider,
                     mappingProvider,
-                    widget,
+                    widget.audioController,
                   );
                 }
               }

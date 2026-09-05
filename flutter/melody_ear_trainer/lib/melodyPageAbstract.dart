@@ -109,7 +109,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   "Guitar",
                   generalProvider,
                   mappingProvider,
-                  widget,
+                  widget.audioController,
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -131,7 +131,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   "Piano",
                   generalProvider,
                   mappingProvider,
-                  widget,
+                  widget.audioController,
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -153,7 +153,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                     "Solfege",
                     generalProvider,
                     mappingProvider,
-                    widget,
+                    widget.audioController,
                   ),
               child: FittedBox(
                 fit: BoxFit.fill,
@@ -189,7 +189,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 "Guitar",
                 generalProvider,
                 mappingProvider,
-                widget,
+                widget.audioController,
               );
             },
             child: FittedBox(
@@ -216,7 +216,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 "Piano",
                 generalProvider,
                 mappingProvider,
-                widget,
+                widget.audioController,
               );
             },
             child: FittedBox(
@@ -242,7 +242,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 "Solfege",
                 generalProvider,
                 mappingProvider,
-                widget,
+                widget.audioController,
               );
             },
             child: FittedBox(
@@ -300,7 +300,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                     () => generatedChordMelody.playSpoken(
                       generalProvider,
                       mappingProvider,
-                      widget,
+                      widget.audioController,
                     ),
                 child: FittedBox(
                   fit: BoxFit.fill,
@@ -322,7 +322,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                       "Solfege",
                       generalProvider,
                       mappingProvider,
-                      widget,
+                      widget.audioController,
                     ),
                 child: FittedBox(
                   fit: BoxFit.fill,
@@ -401,7 +401,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
               generatedChordMelody.playSpoken(
                 generalProvider,
                 mappingProvider,
-                widget,
+                widget.audioController,
               );
             },
             child: FittedBox(
@@ -544,7 +544,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   "Guitar",
                   generalProvider,
                   mappingProvider,
-                  widget,
+                  widget.audioController,
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -565,7 +565,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   "Piano",
                   generalProvider,
                   mappingProvider,
-                  widget,
+                  widget.audioController,
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -586,7 +586,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   "Solfege",
                   generalProvider,
                   mappingProvider,
-                  widget,
+                  widget.audioController,
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -794,7 +794,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                       generalProvider.getSelectedInstrument,
                       generalProvider,
                       mappingProvider,
-                      widget,
+                      widget.audioController,
                     );
                   });
                 },

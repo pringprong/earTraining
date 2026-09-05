@@ -3,6 +3,7 @@
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'dart:math';
+import '../audio/audio_controller.dart';
 import 'helper.dart';
 
 class ChordMelody {
@@ -319,9 +320,9 @@ class ChordMelody {
     String instrument,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    dynamic widget,
+    AudioController audioController,
   ) async {
-    await widget.audioController.refresh();
+    await audioController.refresh();
     final key = generalProvider.selectedKey;
     final timeBetween = generalProvider.timeBetweenNotes;
     final truncate = generalProvider.truncateNotes;
@@ -347,9 +348,9 @@ class ChordMelody {
         final filename = nestedMapping[key]?[instrument]?[note] ?? '';
         if (filename.isNotEmpty) {
           if (truncate == "None" || truncate == "Never") {
-            widget.audioController.playSound("assets/audio/$filename");
+            audioController.playSound("assets/audio/$filename");
           } else {
-            widget.audioController.playSoundFade(
+            audioController.playSoundFade(
               "assets/audio/$filename",
               int.parse(truncate),
               500,
@@ -358,7 +359,7 @@ class ChordMelody {
         }
       } else if (notes.length > 1) {
         if (i % 7 == 0) {
-          await widget.audioController.refresh();
+          await audioController.refresh();
         }
         List<String> chordNotes = List<String>.from(notes);
         if (arpeggiateOrder == "Descending") {
@@ -370,9 +371,9 @@ class ChordMelody {
           final filename = nestedMapping[key]?[instrument]?[note] ?? '';
           if (filename.isNotEmpty) {
             if (truncate == "None" || truncate == "Never") {
-              widget.audioController.playSound("assets/audio/$filename");
+              audioController.playSound("assets/audio/$filename");
             } else {
-              widget.audioController.playSoundFade(
+              audioController.playSoundFade(
                 "assets/audio/$filename",
                 int.parse(truncate),
                 500,
@@ -392,9 +393,9 @@ class ChordMelody {
   Future<void> playSpoken(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    dynamic widget,
+    AudioController audioController,
   ) async {
-    await widget.audioController.refresh();
+    await audioController.refresh();
     final timeBetween = generalProvider.timeBetweenNotes;
     final arpeggiate = generalProvider.arpeggiateChordDelaySpoken > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelaySpoken;
@@ -405,17 +406,17 @@ class ChordMelody {
         final note = notes[0];
         final filename = spokenMapping[note] ?? '';
         if (filename.isNotEmpty) {
-          widget.audioController.playSound("assets/audio/$filename");
+          audioController.playSound("assets/audio/$filename");
         }
       } else if (notes.length > 1) {
         if (i % 7 == 0) {
-          await widget.audioController.refresh();
+          await audioController.refresh();
         }
         List<String> chordNotes = List<String>.from(notes);
         for (var note in chordNotes) {
           final filename = spokenMapping[note] ?? '';
           if (filename.isNotEmpty) {
-            widget.audioController.playSound("assets/audio/$filename");
+            audioController.playSound("assets/audio/$filename");
           }
           if (arpeggiate) {
             await Future.delayed(Duration(milliseconds: arpeggiateDelay));
