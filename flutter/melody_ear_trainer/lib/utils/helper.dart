@@ -105,9 +105,13 @@ Widget buildNotesGrid(
   Set<String> newNotes = const {},
   bool optional = false,
   bool reversedColors = false,
+  Set<String>? selectedNotes,
 ]) {
-  if (optional &&
-      (generalProvider.getSelectedNotes().isEmpty ||
+  // Campaign pages pass the level/mission note selection explicitly so the
+  // grid no longer depends on mutable provider state.
+  final noteSelection =
+      selectedNotes ?? generalProvider.getSelectedNotes().toSet();
+  if (optional && (noteSelection.isEmpty ||
           generalProvider.chordFrequency == "Every note")) {
     return SizedBox.shrink();
   }
@@ -116,7 +120,6 @@ Widget buildNotesGrid(
       mappingProvider.getNoteKeys;
   final noteColors = mappingProvider.getNoteColors;
   final noteColorFactor = mappingProvider.getNoteColorFactors;
-  final noteSelection = generalProvider.getSelectedNotes();
   List<Widget> rows = [];
 
   void onPressedFunction(GeneralProvider gp, String note) {
@@ -297,16 +300,23 @@ Widget buildSelectedChordButtonsHelper(
   GeneralProvider generalProvider,
   MappingProvider mappingProvider, {
   bool optional = false,
+  Set<String>? selectedNotes,
+  String? chordFrequencyOverride,
 }) {
+  // Campaign pages pass the level/mission note selection and chord frequency
+  // explicitly so this helper no longer depends on mutable provider state.
+  final noteSelection =
+      selectedNotes ?? generalProvider.getSelectedNotes().toSet();
+  final frequency = chordFrequencyOverride ?? generalProvider.chordFrequency;
   if (optional &&
-      (generalProvider.getSelectedNotes().isEmpty ||
-          generalProvider.chordFrequency == "Every note")) {
+      (noteSelection.isEmpty ||
+          frequency == "Every note")) {
     return SizedBox.shrink();
   }
 
   final selectedChords = generalProvider.getSelectedChords();
   selectedChords.sort((a, b) => chordNameSort(a, b));
-  final chordFrequency = generalProvider.chordFrequency;
+  final chordFrequency = frequency;
   final chordMap = mappingProvider.getChordMap;
   if (chordFrequency == "Never") {
     return Padding(padding: const EdgeInsets.all(0.0));
@@ -591,9 +601,14 @@ Widget levelHeader(LevelInfo levelInfo) {
   );
 }
 
+/// Restores the mission's saved key/instrument (from ObjectBox) when leaving
+/// the level flow and returning to a mission page.
+///
+/// Note selection is deliberately NOT reset here anymore: level-derived
+/// settings live in `LevelConfig` now, and the mission/level pages pass their
+/// note selections explicitly to the display helpers.
 void resetMissionBeforeMissionPage(
   GeneralProvider generalProvider,
-  MappingProvider mappingProvider,
   MissionInfo missionInfo,
 ) {
   MissionSavedSettings? mss = objectBox.getMissionSavedSettingsByMissionID(
@@ -602,9 +617,6 @@ void resetMissionBeforeMissionPage(
   if (mss != null) {
     generalProvider.setKeyAndInstrument(mss.key, mss.instrument);
   }
-  final lastLevel =
-      mappingProvider.getLevelsForMission(missionInfo.MissionID).last;
-  generalProvider.setNoteSelection(selectedKeys: lastLevel.Notes);
 }
 
 const Map<String, String> campaignTreeShapes = {

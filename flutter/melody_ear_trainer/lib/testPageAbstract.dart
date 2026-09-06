@@ -65,6 +65,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 generalProvider,
                 mappingProvider,
                 widget.audioController,
+                levelConfig: resolveLevelConfig(generalProvider),
               );
             },
             child: FittedBox(
@@ -123,6 +124,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                 generalProvider,
                 mappingProvider,
                 widget.audioController,
+                levelConfig: resolveLevelConfig(generalProvider),
               );
             },
             child: FittedBox(
@@ -201,6 +203,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider,
                     mappingProvider,
                     widget.audioController,
+                    levelConfig: resolveLevelConfig(generalProvider),
                   );
                 }
               }
@@ -272,6 +275,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider,
                     mappingProvider,
                     widget.audioController,
+                    levelConfig: resolveLevelConfig(generalProvider),
                   );
                 }
               }
@@ -330,6 +334,7 @@ abstract class TestPageAbstractState extends MelodyPageAbstractState {
                     generalProvider,
                     mappingProvider,
                     widget.audioController,
+                    levelConfig: resolveLevelConfig(generalProvider),
                   );
                 }
               }

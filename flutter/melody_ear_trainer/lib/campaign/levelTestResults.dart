@@ -20,47 +20,58 @@ class LevelTestResultsPage extends StatefulWidget {
 }
 
 class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
+  // Inputs and computed results are refreshed in didChangeDependencies (once
+  // per page (re)entry) — never computed in build.
+  LevelTestResults? levelTestResults;
+  LevelInfo? _levelInfo;
+  bool redoTest = true;
+  bool returnToLevelPage = true;
+  bool goToNextLevel = false;
+  bool returnToMissionPage = false;
+  bool returnToCampaignTree = false;
+  int numPassedTests = 0;
+  String levelStatus = "";
+  String missionStatus = "";
+  String missionMode = "";
+  String passOrFail = "";
+  Color myColor = Colors.transparent;
+  String assessment = "";
+  LevelInfo? nextLevel;
+
   @override
-  Widget build(BuildContext context) {
-    final levelTestResults =
-        ModalRoute.of(context)!.settings.arguments as LevelTestResults;
-    final generalProvider = Provider.of<missionSettingsProvider>(context);
-    final mappingProvider = Provider.of<MappingProvider>(context);
-    LevelInfo levelInfo = mappingProvider.getLevelInfo(
-      levelTestResults.LevelID,
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is! LevelTestResults) return;
+    levelTestResults = args;
+    final mappingProvider = context.read<MappingProvider>();
+    LevelInfo info = mappingProvider.getLevelInfo(args.LevelID);
+    _levelInfo = info;
+
+    numPassedTests = objectBox.numPassedTestsForLevel(
+      info.LevelID,
+      info.PassingScore,
     );
-    bool redoTest = true;
-    bool returnToLevelPage = true;
-    bool goToNextLevel = false;
-    bool returnToMissionPage = false;
-    bool returnToCampaignTree = false;
-    int numPassedTests = objectBox.numPassedTestsForLevel(
-      levelInfo.LevelID,
-      levelInfo.PassingScore,
+    levelStatus = getLevelStatus(numPassedTests, info);
+    missionStatus = objectBox.getSavedMissionStatus(args.MissionID);
+    missionMode = mappingProvider.getMissionMode(args.MissionID);
+    passOrFail = getTestResultString(
+      args.score,
+      info.NumQuestions,
+      info.PassingScore,
     );
-    String levelStatus = getLevelStatus(numPassedTests, levelInfo);
-    // String missionStatus = getDeepMissionStatus(
-    //   mappingProvider,
-    //   levelTestResults.MissionID,
-    // );
-    String missionStatus = objectBox.getSavedMissionStatus(
-      levelTestResults.MissionID,
-    );
-    String missionMode = mappingProvider.getMissionMode(
-      levelTestResults.MissionID,
-    );
-    String passOrFail = getTestResultString(
-      levelTestResults.score,
-      levelInfo.NumQuestions,
-      levelInfo.PassingScore,
-    );
-    Color myColor = getTestResultColor(
-      levelTestResults.score,
-      levelInfo.NumQuestions,
-      levelInfo.PassingScore,
+    myColor = getTestResultColor(
+      args.score,
+      info.NumQuestions,
+      info.PassingScore,
     );
 
-    String assessment = "";
+    redoTest = true;
+    returnToLevelPage = true;
+    goToNextLevel = false;
+    returnToMissionPage = false;
+    returnToCampaignTree = false;
+    assessment = "";
     if (missionStatus == "Passed!") {
       assessment = "Mission passed! Suggest you return to campaign tree";
       redoTest = false;
@@ -76,7 +87,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
       returnToMissionPage = true;
       returnToCampaignTree = true;
     } else if (numPassedTests > 0) {
-      int remainingTests = levelInfo.NumTests - numPassedTests;
+      int remainingTests = info.NumTests - numPassedTests;
       assessment =
           "Level in progress!\nYou need to pass " +
           remainingTests.toString() +
@@ -105,10 +116,10 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
       returnToMissionPage = true;
       returnToCampaignTree = true;
     }
-    LevelInfo? nextLevel = null;
+    nextLevel = null;
     if (goToNextLevel) {
       // need to determine what the next level even is
-      nextLevel = mappingProvider.getNextLevelForMission(levelInfo);
+      nextLevel = mappingProvider.getNextLevelForMission(info);
       if (nextLevel == null) {
         // this shouldn't happen because we should have caught it at Mission Passed above
         goToNextLevel = false;
@@ -116,6 +127,16 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
             assessment = "Mission passed! Suggest you return to campaign tree";
       }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final levelTestResults = this.levelTestResults!;
+    final levelInfo = _levelInfo!;
+    final mappingProvider = context.read<MappingProvider>();
+    final generalProvider = context.read<missionSettingsProvider>();
+    // All status/assessment fields above are refreshed in
+    // didChangeDependencies — build is pure rendering.
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -160,16 +181,14 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 ),
                 ...optionalNextLevelButton(
                   goToNextLevel,
-                  generalProvider,
                   nextLevel,
                   context,
                 ),
                 ...optionalMissionPageButton(
                   returnToMissionPage,
                   generalProvider,
-                  mappingProvider,
+                  mappingProvider.getMissions[levelTestResults.MissionID]!,
                   missionMode,
-                  levelInfo,
                   context,
                 ),
                 ...optionalCampaignTreeButton(
@@ -354,7 +373,6 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
 
   List<Widget> optionalNextLevelButton(
     bool showbutton,
-    GeneralProvider generalProvider,
     LevelInfo? nextLevel,
     dynamic context,
   ) {
@@ -382,18 +400,8 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                   context,
                   ModalRoute.withName(Mission.routeName),
                 );
-                generalProvider.setLevelDetails(
-                  nextLevel.Notes,
-                  nextLevel.NumNotes,
-                  nextLevel.MaxDistance,
-                  nextLevel.AllowRepeatedNotes,
-                  nextLevel.PlaybackSpeed,
-                  nextLevel.StartWithDo,
-                  nextLevel.EndWithDo,
-                  nextLevel.StartingDo,
-                  nextLevel.EndingDo,
-                  nextLevel.ChordFrequency,
-                );
+                // No setLevelDetails — the Level page derives its settings
+                // from the LevelInfo route argument (LevelConfig).
                 Navigator.pushNamed(
                   context,
                   Level.routeName,
@@ -456,9 +464,8 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
   List<Widget> optionalMissionPageButton(
     bool showbutton,
     GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
+    MissionInfo missionInfo,
     String mode,
-    LevelInfo levelInfo,
     dynamic context,
   ) {
     if (!showbutton) {
@@ -479,11 +486,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 side: BorderSide(color: getModeColor(mode), width: borderWidth),
               ),
               onPressed: () {
-                resetMissionBeforeMissionPage(
-                  generalProvider,
-                  mappingProvider,
-                  mappingProvider.getMissions[levelInfo.MissionID]!,
-                );
+                resetMissionBeforeMissionPage(generalProvider, missionInfo);
                 Navigator.popUntil(
                   context,
                   ModalRoute.withName(Mission.routeName),

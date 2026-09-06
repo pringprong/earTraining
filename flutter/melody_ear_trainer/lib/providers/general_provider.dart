@@ -80,10 +80,16 @@ abstract class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Settings that will be fixed by the level
+  // Settings that are fixed by the level
   // Either because they are related to melody difficulty
   // or because we don't want the user to be able to change them
   // in the missions
+  //
+  // NOTE: level-derived settings are no longer stored on the provider.
+  // Campaign pages derive them from the displayed LevelInfo via
+  // `LevelConfig.fromLevelInfo` (see utils/level_config.dart), which makes the
+  // displayed level the single source of truth. Use `LevelConfig` wherever the
+  // old `setLevelDetails` fields were read.
   Map<String, bool> _noteSelection = {};
 
   int numberOfNotesDefault = 5;
@@ -103,58 +109,6 @@ abstract class GeneralProvider extends ChangeNotifier {
 
   String chordFrequencyDefault = "Every 4 notes";
   String chordFrequency = "Every 4 notes";
-
-  void setLevelDetails(
-    List<String> newSelectedKeys,
-    int newNumNotes,
-    int newMaxDistance,
-    bool newAllowRepeatedNotes,
-    String newPlaybackSpeed,
-    bool newStartWithDo,
-    bool newEndWithDo,
-    String newStartingDo,
-    String newEndingDo,
-    String newChordFrequency,
-  ) {
-    for (var key in noteKeys) {
-      _noteSelection[key] = newSelectedKeys.contains(key);
-    }
-    numberOfNotes = newNumNotes;
-    maxDistance = newMaxDistance;
-    allowRepeatedNotes = newAllowRepeatedNotes;
-    playbackSpeed = newPlaybackSpeed;
-
-    switch (newPlaybackSpeed) {
-      case 'Very fast':
-        {
-          timeBetweenNotes = 300;
-          truncateNotes = '600';
-        }
-      case 'Fast':
-        {
-          timeBetweenNotes = 600;
-          truncateNotes = '900';
-        }
-      case 'Normal':
-        {
-          timeBetweenNotes = 900;
-          truncateNotes = '1200';
-        }
-      case 'Slow':
-        {
-          timeBetweenNotes = 1200;
-          truncateNotes = '1500';
-        }
-    }
-    startWithDo = newStartWithDo;
-    endWithDo = newEndWithDo;
-    startingDo = newStartingDo;
-    endingDo = newEndingDo;
-    chordFrequency = newChordFrequency;
-
-    saveSettings();
-    notifyListeners();
-  }
 
   // only for levels that have chords:
   int arpeggiateChordDelayGuitarDefault = 0;

@@ -15,47 +15,47 @@ class LevelMelodyID extends MelodyPageAbstract {
 }
 
 class LevelMelodyIDState extends MelodyPageAbstractState {
-  bool _initialized = false; // Add this flag
-  // Add class-level fields to store the providers and info
-  late final MappingProvider mappingProvider;
-  late final missionSettingsProvider generalProvider;
-  late final LevelInfo levelInfo;
+  String levelStatus = "";
+
+  @override
+  void onLevelEntered() {
+    // Runs once per displayed level (guarded by LevelID in the base mixin).
+    // Level settings come from LevelConfig (derived from levelInfo), so there
+    // is no need to push them into the global settings provider first.
+    final info = levelInfo!;
+    final mappingProvider = context.read<MappingProvider>();
+    final generalProvider = context.read<missionSettingsProvider>();
+    newGenerateChordMelody(
+      generalProvider,
+      mappingProvider,
+      false,
+      newNotes: info.NewNotes,
+    );
+    generatedChordMelody.playChordMelody(
+      generalProvider.getSelectedInstrument,
+      generalProvider,
+      mappingProvider,
+      widget.audioController,
+      levelConfig: resolveLevelConfig(generalProvider),
+    );
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // Only run on first load
-    if (!_initialized) {
-      mappingProvider = Provider.of<MappingProvider>(context);
-      generalProvider = Provider.of<missionSettingsProvider>(
-        context,
-      );
-      levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-
-      newGenerateChordMelody(
-        generalProvider,
-        mappingProvider,
-        false,
-        newNotes: levelInfo.NewNotes,
-      );
-      generatedChordMelody.playChordMelody(
-        generalProvider.getSelectedInstrument,
-        generalProvider,
-        mappingProvider,
-        widget.audioController,
-      );
-
-      _initialized = true; // Set flag after first run
+    // Refresh the DB-derived status when the page (re)gains visibility,
+    // instead of querying ObjectBox on every build.
+    if (levelInfo != null) {
+      levelStatus = getLevelStatusWithQuery(levelInfo!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    // final mappingProvider = Provider.of<MappingProvider>(context);
-    // final generalProvider = Provider.of<missionSettingsProvider>(context);
-    String levelStatus = getLevelStatusWithQuery(levelInfo);
+    final levelInfo = this.levelInfo!;
+    final mappingProvider = context.read<MappingProvider>();
+    final generalProvider = context.read<missionSettingsProvider>();
+    // levelStatus is refreshed in didChangeDependencies (see above).
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -153,6 +153,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
                 generalProvider,
                 mappingProvider,
                 widget.audioController,
+                levelConfig: resolveLevelConfig(generalProvider),
               );
               setState(() {
                 //solfegeText = ""; // Clear solfege area
@@ -206,6 +207,7 @@ class LevelMelodyIDState extends MelodyPageAbstractState {
                     generalProvider,
                     mappingProvider,
                     widget.audioController,
+                    levelConfig: resolveLevelConfig(generalProvider),
                   );
                 } else {
                   setToIncorrectGuess();

@@ -19,33 +19,16 @@ class LevelMelodyIDTest extends TestPageAbstract {
 }
 
 class LevelMelodyIDTestState extends TestPageAbstractState {
-  LevelInfo levelInfo = LevelInfo(
-    "",
-    "",
-    "",
-    "",
-    0,
-    0,
-    false,
-    "",
-    true,
-    true,
-    "",
-    ""
-        "",
-    "",
-    0,
-    0,
-    0,
-  );
+  @override
+  void onLevelEntered() {
+    numberOfQuestions = levelInfo!.NumQuestions;
+  }
 
   @override
   Widget build(BuildContext context) {
-    levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-
-    final mappingProvider = Provider.of<MappingProvider>(context);
-    final generalProvider = Provider.of<missionSettingsProvider>(context);
-    numberOfQuestions = levelInfo.NumQuestions;
+    final levelInfo = this.levelInfo!;
+    final mappingProvider = context.read<MappingProvider>();
+    final generalProvider = context.read<missionSettingsProvider>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Test')),
@@ -108,6 +91,7 @@ class LevelMelodyIDTestState extends TestPageAbstractState {
   @override
   void finishTest(MappingProvider mappingProvider) {
     // write a test-result row to the database, then navigate to results page
+    final levelInfo = this.levelInfo!;
     String timestamp = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
 
     // insert and when done navigate to results pag

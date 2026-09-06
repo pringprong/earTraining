@@ -5,6 +5,7 @@ import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'dart:math';
 import '../audio/audio_controller.dart';
 import 'helper.dart';
+import 'level_config.dart';
 
 class ChordMelody {
   List<String> chordMelody = [];
@@ -75,20 +76,26 @@ class ChordMelody {
     GeneralProvider generalProvider,
     MappingProvider mappingProvider, {
     Set<String> newNotes = const {},
+    LevelConfig? levelConfig,
   }) {
+    // Level settings come from the LevelConfig (derived from the displayed
+    // LevelInfo on campaign pages) rather than from mutable provider fields.
+    // Without a config we fall back to the provider's own settings, which
+    // preserves the behavior of the non-campaign pages.
+    final cfg = levelConfig ?? LevelConfig.fromProvider(generalProvider);
     final chordMap = mappingProvider.getChordMap;
     chordMelody.clear();
     chordMelodySolfege.clear();
 
-    final numNotes = generalProvider.numberOfNotes;
-    final maxDist = generalProvider.maxDistance;
-    final allowRepeats = generalProvider.allowRepeatedNotes;
-    final startWithDo = generalProvider.startWithDo;
-    final endWithDo = generalProvider.endWithDo;
-    final startingDo = generalProvider.startingDo;
-    final endingDo = generalProvider.endingDo;
-    final notes = generalProvider.getSelectedNotes();
-    final chordFrequency = generalProvider.chordFrequency;
+    final numNotes = cfg.numberOfNotes;
+    final maxDist = cfg.maxDistance;
+    final allowRepeats = cfg.allowRepeatedNotes;
+    final startWithDo = cfg.startWithDo;
+    final endWithDo = cfg.endWithDo;
+    final startingDo = cfg.startingDo;
+    final endingDo = cfg.endingDo;
+    final notes = cfg.notes;
+    final chordFrequency = cfg.chordFrequency;
     final chords = generalProvider.getSelectedChords();
     final allowRepeatedChords = generalProvider.allowRepeatedChords;
     String previousChord = "";
@@ -320,12 +327,14 @@ class ChordMelody {
     String instrument,
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    AudioController audioController,
-  ) async {
+    AudioController audioController, {
+    LevelConfig? levelConfig,
+  }) async {
+    final cfg = levelConfig ?? LevelConfig.fromProvider(generalProvider);
     await audioController.refresh();
     final key = generalProvider.selectedKey;
-    final timeBetween = generalProvider.timeBetweenNotes;
-    final truncate = generalProvider.truncateNotes;
+    final timeBetween = cfg.timeBetweenNotes;
+    final truncate = cfg.truncateNotes;
     final arpeggiateOrder = generalProvider.arpeggiateChordOrder;
     final nestedMapping = mappingProvider.getNestedMapping;
     int i = 0;
@@ -393,10 +402,12 @@ class ChordMelody {
   Future<void> playSpoken(
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
-    AudioController audioController,
-  ) async {
+    AudioController audioController, {
+    LevelConfig? levelConfig,
+  }) async {
+    final cfg = levelConfig ?? LevelConfig.fromProvider(generalProvider);
     await audioController.refresh();
-    final timeBetween = generalProvider.timeBetweenNotes;
+    final timeBetween = cfg.timeBetweenNotes;
     final arpeggiate = generalProvider.arpeggiateChordDelaySpoken > 0;
     final arpeggiateDelay = generalProvider.arpeggiateChordDelaySpoken;
     final spokenMapping = mappingProvider.getSpokenMapping;

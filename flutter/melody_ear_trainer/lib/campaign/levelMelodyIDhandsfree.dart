@@ -2,36 +2,92 @@ import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
 import 'package:melody_ear_trainer/providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
-import '../audio/audio_controller.dart';
-import '../utils/colors.dart';
-import '../utils/chordMelody.dart';
-import 'dart:math';
 import '../utils/helper.dart';
+import 'handsfreePageAbstract.dart';
 
-class LevelMelodyIDHandsFree extends StatefulWidget {
-  const LevelMelodyIDHandsFree({super.key, required this.audioController});
-  final AudioController audioController;
+class LevelMelodyIDHandsFree extends HandsFreePageAbstract {
+  const LevelMelodyIDHandsFree({super.key, required super.audioController});
   static const String routeName = '/levelmelodyidhandsfree';
 
   @override
-  State<LevelMelodyIDHandsFree> createState() => _LevelMelodyIDHandsFreeState();
+  State<LevelMelodyIDHandsFree> createState() =>
+      _LevelMelodyIDHandsFreeState();
 }
 
-class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
-  int currentRound = 0;
-  bool notPaused = true;
-  bool running = false;
-  String solfegeText = "";
-  ChordMelody chordMelody = ChordMelody();
-  String currentInstrument = "Piano";
-  Color startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
+class _LevelMelodyIDHandsFreeState
+    extends HandsFreePageAbstractState<LevelMelodyIDHandsFree> {
+  @override
+  Future<bool> playRound(
+    GeneralProvider melodySettings,
+    GeneralProvider roundSettings,
+    MappingProvider mappingProvider,
+  ) async {
+    final info = levelInfo!;
+    final config = resolveLevelConfig(melodySettings);
+    String result = chordMelody.generateChordMelody(
+      melodySettings,
+      mappingProvider,
+      newNotes: info.NewNotes,
+      levelConfig: config,
+    );
+    if (result.isNotEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(result)));
+      }
+      return false;
+    }
+    await repeatPlay(
+      repeats: roundSettings.getMelodyRepeats,
+      play:
+          () => chordMelody.playChordMelody(
+            getInstrument(roundSettings.handsfreeInstrument),
+            melodySettings,
+            mappingProvider,
+            widget.audioController,
+            levelConfig: config,
+          ),
+      delaySeconds: roundSettings.getTimeDelayRepeat,
+    );
+    if (!notPaused) return true;
+    solfegeText = chordMelody.getChordMelody().join(' ');
+    setState(() {});
+    await repeatPlay(
+      repeats: roundSettings.getSolfegeRepeats,
+      play:
+          () => chordMelody.playChordMelody(
+            "Solfege",
+            melodySettings,
+            mappingProvider,
+            widget.audioController,
+            levelConfig: config,
+          ),
+      delaySeconds: roundSettings.getTimeDelayRepeat,
+    );
+    if (!notPaused) return true;
+    await repeatPlay(
+      repeats: roundSettings.getSpokenRepeats,
+      play:
+          () => chordMelody.playSpoken(
+            melodySettings,
+            mappingProvider,
+            widget.audioController,
+            levelConfig: config,
+          ),
+      delaySeconds: roundSettings.getTimeDelayRepeat,
+    );
+    if (!notPaused) return true;
+    currentRound++;
+    setState(() {});
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    final mappingProvider = Provider.of<MappingProvider>(context);
-    final nestedMapping = mappingProvider.getNestedMapping;
-    String levelStatus = getLevelStatusWithQuery(levelInfo);
+    final levelInfo = this.levelInfo!;
+    final mappingProvider = context.read<MappingProvider>();
+    final generalProvider = context.read<missionSettingsProvider>();
 
     return Scaffold(
       appBar: AppBar(title: Text('Hands-free melody ID')),
@@ -51,470 +107,94 @@ class _LevelMelodyIDHandsFreeState extends State<LevelMelodyIDHandsFree> {
               levelHeader(levelInfo),
               verticalSpacer(),
               subHeadingRow("Settings:"),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Number of rounds:'),
-                  ),
-                  DropdownButton<int>(
-                    value:
-                        context.watch<missionSettingsProvider>().numberOfRounds,
-                    items:
-                        [5, 10, 15, 20, 25].map<DropdownMenuItem<int>>((
-                          int value,
-                        ) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context
-                            .read<missionSettingsProvider>()
-                            .setNumberOfRounds(rounds: newValue);
-                      }
-                    },
-                  ),
-                ],
+              settingsDropdownRow<int>(
+                label: 'Number of rounds:',
+                value: context.select<missionSettingsProvider, int>(
+                  (s) => s.numberOfRounds,
+                ),
+                items: [5, 10, 15, 20, 25],
+                onChanged:
+                    (newValue) => context
+                        .read<missionSettingsProvider>()
+                        .setNumberOfRounds(rounds: newValue),
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Instrument repeats:'),
-                  ),
-                  DropdownButton<int>(
-                    value:
-                        context.watch<missionSettingsProvider>().melodyRepeats,
-                    items:
-                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
-                          int value,
-                        ) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context
-                            .read<missionSettingsProvider>()
-                            .setMelodyRepeats(repeats: newValue);
-                      }
-                    },
-                  ),
-                ],
+              settingsDropdownRow<int>(
+                label: 'Instrument repeats:',
+                value: context.select<missionSettingsProvider, int>(
+                  (s) => s.melodyRepeats,
+                ),
+                items: [0, 1, 2, 3, 4, 5],
+                onChanged:
+                    (newValue) => context
+                        .read<missionSettingsProvider>()
+                        .setMelodyRepeats(repeats: newValue),
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Solfege repeats:'),
-                  ),
-                  DropdownButton<int>(
-                    value:
-                        context.watch<missionSettingsProvider>().solfegeRepeats,
-                    items:
-                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
-                          int value,
-                        ) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context
-                            .read<missionSettingsProvider>()
-                            .setSolfegeRepeats(repeats: newValue);
-                      }
-                    },
-                  ),
-                ],
+              settingsDropdownRow<int>(
+                label: 'Solfege repeats:',
+                value: context.select<missionSettingsProvider, int>(
+                  (s) => s.solfegeRepeats,
+                ),
+                items: [0, 1, 2, 3, 4, 5],
+                onChanged:
+                    (newValue) => context
+                        .read<missionSettingsProvider>()
+                        .setSolfegeRepeats(repeats: newValue),
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Spoken repeats:'),
-                  ),
-                  DropdownButton<int>(
-                    value:
-                        context.watch<missionSettingsProvider>().spokenRepeats,
-                    items:
-                        [0, 1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((
-                          int value,
-                        ) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context
-                            .read<missionSettingsProvider>()
-                            .setSpokenRepeats(repeats: newValue);
-                      }
-                    },
-                    //               },
-                  ),
-                ],
+              settingsDropdownRow<int>(
+                label: 'Spoken repeats:',
+                value: context.select<missionSettingsProvider, int>(
+                  (s) => s.spokenRepeats,
+                ),
+                items: [0, 1, 2, 3, 4, 5],
+                onChanged:
+                    (newValue) => context
+                        .read<missionSettingsProvider>()
+                        .setSpokenRepeats(repeats: newValue),
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Time between repeats (s):'),
-                  ),
-                  DropdownButton<int>(
-                    value:
-                        context
-                            .watch<missionSettingsProvider>()
-                            .getTimeDelayRepeat,
-                    items:
-                        [1, 2, 3, 4, 5, 6, 7, 8].map<DropdownMenuItem<int>>((
-                          int value,
-                        ) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        context
-                            .read<missionSettingsProvider>()
-                            .setTimeDelayRepeat(delay: newValue);
-                      }
-                    },
-                    //               },
-                  ),
-                ],
+              settingsDropdownRow<int>(
+                label: 'Time between repeats (s):',
+                value: context.select<missionSettingsProvider, int>(
+                  (s) => s.getTimeDelayRepeat,
+                ),
+                items: [1, 2, 3, 4, 5, 6, 7, 8],
+                onChanged:
+                    (newValue) => context
+                        .read<missionSettingsProvider>()
+                        .setTimeDelayRepeat(delay: newValue),
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Instrument:'),
-                  ),
-                  DropdownButton<String>(
-                    hint: Text('Select Instrument'),
-                    value:
-                        context
-                            .watch<missionSettingsProvider>()
-                            .handsfreeInstrument,
-                    items:
-                        [
-                          "Guitar",
-                          "Piano",
-                          "Alternate",
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        context
-                            .read<missionSettingsProvider>()
-                            .setHandsfreeInstrument(instrument: newValue);
-                      }
-                    },
-                  ),
-                ],
+              settingsDropdownRow<String>(
+                label: 'Instrument:',
+                value: context.select<missionSettingsProvider, String>(
+                  (s) => s.handsfreeInstrument,
+                ),
+                items: ["Guitar", "Piano", "Alternate"],
+                onChanged:
+                    (newValue) => context
+                        .read<missionSettingsProvider>()
+                        .setHandsfreeInstrument(instrument: newValue),
               ),
               verticalSpacer(),
               subHeadingRow("Controls:"),
               verticalSpacer(),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: startButtonBackgroundColor,
-                        foregroundColor:
-                            colorMap["buttonForegroundColor"] ?? Colors.white,
-                      ),
-                      onPressed: () {
-                        if (!running) {
-                          setState(() {
-                            solfegeText = "";
-                            notPaused = true;
-                            startButtonBackgroundColor =
-                                colorMap["lockedMissionColor"] ?? Colors.white;
-                          });
-                          running = true;
-                          currentRound = 0;
-                          chordMelody = ChordMelody();
-                          playFunction(
-                            context.read<missionSettingsProvider>(),
-                            context.read<MappingProvider>(),
-                            nestedMapping,
-                            levelInfo
-                          );
-                        }
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Text('Start', style: TextStyle(fontSize: 20)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              verticalSpacer(),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: colorMap["c5f2"] ?? Colors.white,
-                        foregroundColor:
-                            colorMap["buttonForegroundColor"] ?? Colors.white,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          notPaused = false;
-                          running = false;
-                          startButtonBackgroundColor =
-                              colorMap["c3f3"] ?? Colors.white;
-                          solfegeText = "";
-                          currentRound = 0;
-                          widget.audioController.refresh();
-                        });
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Text('Stop', style: TextStyle(fontSize: 20)),
-                      ),
-                    ),
-                  ),
-                ],
+              startStopButtons(
+                melodySettings: generalProvider,
+                roundSettings: generalProvider,
+                mappingProvider: mappingProvider,
               ),
               verticalSpacer(),
               subHeadingRow("Solfege:"),
               verticalSpacer(),
-              Row(
-                // Solfege Text Area
-                children: [
-                  Container(
-                    constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.9,
-                    ),
-                    width: double.infinity,
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: colorMap["borderColor"] ?? Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(solfegeText, style: TextStyle(fontSize: 18)),
-                  ),
-                ],
-              ),
+              solfegeArea(),
               verticalSpacer(),
               subHeadingRow("Current round:"),
               verticalSpacer(),
-              Row(
-                // Current Round Display
-                children: [
-                  Text(
-                    (min(
-                          currentRound + 1,
-                          context
-                              .read<missionSettingsProvider>()
-                              .getNumberOfRounds,
-                        )).toString() +
-                        " / " +
-                        context
-                            .read<missionSettingsProvider>()
-                            .getNumberOfRounds
-                            .toString(),
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
+              currentRoundRow(generalProvider),
               verticalSpacer(),
               returnToLevelButton(levelStatus),
             ], // Children of Column
           ),
         ),
       ),
-    );
-  }
-
-  @override
-  void dispose() {
-    notPaused = false;
-    running = false;
-    // Stop this page's sounds without deinitialising the shared audio engine.
-    widget.audioController.stopAll();
-    super.dispose();
-  }
-
-  @override
-  void setState(VoidCallback fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
-  }
-
-  String getInstrument(String userChoice) {
-    if (userChoice == "Alternate") {
-      if (currentInstrument == "Guitar") {
-        currentInstrument = "Piano"; // Alternate to Piano
-        return "Piano"; // Alternate to Piano
-      } else if (currentInstrument == "Piano") {
-        currentInstrument = "Guitar"; // Alternate to Guitar
-        return "Guitar"; // Alternate to Guitar
-      }
-    } else if (userChoice.isNotEmpty) {
-      return userChoice;
-    }
-    return "Guitar"; // Default to Guitar if no valid choice
-  }
-
-  playFunction(
-    GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
-    Map<String, Map<String, Map<String, String>>> nestedMapping,
-    LevelInfo levelInfo
-  ) async {
-    // while currentRound < numberOfRounds and notPaused = true
-    // carry out the following steps:
-    // generate a melody
-    // for i in numberOfMelodyRepeats play the melody using the selected Instrument
-    // wait for timeDelayRepeat seconds in between playing the melody
-    // for j in numberOfSolfegeRepeats play the melody using solfege
-    // wait for timeDelayRepeat seconds in between playing the melody
-    // wait for timeDelay seconds before starting the next round
-    // increment currentRound by 1
-    // keep checking if paused is true, if so, exit the function
-    while (currentRound <
-            context.read<missionSettingsProvider>().getNumberOfRounds &&
-        notPaused) {
-      solfegeText = "";
-      setState(() {});
-      String result = chordMelody.generateChordMelody(
-        generalProvider,
-        mappingProvider,
-        newNotes :levelInfo.NewNotes
-      );
-      if (result.isNotEmpty) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(result)));
-        return;
-      }
-      for (
-        int i = 0;
-        i < context.read<missionSettingsProvider>().getMelodyRepeats &&
-            notPaused;
-        i++
-      ) {
-        await chordMelody.playChordMelody(
-          getInstrument(
-            context.read<missionSettingsProvider>().handsfreeInstrument,
-          ),
-          generalProvider,
-          mappingProvider,
-          widget.audioController,
-        );
-        if (!notPaused) {
-          return; // Exit if paused
-        }
-        await Future.delayed(
-          Duration(
-            seconds: context.read<missionSettingsProvider>().getTimeDelayRepeat,
-          ),
-        );
-      }
-      solfegeText = chordMelody.getChordMelody().join(' ');
-      setState(() {});
-      for (
-        int j = 0;
-        j < context.read<missionSettingsProvider>().getSolfegeRepeats &&
-            notPaused;
-        j++
-      ) {
-        await chordMelody.playChordMelody(
-          "Solfege",
-          generalProvider,
-          mappingProvider,
-          widget.audioController,
-        );
-        if (!notPaused) {
-          return; // Exit if paused
-        }
-        await Future.delayed(
-          Duration(
-            seconds: context.read<missionSettingsProvider>().getTimeDelayRepeat,
-          ),
-        );
-      }
-      for (
-        int k = 0;
-        k < context.read<missionSettingsProvider>().getSpokenRepeats &&
-            notPaused;
-        k++
-      ) {
-        await chordMelody.playSpoken(generalProvider, mappingProvider, widget.audioController);
-        if (!notPaused) {
-          return; // Exit if paused
-        }
-        await Future.delayed(
-          Duration(
-            seconds: context.read<missionSettingsProvider>().getTimeDelayRepeat,
-          ),
-        );
-      }
-      if (!notPaused) {
-        return; // Exit if paused
-      }
-      currentRound++;
-      setState(() {});
-    }
-    running = false;
-    setState(() {
-      startButtonBackgroundColor = colorMap["c3f3"] ?? Colors.white;
-    });
-  }
-
-  Widget returnToLevelButton(String levelStatus) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorMap['darkBackground'] ?? Colors.white,
-              foregroundColor:
-                  colorMap["noteButtonForegroundColor"] ?? Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              side: BorderSide(
-                color: missionLevelStatusColor(levelStatus),
-                width: borderWidth,
-              ),
-            ),
-            onPressed: () {
-              Navigator.pop(context); // pop to level page
-            },
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Text(
-                "Return to level main page",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

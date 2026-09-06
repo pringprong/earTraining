@@ -322,11 +322,7 @@ class _campaignTreeState extends State<campaignTree> {
     } else {
       return InkWell(
         onTap: () {
-          resetMissionBeforeMissionPage(
-            generalProvider,
-            mappingProvider,
-            missionInfo,
-          );
+          resetMissionBeforeMissionPage(generalProvider, missionInfo);
           Navigator.pushNamed(
             context,
             Mission.routeName,

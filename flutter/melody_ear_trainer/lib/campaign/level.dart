@@ -26,29 +26,75 @@ class Level extends StatefulWidget {
 }
 
 class _LevelState extends State<Level> {
+  LevelInfo? levelInfo;
+  List<LevelTestResults> ltrList = [];
+  LevelInfo? nextLevel;
+  LevelInfo? prevLevel;
+  // Prev/next tile chrome, computed once per page (re)entry in
+  // didChangeDependencies instead of on every build.
+  Color prevLevelColor = Colors.grey;
+  Color nextLevelColor = Colors.grey;
+  int prevNumPassedTests = 0;
+  int prevNumTests = 1;
+  int nextNumPassedTests = 0;
+  int nextNumTests = 1;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is! LevelInfo) return;
+    levelInfo = args;
+    final mappingProvider = context.read<MappingProvider>();
+    // ObjectBox lookups + next/prev resolution happen here (once per page
+    // (re)entry, including when returning after a test) — never in build.
+    ltrList = objectBox.getLevelTestResultsByLevelID(args.LevelID);
+    nextLevel = mappingProvider.getNextLevelForMission(args);
+    prevLevel = mappingProvider.getPrevLevelForMission(args);
+
+    prevLevelColor = Colors.grey;
+    prevNumPassedTests = 0;
+    prevNumTests = 1;
+    if (prevLevel != null) {
+      prevLevelColor = missionLevelStatusColor(
+        getLevelStatusWithQuery(prevLevel!),
+      );
+      prevNumPassedTests = objectBox.numPassedTestsForLevel(
+        prevLevel!.LevelID,
+        prevLevel!.PassingScore,
+      );
+      prevNumTests = prevLevel!.NumTests;
+    }
+    nextLevelColor = Colors.grey;
+    nextNumPassedTests = 0;
+    nextNumTests = 1;
+    if (nextLevel != null) {
+      nextLevelColor = missionLevelStatusColor(
+        getLevelStatusWithQuery(nextLevel!),
+      );
+      nextNumPassedTests = objectBox.numPassedTestsForLevel(
+        nextLevel!.LevelID,
+        nextLevel!.PassingScore,
+      );
+      nextNumTests = nextLevel!.NumTests;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final levelInfo = ModalRoute.of(context)!.settings.arguments as LevelInfo;
-    final mappingProvider = Provider.of<MappingProvider>(context);
+    final levelInfo = this.levelInfo!;
+    final mappingProvider = context.read<MappingProvider>();
     String missionMode = mappingProvider.getMissionMode(levelInfo.MissionID);
     MissionInfo missionInfo = mappingProvider.getMissions[levelInfo.MissionID]!;
-    final generalProvider = Provider.of<missionSettingsProvider>(context);
-    List<LevelTestResults> ltrList = objectBox.getLevelTestResultsByLevelID(
-      levelInfo.LevelID,
-    );
-    LevelInfo? nextLevel = mappingProvider.getNextLevelForMission(levelInfo);
-    LevelInfo? prevLevel = mappingProvider.getPrevLevelForMission(levelInfo);
+    final generalProvider = context.read<missionSettingsProvider>();
+    // ltrList / nextLevel / prevLevel are refreshed in didChangeDependencies.
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Melody ear trainer')),
       body: PopScope(
         canPop: true,
         onPopInvokedWithResult: (bool didPop, Object? result) {
-          resetMissionBeforeMissionPage(
-            generalProvider,
-            mappingProvider,
-            missionInfo,
-          );
+          resetMissionBeforeMissionPage(generalProvider, missionInfo);
         },
         child: SingleChildScrollView(
           child: Padding(
@@ -82,12 +128,15 @@ class _LevelState extends State<Level> {
                     levelInfo.NewNotes,
                     true,
                     true,
+                    levelInfo.Notes.toSet(),
                   ),
                   verticalSpacer(),
                   buildSelectedChordButtonsHelper(
                     generalProvider,
                     mappingProvider,
                     optional: true,
+                    selectedNotes: levelInfo.Notes.toSet(),
+                    chordFrequencyOverride: levelInfo.ChordFrequency,
                   ),
                   plainText(
                     "Practice & take a test (" +
@@ -103,18 +152,9 @@ class _LevelState extends State<Level> {
                   verticalSpacer(),
                   plainText("Navigation:"),
                   verticalSpacer(),
-                  prevAndNextLevelButtons(
-                    generalProvider,
-                    prevLevel,
-                    nextLevel,
-                  ),
+                  prevAndNextLevelButtons(prevLevel, nextLevel),
                   verticalSpacer(),
-                  returnToMissionPage(
-                    generalProvider,
-                    mappingProvider,
-                    missionMode,
-                    missionInfo,
-                  ),
+                  returnToMissionPage(generalProvider, missionMode, missionInfo),
                   verticalSpacer(),
                   plainText("Test history:"),
                   verticalSpacer(),
@@ -142,35 +182,8 @@ class _LevelState extends State<Level> {
     );
   }
 
-  Widget prevAndNextLevelButtons(
-    GeneralProvider generalProvider,
-    LevelInfo? prevLevel,
-    LevelInfo? nextLevel,
-  ) {
-    Color prevLevelColor = Colors.grey;
-    int prevNumPassedTests = 0;
-    int prevNumTests = 1;
-    int nextNumPassedTests = 0;
-    int nextNumTests = 1;
-    if (prevLevel != null) {
-      String levelStatus = getLevelStatusWithQuery(prevLevel);
-      prevLevelColor = missionLevelStatusColor(levelStatus);
-      prevNumPassedTests = objectBox.numPassedTestsForLevel(
-        prevLevel.LevelID,
-        prevLevel.PassingScore,
-      );
-      prevNumTests = prevLevel.NumTests;
-    }
-    Color nextLevelColor = Colors.grey;
-    if (nextLevel != null) {
-      String levelStatus = getLevelStatusWithQuery(nextLevel);
-      nextLevelColor = missionLevelStatusColor(levelStatus);
-      nextNumPassedTests = objectBox.numPassedTestsForLevel(
-        nextLevel.LevelID,
-        nextLevel.PassingScore,
-      );
-      nextNumTests = nextLevel.NumTests;
-    }
+  Widget prevAndNextLevelButtons(LevelInfo? prevLevel, LevelInfo? nextLevel) {
+    // Colors / progress values are computed in didChangeDependencies.
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -202,18 +215,8 @@ class _LevelState extends State<Level> {
             ),
             onTap: () {
               if (prevLevel != null) {
-                generalProvider.setLevelDetails(
-                  prevLevel.Notes,
-                  prevLevel.NumNotes,
-                  prevLevel.MaxDistance,
-                  prevLevel.AllowRepeatedNotes,
-                  prevLevel.PlaybackSpeed,
-                  prevLevel.StartWithDo,
-                  prevLevel.EndWithDo,
-                  prevLevel.StartingDo,
-                  prevLevel.EndingDo,
-                  prevLevel.ChordFrequency,
-                );
+                // No setLevelDetails — the next page derives its settings from
+                // the LevelInfo route argument (LevelConfig).
                 Navigator.pushReplacementNamed(
                   context,
                   Level.routeName,
@@ -252,18 +255,8 @@ class _LevelState extends State<Level> {
             ),
             onTap: () {
               if (nextLevel != null) {
-                generalProvider.setLevelDetails(
-                  nextLevel.Notes,
-                  nextLevel.NumNotes,
-                  nextLevel.MaxDistance,
-                  nextLevel.AllowRepeatedNotes,
-                  nextLevel.PlaybackSpeed,
-                  nextLevel.StartWithDo,
-                  nextLevel.EndWithDo,
-                  nextLevel.StartingDo,
-                  nextLevel.EndingDo,
-                  nextLevel.ChordFrequency,
-                );
+                // No setLevelDetails — the next page derives its settings from
+                // the LevelInfo route argument (LevelConfig).
                 Navigator.pushReplacementNamed(
                   context,
                   Level.routeName,
@@ -408,7 +401,6 @@ class _LevelState extends State<Level> {
 
   Widget returnToMissionPage(
     GeneralProvider generalProvider,
-    MappingProvider mappingProvider,
     String missionMode,
     MissionInfo missionInfo,
   ) {
@@ -428,11 +420,7 @@ class _LevelState extends State<Level> {
               ),
             ),
             onPressed: () {
-              resetMissionBeforeMissionPage(
-                generalProvider,
-                mappingProvider,
-                missionInfo,
-              );
+              resetMissionBeforeMissionPage(generalProvider, missionInfo);
               Navigator.pop(context); // pop to mission page
             },
             child: FittedBox(

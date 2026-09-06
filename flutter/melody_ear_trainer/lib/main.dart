@@ -72,6 +72,30 @@ Future main() async {
   // renders with empty campaign/scale/chord data.
   final mappingProvider = MappingProvider();
   await mappingProvider.loadAll();
+
+  // Create the settings providers here (instead of inside MultiProvider's
+  // `create:` callbacks) so we can await their SharedPreferences load before
+  // the first frame. This removes the race where an early navigation tap could
+  // write settings that the async load would later overwrite.
+  final melodyIDSettingsProvider = MelodyIDSettings();
+  final melodySingingSettingsProvider = MelodySingingSettings();
+  final chordIDSettingsProvider = chordIDSettings();
+  final chordSingingSettingsProvider = chordSingingSettings();
+  final chordMelodyIDSettingsProvider = chordMelodyIDSettings();
+  final chordMelodySingingSettingsProvider = chordMelodySingingSettings();
+  final missionSettings = missionSettingsProvider();
+  final missionSingingSettingsProvider = missionSingingSettings();
+  await Future.wait<void>([
+    melodyIDSettingsProvider.loadSettings(),
+    melodySingingSettingsProvider.loadSettings(),
+    chordIDSettingsProvider.loadSettings(),
+    chordSingingSettingsProvider.loadSettings(),
+    chordMelodyIDSettingsProvider.loadSettings(),
+    chordMelodySingingSettingsProvider.loadSettings(),
+    missionSettings.loadSettings(),
+    missionSingingSettingsProvider.loadSettings(),
+  ]);
+
   runApp(
     MultiProvider(
       providers: [
@@ -85,54 +109,29 @@ Future main() async {
         // threading it through constructors and playback helpers.
         Provider<AudioController>.value(value: audioController),
         ChangeNotifierProvider<MappingProvider>.value(value: mappingProvider),
-        ChangeNotifierProvider<MelodyIDSettings>(
-          create: (context) {
-            final melodyIDSettingsProvider = MelodyIDSettings();
-            return melodyIDSettingsProvider;
-          },
+        ChangeNotifierProvider<MelodyIDSettings>.value(
+          value: melodyIDSettingsProvider,
         ),
-        ChangeNotifierProvider<MelodySingingSettings>(
-          create: (context) {
-            final melodySingingSettingsProvider = MelodySingingSettings();
-            return melodySingingSettingsProvider;
-          },
+        ChangeNotifierProvider<MelodySingingSettings>.value(
+          value: melodySingingSettingsProvider,
         ),
-        ChangeNotifierProvider<chordIDSettings>(
-          create: (context) {
-            final chordIDSettingsProvider = chordIDSettings();
-            return chordIDSettingsProvider;
-          },
+        ChangeNotifierProvider<chordIDSettings>.value(
+          value: chordIDSettingsProvider,
         ),
-        ChangeNotifierProvider<chordSingingSettings>(
-          create: (context) {
-            final chordSingingSettingsProvider = chordSingingSettings();
-            return chordSingingSettingsProvider;
-          },
+        ChangeNotifierProvider<chordSingingSettings>.value(
+          value: chordSingingSettingsProvider,
         ),
-        ChangeNotifierProvider<chordMelodyIDSettings>(
-          create: (context) {
-            final chordMelodyIDSettingsProvider = chordMelodyIDSettings();
-            return chordMelodyIDSettingsProvider;
-          },
+        ChangeNotifierProvider<chordMelodyIDSettings>.value(
+          value: chordMelodyIDSettingsProvider,
         ),
-        ChangeNotifierProvider<chordMelodySingingSettings>(
-          create: (context) {
-            final chordMelodySingingSettingsProvider =
-                chordMelodySingingSettings();
-            return chordMelodySingingSettingsProvider;
-          },
+        ChangeNotifierProvider<chordMelodySingingSettings>.value(
+          value: chordMelodySingingSettingsProvider,
         ),
-        ChangeNotifierProvider<missionSettingsProvider>(
-          create: (context) {
-            final msp = missionSettingsProvider();
-            return msp;
-          },
+        ChangeNotifierProvider<missionSettingsProvider>.value(
+          value: missionSettings,
         ),
-        ChangeNotifierProvider<missionSingingSettings>(
-          create: (context) {
-            final mss = missionSingingSettings();
-            return mss;
-          },
+        ChangeNotifierProvider<missionSingingSettings>.value(
+          value: missionSingingSettingsProvider,
         ),
       ],
       child: MelodyEarTrainerApp(audioController: audioController),

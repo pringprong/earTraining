@@ -19,23 +19,37 @@ class Mission extends StatefulWidget {
 }
 
 class _MissionState extends State<Mission> {
+  MissionInfo? _loadedMission;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Persist the mission's key/instrument once per mission entry — not on
+    // every rebuild (no side effects in build).
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is MissionInfo &&
+        args.MissionID != (_loadedMission?.MissionID ?? '')) {
+      _loadedMission = args;
+      final generalProvider = context.read<missionSettingsProvider>();
+      objectBox.createOrUpdateMissionDetails(
+        args.MissionID,
+        generalProvider.getSelectedKey,
+        generalProvider.getSelectedInstrument,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final missionInfo =
         ModalRoute.of(context)!.settings.arguments as MissionInfo;
-    final mappingProvider = Provider.of<MappingProvider>(context);
-    final generalProvider = Provider.of<missionSettingsProvider>(context);
+    final mappingProvider = context.read<MappingProvider>();
+    final generalProvider = context.read<missionSettingsProvider>();
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
-    // String thisMissionStatus = getDeepMissionStatus(
-    //   mappingProvider,
-    //   missionInfo.MissionID,
-    // );
-    objectBox.createOrUpdateMissionDetails(
-      missionInfo.MissionID,
-      generalProvider.getSelectedKey,
-      generalProvider.getSelectedInstrument,
-      //thisMissionStatus,
-    );
+    // The mission page displays the last level's note selection / chord
+    // frequency explicitly (this used to be smuggled through the global
+    // provider by setLevelDetails / resetMissionBeforeMissionPage).
+    final lastLevel = levels.isNotEmpty ? levels.last : null;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -66,16 +80,19 @@ class _MissionState extends State<Mission> {
                   missionInfo.MissionNewNotes,
                   true,
                   true,
+                  lastLevel?.Notes.toSet(),
                 ),
                 verticalSpacer(),
                 buildSelectedChordButtonsHelper(
                   generalProvider,
                   mappingProvider,
                   optional: true,
+                  selectedNotes: lastLevel?.Notes.toSet(),
+                  chordFrequencyOverride: lastLevel?.ChordFrequency,
                 ),
                 plainText("Select a level:"),
                 verticalSpacer(),
-                ...levelButtons(levels, generalProvider),
+                ...levelButtons(levels),
                 verticalSpacer(),
                 plainText("Navigation:"),
                 verticalSpacer(),
@@ -124,10 +141,7 @@ class _MissionState extends State<Mission> {
     );
   }
 
-  List<Widget> levelButtons(
-    List<LevelInfo> levels,
-    GeneralProvider generalProvider,
-  ) {
+  List<Widget> levelButtons(List<LevelInfo> levels) {
     if (levels.isEmpty) {
       return [TextRow('No levels available')];
     } else {
@@ -151,19 +165,19 @@ class _MissionState extends State<Mission> {
               padding: const EdgeInsets.symmetric(vertical: 3.0),
               child: Row(
                 children: [
-                  Expanded(child: buildTile(leftLvl, generalProvider)),
+                  Expanded(child: buildTile(leftLvl)),
                   horizontalSpacer(),
                   Expanded(
                     child:
                         middleLvl != null
-                            ? buildTile(middleLvl, generalProvider)
+                            ? buildTile(middleLvl)
                             : SizedBox.shrink(),
                   ),
                   horizontalSpacer(),
                   Expanded(
                     child:
                         rightLvl != null
-                            ? buildTile(rightLvl, generalProvider)
+                            ? buildTile(rightLvl)
                             : SizedBox.shrink(),
                   ),
                 ],
@@ -175,7 +189,7 @@ class _MissionState extends State<Mission> {
     }
   }
 
-  Widget buildTile(LevelInfo lvl, GeneralProvider generalProvider) {
+  Widget buildTile(LevelInfo lvl) {
     int numPassedTests = objectBox.numPassedTestsForLevel(
       lvl.LevelID,
       lvl.PassingScore,
@@ -206,20 +220,9 @@ class _MissionState extends State<Mission> {
         progressColor: colorMap['correctGuessIconColor'] ?? Colors.white,
         backgroundColor: colorMap["waitingForGuessIconColor"] ?? Colors.white,
       ),
+      // NOTE: no setLevelDetails here anymore — the Level and practice pages
+      // derive their settings from the LevelInfo route argument (LevelConfig).
       onTap: () {
-        generalProvider.setLevelDetails(
-          lvl.Notes,
-          lvl.NumNotes,
-          lvl.MaxDistance,
-          lvl.AllowRepeatedNotes,
-          lvl.PlaybackSpeed,
-          lvl.StartWithDo,
-          lvl.EndWithDo,
-          lvl.StartingDo,
-          lvl.EndingDo,
-          lvl.ChordFrequency,
-        );
-        setState(() {});
         Navigator.pushNamed(context, Level.routeName, arguments: lvl);
       },
     );

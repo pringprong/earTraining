@@ -5,19 +5,65 @@ import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
 import '../utils/colors.dart';
 import '../utils/chordMelody.dart';
+import '../utils/level_config.dart';
 import 'campaign/levelMelodyIDtest.dart';
 import 'campaign/levelMelodySingingtest.dart';
+
+/// Standard route-arguments lifecycle for campaign pages.
+///
+/// [didChangeDependencies] re-reads the route arguments on every dependency
+/// change (including when the page regains visibility after a pop), and calls
+/// [onLevelEntered] exactly once per distinct level (guarded by the LevelID,
+/// NOT by a bool flag, so side effects re-run whenever the displayed level
+/// changes while never re-running when unrelated dependencies change).
+mixin CampaignLevelArgs<T extends StatefulWidget> on State<T> {
+  /// The LevelInfo passed via route arguments, or null for routes that don't
+  /// carry one (e.g. the non-campaign practice pages).
+  LevelInfo? levelInfo;
+
+  /// Called whenever a route entry carries a LevelInfo different from the
+  /// previously seen one. Subclasses regenerate melodies / autoplay here.
+  void onLevelEntered() {}
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments;
+    final isNewLevel =
+        args is LevelInfo && args.LevelID != (levelInfo?.LevelID ?? '');
+    if (args is LevelInfo) {
+      levelInfo = args;
+    }
+    if (isNewLevel) {
+      onLevelEntered();
+    }
+  }
+}
 
 abstract class MelodyPageAbstract extends StatefulWidget {
   const MelodyPageAbstract({super.key, required this.audioController});
   final AudioController audioController;
 }
 
-abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
+abstract class MelodyPageAbstractState extends State<MelodyPageAbstract>
+    with CampaignLevelArgs<MelodyPageAbstract> {
   String solfegeText = "";
   bool melodiesSame = false;
   ChordMelody generatedChordMelody = ChordMelody();
   ChordMelody userWrittenChordMelody = ChordMelody();
+
+  /// Resolves the melody settings to use for generation/playback.
+  ///
+  /// Campaign pages (routes whose arguments carry a LevelInfo) always use the
+  /// level's own fixed settings; other pages fall back to the provider's
+  /// settings, preserving their original behavior.
+  LevelConfig resolveLevelConfig(GeneralProvider generalProvider) {
+    final info = levelInfo;
+    if (info != null) {
+      return LevelConfig.fromLevelInfo(info);
+    }
+    return LevelConfig.fromProvider(generalProvider);
+  }
 
   IconData comparisonIcon = waitingForGuessIcon;
   Color comparisonIconColor =
@@ -110,6 +156,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   generalProvider,
                   mappingProvider,
                   widget.audioController,
+                  levelConfig: resolveLevelConfig(generalProvider),
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -132,6 +179,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   generalProvider,
                   mappingProvider,
                   widget.audioController,
+                  levelConfig: resolveLevelConfig(generalProvider),
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -154,6 +202,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                     generalProvider,
                     mappingProvider,
                     widget.audioController,
+                    levelConfig: resolveLevelConfig(generalProvider),
                   ),
               child: FittedBox(
                 fit: BoxFit.fill,
@@ -190,6 +239,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 generalProvider,
                 mappingProvider,
                 widget.audioController,
+                levelConfig: resolveLevelConfig(generalProvider),
               );
             },
             child: FittedBox(
@@ -217,6 +267,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 generalProvider,
                 mappingProvider,
                 widget.audioController,
+                levelConfig: resolveLevelConfig(generalProvider),
               );
             },
             child: FittedBox(
@@ -243,6 +294,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 generalProvider,
                 mappingProvider,
                 widget.audioController,
+                levelConfig: resolveLevelConfig(generalProvider),
               );
             },
             child: FittedBox(
@@ -301,6 +353,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                       generalProvider,
                       mappingProvider,
                       widget.audioController,
+                      levelConfig: resolveLevelConfig(generalProvider),
                     ),
                 child: FittedBox(
                   fit: BoxFit.fill,
@@ -323,6 +376,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                       generalProvider,
                       mappingProvider,
                       widget.audioController,
+                      levelConfig: resolveLevelConfig(generalProvider),
                     ),
                 child: FittedBox(
                   fit: BoxFit.fill,
@@ -402,6 +456,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                 generalProvider,
                 mappingProvider,
                 widget.audioController,
+                levelConfig: resolveLevelConfig(generalProvider),
               );
             },
             child: FittedBox(
@@ -545,6 +600,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   generalProvider,
                   mappingProvider,
                   widget.audioController,
+                  levelConfig: resolveLevelConfig(generalProvider),
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -566,6 +622,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   generalProvider,
                   mappingProvider,
                   widget.audioController,
+                  levelConfig: resolveLevelConfig(generalProvider),
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -587,6 +644,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                   generalProvider,
                   mappingProvider,
                   widget.audioController,
+                  levelConfig: resolveLevelConfig(generalProvider),
                 ),
             child: FittedBox(
               fit: BoxFit.fill,
@@ -611,7 +669,10 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
       noteKeys.where((n) => n.contains('1')).toList(),
       noteKeys.where((n) => n.contains('2')).toList(),
     ];
-    final selectedNotes = generalProvider.getSelectedNotes();
+    // Campaign pages use the level's own note selection; other pages fall
+    // back to the provider's selection.
+    final selectedNotes =
+        levelInfo?.Notes ?? generalProvider.getSelectedNotes();
     final noteColors = mappingProvider.getNoteColors;
     final noteColorFactor = mappingProvider.getNoteColorFactors;
 
@@ -704,6 +765,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
       generalProvider,
       mappingProvider,
       newNotes: newNotes,
+      levelConfig: resolveLevelConfig(generalProvider),
     );
     if (result.isNotEmpty) {
       ScaffoldMessenger.of(
@@ -759,7 +821,10 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
   ) {
     final selectedChords = generalProvider.getSelectedChords();
     selectedChords.sort((a, b) => chordNameSort(a, b));
-    final chordFrequency = generalProvider.chordFrequency;
+    // Campaign pages use the level's own chord frequency; other pages fall
+    // back to the provider's.
+    final chordFrequency =
+        levelInfo?.ChordFrequency ?? generalProvider.chordFrequency;
     final chordMap = mappingProvider.getChordMap;
     if (chordFrequency == "Never") {
       return Padding(padding: const EdgeInsets.all(0.0));
@@ -795,6 +860,7 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract> {
                       generalProvider,
                       mappingProvider,
                       widget.audioController,
+                      levelConfig: resolveLevelConfig(generalProvider),
                     );
                   });
                 },
