@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:melody_ear_trainer/campaign/levelMelodySingingtest.dart';
 import 'package:melody_ear_trainer/providers/general_provider.dart';
-import 'levelMelodyIDtest.dart';
+import 'levelRoutes.dart';
 import '../../main.dart';
 import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
@@ -340,16 +339,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
                 ),
               ),
               onPressed: () {
-                if (missionMode == "Melody ID") {
+                final String? route = levelTestRoute(missionMode);
+                if (route != null) {
                   Navigator.pushReplacementNamed(
                     context,
-                    LevelMelodyIDTest.routeName,
-                    arguments: levelInfo,
-                  );
-                } else if (missionMode == "Melody singing") {
-                  Navigator.pushReplacementNamed(
-                    context,
-                    LevelMelodySingingTest.routeName,
+                    route,
                     arguments: levelInfo,
                   );
                 }

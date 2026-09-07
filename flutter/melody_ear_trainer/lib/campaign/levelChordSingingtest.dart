@@ -7,18 +7,17 @@ import '../testPageAbstract.dart';
 import '../utils/helper.dart';
 import 'levelTestResults.dart';
 import 'package:intl/intl.dart';
-//import '../utils/resultsDB.dart';
 
-class LevelMelodySingingTest extends TestPageAbstract {
-  const LevelMelodySingingTest({super.key, required super.audioController})
+class LevelChordSingingTest extends TestPageAbstract {
+  const LevelChordSingingTest({super.key, required super.audioController})
     : super();
 
-  static const String routeName = '/levelmelodysingingtest';
+  static const String routeName = '/levelchordsingingtest';
   @override
-  LevelMelodySingingTestState createState() => LevelMelodySingingTestState();
+  LevelChordSingingTestState createState() => LevelChordSingingTestState();
 }
 
-class LevelMelodySingingTestState extends TestPageAbstractState {
+class LevelChordSingingTestState extends TestPageAbstractState {
   @override
   void onLevelEntered() {
     numberOfQuestions = levelInfo!.NumQuestions;
@@ -78,6 +77,16 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
               playMelodyButtons(generalProvider, mappingProvider, true),
               verticalSpacer(),
               plainText("Did you sing it correctly?"),
+              verticalSpacer(),
+              subHeadingRow("Chords for reference"),
+              verticalSpacer(),
+              buildSelectedChordButtonsHelper(
+                generalProvider,
+                mappingProvider,
+                optional: true,
+                selectedNotes: levelInfo.Notes.toSet(),
+                chordFrequencyOverride: levelInfo.ChordFrequency,
+              ),
               verticalSpacer(),
               reportWhetherCorrect(generalProvider, mappingProvider, levelInfo),
             ],

@@ -5,12 +5,7 @@ import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../utils/helper.dart';
-import 'levelMelodyID.dart';
-import 'levelMelodyIDhandsfree.dart';
-import 'levelMelodyIDtest.dart';
-import 'levelMelodySinging.dart';
-import 'levelMelodySinginghandsfree.dart';
-import 'levelMelodySingingtest.dart';
+import 'levelRoutes.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:math';
 //import 'package:intl/intl.dart';
@@ -281,18 +276,9 @@ class _LevelState extends State<Level> {
               ),
             ),
             onPressed: () {
-              if (missionMode == "Melody ID") {
-                Navigator.pushNamed(
-                  context,
-                  LevelMelodyID.routeName,
-                  arguments: levelInfo,
-                );
-              } else if (missionMode == "Melody singing") {
-                Navigator.pushNamed(
-                  context,
-                  LevelMelodySinging.routeName,
-                  arguments: levelInfo,
-                );
+              final String? route = levelPracticeRoute(missionMode);
+              if (route != null) {
+                Navigator.pushNamed(context, route, arguments: levelInfo);
               }
             },
             child: FittedBox(
@@ -322,18 +308,9 @@ class _LevelState extends State<Level> {
               ),
             ),
             onPressed: () {
-              if (missionMode == "Melody ID") {
-                Navigator.pushNamed(
-                  context,
-                  LevelMelodyIDHandsFree.routeName,
-                  arguments: levelInfo,
-                );
-              } else if (missionMode == "Melody singing") {
-                Navigator.pushNamed(
-                  context,
-                  LevelMelodySingingHandsFree.routeName,
-                  arguments: levelInfo,
-                );
+              final String? route = levelHandsFreeRoute(missionMode);
+              if (route != null) {
+                Navigator.pushNamed(context, route, arguments: levelInfo);
               }
             },
             child: FittedBox(
@@ -366,18 +343,9 @@ class _LevelState extends State<Level> {
               ),
             ),
             onPressed: () {
-              if (missionMode == "Melody ID") {
-                Navigator.pushNamed(
-                  context,
-                  LevelMelodyIDTest.routeName,
-                  arguments: levelInfo,
-                );
-              } else if (missionMode == "Melody singing") {
-                Navigator.pushNamed(
-                  context,
-                  LevelMelodySingingTest.routeName,
-                  arguments: levelInfo,
-                );
+              final String? route = levelTestRoute(missionMode);
+              if (route != null) {
+                Navigator.pushNamed(context, route, arguments: levelInfo);
               }
             },
             child: FittedBox(

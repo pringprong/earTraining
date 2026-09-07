@@ -7,18 +7,17 @@ import '../testPageAbstract.dart';
 import '../utils/helper.dart';
 import 'levelTestResults.dart';
 import 'package:intl/intl.dart';
-//import '../utils/resultsDB.dart';
 
-class LevelMelodySingingTest extends TestPageAbstract {
-  const LevelMelodySingingTest({super.key, required super.audioController})
+class LevelChordIDTest extends TestPageAbstract {
+  const LevelChordIDTest({super.key, required super.audioController})
     : super();
 
-  static const String routeName = '/levelmelodysingingtest';
+  static const String routeName = '/levelchordidtest';
   @override
-  LevelMelodySingingTestState createState() => LevelMelodySingingTestState();
+  LevelChordIDTestState createState() => LevelChordIDTestState();
 }
 
-class LevelMelodySingingTestState extends TestPageAbstractState {
+class LevelChordIDTestState extends TestPageAbstractState {
   @override
   void onLevelEntered() {
     numberOfQuestions = levelInfo!.NumQuestions;
@@ -55,31 +54,29 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
                     " to pass",
               ),
               verticalSpacer(),
-              startTestButtonSinging(generalProvider, mappingProvider, true, levelInfo),
+              startTestButton(generalProvider, mappingProvider, false, levelInfo),
               verticalSpacer(),
               previousQuestionResult(),
+              // verticalSpacer(),
+              // TextRow("Current question: " + currentRound.toString()),
               verticalSpacer(),
-              plainText("Sing melody based on first note:"),
+              plainText("Listen to melody again:"),
               verticalSpacer(),
-              solfegeTextArea(),
+              playMelodyButtons(generalProvider, mappingProvider, false),
               verticalSpacer(),
-              sayTheSolfegeButton(
-                generalProvider,
-                mappingProvider,
-                compact: true,
+              plainText(
+                "Enter the chords (" +
+                    levelInfo.NumNotes.toString() +
+                    " notes):",
               ),
               verticalSpacer(),
-              plainText("Listen to first note again:"),
+              buildSelectedChordButtons(generalProvider, mappingProvider),
               verticalSpacer(),
-              playFirstNoteButtons(generalProvider, mappingProvider),
+              userWrittenSolfegeArea(),
+              // verticalSpacer(),
+              // clearAndBackspaceButtons(),
               verticalSpacer(),
-              plainText("Listen to melody to check:"),
-              verticalSpacer(),
-              playMelodyButtons(generalProvider, mappingProvider, true),
-              verticalSpacer(),
-              plainText("Did you sing it correctly?"),
-              verticalSpacer(),
-              reportWhetherCorrect(generalProvider, mappingProvider, levelInfo),
+              enterGuessbutton(generalProvider, mappingProvider, false, levelInfo),
             ],
           ),
         ),
@@ -102,6 +99,7 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
       timestamp: timestamp,
     );
     objectBox.insertLevelTestResult(ltr);
+
     String thisMissionStatus = getDeepMissionStatus(
       mappingProvider,
       levelInfo.MissionID,

@@ -37,6 +37,18 @@ import 'utils/objectBox.dart';
 import 'campaign/levelMelodySinging.dart';
 import 'campaign/levelMelodySinginghandsfree.dart';
 import 'campaign/levelMelodySingingtest.dart';
+import 'campaign/levelChordID.dart';
+import 'campaign/levelChordIDhandsfree.dart';
+import 'campaign/levelChordIDtest.dart';
+import 'campaign/levelChordMelodyID.dart';
+import 'campaign/levelChordMelodyIDhandsfree.dart';
+import 'campaign/levelChordMelodyIDtest.dart';
+import 'campaign/levelChordMelodySinging.dart';
+import 'campaign/levelChordMelodySinginghandsfree.dart';
+import 'campaign/levelChordMelodySingingtest.dart';
+import 'campaign/levelChordSinging.dart';
+import 'campaign/levelChordSinginghandsfree.dart';
+import 'campaign/levelChordSingingtest.dart';
 
 late ObjectBox objectBox;
 final String versionNumber = "3.0";
@@ -217,6 +229,39 @@ class MelodyEarTrainerApp extends StatelessWidget {
         LevelMelodySingingTest.routeName:
             (context) =>
                 LevelMelodySingingTest(audioController: audioController),
+        LevelChordID.routeName:
+            (context) => LevelChordID(audioController: audioController),
+        LevelChordIDHandsFree.routeName:
+            (context) =>
+                LevelChordIDHandsFree(audioController: audioController),
+        LevelChordIDTest.routeName:
+            (context) => LevelChordIDTest(audioController: audioController),
+        LevelChordMelodyID.routeName:
+            (context) => LevelChordMelodyID(audioController: audioController),
+        LevelChordMelodyIDHandsFree.routeName:
+            (context) =>
+                LevelChordMelodyIDHandsFree(audioController: audioController),
+        LevelChordMelodyIDTest.routeName:
+            (context) =>
+                LevelChordMelodyIDTest(audioController: audioController),
+        LevelChordMelodySinging.routeName:
+            (context) =>
+                LevelChordMelodySinging(audioController: audioController),
+        LevelChordMelodySingingHandsFree.routeName:
+            (context) => LevelChordMelodySingingHandsFree(
+              audioController: audioController,
+            ),
+        LevelChordMelodySingingTest.routeName:
+            (context) =>
+                LevelChordMelodySingingTest(audioController: audioController),
+        LevelChordSinging.routeName:
+            (context) => LevelChordSinging(audioController: audioController),
+        LevelChordSingingHandsFree.routeName:
+            (context) =>
+                LevelChordSingingHandsFree(audioController: audioController),
+        LevelChordSingingTest.routeName:
+            (context) =>
+                LevelChordSingingTest(audioController: audioController),
 
         // Add other routes here
       },

@@ -6,8 +6,7 @@ import '../providers/mapping_provider.dart';
 import '../utils/colors.dart';
 import '../utils/chordMelody.dart';
 import '../utils/level_config.dart';
-import 'campaign/levelMelodyIDtest.dart';
-import 'campaign/levelMelodySingingtest.dart';
+import 'campaign/levelRoutes.dart';
 
 /// Standard route-arguments lifecycle for campaign pages.
 ///
@@ -930,16 +929,11 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract>
               ),
             ),
             onPressed: () {
-              if (missionMode == "Melody ID") {
+              final String? route = levelTestRoute(missionMode);
+              if (route != null) {
                 Navigator.pushReplacementNamed(
                   context,
-                  LevelMelodyIDTest.routeName,
-                  arguments: levelInfo,
-                );
-              } else if (missionMode == "Melody singing") {
-                Navigator.pushReplacementNamed(
-                  context,
-                  LevelMelodySingingTest.routeName,
+                  route,
                   arguments: levelInfo,
                 );
               }

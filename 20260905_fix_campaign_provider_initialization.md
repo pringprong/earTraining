@@ -353,3 +353,33 @@ All items were implemented on `glm53` and verified with `flutter analyze`
   picks up new values; Start/Stop/Leave behave; back navigation stops audio.
 - Mission-passed flow → next level → results → return buttons still navigate
   correctly.
+
+
+
+All done! Every recommendation from the plan is now implemented, verified with `flutter analyze` (0 issues), committed, and pushed to `origin/glm53`.
+
+## Summary of the implementation
+
+**3 commits on `glm53`** (all pushed):
+
+### `ebcd9e7` — Core lifecycle & provider rework (R2, R3, R4, R6, R7, R8)
+- **R7** — `main()` now awaits `loadSettings()` on all 8 settings providers before `runApp` (fixes the async race where a load could overwrite just-written settings)
+- **R2** — New `utils/level_config.dart`: `LevelConfig.fromLevelInfo()` is the single source of truth for level settings. `setLevelDetails()` is **deleted**, along with all 4 navigation-time call sites and the note-selection part of `resetMissionBeforeMissionPage`. `generateChordMelody`/`playChordMelody`/`playSpoken` take an optional `LevelConfig` (non-campaign pages fall back to their provider, so melodyID/chordID/etc. are untouched)
+- **R3** — New `CampaignLevelArgs` mixin on `MelodyPageAbstractState`: `levelInfo` read in `didChangeDependencies`, and side effects run in an `onLevelEntered()` hook **guarded by LevelID** — replacing your `_initialized`/`late final` pattern in `LevelMelodyID` and the double-reading in `LevelMelodySinging`
+- **R4** — ObjectBox reads/writes moved out of `build()` in `mission.dart`, `level.dart`, `levelTestResults.dart` (the mission page no longer writes to the DB on every rebuild)
+- **R6** — New `campaign/handsfreePageAbstract.dart`: both hands-free pages rewritten on a shared base (session state, Start/Stop, round display, `dispose()` audio stop, mounted-safe `setState`, `getInstrument`, dropdown row builder) while keeping each page's playback order and provider split (documented)
+- **R8** — Test pages stop assigning fields in `build`; the dummy `LevelInfo("", ...)` is gone
+
+### `9a38f85` — Scoped widgets & naming (R5, R9)
+- **R5** — `CampaignHeaderRow`/`MissionHeaderRow`/`LevelHeaderRow` widgets using `context.select`; all 28 header call sites across 10 campaign pages converted; hands-free dropdowns use `context.select` instead of `context.watch`
+- **R9** — Renamed `MissionSettingsProvider`, `MissionSingingSettings`, `MissionSettingsPage` (14 files); removed needless `async` on `updateSelectedKey`/`updateSelectedInstrument`
+
+### `24f2f8b` — Doc update with implementation status + manual test checklist
+
+## Three deliberate behavior changes (noted in the doc)
+1. A melody-generation error in hands-free sessions now ends the session and re-enables Start (previously it left the Start button silently locked)
+2. The Mission page now displays the last level's notes deterministically instead of relying on leftover global state
+3. Level pages use their own `ChordFrequency` for the chord buttons display
+
+## What you should still do
+Run the app and walk the **manual checklist** in the doc (settings reactivity level-to-level, autoplay-once-per-entry, hands-free mid-session dropdown changes, back-navigation audio stop). Static analysis can't verify audio/navigation behavior — and since non-campaign pages (Melody ID, Chord ID, etc.) share the modified base class and `chordMelody.dart`, give them a quick smoke test too.
