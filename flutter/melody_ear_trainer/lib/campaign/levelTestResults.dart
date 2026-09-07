@@ -134,7 +134,7 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
     final levelTestResults = this.levelTestResults!;
     final levelInfo = _levelInfo!;
     final mappingProvider = context.read<MappingProvider>();
-    final generalProvider = context.read<missionSettingsProvider>();
+    final generalProvider = context.read<MissionSettingsProvider>();
     // All status/assessment fields above are refreshed in
     // didChangeDependencies — build is pure rendering.
 
@@ -147,17 +147,11 @@ class _LevelTestResultsPageState extends State<LevelTestResultsPage> {
           child: Center(
             child: Column(
               children: [
-                campaignHeader(
-                  mappingProvider.campaigns[levelInfo.CampaignID]!,
-                ),
+                CampaignHeaderRow(campaignId: levelInfo.CampaignID),
                 verticalSpacer(),
-                missionHeader(
-                  mappingProvider,
-                  mappingProvider.getMissions[levelTestResults.MissionID]!,
-                  max: true,
-                ),
+                MissionHeaderRow(missionId: levelTestResults.MissionID, max: true),
                 verticalSpacer(),
-                levelHeader(levelInfo),
+                LevelHeaderRow(levelId: levelInfo.LevelID),
                 verticalSpacer(),
                 levelTestResultsCard(
                   levelTestResults,

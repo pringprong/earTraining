@@ -5,15 +5,15 @@ import '../../providers/mapping_provider.dart';
 import 'package:provider/provider.dart';
 import '../../utils/helper.dart';
 
-class missionSettingsPage extends StatefulWidget {
-  const missionSettingsPage({super.key});
+class MissionSettingsPage extends StatefulWidget {
+  const MissionSettingsPage({super.key});
 
   static const String routeName = '/missionSettings';
   @override
-  State<missionSettingsPage> createState() => _missionSettingsPageState();
+  State<MissionSettingsPage> createState() => _MissionSettingsPageState();
 }
 
-class _missionSettingsPageState extends State<missionSettingsPage> {
+class _MissionSettingsPageState extends State<MissionSettingsPage> {
   @override
   Widget build(BuildContext context) {
     final missionInfo =
@@ -28,9 +28,9 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              campaignHeader(mappingProvider.campaigns[missionInfo.CampaignID]!),
+              CampaignHeaderRow(campaignId: missionInfo.CampaignID),
                 verticalSpacer(),
-                missionHeader(mappingProvider, missionInfo, max:true),
+                MissionHeaderRow(missionId: missionInfo.MissionID, max:true),
               verticalSpacer(),
               subHeadingRow("Playback settings:"),
               verticalSpacer(),
@@ -44,7 +44,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                   ),
                   DropdownButton<String>(
                     hint: Text('Playback key'),
-                    value: context.watch<missionSettingsProvider>().selectedKey,
+                    value: context.watch<MissionSettingsProvider>().selectedKey,
                     items:
                         mappingProvider.getMappingKeys
                             .map<DropdownMenuItem<String>>((String value) {
@@ -57,7 +57,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context
-                            .read<missionSettingsProvider>()
+                            .read<MissionSettingsProvider>()
                             .updateSelectedKey(newkey: newValue);
                         objectBox.updateKey(
                           missionInfo.MissionID,
@@ -78,7 +78,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                     hint: Text('Playback instrument'),
                     value:
                         context
-                            .watch<missionSettingsProvider>()
+                            .watch<MissionSettingsProvider>()
                             .selectedInstrument,
                     items:
                         mappingProvider.getInstruments
@@ -92,7 +92,7 @@ class _missionSettingsPageState extends State<missionSettingsPage> {
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         context
-                            .read<missionSettingsProvider>()
+                            .read<MissionSettingsProvider>()
                             .updateSelectedInstrument(instrument: newValue);
                         objectBox.updateInstrument(
                           missionInfo.MissionID, 

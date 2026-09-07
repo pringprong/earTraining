@@ -87,7 +87,7 @@ class _LevelMelodyIDHandsFreeState
   Widget build(BuildContext context) {
     final levelInfo = this.levelInfo!;
     final mappingProvider = context.read<MappingProvider>();
-    final generalProvider = context.read<missionSettingsProvider>();
+    final generalProvider = context.read<MissionSettingsProvider>();
 
     return Scaffold(
       appBar: AppBar(title: Text('Hands-free melody ID')),
@@ -97,80 +97,77 @@ class _LevelMelodyIDHandsFreeState
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
+              CampaignHeaderRow(campaignId: levelInfo.CampaignID),
               verticalSpacer(),
-              missionHeader(
-                mappingProvider,
-                mappingProvider.missions[levelInfo.MissionID]!,
-              ),
+              MissionHeaderRow(missionId: levelInfo.MissionID),
               verticalSpacer(),
-              levelHeader(levelInfo),
+              LevelHeaderRow(levelId: levelInfo.LevelID),
               verticalSpacer(),
               subHeadingRow("Settings:"),
               settingsDropdownRow<int>(
                 label: 'Number of rounds:',
-                value: context.select<missionSettingsProvider, int>(
+                value: context.select<MissionSettingsProvider, int>(
                   (s) => s.numberOfRounds,
                 ),
                 items: [5, 10, 15, 20, 25],
                 onChanged:
                     (newValue) => context
-                        .read<missionSettingsProvider>()
+                        .read<MissionSettingsProvider>()
                         .setNumberOfRounds(rounds: newValue),
               ),
               settingsDropdownRow<int>(
                 label: 'Instrument repeats:',
-                value: context.select<missionSettingsProvider, int>(
+                value: context.select<MissionSettingsProvider, int>(
                   (s) => s.melodyRepeats,
                 ),
                 items: [0, 1, 2, 3, 4, 5],
                 onChanged:
                     (newValue) => context
-                        .read<missionSettingsProvider>()
+                        .read<MissionSettingsProvider>()
                         .setMelodyRepeats(repeats: newValue),
               ),
               settingsDropdownRow<int>(
                 label: 'Solfege repeats:',
-                value: context.select<missionSettingsProvider, int>(
+                value: context.select<MissionSettingsProvider, int>(
                   (s) => s.solfegeRepeats,
                 ),
                 items: [0, 1, 2, 3, 4, 5],
                 onChanged:
                     (newValue) => context
-                        .read<missionSettingsProvider>()
+                        .read<MissionSettingsProvider>()
                         .setSolfegeRepeats(repeats: newValue),
               ),
               settingsDropdownRow<int>(
                 label: 'Spoken repeats:',
-                value: context.select<missionSettingsProvider, int>(
+                value: context.select<MissionSettingsProvider, int>(
                   (s) => s.spokenRepeats,
                 ),
                 items: [0, 1, 2, 3, 4, 5],
                 onChanged:
                     (newValue) => context
-                        .read<missionSettingsProvider>()
+                        .read<MissionSettingsProvider>()
                         .setSpokenRepeats(repeats: newValue),
               ),
               settingsDropdownRow<int>(
                 label: 'Time between repeats (s):',
-                value: context.select<missionSettingsProvider, int>(
+                value: context.select<MissionSettingsProvider, int>(
                   (s) => s.getTimeDelayRepeat,
                 ),
                 items: [1, 2, 3, 4, 5, 6, 7, 8],
                 onChanged:
                     (newValue) => context
-                        .read<missionSettingsProvider>()
+                        .read<MissionSettingsProvider>()
                         .setTimeDelayRepeat(delay: newValue),
               ),
               settingsDropdownRow<String>(
                 label: 'Instrument:',
-                value: context.select<missionSettingsProvider, String>(
+                value: context.select<MissionSettingsProvider, String>(
                   (s) => s.handsfreeInstrument,
                 ),
                 items: ["Guitar", "Piano", "Alternate"],
                 onChanged:
                     (newValue) => context
-                        .read<missionSettingsProvider>()
+                        .read<MissionSettingsProvider>()
                         .setHandsfreeInstrument(instrument: newValue),
               ),
               verticalSpacer(),

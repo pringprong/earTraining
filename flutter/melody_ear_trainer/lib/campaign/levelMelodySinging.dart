@@ -26,7 +26,7 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
     // is no need to push them into the global settings provider first.
     final info = levelInfo!;
     final mappingProvider = context.read<MappingProvider>();
-    final generalProvider = context.read<missionSettingsProvider>();
+    final generalProvider = context.read<MissionSettingsProvider>();
     newGenerateChordMelody(
       generalProvider,
       mappingProvider,
@@ -61,7 +61,7 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
   Widget build(BuildContext context) {
     final levelInfo = this.levelInfo!;
     final mappingProvider = context.read<MappingProvider>();
-    final generalProvider = context.read<missionSettingsProvider>();
+    final generalProvider = context.read<MissionSettingsProvider>();
     // levelStatus is refreshed in didChangeDependencies (see above).
 
     return Scaffold(
@@ -73,14 +73,11 @@ class LevelMelodySingingState extends MelodyPageAbstractState {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
+              CampaignHeaderRow(campaignId: levelInfo.CampaignID),
               verticalSpacer(),
-              missionHeader(
-                mappingProvider,
-                mappingProvider.missions[levelInfo.MissionID]!,
-              ),
+              MissionHeaderRow(missionId: levelInfo.MissionID),
               verticalSpacer(),
-              levelHeader(levelInfo),
+              LevelHeaderRow(levelId: levelInfo.LevelID),
               verticalSpacer(),
               plainText("Generated melody:"),
               solfegeTextArea(),

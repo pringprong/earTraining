@@ -83,8 +83,8 @@ Future main() async {
   final chordSingingSettingsProvider = chordSingingSettings();
   final chordMelodyIDSettingsProvider = chordMelodyIDSettings();
   final chordMelodySingingSettingsProvider = chordMelodySingingSettings();
-  final missionSettings = missionSettingsProvider();
-  final missionSingingSettingsProvider = missionSingingSettings();
+  final missionSettings = MissionSettingsProvider();
+  final MissionSingingSettingsProvider = MissionSingingSettings();
   await Future.wait<void>([
     melodyIDSettingsProvider.loadSettings(),
     melodySingingSettingsProvider.loadSettings(),
@@ -93,7 +93,7 @@ Future main() async {
     chordMelodyIDSettingsProvider.loadSettings(),
     chordMelodySingingSettingsProvider.loadSettings(),
     missionSettings.loadSettings(),
-    missionSingingSettingsProvider.loadSettings(),
+    MissionSingingSettingsProvider.loadSettings(),
   ]);
 
   runApp(
@@ -127,11 +127,11 @@ Future main() async {
         ChangeNotifierProvider<chordMelodySingingSettings>.value(
           value: chordMelodySingingSettingsProvider,
         ),
-        ChangeNotifierProvider<missionSettingsProvider>.value(
+        ChangeNotifierProvider<MissionSettingsProvider>.value(
           value: missionSettings,
         ),
-        ChangeNotifierProvider<missionSingingSettings>.value(
-          value: missionSingingSettingsProvider,
+        ChangeNotifierProvider<MissionSingingSettings>.value(
+          value: MissionSingingSettingsProvider,
         ),
       ],
       child: MelodyEarTrainerApp(audioController: audioController),
@@ -201,7 +201,7 @@ class MelodyEarTrainerApp extends StatelessWidget {
         Mission.routeName: (context) => Mission(),
         Level.routeName: (context) => Level(),
         LevelTestResultsPage.routeName: (context) => LevelTestResultsPage(),
-        missionSettingsPage.routeName: (context) => missionSettingsPage(),
+        MissionSettingsPage.routeName: (context) => MissionSettingsPage(),
         LevelMelodyID.routeName:
             (context) => LevelMelodyID(audioController: audioController),
         LevelMelodyIDHandsFree.routeName:

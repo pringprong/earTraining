@@ -195,13 +195,13 @@ abstract class GeneralProvider extends ChangeNotifier {
   }
 
   // Add methods to update the state
-  void updateSelectedKey({required String newkey}) async {
+  void updateSelectedKey({required String newkey}) {
     selectedKey = newkey;
     saveSettings();
     notifyListeners();
   }
 
-  void updateSelectedInstrument({required String instrument}) async {
+  void updateSelectedInstrument({required String instrument}) {
     selectedInstrument = instrument;
     saveSettings();
     notifyListeners();
@@ -836,7 +836,7 @@ class chordMelodySingingSettings extends GeneralProvider {
   int solfegeRepeatsDefault = 1;
 }
 
-class missionSettingsProvider extends GeneralProvider {
+class MissionSettingsProvider extends GeneralProvider {
   @override
   String saveName = "minimal_settings";
 
@@ -872,7 +872,7 @@ class missionSettingsProvider extends GeneralProvider {
 }
 
 // this is really only for the handsfree part of the mission-level section
-class missionSingingSettings extends GeneralProvider {
+class MissionSingingSettings extends GeneralProvider {
   @override
   String saveName = "mission_singing_settings";
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:melody_ear_trainer/main.dart';
 import '../providers/general_provider.dart';
 import '../providers/mapping_provider.dart';
+import 'package:provider/provider.dart';
 import 'colors.dart';
 import 'dart:collection';
 import 'package:objectbox/objectbox.dart';
@@ -869,4 +870,51 @@ class MissionSavedSettings {
     //   this.passedMission = false,
     this.status = "Not started yet",
   });
+}
+
+// ---------------------------------------------------------------------------
+// Scoped header widgets (R5): each selects only the specific mapping entry it
+// needs, so a provider notification rebuilds just the header rather than the
+// whole page. MappingProvider is static after startup, so these effectively
+// never rebuild.
+// ---------------------------------------------------------------------------
+
+class CampaignHeaderRow extends StatelessWidget {
+  const CampaignHeaderRow({super.key, required this.campaignId});
+  final String campaignId;
+
+  @override
+  Widget build(BuildContext context) {
+    final campaignInfo = context.select<MappingProvider, CampaignInfo>(
+      (m) => m.campaigns[campaignId]!,
+    );
+    return campaignHeader(campaignInfo);
+  }
+}
+
+class MissionHeaderRow extends StatelessWidget {
+  const MissionHeaderRow({super.key, required this.missionId, this.max = false});
+  final String missionId;
+  final bool max;
+
+  @override
+  Widget build(BuildContext context) {
+    final missionInfo = context.select<MappingProvider, MissionInfo>(
+      (m) => m.missions[missionId]!,
+    );
+    return missionHeader(context.read<MappingProvider>(), missionInfo, max: max);
+  }
+}
+
+class LevelHeaderRow extends StatelessWidget {
+  const LevelHeaderRow({super.key, required this.levelId});
+  final String levelId;
+
+  @override
+  Widget build(BuildContext context) {
+    final levelInfo = context.select<MappingProvider, LevelInfo>(
+      (m) => m.levels[levelId]!,
+    );
+    return levelHeader(levelInfo);
+  }
 }

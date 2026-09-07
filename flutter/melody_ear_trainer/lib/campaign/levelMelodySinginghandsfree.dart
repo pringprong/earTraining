@@ -18,9 +18,9 @@ class LevelMelodySingingHandsFree extends HandsFreePageAbstract {
 class _LevelMelodySingingHandsFreeState
     extends HandsFreePageAbstractState<LevelMelodySingingHandsFree> {
   // NOTE: melody generation settings (key/instrument/chords) come from the
-  // shared missionSettingsProvider, while the hands-free controls (rounds,
+  // shared MissionSettingsProvider, while the hands-free controls (rounds,
   // repeats, delays, hands-free instrument) use the dedicated
-  // missionSingingSettings provider with its own saved preferences.
+  // MissionSingingSettings provider with its own saved preferences.
   @override
   Future<bool> playRound(
     GeneralProvider melodySettings,
@@ -114,8 +114,8 @@ class _LevelMelodySingingHandsFreeState
   Widget build(BuildContext context) {
     final levelInfo = this.levelInfo!;
     final mappingProvider = context.read<MappingProvider>();
-    final generalProvider = context.read<missionSettingsProvider>();
-    final handsfreeSettings = context.read<missionSingingSettings>();
+    final generalProvider = context.read<MissionSettingsProvider>();
+    final handsfreeSettings = context.read<MissionSingingSettings>();
 
     return Scaffold(
       appBar: AppBar(title: Text('Hands-free singing')),
@@ -125,80 +125,77 @@ class _LevelMelodySingingHandsFreeState
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
+              CampaignHeaderRow(campaignId: levelInfo.CampaignID),
               verticalSpacer(),
-              missionHeader(
-                mappingProvider,
-                mappingProvider.missions[levelInfo.MissionID]!,
-              ),
+              MissionHeaderRow(missionId: levelInfo.MissionID),
               verticalSpacer(),
-              levelHeader(levelInfo),
+              LevelHeaderRow(levelId: levelInfo.LevelID),
               verticalSpacer(),
               subHeadingRow("Settings:"),
               settingsDropdownRow<int>(
                 label: 'Number of rounds:',
-                value: context.select<missionSingingSettings, int>(
+                value: context.select<MissionSingingSettings, int>(
                   (s) => s.numberOfRounds,
                 ),
                 items: [5, 10, 15, 20, 25],
                 onChanged:
                     (newValue) => context
-                        .read<missionSingingSettings>()
+                        .read<MissionSingingSettings>()
                         .setNumberOfRounds(rounds: newValue),
               ),
               settingsDropdownRow<int>(
                 label: 'Spoken plus first note repeats:',
-                value: context.select<missionSingingSettings, int>(
+                value: context.select<MissionSingingSettings, int>(
                   (s) => s.spokenRepeats,
                 ),
                 items: [0, 1, 2, 3, 4, 5],
                 onChanged:
                     (newValue) => context
-                        .read<missionSingingSettings>()
+                        .read<MissionSingingSettings>()
                         .setSpokenRepeats(repeats: newValue),
               ),
               settingsDropdownRow<int>(
                 label: 'Solfege repeats:',
-                value: context.select<missionSingingSettings, int>(
+                value: context.select<MissionSingingSettings, int>(
                   (s) => s.solfegeRepeats,
                 ),
                 items: [0, 1, 2, 3, 4, 5],
                 onChanged:
                     (newValue) => context
-                        .read<missionSingingSettings>()
+                        .read<MissionSingingSettings>()
                         .setSolfegeRepeats(repeats: newValue),
               ),
               settingsDropdownRow<int>(
                 label: 'Instrument repeats:',
-                value: context.select<missionSingingSettings, int>(
+                value: context.select<MissionSingingSettings, int>(
                   (s) => s.melodyRepeats,
                 ),
                 items: [0, 1, 2, 3, 4, 5],
                 onChanged:
                     (newValue) => context
-                        .read<missionSingingSettings>()
+                        .read<MissionSingingSettings>()
                         .setMelodyRepeats(repeats: newValue),
               ),
               settingsDropdownRow<int>(
                 label: 'Time between repeats (s):',
-                value: context.select<missionSingingSettings, int>(
+                value: context.select<MissionSingingSettings, int>(
                   (s) => s.getTimeDelayRepeat,
                 ),
                 items: [1, 2, 3, 4, 5, 6, 7, 8],
                 onChanged:
                     (newValue) => context
-                        .read<missionSingingSettings>()
+                        .read<MissionSingingSettings>()
                         .setTimeDelayRepeat(delay: newValue),
               ),
               settingsDropdownRow<String>(
                 label: 'Instrument:',
-                value: context.select<missionSingingSettings, String>(
+                value: context.select<MissionSingingSettings, String>(
                   (s) => s.handsfreeInstrument,
                 ),
                 items: ["Guitar", "Piano", "Alternate"],
                 onChanged:
                     (newValue) => context
-                        .read<missionSingingSettings>()
+                        .read<MissionSingingSettings>()
                         .setHandsfreeInstrument(instrument: newValue),
               ),
               verticalSpacer(),

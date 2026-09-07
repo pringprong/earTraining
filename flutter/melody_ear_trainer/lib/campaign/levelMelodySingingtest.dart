@@ -28,7 +28,7 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
   Widget build(BuildContext context) {
     final levelInfo = this.levelInfo!;
     final mappingProvider = context.read<MappingProvider>();
-    final generalProvider = context.read<missionSettingsProvider>();
+    final generalProvider = context.read<MissionSettingsProvider>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Test')),
@@ -38,14 +38,11 @@ class LevelMelodySingingTestState extends TestPageAbstractState {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              campaignHeader(mappingProvider.campaigns[levelInfo.CampaignID]!),
+              CampaignHeaderRow(campaignId: levelInfo.CampaignID),
               verticalSpacer(),
-              missionHeader(
-                mappingProvider,
-                mappingProvider.missions[levelInfo.MissionID]!,
-              ),
+              MissionHeaderRow(missionId: levelInfo.MissionID),
               verticalSpacer(),
-              levelHeader(levelInfo),
+              LevelHeaderRow(levelId: levelInfo.LevelID),
               plainText(
                 "Current score: " +
                     correctAnswers.toString() +

@@ -86,7 +86,7 @@ class _LevelState extends State<Level> {
     final mappingProvider = context.read<MappingProvider>();
     String missionMode = mappingProvider.getMissionMode(levelInfo.MissionID);
     MissionInfo missionInfo = mappingProvider.getMissions[levelInfo.MissionID]!;
-    final generalProvider = context.read<missionSettingsProvider>();
+    final generalProvider = context.read<MissionSettingsProvider>();
     // ltrList / nextLevel / prevLevel are refreshed in didChangeDependencies.
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -102,17 +102,11 @@ class _LevelState extends State<Level> {
             child: Center(
               child: Column(
                 children: [
-                  campaignHeader(
-                    mappingProvider.campaigns[levelInfo.CampaignID]!,
-                  ),
+                  CampaignHeaderRow(campaignId: levelInfo.CampaignID),
                   verticalSpacer(),
-                  missionHeader(
-                    mappingProvider,
-                    mappingProvider.missions[levelInfo.MissionID]!,
-                    max: false,
-                  ),
+                  MissionHeaderRow(missionId: levelInfo.MissionID, max: false),
                   verticalSpacer(),
-                  levelHeader(levelInfo),
+                  LevelHeaderRow(levelId: levelInfo.LevelID),
                   verticalSpacer(),
                   plainText("Notes (colorful text=new):"),
                   verticalSpacer(),

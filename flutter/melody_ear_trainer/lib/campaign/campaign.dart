@@ -91,7 +91,7 @@ class _campaignTreeState extends State<campaignTree> {
   Widget build(BuildContext context) {
     final campArgs = ModalRoute.of(context)!.settings.arguments as CampaignInfo;
     final mappingProvider = Provider.of<MappingProvider>(context);
-    final generalProvider = Provider.of<missionSettingsProvider>(context);
+    final generalProvider = Provider.of<MissionSettingsProvider>(context);
     final Map<String, MissionInfo> missions = mappingProvider.getMissions;
     //final themeProvider = Provider.of<ThemeProvider>(context);
 

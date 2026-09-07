@@ -30,7 +30,7 @@ class _MissionState extends State<Mission> {
     if (args is MissionInfo &&
         args.MissionID != (_loadedMission?.MissionID ?? '')) {
       _loadedMission = args;
-      final generalProvider = context.read<missionSettingsProvider>();
+      final generalProvider = context.read<MissionSettingsProvider>();
       objectBox.createOrUpdateMissionDetails(
         args.MissionID,
         generalProvider.getSelectedKey,
@@ -44,7 +44,7 @@ class _MissionState extends State<Mission> {
     final missionInfo =
         ModalRoute.of(context)!.settings.arguments as MissionInfo;
     final mappingProvider = context.read<MappingProvider>();
-    final generalProvider = context.read<missionSettingsProvider>();
+    final generalProvider = context.read<MissionSettingsProvider>();
     final levels = mappingProvider.getLevelsForMission(missionInfo.MissionID);
     // The mission page displays the last level's note selection / chord
     // frequency explicitly (this used to be smuggled through the global
@@ -60,11 +60,9 @@ class _MissionState extends State<Mission> {
           child: Center(
             child: Column(
               children: [
-                campaignHeader(
-                  mappingProvider.campaigns[missionInfo.CampaignID]!,
-                ),
+                CampaignHeaderRow(campaignId: missionInfo.CampaignID),
                 verticalSpacer(),
-                missionHeader(mappingProvider, missionInfo, max: true),
+                MissionHeaderRow(missionId: missionInfo.MissionID, max: true),
                 verticalSpacer(),
                 plainText("Notes (colorful text=new):"),
                 verticalSpacer(),
@@ -127,7 +125,7 @@ class _MissionState extends State<Mission> {
             onPressed: () {
               Navigator.pushNamed(
                 context,
-                missionSettingsPage.routeName,
+                MissionSettingsPage.routeName,
                 arguments: missionInfo,
               );
             },

@@ -5,7 +5,7 @@ import 'helper.dart';
 ///
 /// Campaign levels pass their fixed settings via the [LevelInfo] route
 /// argument; this view model derives them once so pages never need to write
-/// level data into the global `missionSettingsProvider` (the old
+/// level data into the global `MissionSettingsProvider` (the old
 /// `setLevelDetails` mechanism).
 class LevelConfig {
   final List<String> notes;
