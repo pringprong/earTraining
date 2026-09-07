@@ -1,5 +1,10 @@
 # 2026-09-05 — Fixing provider initialization in the Campaign folder
 
+> **STATUS (2026-09-06): IMPLEMENTED.** All recommendations below (R1–R9) have been
+> implemented on the `glm53` branch and `flutter analyze` passes with no issues.
+> See the "Implementation status" section at the bottom for the commit list and
+> the manual verification checklist that remains.
+
 ## The original prompt
 
 > I've made a new branch named "glm53" on the github repo. Can you please switch to that branch and we will commit all changes to that branch from now on.
@@ -299,3 +304,52 @@ Key insight: **guard side effects by comparing inputs (`LevelID`, a settings fin
 - Standardize every campaign page on one lifecycle: `initState` = plain objects, `didChangeDependencies` = re-read providers/args (+ input-guarded side effects), `build` = pure UI with `watch`/`select`, `dispose` = stop audio & loops.
 - Bring the two hands-free pages under the same hierarchy and deduplicate them.
 
+
+
+---
+
+## 6. Implementation status (added 2026-09-06)
+
+All items were implemented on `glm53` and verified with `flutter analyze`
+(0 issues). Commits:
+
+- `ebcd9e7` — Rework provider initialization and campaign page lifecycle
+  (R2, R3, R4, R6, R7, R8)
+- `9a38f85` — Add scoped header widgets and rename mission settings classes
+  (R5, R9)
+
+### What changed, per recommendation
+
+| Rec | Implementation |
+|---|---|
+| R1 | Campaign pages read providers with `context.read` in build (no page-wide subscriptions); hands-free dropdowns use `context.select`; async loops keep `context.read` |
+| R2 | New `utils/level_config.dart` (`LevelConfig.fromLevelInfo/.fromProvider`); `setLevelDetails` deleted; `resetMissionBeforeMissionPage` restores only key/instrument; `generateChordMelody`/`playChordMelody`/`playSpoken` accept an optional `LevelConfig`; `buildNotesGrid`/`buildSelectedChordButtonsHelper`/`buildNoteButtons`/`buildSelectedChordButtons` take level-driven note selections |
+| R3 | New `CampaignLevelArgs` mixin in `melodyPageAbstract.dart` (`levelInfo` field + `onLevelEntered()` hook guarded by LevelID); `LevelMelodyID`/`LevelMelodySinging` use `onLevelEntered` instead of `_initialized`/`late final` caching |
+| R4 | ObjectBox queries/writes moved from `build` to `didChangeDependencies` in `mission.dart`, `level.dart`, `levelTestResults.dart`; practice/hands-free pages compute `levelStatus` there too |
+| R5 | `CampaignHeaderRow` / `MissionHeaderRow` / `LevelHeaderRow` in `helper.dart`; used by every campaign page |
+| R6 | New `campaign/handsfreePageAbstract.dart` (`HandsFreePageAbstract`/`...State`); both hands-free pages rewritten on top of it, keeping their per-round playback order and the two-provider split (documented in code) |
+| R7 | `main()` awaits `loadSettings()` on all eight `GeneralProvider` providers before `runApp`; providers passed with `.value` |
+| R8 | Test pages no longer assign `levelInfo` in `build`; `numberOfQuestions` set in `onLevelEntered`; dummy `LevelInfo("",...)` removed |
+| R9 | `MissionSettingsProvider`, `MissionSingingSettings`, `MissionSettingsPage` renames; `async` dropped from `updateSelectedKey`/`updateSelectedInstrument` |
+
+### Deliberate behavior changes to be aware of
+
+1. **Error abort in hands-free sessions**: a melody-generation error now ends the
+   session and re-enables Start (previously it silently left the Start button
+   locked until Stop was pressed).
+2. **Mission page note display** now shows the *last level's* notes explicitly
+   (computed from `LevelInfo`) instead of whatever was left in the global
+   provider — same visual result as before, but deterministic.
+3. **Chord-button display** on Level pages uses the level's own
+   `ChordFrequency` rather than the stale provider value.
+
+### Manual verification checklist (still to run on device/emulator)
+
+- Enter mission → change Key/Instrument in mission settings → open a level →
+  practice page uses the new settings.
+- Prev/Next level and mission-to-mission jumps regenerate melodies for the
+  *displayed* level; autoplay fires once per level entry (not per rebuild).
+- Hands-free: toggle dropdowns mid-session; current round continues, next round
+  picks up new values; Start/Stop/Leave behave; back navigation stops audio.
+- Mission-passed flow → next level → results → return buttons still navigate
+  correctly.
