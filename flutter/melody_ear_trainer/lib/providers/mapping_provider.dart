@@ -361,6 +361,16 @@ class MappingProvider extends ChangeNotifier {
       List<String> newNotes =
           newNotesStr.split(',').map((s) => s.trim()).toList();
 
+      // Optional per-level chord pool ("Chord Set" keys from Chords.json).
+      // Missing or empty means "use the provider's chord selection".
+      String chordsStr = item['Chords'] ?? "";
+      List<String> chords =
+          chordsStr
+              .split(',')
+              .map((s) => s.trim())
+              .where((s) => s.isNotEmpty)
+              .toList();
+
       int numNotes = int.parse(item['NumNotes']);
       int maxDistance = int.parse(item['MaxDistance']);
       bool allowRepeatedNotes = bool.parse(item['AllowRepeatedNotes']);
@@ -425,6 +435,7 @@ class MappingProvider extends ChangeNotifier {
       );
       levelInfo.setNotes(notes);
       levelInfo.addNewNotes(newNotes);
+      levelInfo.setChords(chords);
 
       if (levelID.isNotEmpty && !levels.containsKey(levelID)) {
         levels[levelID] = levelInfo;

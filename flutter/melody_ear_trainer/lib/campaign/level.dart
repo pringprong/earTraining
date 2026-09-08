@@ -126,6 +126,7 @@ class _LevelState extends State<Level> {
                     optional: true,
                     selectedNotes: levelInfo.Notes.toSet(),
                     chordFrequencyOverride: levelInfo.ChordFrequency,
+                    chordsOverride: levelInfo.Chords,
                   ),
                   plainText(
                     "Practice & take a test (" +

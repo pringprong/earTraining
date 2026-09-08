@@ -96,7 +96,13 @@ class ChordMelody {
     final endingDo = cfg.endingDo;
     final notes = cfg.notes;
     final chordFrequency = cfg.chordFrequency;
-    final chords = generalProvider.getSelectedChords();
+    // The level's own chord pool (Missions.json "Chords") overrides the
+    // provider's selection when present.
+    final chords = resolveChordPool(
+      levelChords: cfg.chords,
+      chordMap: chordMap,
+      providerChords: generalProvider.getSelectedChords(),
+    );
     final allowRepeatedChords = generalProvider.allowRepeatedChords;
     String previousChord = "";
     List<String> newNotesList = [];

@@ -818,8 +818,6 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract>
     GeneralProvider generalProvider,
     MappingProvider mappingProvider,
   ) {
-    final selectedChords = generalProvider.getSelectedChords();
-    selectedChords.sort((a, b) => chordNameSort(a, b));
     // Campaign pages use the level's own chord frequency; other pages fall
     // back to the provider's.
     final chordFrequency =
@@ -828,6 +826,14 @@ abstract class MelodyPageAbstractState extends State<MelodyPageAbstract>
     if (chordFrequency == "Never") {
       return Padding(padding: const EdgeInsets.all(0.0));
     }
+    // Campaign pages prefer the level's own chord pool (Missions.json
+    // "Chords"); other pages fall back to the provider's selection.
+    final selectedChords = resolveChordPool(
+      levelChords: levelInfo?.Chords,
+      chordMap: chordMap,
+      providerChords: generalProvider.getSelectedChords(),
+    );
+    selectedChords.sort((a, b) => chordNameSort(a, b));
     return Wrap(
       spacing: 4,
       runSpacing: 4,

@@ -20,6 +20,9 @@ class LevelConfig {
   final String startingDo;
   final String endingDo;
   final String chordFrequency;
+
+  /// Per-level chord pool (Missions.json "Chords"); empty = provider fallback.
+  final List<String> chords;
   final Set<String> newNotes;
 
   const LevelConfig({
@@ -35,6 +38,7 @@ class LevelConfig {
     required this.startingDo,
     required this.endingDo,
     required this.chordFrequency,
+    required this.chords,
     required this.newNotes,
   });
 
@@ -70,6 +74,7 @@ class LevelConfig {
       startingDo: info.StartingDo,
       endingDo: info.EndingDo,
       chordFrequency: info.ChordFrequency,
+      chords: List<String>.from(info.Chords),
       newNotes: Set<String>.from(info.NewNotes),
     );
   }
@@ -90,6 +95,7 @@ class LevelConfig {
       startingDo: generalProvider.startingDo,
       endingDo: generalProvider.endingDo,
       chordFrequency: generalProvider.chordFrequency,
+      chords: const [],
       newNotes: const {},
     );
   }

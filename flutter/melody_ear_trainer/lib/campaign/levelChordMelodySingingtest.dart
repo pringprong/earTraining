@@ -91,6 +91,7 @@ class LevelChordMelodySingingTestState extends TestPageAbstractState {
                 optional: true,
                 selectedNotes: levelInfo.Notes.toSet(),
                 chordFrequencyOverride: levelInfo.ChordFrequency,
+                chordsOverride: levelInfo.Chords,
               ),
               verticalSpacer(),
               reportWhetherCorrect(generalProvider, mappingProvider, levelInfo),

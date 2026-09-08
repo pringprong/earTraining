@@ -87,6 +87,7 @@ class _MissionState extends State<Mission> {
                   optional: true,
                   selectedNotes: lastLevel?.Notes.toSet(),
                   chordFrequencyOverride: lastLevel?.ChordFrequency,
+                  chordsOverride: lastLevel?.Chords,
                 ),
                 plainText("Select a level:"),
                 verticalSpacer(),

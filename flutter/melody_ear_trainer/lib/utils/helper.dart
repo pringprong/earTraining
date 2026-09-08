@@ -303,6 +303,7 @@ Widget buildSelectedChordButtonsHelper(
   bool optional = false,
   Set<String>? selectedNotes,
   String? chordFrequencyOverride,
+  List<String>? chordsOverride,
 }) {
   // Campaign pages pass the level/mission note selection and chord frequency
   // explicitly so this helper no longer depends on mutable provider state.
@@ -315,13 +316,19 @@ Widget buildSelectedChordButtonsHelper(
     return SizedBox.shrink();
   }
 
-  final selectedChords = generalProvider.getSelectedChords();
-  selectedChords.sort((a, b) => chordNameSort(a, b));
   final chordFrequency = frequency;
   final chordMap = mappingProvider.getChordMap;
   if (chordFrequency == "Never") {
     return Padding(padding: const EdgeInsets.all(0.0));
   }
+  // Prefer the level's own chord pool (Missions.json "Chords"); fall back to
+  // the provider's selection when the level doesn't define one.
+  final selectedChords = resolveChordPool(
+    levelChords: chordsOverride,
+    chordMap: chordMap,
+    providerChords: generalProvider.getSelectedChords(),
+  );
+  selectedChords.sort((a, b) => chordNameSort(a, b));
   return Wrap(
     spacing: 4,
     runSpacing: 4,
@@ -683,6 +690,24 @@ const numOrder = {'00': 100, '0': 200, '': 300, '1': 400};
 
 const suffixOrder = {'Rt': 100, 'Fir': 200, 'Sec': 300, 'Thr': 400, 'All': 500};
 
+/// Resolves the chord pool to use for melody generation and chord buttons.
+///
+/// Campaign levels can define their own chord pool via the "Chords" field in
+/// Missions.json (comma-separated "Chord Set" keys from Chords.json). When a
+/// level defines one, it is used after dropping unknown keys; otherwise — and
+/// whenever nothing valid remains — the provider's own selection is used.
+List<String> resolveChordPool({
+  List<String>? levelChords,
+  required Map<String, List<String>> chordMap,
+  required List<String> providerChords,
+}) {
+  final filtered =
+      (levelChords ?? const <String>[])
+          .where((chord) => chordMap.containsKey(chord))
+          .toList();
+  return filtered.isNotEmpty ? filtered : providerChords;
+}
+
 int chordNameSort(String? a, String? b) {
   final matchA = chordNameParse.firstMatch(a ?? "");
   final matchB = chordNameParse.firstMatch(b ?? "");
@@ -787,6 +812,11 @@ class LevelInfo {
   final String LevelName;
   List<String> Notes = [];
   Set<String> NewNotes = {};
+
+  /// Per-level chord pool from Missions.json "Chords": comma-separated
+  /// "Chord Set" keys from assets/mapping/Chords.json. Empty means "fall back
+  /// to the provider's chord selection".
+  List<String> Chords = [];
   final int NumNotes;
   final int MaxDistance;
   final bool AllowRepeatedNotes;
@@ -826,6 +856,10 @@ class LevelInfo {
 
   addNewNotes(List<String> noteList) {
     NewNotes.addAll(noteList);
+  }
+
+  setChords(List<String> chordList) {
+    Chords = chordList;
   }
 }
 
